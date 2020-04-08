@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "teamRokuro",
+  "classifications": [ "Common", "Console" ],
+  "identity": "TeamRokuro.Fpt",
+  "name": "Fp tool skeleton",
+  "shortName": "fpt",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Fpt",
+  "preferNameDirectory": "true"
+}

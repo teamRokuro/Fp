@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageType>Template</PackageType>
+        <PackageVersion>0.1.0</PackageVersion>
+        <PackageId>Fp.Templates</PackageId>
+        <Title>Fp Templates</Title>
+        <Authors>riina</Authors>
+        <Description>Templates for Fp-based projects.</Description>
+        <PackageTags>dotnet-new;templates;fp</PackageTags>
+        <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <Copyright>Copyright ©2019 teamRokuro</Copyright>
+        <PackageProjectUrl>https://github.com/teamRokuro/Fp</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/teamRokuro/Fp</RepositoryUrl>
+        <Company>teamRokuro</Company>
+        <PackOnBuild>true</PackOnBuild>
+        <Owners>riina</Owners>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <NoWarn>NU5105</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="src\**\*" Exclude="src\**\bin\**;src\**\obj\**;src\**\publish\**" />
+        <Compile Remove="**\*" />
+    </ItemGroup>
+
+</Project>
