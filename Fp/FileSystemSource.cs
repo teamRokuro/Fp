@@ -30,7 +30,7 @@ namespace Fp {
         public Stream OpenRead(string path, FileMode fileMode = FileMode.Open, FileShare fileShare =
             FileShare.ReadWrite | FileShare.Delete) {
             var src = Processor.GetSeekableStream(OpenReadImpl(path, fileMode, fileShare));
-            if (!ParallelAccess) return src;
+            if (!ParallelAccess || src is MemoryStream) return src;
             var ms = new MemoryStream(new byte[src.Length]);
             src.CopyTo(ms);
             ms.Position = 0;

@@ -1640,7 +1640,7 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS164Array(Span<long> span, long offset, Stream stream = null) {
+        public void ReadS64Array(Span<long> span, long offset, Stream stream = null) {
             stream ??= InputStream;
             Read(stream, offset, MemoryMarshal.Cast<long, byte>(span), false);
             ConvertS64Array(span);
@@ -3878,13 +3878,12 @@ namespace Fp {
         /// <param name="stream">Base stream</param>
         /// <returns>Seekable stream</returns>
         public static Stream GetSeekableStream(Stream stream) {
-            if (!stream.CanSeek) {
-                var ms = new MemoryStream();
-                stream.CopyTo(ms);
-                stream.Close();
-                ms.Position = 0;
-                stream = ms;
-            }
+            if (stream.CanSeek) return stream;
+            var ms = new MemoryStream();
+            stream.CopyTo(ms);
+            stream.Close();
+            ms.Position = 0;
+            stream = ms;
             return stream;
         }
 

@@ -106,7 +106,7 @@ Options";
                 usageStr += @"
     -o|--outdir      : Output directory
     -p|--preload     : Load all streams to memory
-                  before working";
+                       before working";
                 logger.Invoke(usageStr);
                 return false;
             }

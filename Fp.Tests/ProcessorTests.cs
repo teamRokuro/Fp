@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
-using Fp;
 using Fp.Images.Png;
 using NUnit.Framework;
 
@@ -95,31 +94,66 @@ namespace Fp.Tests {
                 using (var fs = File.OpenRead("Watch_Dogs2020-4-3-0-57-53.png"))
                     png = ReadPng(fs);
                 var data = png.Data.Data;
-                var buf2 = new byte[4 * png.Width * png.Height];
+                var buf2 = new uint[png.Width * png.Height];
                 var buf2S = buf2.AsSpan();
                 unsafe {
                     for (var x = 0; x < png.Width; x++)
                     for (var y = 0; y < png.Height; y++) {
                         var pixel = png.GetPixel(x, y);
-                        new Span<byte>((byte*) &pixel, 4).CopyTo(buf2S.Slice(4 * (y * png.Width + x)));
+                        buf2S[y * png.Width + x] = *(uint*) &pixel;
                     }
                 }
 
-                byte[] data2;
                 byte[] data3;
                 using (var ms = new MemoryStream()) {
-                    WritePng(data, png.Width, png.Height, png.HasAlphaChannel, ms);
-                    ms.Position = 0;
-                    data2 = ReadPng(ms).Data.Data;
                     ms.SetLength(0);
-                    WritePngPlainRgba(buf2S, png.Width, png.Height, CompressionLevel.Optimal, ms);
+                    WritePngRgba(buf2S, png.Width, png.Height, CompressionLevel.Optimal, ms);
                     ms.Position = 0;
                     data3 = ReadPng(ms).Data.Data;
                 }
 
-                Assert.IsTrue(data.AsSpan().SequenceEqual(data2));
                 Assert.IsTrue(data.AsSpan().SequenceEqual(data3));
             }
+        }
+
+        [Test]
+        public void TestAesEcb() {
+            var data = new byte[128 / 8 * 5];
+            var ms1 = new MemoryStream();
+
+            using var aesAlg = Aes.Create() ?? throw new ApplicationException();
+            aesAlg.Mode = CipherMode.ECB;
+            aesAlg.Padding = PaddingMode.PKCS7;
+            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+            using var csEncrypt = new CryptoStream(ms1, encryptor, CryptoStreamMode.Write);
+            csEncrypt.Write(data);
+            csEncrypt.Flush();
+
+            var encData = ms1.ToArray();
+            Processor.DecryptAesEcb(encData, aesAlg.Key);
+            var pos = Processor.GetDepaddedLength(encData, Processor.PaddingMode.Pkcs7);
+            Assert.AreEqual(data.Length, pos);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(encData));
+        }
+
+        [Test]
+        public void TestAesCbc() {
+            var data = new byte[128 / 8 * 5];
+            var ms1 = new MemoryStream();
+
+            using var aesAlg = Aes.Create() ?? throw new ApplicationException();
+            aesAlg.Mode = CipherMode.CBC;
+            aesAlg.Padding = PaddingMode.PKCS7;
+            var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+            using var csEncrypt = new CryptoStream(ms1, encryptor, CryptoStreamMode.Write);
+            csEncrypt.Write(data);
+            csEncrypt.Flush();
+
+            var encData = ms1.ToArray();
+            Processor.DecryptAesCbc(encData, aesAlg.Key, aesAlg.IV);
+            var pos = Processor.GetDepaddedLength(encData, Processor.PaddingMode.Pkcs7);
+            Assert.AreEqual(data.Length, pos);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(encData));
         }
     }
 }

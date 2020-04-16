@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 using System.Text;
 using Fp.Images.Png;
 
@@ -9,6 +10,16 @@ namespace Fp.Images.Png {
     /// Used to construct PNG images. Call <see cref="Create"/> to make a new builder.
     /// </summary>
     public class PngBuilder {
+        /// <summary>
+        /// IDAT chunk bytes
+        /// </summary>
+        public static readonly byte[] ChunkIDAT = Encoding.ASCII.GetBytes("IDAT");
+
+        /// <summary>
+        /// IEND chunk bytes
+        /// </summary>
+        public static readonly byte[] ChunkIEND = Encoding.ASCII.GetBytes("IEND");
+
         private const byte Deflate32KbWindow = 120;
         private const byte ChecksumBits = 1;
 
@@ -97,12 +108,12 @@ namespace Fp.Images.Png {
 
             var imageData = Compress(_rawData);
             stream.WriteChunkLength(imageData.Length);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IDAT"));
+            stream.WriteChunkHeader(ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
             stream.WriteCrc();
 
             stream.WriteChunkLength(0);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IEND"));
+            stream.WriteChunkHeader(ChunkIEND);
             stream.WriteCrc();
         }
 
@@ -176,56 +187,15 @@ namespace Fp.Images.Png {
 namespace Fp {
     public partial class Processor {
         /// <summary>
-        /// Write png data to stream
-        /// </summary>
-        /// <param name="data">Png color data</param>
-        /// <param name="width">Width of image</param>
-        /// <param name="height">Height of image</param>
-        /// <param name="hasAlphaChannel">Whether data has alpha channel</param>
-        /// <param name="outputStream">Stream to write to</param>
-        public static void WritePng(Span<byte> data, int width, int height, bool hasAlphaChannel, Stream outputStream) {
-            outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
-
-            var stream = new PngStreamWriteHelper(outputStream);
-
-            stream.WriteChunkLength(13);
-            stream.WriteChunkHeader(ImageHeader.HeaderBytes);
-
-            StreamHelper.WriteBigEndianInt32(stream, width);
-            StreamHelper.WriteBigEndianInt32(stream, height);
-            stream.WriteByte(8);
-
-            var colorType = ColorType.ColorUsed;
-            if (hasAlphaChannel) {
-                colorType |= ColorType.AlphaChannelUsed;
-            }
-
-            stream.WriteByte((byte) colorType);
-            stream.WriteByte((byte) CompressionMethod.DeflateWithSlidingWindow);
-            stream.WriteByte((byte) FilterMethod.AdaptiveFiltering);
-            stream.WriteByte((byte) InterlaceMethod.None);
-            stream.WriteCrc();
-
-            var imageData = PngBuilder.Compress(data);
-            stream.WriteChunkLength(imageData.Length);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IDAT"));
-            stream.Write(imageData, 0, imageData.Length);
-            stream.WriteCrc();
-
-            stream.WriteChunkLength(0);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IEND"));
-            stream.WriteCrc();
-        }
-
-        /// <summary>
-        /// Write plain rgba data to stream
+        /// Write rgba data to stream
         /// </summary>
         /// <param name="data">Raw rgba color data</param>
         /// <param name="width">Width of image</param>
         /// <param name="height">Height of image</param>
         /// <param name="compressionLevel">Deflate compression level</param>
         /// <param name="outputStream">Stream to write to</param>
-        public static void WritePngPlainRgba(Span<byte> data, int width, int height, CompressionLevel compressionLevel, Stream outputStream) {
+        public static void WritePngRgba(Span<uint> data, int width, int height, CompressionLevel compressionLevel,
+            Stream outputStream) {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
             var stream = new PngStreamWriteHelper(outputStream);
@@ -243,14 +213,14 @@ namespace Fp {
             stream.WriteByte((byte) InterlaceMethod.None);
             stream.WriteCrc();
 
-            var imageData = PngBuilder.Compress2(data, width, height, compressionLevel);
+            var imageData = PngBuilder.Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
             stream.WriteChunkLength(imageData.Length);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IDAT"));
+            stream.WriteChunkHeader(PngBuilder.ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
             stream.WriteCrc();
 
             stream.WriteChunkLength(0);
-            stream.WriteChunkHeader(Encoding.ASCII.GetBytes("IEND"));
+            stream.WriteChunkHeader(PngBuilder.ChunkIEND);
             stream.WriteCrc();
         }
     }
