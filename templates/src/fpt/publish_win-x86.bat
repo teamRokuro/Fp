@@ -1,1 +1,0 @@
-dotnet publish %~dp0 -c Release -r win-x86 -o %~dp0\publish -v m /p:IlcGenerateCompleteTypeMetadata=false /p:IlcGenerateStackTraceData=false /p:IlcOptimizationPreference=Speed

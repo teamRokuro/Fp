@@ -1,1 +1,1 @@
-dotnet publish %~dp0 -c Release -f netcoreapp3.1 -r win-x64 -o %~dp0\publish -v m /p:IlcGenerateCompleteTypeMetadata=false /p:IlcGenerateStackTraceData=false /p:IlcOptimizationPreference=Speed
+dotnet publish "%~dp0"" -f netcoreapp3.1 -c Release -r win-x64 -o "%~dp0\publish" -v m /p:IlcGenerateCompleteTypeMetadata=false /p:IlcGenerateStackTraceData=false /p:IlcOptimizationPreference=Speed

@@ -5,7 +5,7 @@ namespace Fpt {
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.1.0
+         * Fp 0.1.1
          */
         
         // Sample main function
