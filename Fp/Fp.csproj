@@ -15,7 +15,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageVersion>0.1.1</PackageVersion>
+        <PackageVersion>0.2.1</PackageVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NoWarn>NU5105</NoWarn>
@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="NOTICE.Fp.txt">
+        <None Include="NOTICE.Fp.txt" Pack="true" PackagePath="lib/netstandard2.0/">
             <Link>%(FileName)%(Extension)</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

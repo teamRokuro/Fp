@@ -63,7 +63,8 @@ namespace Fp.Images.Png {
         /// <param name="bytes">The bytes of the PNG data to be read.</param>
         /// <param name="chunkVisitor">Optional: A visitor which is called whenever a chunk is read by the library.</param>
         /// <returns>The <see cref="Png"/> data from the bytes.</returns>
-        public static Png Open(byte[] bytes, IChunkVisitor chunkVisitor = null) => PngOpener.Open(new MemoryStream(bytes), chunkVisitor);
+        public static Png Open(byte[] bytes, IChunkVisitor chunkVisitor = null) =>
+            PngOpener.Open(new MemoryStream(bytes), chunkVisitor);
 
         /// <summary>
         /// Read the PNG from the file path.

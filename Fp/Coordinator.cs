@@ -136,7 +136,8 @@ Options";
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
         public static void CliRunFilesystem(string exeName, string[] args, Action<string> logger,
-            FileSystemSource fileSystem, params Func<(string path, string name, Processor processor)>[] processorFactories) {
+            FileSystemSource fileSystem,
+            params Func<Processor>[] processorFactories) {
             if (!CliGetConfiguration(exeName, args, logger, false, out var conf)) return;
             switch (conf.Parallel) {
                 case 0:
@@ -159,7 +160,8 @@ Options";
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
         public static async Task CliRunFilesystemAsync(string exeName, string[] args, Action<string> logger,
-            FileSystemSource fileSystem, params Func<(string path, string name, Processor processor)>[] processorFactories) {
+            FileSystemSource fileSystem,
+            params Func<Processor>[] processorFactories) {
             if (!CliGetConfiguration(exeName, args, logger, true, out var conf)) return;
             switch (conf.Parallel) {
                 case 0:
@@ -183,7 +185,8 @@ Options";
         /// <returns>Task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
         public static async Task OperateAsync(ProcessorConfiguration configuration,
-            FileSystemSource fileSystem, params Func<(string path, string name, Processor processor)>[] processorFactories) {
+            FileSystemSource fileSystem,
+            params Func<Processor>[] processorFactories) {
             if (processorFactories.Length == 0)
                 throw new ArgumentException(
                     "Cannot start operation with 0 provided processors");
@@ -195,7 +198,7 @@ Options";
             var processors = new Processor[parallelCount, baseCount];
             for (var iParallel = 0; iParallel < parallelCount; iParallel++)
             for (var iBase = 0; iBase < baseCount; iBase++)
-                processors[iParallel, iBase] = processorFactories[iBase].Invoke().processor;
+                processors[iParallel, iBase] = processorFactories[iBase].Invoke();
 
             var dQueue = new Queue<Tuple<string, string>>();
             var fQueue = new Queue<Tuple<string, string>>();
@@ -244,7 +247,7 @@ Options";
         /// <returns>Task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
         public static void Operate(ProcessorConfiguration configuration, FileSystemSource fileSystem,
-            params Func<(string path, string name, Processor processor)>[] processorFactories) {
+            params Func<Processor>[] processorFactories) {
             if (processorFactories.Length == 0)
                 throw new ArgumentException(
                     "Cannot start operation with 0 provided processors");
@@ -254,7 +257,7 @@ Options";
             var baseCount = processorFactories.Length;
             var processors = new Processor[baseCount];
             for (var iBase = 0; iBase < baseCount; iBase++)
-                processors[iBase] = processorFactories[iBase].Invoke().processor;
+                processors[iBase] = processorFactories[iBase].Invoke();
             var dQueue = new Queue<Tuple<string, string>>();
             var fQueue = new Queue<Tuple<string, string>>();
             foreach (var (isFile, dir, item) in configuration.Inputs)
@@ -264,7 +267,7 @@ Options";
                     var (inputRoot, file) = fQueue.Dequeue();
                     for (var iBase = 0; iBase < baseCount; iBase++) {
                         OperateFile(processors[iBase], file, inputRoot, configuration, fileSystem, 0);
-                        if(processors[iBase].Lock)
+                        if (processors[iBase].Lock)
                             break;
                     }
                 }

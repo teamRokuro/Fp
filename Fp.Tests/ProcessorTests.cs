@@ -38,23 +38,29 @@ namespace Fp.Tests {
         }
 
         [Test]
-        public void TestDecode() {
-            new DecodeTestProcessor().Process(null);
+        public void TestStrings() {
+            new StringTestProcessor().Process(null);
         }
 
-        private class DecodeTestProcessor : Processor {
+        private class StringTestProcessor : Processor {
             protected override void ProcessImpl(IReadOnlyList<string> args) {
+                var ms = new MemoryStream();
+                
                 // Check basic UTF-8
                 const string pontoonString = "pontoon";
-                var pontoonArr = Encoding.UTF8.GetBytes(pontoonString);
+                WriteUtf8String(pontoonString, true, ms);
+                var pontoonArr = ms.ToArray();
+                ms.SetLength(0);
                 var pontoonRes = ReadUtf8String(pontoonArr);
                 Assert.AreEqual(pontoonString, pontoonRes);
 
-                // Check basic UTF-16 with null
+                // Check basic UTF-8 with null
                 const string floaterinoString = "floaterino";
                 const string floaterinoString2 = "floaterino\0planerino";
-                var floaterinoArr = Encoding.Unicode.GetBytes(floaterinoString2);
-                var floaterinoRes = ReadUtf16String(floaterinoArr);
+                WriteUtf8String(floaterinoString2, true, ms);
+                var floaterinoArr = ms.ToArray();
+                ms.SetLength(0);
+                var floaterinoRes = ReadUtf8String(floaterinoArr);
                 Assert.AreEqual(floaterinoString, floaterinoRes);
 
                 // Check basic UTF-16
@@ -69,6 +75,30 @@ namespace Fp.Tests {
                 var hydraArr = Encoding.Unicode.GetBytes(hydraString2);
                 var hydraRes = ReadUtf16String(hydraArr);
                 Assert.AreEqual(hydraString, hydraRes);
+
+                // Check UTF-16LE + bom
+                const string hailHydraString2 = "hail hydra";
+                WriteUtf16String(hailHydraString2, true, false, true, ms);
+                var hailHydra2Arr = ms.ToArray();
+                ms.SetLength(0);
+                var hailHydra2Res = ReadUtf16String(hailHydra2Arr);
+                Assert.AreEqual(hailHydraString2, hailHydra2Res);
+
+                // Check UTF-16BE + bom
+                const string hailHydraString3 = "hail hydra";
+                WriteUtf16String(hailHydraString3, true, true, true, ms);
+                var hailHydra3Arr = ms.ToArray();
+                ms.SetLength(0);
+                var hailHydra3Res = ReadUtf16String(hailHydra3Arr);
+                Assert.AreEqual(hailHydraString3, hailHydra3Res);
+                
+                // Check UTF-16LE + bom from stream
+                const string hailHydraString4 = "hail hydra";
+                WriteUtf16String(hailHydraString4, true, false, true, ms);
+                ms.Position = 0;
+                var hailHydra4Res = ReadUtf16String(ms);
+                Assert.AreEqual(hailHydraString4, hailHydra4Res);
+                Assert.AreEqual(hailHydraString4, hailHydra4Res);
             }
         }
 

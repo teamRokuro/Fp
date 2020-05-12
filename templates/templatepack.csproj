@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <PackageType>Template</PackageType>
-        <PackageVersion>0.1.1</PackageVersion>
+        <PackageVersion>0.2.1</PackageVersion>
         <PackageId>Fp.Templates</PackageId>
         <Title>Fp Templates</Title>
         <Authors>riina</Authors>
@@ -12,7 +12,7 @@
         <IncludeContentInPack>true</IncludeContentInPack>
         <IncludeBuildOutput>false</IncludeBuildOutput>
         <ContentTargetFolders>content</ContentTargetFolders>
-        <Copyright>Copyright ©2019 teamRokuro</Copyright>
+        <Copyright>Copyright ©2020 teamRokuro</Copyright>
         <PackageProjectUrl>https://github.com/teamRokuro/Fp</PackageProjectUrl>
         <RepositoryUrl>https://github.com/teamRokuro/Fp</RepositoryUrl>
         <Company>teamRokuro</Company>

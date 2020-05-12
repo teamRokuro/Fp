@@ -23,10 +23,14 @@ namespace Fp {
         public override long Length => _length;
 
         /// <inheritdoc />
-        public override long Position { get => _position; set => _position = (int)value; }
+        public override long Position {
+            get => _position;
+            set => _position = (int) value;
+        }
 
         /// <inheritdoc />
-        public override void Flush() { }
+        public override void Flush() {
+        }
 
         /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count) {
@@ -40,15 +44,16 @@ namespace Fp {
         public override long Seek(long offset, SeekOrigin origin) {
             switch (origin) {
                 case SeekOrigin.Begin:
-                    _position = (int)offset;
+                    _position = (int) offset;
                     break;
                 case SeekOrigin.Current:
-                    _position += (int)offset;
+                    _position += (int) offset;
                     break;
                 case SeekOrigin.End:
-                    _position = _length + (int)offset;
+                    _position = _length + (int) offset;
                     break;
             }
+
             return _position;
         }
 
@@ -64,9 +69,10 @@ namespace Fp {
         /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count) {
             if (Math.Min(count, Math.Min(_length - _position, buffer.Length - offset)) < count)
-                throw new IndexOutOfRangeException($"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +
+                throw new IndexOutOfRangeException(
+                    $"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +
                     $"populate Memory<byte> at position {_position} with length {_length}");
-            buffer.AsMemory(offset, count).CopyTo(_memory.Slice( _position, count));
+            buffer.AsMemory(offset, count).CopyTo(_memory.Slice(_position, count));
             _position += count;
         }
 

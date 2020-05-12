@@ -23,10 +23,14 @@ namespace Fp {
         public override long Length => _mLength;
 
         /// <inheritdoc />
-        public override long Position { get => _mPosition; set => _mPosition = (int)value; }
+        public override long Position {
+            get => _mPosition;
+            set => _mPosition = (int) value;
+        }
 
         /// <inheritdoc />
-        public override void Flush() { }
+        public override void Flush() {
+        }
 
         /// <inheritdoc />
         public override unsafe int Read(byte[] buffer, int offset, int count) {
@@ -40,15 +44,16 @@ namespace Fp {
         public override long Seek(long offset, SeekOrigin origin) {
             switch (origin) {
                 case SeekOrigin.Begin:
-                    _mPosition = (int)offset;
+                    _mPosition = (int) offset;
                     break;
                 case SeekOrigin.Current:
-                    _mPosition += (int)offset;
+                    _mPosition += (int) offset;
                     break;
                 case SeekOrigin.End:
-                    _mPosition = _mLength + (int)offset;
+                    _mPosition = _mLength + (int) offset;
                     break;
             }
+
             return _mPosition;
         }
 
@@ -64,7 +69,8 @@ namespace Fp {
         /// <inheritdoc />
         public override unsafe void Write(byte[] buffer, int offset, int count) {
             if (Math.Min(count, Math.Min(_mLength - _mPosition, buffer.Length - offset)) < count)
-                throw new IndexOutOfRangeException($"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +
+                throw new IndexOutOfRangeException(
+                    $"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +
                     $"populate Memory<byte> at position {_mPosition} with length {_mLength}");
             buffer.AsSpan(offset, count).CopyTo(new Span<byte>((_mPtr + _mPosition).ToPointer(), count));
             _mPosition += count;

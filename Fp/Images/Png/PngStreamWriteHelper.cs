@@ -46,7 +46,7 @@ namespace Fp.Images.Png {
         }
 
         public void WriteCrc() {
-            var result = (int) Crc32.Calculate(_written.GetBuffer().AsSpan(0, (int)_written.Length));
+            var result = (int) Crc32.Calculate(_written.GetBuffer().AsSpan(0, (int) _written.Length));
             StreamHelper.WriteBigEndianInt32(_inner, result);
         }
     }

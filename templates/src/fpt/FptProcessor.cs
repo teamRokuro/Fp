@@ -2,20 +2,24 @@ using System.Collections.Generic;
 using Fp;
 
 namespace Fpt {
+    [ProcessorInfo("Fpt", "yourDescription", "yourExtension1")]
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.1.1
+         * Fp 0.2.1
          */
-        
-        // Sample main function
-        //public static async System.Threading.Tasks.Task Main(string[] args) => await Coordinator.CliRunFilesystemAsync(System.Environment.CommandLine, args, System.Console.WriteLine, FileSystemSource.Default, CreateDefault);
 
-        public static (string path, string name, Processor processor) CreateDefault() => ("", "", new FptProcessor());
+//-:cnd:noEmit
+#if FptSolo
+        // Main function
+        public static async System.Threading.Tasks.Task Main(string[] args) =>
+            await Coordinator.CliRunFilesystemAsync(System.Environment.CommandLine, args, System.Console.WriteLine,
+                FileSystemSource.Default, () => new FptProcessor());
+#endif
+//+:cnd:noEmit
 
         protected override void ProcessImpl(IReadOnlyList<string> args) {
             // Implement your logic here
-            
         }
 
         // Alternate segmented processing

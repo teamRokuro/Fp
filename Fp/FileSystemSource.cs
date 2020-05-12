@@ -157,15 +157,15 @@ namespace Fp {
 
             public override bool FileExists(string path)
                 => _source.FileExists(path) || _outputEntries.Any(x =>
-                       string.Equals(x.Item1, path, StringComparison.InvariantCultureIgnoreCase));
+                    string.Equals(x.Item1, path, StringComparison.InvariantCultureIgnoreCase));
 
             public override bool DirectoryExists(string path)
                 => _source.DirectoryExists(path) || _dirs.Any(x =>
-                       string.Equals(x, path, StringComparison.InvariantCultureIgnoreCase));
+                    string.Equals(x, path, StringComparison.InvariantCultureIgnoreCase));
 
             public IEnumerator<(string path, byte[] buffer, int offset, int length)> GetEnumerator() {
                 foreach (var (path, stream) in _outputEntries)
-                    yield return (path, stream.GetBuffer(), 0, (int)stream.Length);
+                    yield return (path, stream.GetBuffer(), 0, (int) stream.Length);
             }
 
             IEnumerator IEnumerable.GetEnumerator() {

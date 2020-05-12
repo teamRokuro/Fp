@@ -9,6 +9,7 @@ namespace Fp.Images.Png {
         /// Raw data
         /// </summary>
         public readonly byte[] Data;
+
         private readonly int _bytesPerPixel;
         private readonly int _width;
         private readonly Palette _palette;

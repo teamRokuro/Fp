@@ -194,8 +194,10 @@ namespace Fp {
         /// <param name="height">Height of image</param>
         /// <param name="compressionLevel">Deflate compression level</param>
         /// <param name="outputStream">Stream to write to</param>
-        public static void WritePngRgba(Span<uint> data, int width, int height, CompressionLevel compressionLevel,
-            Stream outputStream) {
+        public void WritePngRgba(Span<uint> data, int width, int height,
+            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream outputStream = null) {
+            outputStream ??= OutputStream;
+
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
             var stream = new PngStreamWriteHelper(outputStream);

@@ -17,7 +17,8 @@ namespace Fp {
         /// <param name="preload">Whether to read all streams to memory</param>
         /// <param name="logger">Log writer</param>
         /// <param name="args">Arguments</param>
-        public ProcessorConfiguration(IReadOnlyList<Tuple<bool, string, string>> inputs, string outputRootDirectory, int parallel, bool preload,
+        public ProcessorConfiguration(IReadOnlyList<Tuple<bool, string, string>> inputs, string outputRootDirectory,
+            int parallel, bool preload,
             Action<string> logger, IReadOnlyList<string> args) {
             Inputs = inputs ?? throw new ArgumentNullException(nameof(inputs));
             OutputRootDirectory = outputRootDirectory ?? throw new ArgumentException(nameof(outputRootDirectory));

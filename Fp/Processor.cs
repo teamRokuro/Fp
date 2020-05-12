@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -18,6 +19,9 @@ namespace Fp {
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public partial class Processor : IDisposable {
         #region Properties and fields
+
+        private const int StringDefaultCapacity = 4 * 1024;
+        private const int StringExcessiveCapacity = 128 * 1024;
 
         /// <summary>
         /// True if current platform allows backslashes as separators (modifies path creation / operation behaviour)
@@ -116,6 +120,33 @@ namespace Fp {
 
         private bool _overrideProcess = true;
         private bool _overrideProcessSegmented = true;
+
+        private MemoryStream TempMs => _tempMs ??= new MemoryStream();
+        private MemoryStream _tempMs;
+        private readonly byte[] _tempBuffer = new byte[sizeof(long)];
+
+        private Encoder Utf8Encoder => _utf8Encoder ??= Encoding.UTF8.GetEncoder();
+        private Encoder _utf8Encoder;
+        private Encoder[] Utf16Encoders => _utf16Encoders ??= new Encoder[GUtf16Encodings.Length];
+        private Encoder[] _utf16Encoders;
+
+        private Encoder GetUtf16Encoder(bool bigEndian, bool bom) {
+            var i = (bigEndian ? 1 : 0) + (bom ? 2 : 0);
+            return Utf16Encoders[i] ??= GUtf16Encodings[i].GetEncoder();
+        }
+
+        private static Encoding GetUtf16Encoding(bool bigEndian, bool bom) {
+            return GUtf16Encodings[(bigEndian ? 1 : 0) + (bom ? 2 : 0)];
+        }
+
+        private static Encoding[] GUtf16Encodings => _gUtf16Encodings ??= new Encoding[] {
+            new UnicodeEncoding(false, false),
+            new UnicodeEncoding(true, false),
+            new UnicodeEncoding(false, true),
+            new UnicodeEncoding(true, true)
+        };
+
+        private static Encoding[] _gUtf16Encodings;
 
         #endregion
 
@@ -295,8 +326,8 @@ namespace Fp {
             return tot;
         }
 
-        private static int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient) {
-            var buf = ArrayPool<byte>.Shared.Rent(4096);
+        private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient) {
+            var buf = span.Length < sizeof(long) ? _tempBuffer : ArrayPool<byte>.Shared.Rent(4096);
             var bufSpan = buf.AsSpan();
             var bufLen = buf.Length;
             try {
@@ -306,15 +337,16 @@ namespace Fp {
                     bufSpan.Slice(0, read).CopyTo(span.Slice(tot));
                     left -= read;
                     tot += read;
-                } while (left > 0);
+                } while (left > 0 && read == 0);
 
-                if (left > 0 && read == 0 && !lenient)
+                if (left > 0 && !lenient)
                     throw new ProcessorException(
                         $"Failed to read required number of bytes! 0x{read:X} read, 0x{left:X} left, 0x{stream.Position:X} end position");
                 return tot;
             }
             finally {
-                ArrayPool<byte>.Shared.Return(buf);
+                if (buf != _tempBuffer)
+                    ArrayPool<byte>.Shared.Return(buf);
             }
         }
 
@@ -328,11 +360,11 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false) {
+        public int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false) {
             if (forceNew || !(stream is MemoryStream ms) || !ms.TryGetBuffer(out var buf))
                 return ReadBaseSpan(stream, span, lenient);
             try {
-                return (span = buf.AsSpan((int)ms.Position, span.Length)).Length;
+                return (span = buf.AsSpan((int) ms.Position, span.Length)).Length;
             }
             catch (ArgumentOutOfRangeException exception) {
                 throw new ProcessorException("Failed to convert span from memory stream", exception);
@@ -350,11 +382,11 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, int length, out Span<byte> span, bool lenient = true,
+        public int Read(Stream stream, int length, out Span<byte> span, bool lenient = true,
             bool forceNew = false) {
             if (!forceNew && stream is MemoryStream ms && ms.TryGetBuffer(out var buf)) {
                 try {
-                    return (span = buf.AsSpan((int)stream.Position, length)).Length;
+                    return (span = buf.AsSpan((int) stream.Position, length)).Length;
                 }
                 catch (ArgumentOutOfRangeException exception) {
                     throw new ProcessorException("Failed to convert span from memory stream", exception);
@@ -374,11 +406,11 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, Span<byte> span, bool lenient = true) {
+        public int Read(Stream stream, Span<byte> span, bool lenient = true) {
             if (!(stream is MemoryStream ms) || !ms.TryGetBuffer(out var buf))
                 return ReadBaseSpan(stream, span, lenient);
             try {
-                buf.AsSpan((int)ms.Position, span.Length).CopyTo(span);
+                buf.AsSpan((int) ms.Position, span.Length).CopyTo(span);
                 return span.Length;
             }
             catch (ArgumentOutOfRangeException exception) {
@@ -432,7 +464,7 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, long offset, Span<byte> span, bool lenient = true) {
+        public int Read(Stream stream, long offset, Span<byte> span, bool lenient = true) {
             var position = stream.Position;
             stream.Position = offset;
             var count = Read(stream, span, lenient);
@@ -468,7 +500,7 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, long offset, ref Span<byte> span, bool lenient = true,
+        public int Read(Stream stream, long offset, ref Span<byte> span, bool lenient = true,
             bool forceNew = false) {
             var position = stream.Position;
             stream.Position = offset;
@@ -507,7 +539,7 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public static int Read(Stream stream, long offset, int length, out Span<byte> span, bool lenient = true,
+        public int Read(Stream stream, long offset, int length, out Span<byte> span, bool lenient = true,
             bool forceNew = false) {
             var position = stream.Position;
             stream.Position = offset;
@@ -670,6 +702,84 @@ namespace Fp {
         #region Decoding utilities
 
         /// <summary>
+        /// Read signed 8-bit value from stream
+        /// </summary>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Value</returns>
+        public sbyte ReadS8(Stream stream = null) {
+            stream ??= InputStream;
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
+                return (sbyte) buf.AsSpan((int) ms.Position)[0];
+
+            Read(stream, _tempBuffer, 0, 1, false);
+            return (sbyte) _tempBuffer[0];
+        }
+
+        /// <summary>
+        /// Read signed 8-bit value from stream at the specified offset
+        /// </summary>
+        /// <param name="offset">Offset to read from</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Value</returns>
+        public sbyte ReadS8(long offset, Stream stream = null) {
+            stream ??= InputStream;
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
+                return (sbyte) buf.AsSpan((int) offset)[0];
+
+            Read(stream, offset, _tempBuffer, 0, 1, false);
+            return (sbyte) _tempBuffer[0];
+        }
+
+        /// <summary>
+        /// Read signed 8-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="offset">Offset to read from</param>
+        /// <param name="span">Span to read from</param>
+        /// <returns>Value</returns>
+        public sbyte GetS8(Span<byte> span, int offset = 0) {
+            return (sbyte) span[offset];
+        }
+
+        /// <summary>
+        /// Read unsigned 8-bit value from stream
+        /// </summary>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Value</returns>
+        public byte ReadU8(Stream stream = null) {
+            stream ??= InputStream;
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
+                return buf.AsSpan((int) ms.Position)[0];
+
+            Read(stream, _tempBuffer, 0, 1, false);
+            return _tempBuffer[0];
+        }
+
+        /// <summary>
+        /// Read unsigned 8-bit value from stream at the specified offset
+        /// </summary>
+        /// <param name="offset">Offset to read from</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Value</returns>
+        public byte ReadU8(long offset, Stream stream = null) {
+            stream ??= InputStream;
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
+                return buf.AsSpan((int) offset)[0];
+
+            Read(stream, offset, _tempBuffer, 0, 1, false);
+            return _tempBuffer[0];
+        }
+
+        /// <summary>
+        /// Read unsigned 8-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="offset">Offset to read from</param>
+        /// <param name="span">Span to read from</param>
+        /// <returns>Value</returns>
+        public byte GetU8(Span<byte> span, int offset = 0) {
+            return span[offset];
+        }
+
+        /// <summary>
         /// Read signed 16-bit value from stream
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
@@ -678,12 +788,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 2, out var span2, false);
-                return ReadS16(span2);
+                return GetS16(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, span, false);
-            return ReadS16NoCopy(span);
+            return GetS16NoCopy(span);
         }
 
         /// <summary>
@@ -696,12 +806,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 2, out var span2, false);
-                return ReadS16(span2);
+                return GetS16(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, offset, span, false);
-            return ReadS16NoCopy(span);
+            return GetS16NoCopy(span);
         }
 
         /// <summary>
@@ -710,7 +820,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public short ReadS16(Span<byte> span, int offset = 0) {
+        public short GetS16(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, short>(span.Slice(offset, 2))[0];
             Span<byte> span2 = stackalloc byte[2];
@@ -725,21 +835,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public short ReadS16NoCopy(Span<byte> span, int offset = 0) {
+        public short GetS16NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 2);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, short>(sub)[0];
         }
-
-        /// <summary>
-        /// Read signed 16-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public short ReadS16(byte[] array, int offset = 0)
-            => ReadS16(array.AsSpan(), offset);
 
         /// <summary>
         /// Read unsigned 16-bit value from stream
@@ -750,12 +851,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 2, out var span2, false);
-                return ReadU16(span2);
+                return GetU16(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, span, false);
-            return ReadU16NoCopy(span);
+            return GetU16NoCopy(span);
         }
 
         /// <summary>
@@ -768,12 +869,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 2, out var span2, false);
-                return ReadU16(span2);
+                return GetU16(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, offset, span, false);
-            return ReadU16NoCopy(span);
+            return GetU16NoCopy(span);
         }
 
         /// <summary>
@@ -782,7 +883,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ushort ReadU16(Span<byte> span, int offset = 0) {
+        public ushort GetU16(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0];
             Span<byte> span2 = stackalloc byte[2];
@@ -797,21 +898,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ushort ReadU16NoCopy(Span<byte> span, int offset = 0) {
+        public ushort GetU16NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 2);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, ushort>(sub)[0];
         }
-
-        /// <summary>
-        /// Read unsigned 16-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public ushort ReadU16(byte[] array, int offset = 0)
-            => ReadU16(array.AsSpan(), offset);
 
         /// <summary>
         /// Read signed 32-bit value from stream
@@ -822,12 +914,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 4, out var span2, false);
-                return ReadS32(span2);
+                return GetS32(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, span, false);
-            return ReadS32NoCopy(span);
+            return GetS32NoCopy(span);
         }
 
         /// <summary>
@@ -840,12 +932,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 4, out var span2, false);
-                return ReadS32(span2);
+                return GetS32(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, offset, span, false);
-            return ReadS32NoCopy(span);
+            return GetS32NoCopy(span);
         }
 
         /// <summary>
@@ -854,7 +946,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public int ReadS32(Span<byte> span, int offset = 0) {
+        public int GetS32(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, int>(span.Slice(offset, 4))[0];
             Span<byte> span2 = stackalloc byte[4];
@@ -869,21 +961,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public int ReadS32NoCopy(Span<byte> span, int offset = 0) {
+        public int GetS32NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 4);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, int>(sub)[0];
         }
-
-        /// <summary>
-        /// Read signed 32-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public int ReadS32(byte[] array, int offset = 0)
-            => ReadS32(array.AsSpan(), offset);
 
         /// <summary>
         /// Read unsigned 32-bit value from stream
@@ -894,12 +977,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 4, out var span2, false);
-                return ReadU32(span2);
+                return GetU32(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, span, false);
-            return ReadU32NoCopy(span);
+            return GetU32NoCopy(span);
         }
 
         /// <summary>
@@ -912,12 +995,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 4, out var span2, false);
-                return ReadU32(span2);
+                return GetU32(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, offset, span, false);
-            return ReadU32NoCopy(span);
+            return GetU32NoCopy(span);
         }
 
         /// <summary>
@@ -926,7 +1009,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public uint ReadU32(Span<byte> span, int offset = 0) {
+        public uint GetU32(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, uint>(span.Slice(offset, 4))[0];
             Span<byte> span2 = stackalloc byte[4];
@@ -941,21 +1024,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public uint ReadU32NoCopy(Span<byte> span, int offset = 0) {
+        public uint GetU32NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 4);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, uint>(sub)[0];
         }
-
-        /// <summary>
-        /// Read unsigned 32-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public uint ReadU32(byte[] array, int offset = 0)
-            => (uint)ReadS32(array.AsSpan(), offset);
 
         /// <summary>
         /// Read signed 64-bit value from stream
@@ -966,12 +1040,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 8, out var span2, false);
-                return ReadS64(span2);
+                return GetS64(span2);
             }
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
-            return ReadS64NoCopy(span);
+            return GetS64NoCopy(span);
         }
 
         /// <summary>
@@ -984,12 +1058,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 8, out var span2, false);
-                return ReadS64(span2);
+                return GetS64(span2);
             }
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, offset, span, false);
-            return ReadS64NoCopy(span);
+            return GetS64NoCopy(span);
         }
 
         /// <summary>
@@ -998,7 +1072,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public long ReadS64(Span<byte> span, int offset = 0) {
+        public long GetS64(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, long>(span.Slice(offset, 8))[0];
             Span<byte> span2 = stackalloc byte[8];
@@ -1013,21 +1087,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public long ReadS64NoCopy(Span<byte> span, int offset = 0) {
+        public long GetS64NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 8);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, long>(sub)[0];
         }
-
-        /// <summary>
-        /// Read signed 64-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public long ReadS64(byte[] array, int offset = 0)
-            => ReadS64(array.AsSpan(), offset);
 
         /// <summary>
         /// Read unsigned 64-bit value from stream
@@ -1038,12 +1103,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 8, out var span2, false);
-                return ReadU64(span2);
+                return GetU64(span2);
             }
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
-            return ReadU64NoCopy(span);
+            return GetU64NoCopy(span);
         }
 
         /// <summary>
@@ -1056,12 +1121,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 8, out var span2, false);
-                return ReadU64(span2);
+                return GetU64(span2);
             }
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, offset, span, false);
-            return ReadU64NoCopy(span);
+            return GetU64NoCopy(span);
         }
 
         /// <summary>
@@ -1070,7 +1135,7 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ulong ReadU64(Span<byte> span, int offset = 0) {
+        public ulong GetU64(Span<byte> span, int offset = 0) {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, ulong>(span.Slice(offset, 8))[0];
             Span<byte> span2 = stackalloc byte[8];
@@ -1085,21 +1150,12 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ulong ReadU64NoCopy(Span<byte> span, int offset = 0) {
+        public ulong GetU64NoCopy(Span<byte> span, int offset = 0) {
             var sub = span.Slice(offset, 8);
             if (_swap)
                 sub.Reverse();
             return MemoryMarshal.Cast<byte, ulong>(sub)[0];
         }
-
-        /// <summary>
-        /// Read unsigned 64-bit value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public ulong ReadU64(byte[] array, int offset = 0)
-            => ReadU64(array.AsSpan(), offset);
 
         /// <summary>
         /// Read 16-bit float value from stream
@@ -1110,12 +1166,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 2, out var span2, false);
-                return ReadSingle(span2);
+                return GetSingle(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, span, false);
-            return ReadSingle(span);
+            return GetSingle(span);
         }
 
         /// <summary>
@@ -1128,12 +1184,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 2, out var span2, false);
-                return ReadSingle(span2);
+                return GetSingle(span2);
             }
 
             Span<byte> span = stackalloc byte[2];
             Read(stream, offset, span, false);
-            return ReadSingle(span);
+            return GetSingle(span);
         }
 
         /// <summary>
@@ -1142,17 +1198,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public static float ReadHalf(Span<byte> span, int offset = 0)
+        public static float GetHalf(Span<byte> span, int offset = 0)
             => HalfHelper.HalfToSingle(MemoryMarshal.Read<ushort>(span.Slice(offset, 2)));
-
-        /// <summary>
-        /// Read 16-bit float value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public float ReadHalf(byte[] array, int offset = 0)
-            => ReadHalf(array.AsSpan(), offset);
 
         /// <summary>
         /// Read 32-bit float value from stream
@@ -1163,12 +1210,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, 4, out var span2, false);
-                return ReadSingle(span2);
+                return GetSingle(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, span, false);
-            return ReadSingle(span);
+            return GetSingle(span);
         }
 
         /// <summary>
@@ -1181,12 +1228,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 4, out var span2, false);
-                return ReadSingle(span2);
+                return GetSingle(span2);
             }
 
             Span<byte> span = stackalloc byte[4];
             Read(stream, offset, span, false);
-            return ReadSingle(span);
+            return GetSingle(span);
         }
 
         /// <summary>
@@ -1195,17 +1242,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public static float ReadSingle(Span<byte> span, int offset = 0)
+        public static float GetSingle(Span<byte> span, int offset = 0)
             => MemoryMarshal.Read<float>(span.Slice(offset, 4));
-
-        /// <summary>
-        /// Read 32-bit float value from array at the specified offset
-        /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public float ReadSingle(byte[] array, int offset = 0)
-            => ReadSingle(array.AsSpan(), offset);
 
         /// <summary>
         /// Read 64-bit float value from stream
@@ -1216,7 +1254,7 @@ namespace Fp {
             stream ??= InputStream;
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
-            return ReadDouble(span);
+            return GetDouble(span);
         }
 
         /// <summary>
@@ -1229,12 +1267,12 @@ namespace Fp {
             stream ??= InputStream;
             if (stream is MemoryStream) {
                 Read(stream, offset, 8, out var span2, false);
-                return ReadDouble(span2);
+                return GetDouble(span2);
             }
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, offset, span, false);
-            return ReadDouble(span);
+            return GetDouble(span);
         }
 
         /// <summary>
@@ -1243,17 +1281,125 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public static double ReadDouble(Span<byte> span, int offset = 0)
+        public static double GetDouble(Span<byte> span, int offset = 0)
             => MemoryMarshal.Read<float>(span.Slice(offset, 8));
 
         /// <summary>
-        /// Read 64-bit float value from array at the specified offset
+        /// Read array of signed 8-bit values from stream
         /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="array">Array to read from</param>
-        /// <returns>Value</returns>
-        public double ReadDouble(byte[] array, int offset = 0)
-            => ReadDouble(array.AsSpan(), offset);
+        /// <param name="span">Span to write to</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadS8Array(Span<sbyte> span, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, MemoryMarshal.Cast<sbyte, byte>(span), false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset in stream to read from</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadS8Array(Span<sbyte> span, long offset, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, offset, MemoryMarshal.Cast<sbyte, byte>(span), false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadS8Array(Span<byte> span, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, span, false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset in stream to read from</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadS8Array(Span<byte> span, long offset, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, offset, span, false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="count">Number of elements to read</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Newly allocated array</returns>
+        public sbyte[] ReadS8Array(int count, Stream stream = null) {
+            var arr = new sbyte[count];
+            var span = MemoryMarshal.Cast<sbyte, byte>(arr);
+            ReadS8Array(span, stream);
+            return arr;
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="offset">Offset in stream to read from</param>
+        /// <param name="count">Number of elements to read</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Newly allocated array</returns>
+        public sbyte[] ReadS8Array(long offset, int count, Stream stream = null) {
+            var arr = new sbyte[count];
+            var span = MemoryMarshal.Cast<sbyte, byte>(arr);
+            ReadS8Array(span, offset, stream);
+            return arr;
+        }
+
+        //
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadU8Array(Span<byte> span, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, span, false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset in stream to read from</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        public void ReadU8Array(Span<byte> span, long offset, Stream stream = null) {
+            stream ??= InputStream;
+            Read(stream, offset, span, false);
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="count">Number of elements to read</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Newly allocated array</returns>
+        public byte[] ReadU8Array(int count, Stream stream = null) {
+            var arr = new byte[count];
+            ReadU8Array(arr, stream);
+            return arr;
+        }
+
+        /// <summary>
+        /// Read array of signed 8-bit values from stream
+        /// </summary>
+        /// <param name="offset">Offset in stream to read from</param>
+        /// <param name="count">Number of elements to read</param>
+        /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Newly allocated array</returns>
+        public byte[] ReadU8Array(long offset, int count, Stream stream = null) {
+            var arr = new byte[count];
+            ReadU8Array(arr, offset, stream);
+            return arr;
+        }
 
         /// <summary>
         /// Read array of signed 16-bit values from stream
@@ -1284,8 +1430,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertS16Array(Span<short> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<short, byte>(span);
-            for (var i = 0; i < span2.Length; i += 2) span2.Slice(i, 2).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1315,10 +1460,7 @@ namespace Fp {
         /// Convert endianness of signed 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS16Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 2) span.Slice(i, 2).Reverse();
-        }
+        public void ConvertS16Array(Span<byte> span) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span));
 
         /// <summary>
         /// Read array of signed 16-bit values from stream
@@ -1376,8 +1518,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertU16Array(Span<ushort> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<ushort, byte>(span);
-            for (var i = 0; i < span2.Length; i += 2) span2.Slice(i, 2).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1407,10 +1548,7 @@ namespace Fp {
         /// Convert endianness of unsigned 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU16Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 2) span.Slice(i, 2).Reverse();
-        }
+        public void ConvertU16Array(Span<byte> span) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span));
 
         /// <summary>
         /// Read array of unsigned 16-bit values from stream
@@ -1468,8 +1606,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertS32Array(Span<int> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<int, byte>(span);
-            for (var i = 0; i < span2.Length; i += 4) span2.Slice(i, 4).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1499,10 +1636,7 @@ namespace Fp {
         /// Convert endianness of signed 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS32Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 4) span.Slice(i, 4).Reverse();
-        }
+        public void ConvertS32Array(Span<byte> span) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span));
 
         /// <summary>
         /// Read array of signed 32-bit values from stream
@@ -1560,8 +1694,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertU32Array(Span<uint> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<uint, byte>(span);
-            for (var i = 0; i < span2.Length; i += 4) span2.Slice(i, 4).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1591,10 +1724,7 @@ namespace Fp {
         /// Convert endianness of unsigned 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU32Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 4) span.Slice(i, 4).Reverse();
-        }
+        public void ConvertU32Array(Span<byte> span) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span));
 
         /// <summary>
         /// Read array of unsigned 32-bit values from stream
@@ -1652,8 +1782,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertS64Array(Span<long> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<long, byte>(span);
-            for (var i = 0; i < span2.Length; i += 8) span2.Slice(i, 8).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1683,10 +1812,7 @@ namespace Fp {
         /// Convert endianness of signed 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS64Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 8) span.Slice(i, 8).Reverse();
-        }
+        public void ConvertS64Array(Span<byte> span) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span));
 
         /// <summary>
         /// Read array of signed 64-bit values from stream
@@ -1744,8 +1870,7 @@ namespace Fp {
         /// <param name="span">Span to convert</param>
         public void ConvertU64Array(Span<ulong> span) {
             if (!_swap) return;
-            var span2 = MemoryMarshal.Cast<ulong, byte>(span);
-            for (var i = 0; i < span2.Length; i += 8) span2.Slice(i, 8).Reverse();
+            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1775,10 +1900,7 @@ namespace Fp {
         /// Convert endianness of unsigned 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU64Array(Span<byte> span) {
-            if (!_swap) return;
-            for (var i = 0; i < span.Length; i += 8) span.Slice(i, 8).Reverse();
-        }
+        public void ConvertU64Array(Span<byte> span) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span));
 
         /// <summary>
         /// Read array of unsigned 64-bit values from stream
@@ -1997,22 +2119,27 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public static string ReadUtf8String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
-            using var ms = new MemoryStream();
-            var c = 0;
-            do {
-                var v = stream.ReadByte();
-                if (v == -1 || v == 0)
-                    break;
-                ms.WriteByte((byte)v);
-                c++;
-            } while (c < maxLength);
+        public string ReadUtf8String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
+            try {
+                var c = 0;
+                do {
+                    var v = stream.ReadByte();
+                    if (v == -1 || v == 0)
+                        break;
+                    TempMs.WriteByte((byte) v);
+                    c++;
+                } while (c < maxLength);
 
-            var str = Encoding.UTF8.GetString(ms.GetBuffer(), 0, (int)ms.Length);
+                var str = ReadUtf8String(TempMs.GetBuffer().AsSpan(0, (int) TempMs.Length));
 
-            if (strict)
-                Skip(maxLength - c, stream);
-            return str;
+                if (strict)
+                    Skip(maxLength - c, stream);
+                return str;
+            }
+            finally {
+                if (TempMs.Capacity > StringExcessiveCapacity)
+                    TempMs.Capacity = StringDefaultCapacity;
+            }
         }
 
         /// <summary>
@@ -2023,7 +2150,7 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public static string ReadUtf8StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
+        public string ReadUtf8StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
             bool strict = false) {
             var position = stream.Position;
             stream.Position = offset;
@@ -2060,7 +2187,7 @@ namespace Fp {
         /// <returns>Value</returns>
         public static string ReadUtf8String(Span<byte> span, int maxLength = int.MaxValue) {
             var lim = Math.Min(span.Length, maxLength);
-            var end = span.Slice(0, lim).IndexOf((byte)0);
+            var end = span.Slice(0, lim).IndexOf((byte) 0);
             if (end == -1)
                 end = lim;
             return DecodeSpan(span.Slice(0, end), Encoding.UTF8);
@@ -2094,26 +2221,25 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public static string ReadUtf16String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
-            var sb = new StringBuilder();
-            var c = 0;
-            do {
-                var v = stream.ReadByte();
-                if (v == -1)
-                    break;
-                c++;
-                var w = stream.ReadByte();
-                if (w == -1)
-                    break;
-                c++;
-                if (v == 0 && w == 0)
-                    break;
-                sb.Append((char)(v + (w << 8)));
-            } while (c < maxLength);
+        public string ReadUtf16String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
+            try {
+                var c = 0;
+                do {
+                    var cc = Read(stream, _tempBuffer, 0, 2);
+                    c += cc;
+                    if (cc != 2 || _tempBuffer[0] == 0 && _tempBuffer[1] == 0)
+                        break;
+                    TempMs.Write(_tempBuffer, 0, 2);
+                } while (c < maxLength);
 
-            if (strict)
-                Skip(maxLength - c, stream);
-            return sb.ToString();
+                if (strict)
+                    Skip(maxLength - c, stream);
+                return ReadUtf16String(TempMs.GetBuffer().AsSpan(0, (int) TempMs.Length));
+            }
+            finally {
+                if (TempMs.Capacity > StringExcessiveCapacity)
+                    TempMs.Capacity = StringDefaultCapacity;
+            }
         }
 
         /// <summary>
@@ -2124,7 +2250,7 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public static string ReadUtf16StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
+        public string ReadUtf16StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
             bool strict = false) {
             var position = stream.Position;
             stream.Position = offset;
@@ -2167,7 +2293,23 @@ namespace Fp {
                 end = lim;
             else
                 end *= sizeof(char);
-            return DecodeSpan(span.Slice(0, end), Encoding.Unicode);
+            var big = span.Length >= 2 && span[0] == 0xFE && span[1] == 0xFF;
+            var bom = big || span.Length >= 2 && span[0] == 0xFF && span[1] == 0xFE;
+
+            if (!big && span.Length > 1) {
+                const int numBytes = 16 * sizeof(char);
+                const float threshold = 0.75f;
+                int countAscii = 0, countTotal = 0, sl = span.Length;
+                for (var i = 0; i < numBytes && i + 1 < sl; i += 2) {
+                    if (span[i] == 0 && span[i + 1] < 0x80)
+                        countAscii++;
+                    countTotal++;
+                }
+
+                big = (float) countAscii / countTotal >= threshold;
+            }
+
+            return DecodeSpan(span.Slice(0, end), GetUtf16Encoding(big, bom));
         }
 
         /// <summary>
@@ -2194,6 +2336,80 @@ namespace Fp {
         #endregion
 
         #region Encoding utilities
+
+        /// <summary>
+        /// Write signed 16-bit value to span at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        public void GetBytes(sbyte value, Span<byte> span, int offset = 0) {
+            span[offset] = (byte) value;
+        }
+
+        /// <summary>
+        /// Write unsigned 16-bit value to span at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        public void GetBytes(byte value, Span<byte> span, int offset = 0) {
+            span[offset] = value;
+        }
+
+        /// <summary>
+        /// Write signed 16-bit value to array at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="array">Array to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Resultant array (newly allocated if none provided)</returns>
+        public byte[] GetBytes(sbyte value, byte[] array = null, int offset = 0) {
+            array ??= new byte[1];
+            GetBytes(value, array.AsSpan(offset, 1));
+            return array;
+        }
+
+        /// <summary>
+        /// Write unsigned 16-bit value to array at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="array">Array to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Resultant array (newly allocated if none provided)</returns>
+        public byte[] GetBytes(byte value, byte[] array = null, int offset = 0) {
+            array ??= new byte[1];
+            GetBytes(value, array.AsSpan(offset, 1));
+            return array;
+        }
+
+        /// <summary>
+        /// Write signed 16-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteS8(sbyte value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(short));
+        }
+
+        /// <summary>
+        /// Write unsigned 16-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteU8(byte value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(ushort));
+        }
 
         /// <summary>
         /// Write signed 16-bit value to span at specified offset
@@ -2243,8 +2459,36 @@ namespace Fp {
         /// <returns>Resultant array (newly allocated if none provided)</returns>
         public byte[] GetBytes(ushort value, byte[] array = null, int offset = 0) {
             array ??= new byte[2];
-            GetBytes((short)value, array.AsSpan(offset, 2));
+            GetBytes(value, array.AsSpan(offset, 2));
             return array;
+        }
+
+        /// <summary>
+        /// Write signed 16-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteS16(short value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(short));
+        }
+
+        /// <summary>
+        /// Write unsigned 16-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteU16(ushort value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(ushort));
         }
 
         /// <summary>
@@ -2295,8 +2539,36 @@ namespace Fp {
         /// <returns>Resultant array (newly allocated if none provided)</returns>
         public byte[] GetBytes(uint value, byte[] array = null, int offset = 0) {
             array ??= new byte[4];
-            GetBytes((int)value, array.AsSpan(offset, 4));
+            GetBytes(value, array.AsSpan(offset, 4));
             return array;
+        }
+
+        /// <summary>
+        /// Write signed 32-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteS32(int value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(int));
+        }
+
+        /// <summary>
+        /// Write unsigned 32-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteU32(uint value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(uint));
         }
 
         /// <summary>
@@ -2347,8 +2619,108 @@ namespace Fp {
         /// <returns>Resultant array (newly allocated if none provided)</returns>
         public byte[] GetBytes(ulong value, byte[] array = null, int offset = 0) {
             array ??= new byte[8];
-            GetBytes((long)value, array.AsSpan(offset, 8));
+            GetBytes((long) value, array.AsSpan(offset, 8));
             return array;
+        }
+
+        /// <summary>
+        /// Write signed 64-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteS64(long value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(long));
+        }
+
+        /// <summary>
+        /// Write unsigned 64-bit value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteU64(ulong value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(ulong));
+        }
+
+        /// <summary>
+        /// Write 32-bit float value to span at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        public static void GetBytesHalf(ushort value, Span<byte> span, int offset = 0) =>
+            MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0] = value;
+
+        /// <summary>
+        /// Write 32-bit float value to span at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="span">Span to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        public static void GetBytesHalf(float value, Span<byte> span, int offset = 0) =>
+            MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0] = HalfHelper.SingleToHalf(value);
+
+        /// <summary>
+        /// Write 32-bit float value to array at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="array">Array to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Resultant array (newly allocated if none provided)</returns>
+        public byte[] GetBytesHalf(ushort value, byte[] array = null, int offset = 0) {
+            array ??= new byte[2];
+            GetBytesHalf(value, array.AsSpan(offset, 2));
+            return array;
+        }
+
+        /// <summary>
+        /// Write 32-bit float value to array at specified offset
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="array">Array to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Resultant array (newly allocated if none provided)</returns>
+        public byte[] GetBytesHalf(float value, byte[] array = null, int offset = 0) {
+            array ??= new byte[2];
+            GetBytesHalf(value, array.AsSpan(offset, 2));
+            return array;
+        }
+
+        /// <summary>
+        /// Write signed 32-bit float value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteHalf(ushort value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytesHalf(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(ushort));
+        }
+
+        /// <summary>
+        /// Write signed 32-bit float value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteHalf(float value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytesHalf(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(ushort));
         }
 
         /// <summary>
@@ -2374,6 +2746,20 @@ namespace Fp {
         }
 
         /// <summary>
+        /// Write signed 32-bit float value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteSingle(float value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(float));
+        }
+
+        /// <summary>
         /// Write 64-bit float value to span at specified offset
         /// </summary>
         /// <param name="value">Value to write</param>
@@ -2393,6 +2779,126 @@ namespace Fp {
             array ??= new byte[8];
             GetBytes(value, array.AsSpan(offset, 8));
             return array;
+        }
+
+        /// <summary>
+        /// Write signed 64-bit float value to stream
+        /// </summary>
+        /// <param name="value">Value to write</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public void WriteSingle(double value, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            GetBytes(value, _tempBuffer);
+            if (offset != null)
+                stream.Position = offset.Value;
+            stream.Write(_tempBuffer, 0, sizeof(float));
+        }
+
+        /// <summary>
+        /// Get length of UTF-8-encoded data
+        /// </summary>
+        /// <param name="value">String to test</param>
+        /// <param name="nullTerminate">If true, check length with null byte</param>
+        /// <returns>Predicted length</returns>
+        public unsafe int GetUtf8Length(string value, bool nullTerminate = true) {
+            fixed (char* c = value) {
+                return Utf8Encoder.GetByteCount(c, value.Length, true) + (nullTerminate ? 1 : 0);
+            }
+        }
+
+        /// <summary>
+        /// Write UTF-8 string to stream
+        /// </summary>
+        /// <param name="value">String to write</param>
+        /// <param name="nullTerminate">If true, null-terminate string</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public unsafe void WriteUtf8String(string value, bool nullTerminate = true, Stream stream = null,
+            int? offset = null) {
+            stream ??= OutputStream;
+            if (offset != null)
+                stream.Position = offset.Value;
+            Utf8Encoder.Reset();
+            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
+            try {
+                fixed (char* strPtr = value) {
+                    fixed (byte* tmpBufPtr = tmpBuf) {
+                        var vStringOfs = 0;
+                        var vStringLeft = value.Length;
+                        while (vStringLeft > 0) {
+                            Utf8Encoder.Convert(strPtr + vStringOfs, vStringLeft, tmpBufPtr, 4096, false,
+                                out var numIn, out var numOut, out _);
+                            vStringOfs += numIn;
+                            vStringLeft -= numIn;
+                            stream.Write(tmpBuf, 0, numOut);
+                        }
+                    }
+                }
+
+                if (!nullTerminate) return;
+                _tempBuffer[0] = 0;
+                stream.Write(_tempBuffer, 0, 1);
+            }
+            finally {
+                ArrayPool<byte>.Shared.Return(tmpBuf);
+            }
+        }
+
+        /// <summary>
+        /// Get length of UTF-16-encoded data
+        /// </summary>
+        /// <param name="value">String to test</param>
+        /// <param name="nullTerminate">If true, check length with null byte</param>
+        /// <param name="bom">If true, check length with byte order mark</param>
+        /// <returns>Predicted length</returns>
+        public unsafe int GetUtf16Length(string value, bool nullTerminate = true, bool bom = false) {
+            fixed (char* c = value) {
+                return GetUtf16Encoder(false, bom).GetByteCount(c, value.Length, true) +
+                       (nullTerminate ? 2 : 0);
+            }
+        }
+
+        /// <summary>
+        /// Write UTF-16 string to stream
+        /// </summary>
+        /// <param name="value">String to write</param>
+        /// <param name="nullTerminate">If true, null-terminate string</param>
+        /// <param name="bigEndian">If true, write UTF-16BE</param>
+        /// <param name="byteOrderMark">If true, write byte order mark</param>
+        /// <param name="stream">Stream to write to, uses current output file if null</param>
+        /// <param name="offset">Offset to write to, current position if null</param>
+        public unsafe void WriteUtf16String(string value, bool nullTerminate = true, bool bigEndian = false,
+            bool byteOrderMark = false, Stream stream = null, int? offset = null) {
+            stream ??= OutputStream;
+            if (offset != null)
+                stream.Position = offset.Value;
+            var encoder = GetUtf16Encoder(bigEndian, byteOrderMark);
+            encoder.Reset();
+            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
+            try {
+                fixed (char* strPtr = value) {
+                    fixed (byte* tmpBufPtr = tmpBuf) {
+                        var vStringOfs = 0;
+                        var vStringLeft = value.Length;
+                        while (vStringLeft > 0) {
+                            encoder.Convert(strPtr + vStringOfs, vStringLeft, tmpBufPtr, 4096, false,
+                                out var numIn, out var numOut, out _);
+                            vStringOfs += numIn;
+                            vStringLeft -= numIn;
+                            stream.Write(tmpBuf, 0, numOut);
+                        }
+                    }
+                }
+
+                if (!nullTerminate) return;
+                _tempBuffer[0] = 0;
+                _tempBuffer[1] = 0;
+                stream.Write(_tempBuffer, 0, 2);
+            }
+            finally {
+                ArrayPool<byte>.Shared.Return(tmpBuf);
+            }
         }
 
         #endregion
@@ -2439,7 +2945,7 @@ namespace Fp {
                     // Read to fill buffer
                     do
                         latestFilled += read = stream.Read(buffers[latest], latestFilled,
-                            (int)Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
+                            (int) Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
                     while (read != 0);
                     // Leave on failure to read (reached end)
                     if (latestFilled == 0)
@@ -2541,7 +3047,7 @@ namespace Fp {
                     // Read to fill buffer
                     do
                         latestFilled += read = stream.Read(buffers[latest], latestFilled,
-                            (int)Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
+                            (int) Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
                     while (read != 0);
                     // Leave on failure to read (reached end)
                     if (latestFilled == 0)
@@ -3271,7 +3777,7 @@ namespace Fp {
                 var left = length;
                 int read;
                 do {
-                    read = stream.Read(buffer, 0, (int)Math.Min(left, buffer.Length));
+                    read = stream.Read(buffer, 0, (int) Math.Min(left, buffer.Length));
                     outputStream.Write(buffer, 0, read);
                     left -= read;
                     outLen += read;
@@ -3335,8 +3841,7 @@ namespace Fp {
         /// <param name="paddingMode">Padding mode to use</param>
         /// <returns>Depadded length of message</returns>
         public static int GetDepaddedLength(Span<byte> span, PaddingMode paddingMode) =>
-            paddingMode switch
-            {
+            paddingMode switch {
                 PaddingMode.Zero => GetDepaddedLengthZero(span),
                 PaddingMode.Iso_Iec_7816_4 => GetDepaddedLengthIso_Iec_7816_4(span),
                 var p when
@@ -3404,17 +3909,17 @@ namespace Fp {
                         if (c > 0x60) {
                             if (c > 0x66)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte)((c + 9) << 4);
+                            res[i] = (byte) ((c + 9) << 4);
                         }
                         else if (c > 0x40) {
                             if (c > 0x46)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte)((c + 9) << 4);
+                            res[i] = (byte) ((c + 9) << 4);
                         }
                         else if (c > 0x2F) {
                             if (c > 0x39)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte)(c << 4);
+                            res[i] = (byte) (c << 4);
                         }
                         else
                             throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
@@ -3423,17 +3928,17 @@ namespace Fp {
                         if (c > 0x60) {
                             if (c > 0x66)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte)((c + 9) & 0xf);
+                            res[i] += (byte) ((c + 9) & 0xf);
                         }
                         else if (c > 0x40) {
                             if (c > 0x46)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte)((c + 9) & 0xf);
+                            res[i] += (byte) ((c + 9) & 0xf);
                         }
                         else if (c > 0x2F) {
                             if (c > 0x39)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte)(c & 0xf);
+                            res[i] += (byte) (c & 0xf);
                         }
                         else
                             throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
@@ -3442,14 +3947,14 @@ namespace Fp {
                     for (var i = 0; i < len; i++) {
                         c = *rBuf++;
                         if (c < 0x3A)
-                            res[i] = (byte)(c << 4);
+                            res[i] = (byte) (c << 4);
                         else
-                            res[i] = (byte)((c + 9) << 4);
+                            res[i] = (byte) ((c + 9) << 4);
                         c = *rBuf++;
                         if (c < 0x3A)
-                            res[i] += (byte)(c & 0xf);
+                            res[i] += (byte) (c & 0xf);
                         else
-                            res[i] += (byte)((c + 9) & 0xf);
+                            res[i] += (byte) ((c + 9) & 0xf);
                     }
 
                 return res;
@@ -3898,7 +4403,8 @@ namespace Fp {
             if (!FileSystem.FileExists(file))
                 return null;
             var stream = FileSystem.OpenRead(file);
-            if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _) || alreadyMs.Capacity != alreadyMs.Length)) {
+            if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _) ||
+                            alreadyMs.Capacity != alreadyMs.Length)) {
                 var ms = new MemoryStream(new byte[stream.Length]);
                 stream.CopyTo(ms);
                 stream.Dispose();

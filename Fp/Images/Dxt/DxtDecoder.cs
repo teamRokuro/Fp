@@ -265,7 +265,7 @@ namespace Fp.Images.Dxt {
                         alphaCode = (alphaCode2 >> alphaCodeIndex) & 0x07;
                     }
                     else if (alphaCodeIndex == 15) {
-                        alphaCode = (alphaCode2 >> 15) | (byte)((alphaCode1 << 1) & 0x06);
+                        alphaCode = (alphaCode2 >> 15) | (byte) ((alphaCode1 << 1) & 0x06);
                     }
                     else // alphaCodeIndex >= 18 && alphaCodeIndex <= 45
                     {
@@ -365,7 +365,7 @@ namespace Fp.Images.Dxt {
                         alphaCode = (alphaCode2 >> alphaCodeIndex) & 0x07;
                     }
                     else if (alphaCodeIndex == 15) {
-                        alphaCode = (alphaCode2 >> 15) | (byte)((alphaCode1 << 1) & 0x06);
+                        alphaCode = (alphaCode2 >> 15) | (byte) ((alphaCode1 << 1) & 0x06);
                     }
                     else // alphaCodeIndex >= 18 && alphaCodeIndex <= 45
                     {

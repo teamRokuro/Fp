@@ -71,15 +71,15 @@ namespace Fp.Images.Etc {
             0, 8, 16, 24, -32, -24, -16, -8
         };
 
-        private static readonly int[,] ModifierTable = {
-            {2, 8, -2, -8},
-            {5, 17, -5, -17},
-            {9, 29, -9, -29},
-            {13, 42, -13, -42},
-            {18, 60, -18, -60},
-            {24, 80, -24, -80},
-            {33, 106, -33, -106},
-            {47, 183, -47, -183}
+        private static readonly int[] ModifierTable = {
+            2, 8, -2, -8,
+            5, 17, -5, -17,
+            9, 29, -9, -29,
+            13, 42, -13, -42,
+            18, 60, -18, -60,
+            24, 80, -24, -80,
+            33, 106, -33, -106,
+            47, 183, -47, -183
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -142,7 +142,7 @@ namespace Fp.Images.Etc {
             byte* pixelBuffer) {
             var pixelIndex = (int) (((pixelIndexWord & (1 << i)) >> i)
                                     | ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)));
-            var modifier = ModifierTable[tableCodeword, pixelIndex];
+            var modifier = ModifierTable[4 * tableCodeword + pixelIndex];
             var r = Clamp(baseColorSubblock[0] + modifier);
             var g = Clamp(baseColorSubblock[1] + modifier);
             var b = Clamp(baseColorSubblock[2] + modifier);
