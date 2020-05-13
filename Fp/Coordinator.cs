@@ -26,7 +26,7 @@ namespace Fp {
         public static bool CliGetConfiguration(string exeName, IReadOnlyList<string> args, Action<string> logger,
             bool enableParallel, out ProcessorConfiguration configuration) {
             configuration = ProcessorConfiguration.Default;
-            var inputs = new List<Tuple<bool, string, string>>();
+            var inputs = new List<(bool, string, string)>();
             var exArgs = new List<string>();
             string? outputRootDirectory = null;
             var parallel = 0;
@@ -41,7 +41,7 @@ namespace Fp {
 
                 if (str.Length == 0) continue;
                 if (str[0] != '-') {
-                    inputs.Add(new Tuple<bool, string, string>(File.Exists(str),
+                    inputs.Add((File.Exists(str),
                         Path.GetDirectoryName(Path.GetFullPath(str)), str));
                     continue;
                 }
@@ -200,10 +200,10 @@ Options";
             for (var iBase = 0; iBase < baseCount; iBase++)
                 processors[iParallel, iBase] = processorFactories[iBase].Invoke();
 
-            var dQueue = new Queue<Tuple<string, string>>();
-            var fQueue = new Queue<Tuple<string, string>>();
+            var dQueue = new Queue<(string, string)>();
+            var fQueue = new Queue<(string, string)>();
             foreach (var (isFile, dir, item) in configuration.Inputs)
-                (isFile ? fQueue : dQueue).Enqueue(new Tuple<string, string>(dir, item));
+                (isFile ? fQueue : dQueue).Enqueue((dir, item));
             var tasks = new List<Task>();
             fileSystem.ParallelAccess = true;
             while (fQueue.Count != 0 || dQueue.Count != 0) {
@@ -229,9 +229,9 @@ Options";
                     var (inputRoot, curDir) = dQueue.Dequeue();
                     if (!Directory.Exists(curDir)) continue;
                     foreach (var file in fileSystem.EnumerateFiles(curDir))
-                        fQueue.Enqueue(new Tuple<string, string>(inputRoot, file));
+                        fQueue.Enqueue((inputRoot, file));
                     foreach (var folder in fileSystem.EnumerateDirectories(curDir))
-                        dQueue.Enqueue(new Tuple<string, string>(inputRoot, folder));
+                        dQueue.Enqueue((inputRoot, folder));
                 }
             }
 
@@ -258,10 +258,10 @@ Options";
             var processors = new Processor[baseCount];
             for (var iBase = 0; iBase < baseCount; iBase++)
                 processors[iBase] = processorFactories[iBase].Invoke();
-            var dQueue = new Queue<Tuple<string, string>>();
-            var fQueue = new Queue<Tuple<string, string>>();
+            var dQueue = new Queue<(string, string)>();
+            var fQueue = new Queue<(string, string)>();
             foreach (var (isFile, dir, item) in configuration.Inputs)
-                (isFile ? fQueue : dQueue).Enqueue(new Tuple<string, string>(dir, item));
+                (isFile ? fQueue : dQueue).Enqueue((dir, item));
             while (fQueue.Count != 0 || dQueue.Count != 0) {
                 if (fQueue.Count != 0) {
                     var (inputRoot, file) = fQueue.Dequeue();
@@ -275,9 +275,9 @@ Options";
                     var (inputRoot, curDir) = dQueue.Dequeue();
                     if (!Directory.Exists(curDir)) continue;
                     foreach (var file in fileSystem.EnumerateFiles(curDir))
-                        fQueue.Enqueue(new Tuple<string, string>(inputRoot, file));
+                        fQueue.Enqueue((inputRoot, file));
                     foreach (var folder in fileSystem.EnumerateDirectories(curDir))
-                        dQueue.Enqueue(new Tuple<string, string>(inputRoot, folder));
+                        dQueue.Enqueue((inputRoot, folder));
                 }
             }
         }
