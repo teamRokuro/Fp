@@ -2296,7 +2296,7 @@ namespace Fp {
             var big = span.Length >= 2 && span[0] == 0xFE && span[1] == 0xFF;
             var bom = big || span.Length >= 2 && span[0] == 0xFF && span[1] == 0xFE;
 
-            if (!big && span.Length > 1) {
+            if (!bom && span.Length > 1) {
                 const int numBytes = 16 * sizeof(char);
                 const float threshold = 0.75f;
                 int countAscii = 0, countTotal = 0, sl = span.Length;
