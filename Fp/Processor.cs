@@ -1934,18 +1934,18 @@ namespace Fp {
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void ReadHalfArray(Span<byte> source, Span<float> target) {
+        public static void ConvertHalfArrayToFloat(Span<byte> source, Span<float> target) {
             var span = MemoryMarshal.Cast<byte, ushort>(source);
             for (var i = 0; i < span.Length; i++)
                 target[i] = HalfHelper.HalfToSingle(span[i]);
         }
 
         /// <summary>
-        /// Convert array of half-precision floating-point values to single-precision
+        /// Convert array of single-precision floating-point values to half-precision
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void WriteHalfArray(Span<float> source, Span<byte> target) {
+        public static void ConvertFloatArrayToHalf(Span<float> source, Span<byte> target) {
             var span = MemoryMarshal.Cast<byte, ushort>(target);
             for (var i = 0; i < source.Length; i++)
                 span[i] = HalfHelper.SingleToHalf(source[i]);
@@ -1962,7 +1962,7 @@ namespace Fp {
             try {
                 var span2 = arr.AsSpan(0, span.Length * 2);
                 Read(stream, span2, false);
-                ReadHalfArray(span2, span);
+                ConvertHalfArrayToFloat(span2, span);
             }
             finally {
                 ArrayPool<byte>.Shared.Return(arr);
@@ -1981,7 +1981,7 @@ namespace Fp {
             try {
                 var span2 = arr.AsSpan(0, span.Length * 2);
                 Read(stream, offset, span2, false);
-                ReadHalfArray(span2, span);
+                ConvertHalfArrayToFloat(span2, span);
             }
             finally {
                 ArrayPool<byte>.Shared.Return(arr);
@@ -2787,12 +2787,12 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteSingle(double value, Stream stream = null, int? offset = null) {
+        public void WriteDouble(double value, Stream stream = null, int? offset = null) {
             stream ??= OutputStream;
             GetBytes(value, _tempBuffer);
             if (offset != null)
                 stream.Position = offset.Value;
-            stream.Write(_tempBuffer, 0, sizeof(float));
+            stream.Write(_tempBuffer, 0, sizeof(double));
         }
 
         /// <summary>
