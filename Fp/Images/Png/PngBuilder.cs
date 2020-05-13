@@ -13,11 +13,13 @@ namespace Fp.Images.Png {
         /// <summary>
         /// IDAT chunk bytes
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly byte[] ChunkIDAT = Encoding.ASCII.GetBytes("IDAT");
 
         /// <summary>
         /// IEND chunk bytes
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public static readonly byte[] ChunkIEND = Encoding.ASCII.GetBytes("IEND");
 
         private const byte Deflate32KbWindow = 120;
@@ -195,8 +197,8 @@ namespace Fp {
         /// <param name="compressionLevel">Deflate compression level</param>
         /// <param name="outputStream">Stream to write to</param>
         public void WritePngRgba(Span<uint> data, int width, int height,
-            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream outputStream = null) {
-            outputStream ??= OutputStream;
+            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null) {
+            outputStream ??= OutputStream ?? throw new InvalidOperationException();
 
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 

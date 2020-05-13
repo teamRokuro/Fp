@@ -28,12 +28,11 @@ namespace Fp {
         /// </summary>
         /// <param name="name">Processor name</param>
         /// <param name="description">Processor description</param>
-        /// <param name="factory">Processor factory</param>
         /// <param name="extensions">Processor extensions</param>
         public ProcessorInfoAttribute(string name, string description, params string[] extensions) {
             Name = name;
             Description = description;
-            Extensions = extensions?.Clone() as string[];
+            Extensions = extensions;
         }
     }
 }

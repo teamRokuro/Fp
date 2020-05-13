@@ -28,7 +28,7 @@ namespace Fp {
             configuration = ProcessorConfiguration.Default;
             var inputs = new List<Tuple<bool, string, string>>();
             var exArgs = new List<string>();
-            string outputRootDirectory = null;
+            string? outputRootDirectory = null;
             var parallel = 0;
             var preload = false;
             var argTime = false;
@@ -173,7 +173,7 @@ Options";
             }
         }
 
-        private static string GetArgValue(IReadOnlyList<string> args, int cPos) =>
+        private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>
             cPos + 1 >= args.Count ? null : args[cPos + 1];
 
         /// <summary>

@@ -18,6 +18,7 @@
         <PackageVersion>0.2.2</PackageVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Nullable>enable</Nullable>
         <NoWarn>NU5105</NoWarn>
     </PropertyGroup>
 

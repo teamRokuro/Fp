@@ -71,8 +71,7 @@ namespace Fp.Ciphers.BlowFish {
         /// <param name="cipherText">Ciphertext to decrypt</param>
         /// <exception cref="Exception">If key or IV are not set.</exception>
         public void DecryptCbc(Span<byte> cipherText) {
-            if (_disposed)
-                throw new InvalidOperationException();
+            EnsureNotDisposed();
             if (!_init)
                 throw new Exception("Key not set.");
             if (!_ivSet)
@@ -114,8 +113,7 @@ namespace Fp.Ciphers.BlowFish {
         /// <param name="cipherText">Ciphertext to decrypt</param>
         /// <exception cref="Exception">If key is not set.</exception>
         public void DecryptEcb(Span<byte> cipherText) {
-            if (_disposed)
-                throw new InvalidOperationException();
+            EnsureNotDisposed();
             if (!_init)
                 throw new Exception("Key not set.");
             DecryptEcb(_stateBuffer, cipherText);
@@ -143,8 +141,7 @@ namespace Fp.Ciphers.BlowFish {
         /// </summary>
         /// <returns>This object (for chaining)</returns>
         public Blowfish SetBlankIv() {
-            if (_disposed)
-                throw new InvalidOperationException();
+            EnsureNotDisposed();
             _stateBuffer.AsSpan(IvOff, IvLen).Fill(0);
             _ivSet = true;
             return this;
@@ -157,8 +154,7 @@ namespace Fp.Ciphers.BlowFish {
         /// <exception cref="Exception">If IV size is not 8</exception>
         /// <returns>This object (for chaining)</returns>
         public Blowfish SetIv(Span<byte> iv) {
-            if (_disposed)
-                throw new InvalidOperationException();
+            EnsureNotDisposed();
             if (iv.Length == 8) {
                 iv.CopyTo(_stateBuffer.AsSpan(IvOff));
                 _ivSet = true;
@@ -175,8 +171,7 @@ namespace Fp.Ciphers.BlowFish {
         /// <param name="cipherKey">Block cipher key (1-448 bits)</param>
         /// <returns>This object (for chaining)</returns>
         public unsafe Blowfish SetKey(Span<byte> cipherKey) {
-            if (_disposed)
-                throw new InvalidOperationException();
+            EnsureNotDisposed();
             if (cipherKey.Length > 56)
                 throw new Exception($"Key too long. Key is {cipherKey.Length} bytes long, 56 bytes maximum.");
             var keyLen = cipherKey.Length;
@@ -666,13 +661,15 @@ namespace Fp.Ciphers.BlowFish {
 
         #endregion
 
+        private void EnsureNotDisposed() {
+            if (_disposed) throw new ObjectDisposedException(nameof(Blowfish));
+        }
+
         /// <inheritdoc />
         public void Dispose() {
             if (_disposed) return;
             _disposed = true;
-            if (_stateBuffer == null) return;
             ArrayPool<byte>.Shared.Return(_stateBuffer);
-            _stateBuffer = null;
         }
 
         /// <summary/>

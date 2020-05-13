@@ -6,7 +6,7 @@ using Fp.Images.Png;
 
 namespace Fp.Images.Png {
     internal static class PngOpener {
-        public static Png Open(Stream stream, IChunkVisitor chunkVisitor = null) {
+        public static Png Open(Stream stream, IChunkVisitor? chunkVisitor = null) {
             if (stream == null) {
                 throw new ArgumentNullException(nameof(stream));
             }
@@ -28,7 +28,7 @@ namespace Fp.Images.Png {
 
             var hasEncounteredImageEnd = false;
 
-            Palette palette = null;
+            Palette? palette = null;
 
             using var output = new MemoryStream();
             using (var memoryStream = new MemoryStream()) {
