@@ -35,7 +35,10 @@ namespace Fp {
         /// </summary>
         public bool SupportBackSlash = false;
 
-        internal int WorkerId;
+        /// <summary>
+        /// ID of worker thread processor is using
+        /// </summary>
+        public int WorkerId;
 
         /// <summary>
         /// Log output target
@@ -2386,7 +2389,7 @@ namespace Fp {
         #region Encoding utilities
 
         /// <summary>
-        /// Write signed 16-bit value to span at specified offset
+        /// Write signed 8-bit value to span at specified offset
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
@@ -2396,7 +2399,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Write unsigned 16-bit value to span at specified offset
+        /// Write unsigned 8-bit value to span at specified offset
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
@@ -2406,7 +2409,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Write signed 16-bit value to array at specified offset
+        /// Write signed 8-bit value to array at specified offset
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="array">Array to write to</param>
@@ -2419,7 +2422,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Write unsigned 16-bit value to array at specified offset
+        /// Write unsigned 8-bit value to array at specified offset
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="array">Array to write to</param>
@@ -2432,7 +2435,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Write signed 16-bit value to stream
+        /// Write signed 8-bit value to stream
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
@@ -2453,7 +2456,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Write unsigned 16-bit value to stream
+        /// Write unsigned 8-bit value to stream
         /// </summary>
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
@@ -4179,7 +4182,7 @@ namespace Fp {
             => OutputAllSub(InputStream ?? throw new InvalidOperationException(), extension, filename == null
                 ? null
                 : BasicJoin(
-                    Path.GetFileName(InputFile) ??
+                    Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
         /// <summary>
@@ -4211,10 +4214,11 @@ namespace Fp {
         /// <remarks>Original position of <paramref name="stream"/> is restored on completion</remarks>
         public long Output(Stream stream, long offset, long length, Stream? outputStream = null, bool lenient = true,
             int bufferLength = 4096) {
+            outputStream ??= OutputStream ?? throw new InvalidOperationException();
             var origPos = stream.Position;
             try {
                 stream.Position = offset;
-                var outLen = Output(stream, length, outputStream ?? OutputStream, lenient, bufferLength);
+                var outLen = Output(stream, length, outputStream, lenient, bufferLength);
                 return outLen;
             }
             finally {
@@ -4556,7 +4560,7 @@ namespace Fp {
             => OutputAll(span, extension, filename == null
                 ? null
                 : BasicJoin(
-                    Path.GetFileName(InputFile) ??
+                    Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
         #endregion
@@ -4780,7 +4784,8 @@ namespace Fp {
         /// <returns>Generated path</returns>
         public string GenPath(string? extension = null, string? filename = null, string? directory = null,
             string? mainFile = null, bool mkDirs = true) {
-            mainFile ??= InputFile;
+            if(OutputDirectory == null) throw new InvalidOperationException();
+            mainFile ??= InputFile ?? throw new InvalidOperationException();
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
                 : $"{filename}{extension}";
@@ -4805,7 +4810,7 @@ namespace Fp {
         /// <param name="supportBackSlash">Whether to allow backslashes as separators</param>
         /// <param name="paths">Elements to join</param>
         /// <returns>Path</returns>
-        /// <exception cref="Exception">If separator is encountered by itself</exception>
+        /// <exception cref="ProcessorException">If separator is encountered by itself</exception>
         public static unsafe string BasicJoin(bool supportBackSlash, params string[] paths) {
             if (paths.Length < 2)
                 return paths.Length == 0 ? string.Empty : paths[0] ?? throw new ArgumentException("Null element");
@@ -4823,7 +4828,7 @@ namespace Fp {
                     var first = span[0];
                     if (first == '/' || supportBackSlash && first == '\\') {
                         if (pathLength == 1)
-                            throw new Exception("Joining single-character separator disallowed");
+                            throw new ProcessorException("Joining single-character separator disallowed");
                         if (prevEndWithSeparator)
                             span = span.Slice(1, --pathLength);
                     }
