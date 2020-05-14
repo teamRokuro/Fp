@@ -6,7 +6,7 @@ namespace Fpt {
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.2.1
+         * Fp 0.2.2
          */
 
 //-:cnd:noEmit
