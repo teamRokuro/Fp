@@ -2011,6 +2011,38 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.CloseOutputFile
   nameWithType: Processor.CloseOutputFile
+- uid: Fp.Processor.ConvertFloatArrayToHalf(System.Span{System.Single},System.Span{System.Byte})
+  name: ConvertFloatArrayToHalf(Span<Single>, Span<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_ConvertFloatArrayToHalf_System_Span_System_Single__System_Span_System_Byte__
+  commentId: M:Fp.Processor.ConvertFloatArrayToHalf(System.Span{System.Single},System.Span{System.Byte})
+  name.vb: ConvertFloatArrayToHalf(Span(Of Single), Span(Of Byte))
+  fullName: Fp.Processor.ConvertFloatArrayToHalf(System.Span<System.Single>, System.Span<System.Byte>)
+  fullName.vb: Fp.Processor.ConvertFloatArrayToHalf(System.Span(Of System.Single), System.Span(Of System.Byte))
+  nameWithType: Processor.ConvertFloatArrayToHalf(Span<Single>, Span<Byte>)
+  nameWithType.vb: Processor.ConvertFloatArrayToHalf(Span(Of Single), Span(Of Byte))
+- uid: Fp.Processor.ConvertFloatArrayToHalf*
+  name: ConvertFloatArrayToHalf
+  href: api/Fp.Processor.html#Fp_Processor_ConvertFloatArrayToHalf_
+  commentId: Overload:Fp.Processor.ConvertFloatArrayToHalf
+  isSpec: "True"
+  fullName: Fp.Processor.ConvertFloatArrayToHalf
+  nameWithType: Processor.ConvertFloatArrayToHalf
+- uid: Fp.Processor.ConvertHalfArrayToFloat(System.Span{System.Byte},System.Span{System.Single})
+  name: ConvertHalfArrayToFloat(Span<Byte>, Span<Single>)
+  href: api/Fp.Processor.html#Fp_Processor_ConvertHalfArrayToFloat_System_Span_System_Byte__System_Span_System_Single__
+  commentId: M:Fp.Processor.ConvertHalfArrayToFloat(System.Span{System.Byte},System.Span{System.Single})
+  name.vb: ConvertHalfArrayToFloat(Span(Of Byte), Span(Of Single))
+  fullName: Fp.Processor.ConvertHalfArrayToFloat(System.Span<System.Byte>, System.Span<System.Single>)
+  fullName.vb: Fp.Processor.ConvertHalfArrayToFloat(System.Span(Of System.Byte), System.Span(Of System.Single))
+  nameWithType: Processor.ConvertHalfArrayToFloat(Span<Byte>, Span<Single>)
+  nameWithType.vb: Processor.ConvertHalfArrayToFloat(Span(Of Byte), Span(Of Single))
+- uid: Fp.Processor.ConvertHalfArrayToFloat*
+  name: ConvertHalfArrayToFloat
+  href: api/Fp.Processor.html#Fp_Processor_ConvertHalfArrayToFloat_
+  commentId: Overload:Fp.Processor.ConvertHalfArrayToFloat
+  isSpec: "True"
+  fullName: Fp.Processor.ConvertHalfArrayToFloat
+  nameWithType: Processor.ConvertHalfArrayToFloat
 - uid: Fp.Processor.ConvertS16Array(System.Span{System.Byte})
   name: ConvertS16Array(Span<Byte>)
   href: api/Fp.Processor.html#Fp_Processor_ConvertS16Array_System_Span_System_Byte__
@@ -4295,15 +4327,6 @@ references:
   commentId: M:Fp.Processor.ReadHalfArray(System.Int64,System.Int32,System.IO.Stream)
   fullName: Fp.Processor.ReadHalfArray(System.Int64, System.Int32, System.IO.Stream)
   nameWithType: Processor.ReadHalfArray(Int64, Int32, Stream)
-- uid: Fp.Processor.ReadHalfArray(System.Span{System.Byte},System.Span{System.Single})
-  name: ReadHalfArray(Span<Byte>, Span<Single>)
-  href: api/Fp.Processor.html#Fp_Processor_ReadHalfArray_System_Span_System_Byte__System_Span_System_Single__
-  commentId: M:Fp.Processor.ReadHalfArray(System.Span{System.Byte},System.Span{System.Single})
-  name.vb: ReadHalfArray(Span(Of Byte), Span(Of Single))
-  fullName: Fp.Processor.ReadHalfArray(System.Span<System.Byte>, System.Span<System.Single>)
-  fullName.vb: Fp.Processor.ReadHalfArray(System.Span(Of System.Byte), System.Span(Of System.Single))
-  nameWithType: Processor.ReadHalfArray(Span<Byte>, Span<Single>)
-  nameWithType.vb: Processor.ReadHalfArray(Span(Of Byte), Span(Of Single))
 - uid: Fp.Processor.ReadHalfArray(System.Span{System.Single},System.Int64,System.IO.Stream)
   name: ReadHalfArray(Span<Single>, Int64, Stream)
   href: api/Fp.Processor.html#Fp_Processor_ReadHalfArray_System_Span_System_Single__System_Int64_System_IO_Stream_
@@ -5140,6 +5163,28 @@ references:
   commentId: F:Fp.Processor.SupportBackSlash
   fullName: Fp.Processor.SupportBackSlash
   nameWithType: Processor.SupportBackSlash
+- uid: Fp.Processor.WorkerId
+  name: WorkerId
+  href: api/Fp.Processor.html#Fp_Processor_WorkerId
+  commentId: F:Fp.Processor.WorkerId
+  fullName: Fp.Processor.WorkerId
+  nameWithType: Processor.WorkerId
+- uid: Fp.Processor.WriteDouble(System.Double,System.IO.Stream,System.Nullable{System.Int32})
+  name: WriteDouble(Double, Stream, Nullable<Int32>)
+  href: api/Fp.Processor.html#Fp_Processor_WriteDouble_System_Double_System_IO_Stream_System_Nullable_System_Int32__
+  commentId: M:Fp.Processor.WriteDouble(System.Double,System.IO.Stream,System.Nullable{System.Int32})
+  name.vb: WriteDouble(Double, Stream, Nullable(Of Int32))
+  fullName: Fp.Processor.WriteDouble(System.Double, System.IO.Stream, System.Nullable<System.Int32>)
+  fullName.vb: Fp.Processor.WriteDouble(System.Double, System.IO.Stream, System.Nullable(Of System.Int32))
+  nameWithType: Processor.WriteDouble(Double, Stream, Nullable<Int32>)
+  nameWithType.vb: Processor.WriteDouble(Double, Stream, Nullable(Of Int32))
+- uid: Fp.Processor.WriteDouble*
+  name: WriteDouble
+  href: api/Fp.Processor.html#Fp_Processor_WriteDouble_
+  commentId: Overload:Fp.Processor.WriteDouble
+  isSpec: "True"
+  fullName: Fp.Processor.WriteDouble
+  nameWithType: Processor.WriteDouble
 - uid: Fp.Processor.WriteHalf(System.Single,System.IO.Stream,System.Nullable{System.Int32})
   name: WriteHalf(Single, Stream, Nullable<Int32>)
   href: api/Fp.Processor.html#Fp_Processor_WriteHalf_System_Single_System_IO_Stream_System_Nullable_System_Int32__
@@ -5165,22 +5210,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.WriteHalf
   nameWithType: Processor.WriteHalf
-- uid: Fp.Processor.WriteHalfArray(System.Span{System.Single},System.Span{System.Byte})
-  name: WriteHalfArray(Span<Single>, Span<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_WriteHalfArray_System_Span_System_Single__System_Span_System_Byte__
-  commentId: M:Fp.Processor.WriteHalfArray(System.Span{System.Single},System.Span{System.Byte})
-  name.vb: WriteHalfArray(Span(Of Single), Span(Of Byte))
-  fullName: Fp.Processor.WriteHalfArray(System.Span<System.Single>, System.Span<System.Byte>)
-  fullName.vb: Fp.Processor.WriteHalfArray(System.Span(Of System.Single), System.Span(Of System.Byte))
-  nameWithType: Processor.WriteHalfArray(Span<Single>, Span<Byte>)
-  nameWithType.vb: Processor.WriteHalfArray(Span(Of Single), Span(Of Byte))
-- uid: Fp.Processor.WriteHalfArray*
-  name: WriteHalfArray
-  href: api/Fp.Processor.html#Fp_Processor_WriteHalfArray_
-  commentId: Overload:Fp.Processor.WriteHalfArray
-  isSpec: "True"
-  fullName: Fp.Processor.WriteHalfArray
-  nameWithType: Processor.WriteHalfArray
 - uid: Fp.Processor.WritePngRgba(System.Span{System.UInt32},System.Int32,System.Int32,System.IO.Compression.CompressionLevel,System.IO.Stream)
   name: WritePngRgba(Span<UInt32>, Int32, Int32, CompressionLevel, Stream)
   href: api/Fp.Processor.html#Fp_Processor_WritePngRgba_System_Span_System_UInt32__System_Int32_System_Int32_System_IO_Compression_CompressionLevel_System_IO_Stream_
@@ -5261,15 +5290,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.WriteS8
   nameWithType: Processor.WriteS8
-- uid: Fp.Processor.WriteSingle(System.Double,System.IO.Stream,System.Nullable{System.Int32})
-  name: WriteSingle(Double, Stream, Nullable<Int32>)
-  href: api/Fp.Processor.html#Fp_Processor_WriteSingle_System_Double_System_IO_Stream_System_Nullable_System_Int32__
-  commentId: M:Fp.Processor.WriteSingle(System.Double,System.IO.Stream,System.Nullable{System.Int32})
-  name.vb: WriteSingle(Double, Stream, Nullable(Of Int32))
-  fullName: Fp.Processor.WriteSingle(System.Double, System.IO.Stream, System.Nullable<System.Int32>)
-  fullName.vb: Fp.Processor.WriteSingle(System.Double, System.IO.Stream, System.Nullable(Of System.Int32))
-  nameWithType: Processor.WriteSingle(Double, Stream, Nullable<Int32>)
-  nameWithType.vb: Processor.WriteSingle(Double, Stream, Nullable(Of Int32))
 - uid: Fp.Processor.WriteSingle(System.Single,System.IO.Stream,System.Nullable{System.Int32})
   name: WriteSingle(Single, Stream, Nullable<Int32>)
   href: api/Fp.Processor.html#Fp_Processor_WriteSingle_System_Single_System_IO_Stream_System_Nullable_System_Int32__
@@ -5388,15 +5408,15 @@ references:
   commentId: T:Fp.ProcessorConfiguration
   fullName: Fp.ProcessorConfiguration
   nameWithType: ProcessorConfiguration
-- uid: Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.Tuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
-  name: ProcessorConfiguration(IReadOnlyList<Tuple<Boolean, String, String>>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
-  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_System_Collections_Generic_IReadOnlyList_System_Tuple_System_Boolean_System_String_System_String___System_String_System_Int32_System_Boolean_System_Action_System_String__System_Collections_Generic_IReadOnlyList_System_String__
-  commentId: M:Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.Tuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
-  name.vb: ProcessorConfiguration(IReadOnlyList(Of Tuple(Of Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
-  fullName: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList<System.Tuple<System.Boolean, System.String, System.String>>, System.String, System.Int32, System.Boolean, System.Action<System.String>, System.Collections.Generic.IReadOnlyList<System.String>)
-  fullName.vb: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList(Of System.Tuple(Of System.Boolean, System.String, System.String)), System.String, System.Int32, System.Boolean, System.Action(Of System.String), System.Collections.Generic.IReadOnlyList(Of System.String))
-  nameWithType: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList<Tuple<Boolean, String, String>>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
-  nameWithType.vb: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList(Of Tuple(Of Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
+- uid: Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  name: ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
+  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Boolean_System_String_System_String___System_String_System_Int32_System_Boolean_System_Action_System_String__System_Collections_Generic_IReadOnlyList_System_String__
+  commentId: M:Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  name.vb: ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
+  fullName: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList<System.ValueTuple<System.Boolean, System.String, System.String>>, System.String, System.Int32, System.Boolean, System.Action<System.String>, System.Collections.Generic.IReadOnlyList<System.String>)
+  fullName.vb: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList(Of System.ValueTuple(Of System.Boolean, System.String, System.String)), System.String, System.Int32, System.Boolean, System.Action(Of System.String), System.Collections.Generic.IReadOnlyList(Of System.String))
+  nameWithType: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
+  nameWithType.vb: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
 - uid: Fp.ProcessorConfiguration.#ctor*
   name: ProcessorConfiguration
   href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_
