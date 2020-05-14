@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -4125,7 +4126,66 @@ namespace Fp {
 
         #endregion
 
-        #region Output to stream utilities
+        #region External tool / library utilities
+
+        /// <summary>
+        /// Execute external program
+        /// </summary>
+        /// <param name="shellExecute">See <see cref="ProcessStartInfo.UseShellExecute"/></param>
+        /// <param name="program">Program to run</param>
+        /// <param name="args">Arguments</param>
+        /// <returns>Exit code</returns>
+        public int Execute(bool shellExecute, string program, string args) {
+            var process = new Process {
+                StartInfo = new ProcessStartInfo(program, args) {
+                    RedirectStandardOutput = !shellExecute, UseShellExecute = shellExecute,
+                    RedirectStandardError = !shellExecute
+                }
+            };
+            LogInfo($"Starting process {program} {args}");
+            process.Start();
+            if (!shellExecute) {
+                LogInfo("Stdout>");
+                string line;
+                while ((line = process.StandardOutput.ReadLine()) != null)
+                    LogInfo(line);
+                LogInfo("Stderr>");
+                while ((line = process.StandardError.ReadLine()) != null)
+                    LogInfo(line);
+            }
+
+            process.WaitForExit();
+            return process.ExitCode;
+        }
+
+        /// <summary>
+        /// Load native library
+        /// </summary>
+        /// <param name="dll">Library name</param>
+        /// <param name="version">Library version</param>
+        /// <returns>Pointer to loaded library</returns>
+        /// <remarks>
+        /// This method is a convenience wrapper for <see cref="Esper.Accelerator.Accelerate"/> functions.
+        /// </remarks>
+        public static IntPtr Accelerate(string dll, string? version = null) =>
+            Esper.Accelerator.Accelerate.This(dll, version);
+
+        /// <summary>
+        /// Load library function
+        /// </summary>
+        /// <param name="library">Library pointer</param>
+        /// <param name="function">Function name</param>
+        /// <typeparam name="T">Delegate type</typeparam>
+        /// <returns>Generated delegate</returns>
+        /// <remarks>
+        /// This method is a convenience wrapper for <see cref="Esper.Accelerator.Accelerate"/> functions.
+        /// </remarks>
+        public static T Accelerate<T>(IntPtr library, string function) =>
+            Marshal.GetDelegateForFunctionPointer<T>(Esper.Accelerator.Accelerate.This(library, function));
+
+        #endregion
+
+        #region Output from stream utilities
 
         /// <summary>
         /// Output data from stream to stream
@@ -4427,7 +4487,7 @@ namespace Fp {
 
         #endregion
 
-        #region Output to array utilities
+        #region Output from array utilities
 
         private static void WriteBaseArray(Stream stream, byte[] array, int offset, int length) =>
             stream.Write(array, offset, length);
@@ -4510,7 +4570,7 @@ namespace Fp {
 
         #endregion
 
-        #region Output to span utilities
+        #region Output from span utilities
 
         internal static void WriteBaseSpan(Stream stream, Span<byte> span) {
             var buf = ArrayPool<byte>.Shared.Rent(4096);
@@ -4572,6 +4632,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Base stream</param>
         /// <returns>Seekable stream</returns>
+        /// <remarks>
+        /// This method conditionally creates a seekable stream from a non-seekable stream by copying the
+        /// stream's contents to a new <see cref="MemoryStream"/> instance. The returned object is either
+        /// this newly created stream or the passed argument <paramref name="stream"/> if it was already seekable
+        /// </remarks>
         public static Stream GetSeekableStream(Stream stream) {
             if (stream.CanSeek) return stream;
             MemoryStream ms;
@@ -4784,7 +4849,7 @@ namespace Fp {
         /// <returns>Generated path</returns>
         public string GenPath(string? extension = null, string? filename = null, string? directory = null,
             string? mainFile = null, bool mkDirs = true) {
-            if(OutputDirectory == null) throw new InvalidOperationException();
+            if (OutputDirectory == null) throw new InvalidOperationException();
             mainFile ??= InputFile ?? throw new InvalidOperationException();
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
