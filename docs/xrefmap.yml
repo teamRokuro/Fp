@@ -1948,6 +1948,28 @@ references:
   commentId: T:Fp.Processor
   fullName: Fp.Processor
   nameWithType: Processor
+- uid: Fp.Processor.Accelerate(System.String,System.String)
+  name: Accelerate(String, String)
+  href: api/Fp.Processor.html#Fp_Processor_Accelerate_System_String_System_String_
+  commentId: M:Fp.Processor.Accelerate(System.String,System.String)
+  fullName: Fp.Processor.Accelerate(System.String, System.String)
+  nameWithType: Processor.Accelerate(String, String)
+- uid: Fp.Processor.Accelerate*
+  name: Accelerate
+  href: api/Fp.Processor.html#Fp_Processor_Accelerate_
+  commentId: Overload:Fp.Processor.Accelerate
+  isSpec: "True"
+  fullName: Fp.Processor.Accelerate
+  nameWithType: Processor.Accelerate
+- uid: Fp.Processor.Accelerate``1(System.IntPtr,System.String)
+  name: Accelerate<T>(IntPtr, String)
+  href: api/Fp.Processor.html#Fp_Processor_Accelerate__1_System_IntPtr_System_String_
+  commentId: M:Fp.Processor.Accelerate``1(System.IntPtr,System.String)
+  name.vb: Accelerate(Of T)(IntPtr, String)
+  fullName: Fp.Processor.Accelerate<T>(System.IntPtr, System.String)
+  fullName.vb: Fp.Processor.Accelerate(Of T)(System.IntPtr, System.String)
+  nameWithType: Processor.Accelerate<T>(IntPtr, String)
+  nameWithType.vb: Processor.Accelerate(Of T)(IntPtr, String)
 - uid: Fp.Processor.BasicJoin(System.Boolean,System.String[])
   name: BasicJoin(Boolean, String[])
   href: api/Fp.Processor.html#Fp_Processor_BasicJoin_System_Boolean_System_String___
@@ -2337,6 +2359,19 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Dispose
   nameWithType: Processor.Dispose
+- uid: Fp.Processor.Execute(System.Boolean,System.String,System.String)
+  name: Execute(Boolean, String, String)
+  href: api/Fp.Processor.html#Fp_Processor_Execute_System_Boolean_System_String_System_String_
+  commentId: M:Fp.Processor.Execute(System.Boolean,System.String,System.String)
+  fullName: Fp.Processor.Execute(System.Boolean, System.String, System.String)
+  nameWithType: Processor.Execute(Boolean, String, String)
+- uid: Fp.Processor.Execute*
+  name: Execute
+  href: api/Fp.Processor.html#Fp_Processor_Execute_
+  commentId: Overload:Fp.Processor.Execute
+  isSpec: "True"
+  fullName: Fp.Processor.Execute
+  nameWithType: Processor.Execute
 - uid: Fp.Processor.FileSystem
   name: FileSystem
   href: api/Fp.Processor.html#Fp_Processor_FileSystem
