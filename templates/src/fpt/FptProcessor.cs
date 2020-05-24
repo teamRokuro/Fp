@@ -6,11 +6,11 @@ namespace Fpt {
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.2.1
+         * Fp 0.2.2
          */
 
 //-:cnd:noEmit
-#if FptSolo
+#if FpSolo
         // Main function
         public static async System.Threading.Tasks.Task Main(string[] args) =>
             await Coordinator.CliRunFilesystemAsync(System.Environment.CommandLine, args, System.Console.WriteLine,

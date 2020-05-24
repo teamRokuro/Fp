@@ -12,7 +12,7 @@ namespace Fp.Images.Png {
 
         private readonly int _bytesPerPixel;
         private readonly int _width;
-        private readonly Palette _palette;
+        private readonly Palette? _palette;
         private readonly ColorType _colorType;
         private readonly int _rowOffset;
 
@@ -25,7 +25,7 @@ namespace Fp.Images.Png {
         /// <param name="interlaceMethod">The interlace method used.</param>
         /// <param name="palette">The palette for images using indexed colors.</param>
         /// <param name="colorType">The color type.</param>
-        public RawPngData(byte[] data, int bytesPerPixel, int width, InterlaceMethod interlaceMethod, Palette palette,
+        public RawPngData(byte[] data, int bytesPerPixel, int width, InterlaceMethod interlaceMethod, Palette? palette,
             ColorType colorType) {
             if (width < 0) {
                 throw new ArgumentOutOfRangeException($"Width must be greater than or equal to 0, got {width}.");
