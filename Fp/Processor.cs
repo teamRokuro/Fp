@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Fp.Intermediate;
 
 namespace Fp {
     /// <summary>
@@ -173,7 +174,7 @@ namespace Fp {
         /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
-        protected virtual IEnumerable<(string path, byte[] buffer, int offset, int length)> ProcessSegmentedImpl(
+        protected virtual IEnumerable<Data> ProcessSegmentedImpl(
             IReadOnlyList<string> args) {
             _overrideProcessSegmented = false;
             yield break;
@@ -187,10 +188,10 @@ namespace Fp {
         public void Process(IReadOnlyList<string> args) {
             ProcessImpl(args);
             if (_overrideProcess) return;
-            foreach (var (path, buffer, offset, length) in ProcessSegmentedImpl(args)) {
+            foreach (var data in ProcessSegmentedImpl(args)) {
                 using var stream =
-                    (FileSystem ?? throw new InvalidOperationException()).OpenWrite(GenPath(default, path));
-                stream.Write(buffer, offset, length);
+                    (FileSystem ?? throw new InvalidOperationException()).OpenWrite(GenPath(data.DefaultFormat.GetExtension(), data.BasePath));
+                data.WriteConvertedData(stream, data.DefaultFormat);
             }
         }
 
@@ -199,7 +200,7 @@ namespace Fp {
         /// </summary>
         /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        public IEnumerable<(string path, byte[] buffer, int offset, int length)> ProcessSegmented(
+        public IEnumerable<Data> ProcessSegmented(
             IReadOnlyList<string> args) {
             foreach (var entry in ProcessSegmentedImpl(args))
                 yield return entry;
@@ -210,8 +211,8 @@ namespace Fp {
             FileSystem = fs;
             try {
                 ProcessImpl(args);
-                foreach (var entry in fs)
-                    yield return entry;
+                foreach (var (path, buffer, offset, length) in fs)
+                    yield return new GenericData(path, buffer, offset, length);
             }
             finally {
                 FileSystem = prevFs;
@@ -347,7 +348,7 @@ namespace Fp {
                     bufSpan.Slice(0, read).CopyTo(span.Slice(tot));
                     left -= read;
                     tot += read;
-                } while (left > 0 && read == 0);
+                } while (left > 0 && read != 0);
 
                 if (left > 0 && !lenient)
                     throw new ProcessorException(

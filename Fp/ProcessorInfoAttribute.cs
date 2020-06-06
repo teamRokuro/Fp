@@ -19,6 +19,11 @@ namespace Fp {
         public string Description { get; set; }
 
         /// <summary>
+        /// Processor extended description
+        /// </summary>
+        public string ExtendedDescription { get; set; }
+
+        /// <summary>
         /// Processor extensions
         /// </summary>
         public string[] Extensions { get; set; }
@@ -28,10 +33,12 @@ namespace Fp {
         /// </summary>
         /// <param name="name">Processor name</param>
         /// <param name="description">Processor description</param>
+        /// <param name="extendedDescription">Processor extended description</param>
         /// <param name="extensions">Processor extensions</param>
-        public ProcessorInfoAttribute(string name, string description, params string[] extensions) {
+        public ProcessorInfoAttribute(string name, string description, string extendedDescription, params string[] extensions) {
             Name = name;
             Description = description;
+            ExtendedDescription = extendedDescription;
             Extensions = extensions;
         }
     }

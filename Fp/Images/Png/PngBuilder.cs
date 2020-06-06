@@ -183,23 +183,8 @@ namespace Fp.Images.Png {
 
             return result;
         }
-    }
-}
 
-namespace Fp {
-    public partial class Processor {
-        /// <summary>
-        /// Write rgba data to stream
-        /// </summary>
-        /// <param name="data">Raw rgba color data</param>
-        /// <param name="width">Width of image</param>
-        /// <param name="height">Height of image</param>
-        /// <param name="compressionLevel">Deflate compression level</param>
-        /// <param name="outputStream">Stream to write to</param>
-        public void WritePngRgba(Span<uint> data, int width, int height,
-            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null) {
-            outputStream ??= OutputStream ?? throw new InvalidOperationException();
-
+        internal static void WritePngRgba(Stream outputStream, Span<uint> data, int width, int height, CompressionLevel compressionLevel) {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
             var stream = new PngStreamWriteHelper(outputStream);
@@ -217,15 +202,33 @@ namespace Fp {
             stream.WriteByte((byte) InterlaceMethod.None);
             stream.WriteCrc();
 
-            var imageData = PngBuilder.Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
+            var imageData = Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
             stream.WriteChunkLength(imageData.Length);
-            stream.WriteChunkHeader(PngBuilder.ChunkIDAT);
+            stream.WriteChunkHeader(ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
             stream.WriteCrc();
 
             stream.WriteChunkLength(0);
-            stream.WriteChunkHeader(PngBuilder.ChunkIEND);
+            stream.WriteChunkHeader(ChunkIEND);
             stream.WriteCrc();
+        }
+    }
+}
+
+namespace Fp {
+    public partial class Processor {
+        /// <summary>
+        /// Write rgba data to stream
+        /// </summary>
+        /// <param name="data">Raw rgba color data</param>
+        /// <param name="width">Width of image</param>
+        /// <param name="height">Height of image</param>
+        /// <param name="compressionLevel">Deflate compression level</param>
+        /// <param name="outputStream">Stream to write to</param>
+        public void WritePngRgba(Span<uint> data, int width, int height,
+            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null) {
+            outputStream ??= OutputStream ?? throw new InvalidOperationException();
+            PngBuilder.WritePngRgba(outputStream, data, width, height, compressionLevel);
         }
     }
 }
