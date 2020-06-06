@@ -1,15 +1,8 @@
-﻿namespace Fp.Images.Png {
-    internal readonly struct HeaderValidationResult {
-        public static readonly byte[] ExpectedHeader = {
-            137,
-            80,
-            78,
-            71,
-            13,
-            10,
-            26,
-            10
-        };
+﻿namespace Fp.Images.Png
+{
+    internal readonly struct HeaderValidationResult
+    {
+        public static readonly byte[] ExpectedHeader = {137, 80, 78, 71, 13, 10, 26, 10};
 
         public int Byte1 { get; }
 
@@ -30,7 +23,8 @@
         public bool IsValid { get; }
 
         public HeaderValidationResult(int byte1, int byte2, int byte3, int byte4, int byte5, int byte6, int byte7,
-            int byte8) {
+            int byte8)
+        {
             Byte1 = byte1;
             Byte2 = byte2;
             Byte3 = byte3;
@@ -44,7 +38,8 @@
                       && byte7 == ExpectedHeader[6] && byte8 == ExpectedHeader[7];
         }
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"{Byte1} {Byte2} {Byte3} {Byte4} {Byte5} {Byte6} {Byte7} {Byte8}";
         }
     }

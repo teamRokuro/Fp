@@ -1,18 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// The high level information about the image.
     /// </summary>
-    public readonly struct ImageHeader {
-        internal static readonly byte[] HeaderBytes = {
-            73, 72, 68, 82
-        };
+    public readonly struct ImageHeader
+    {
+        internal static readonly byte[] HeaderBytes = {73, 72, 68, 82};
 
         private static readonly IReadOnlyDictionary<ColorType, HashSet<byte>> PermittedBitDepths =
-            new Dictionary<ColorType, HashSet<byte>> {
-                {ColorType.None, new HashSet<byte> {1, 2, 4, 8, 16}},
+            new Dictionary<ColorType, HashSet<byte>>
+            {
+                {
+                    ColorType.None, new HashSet<byte>
+                    {
+                        1,
+                        2,
+                        4,
+                        8,
+                        16
+                    }
+                },
                 {ColorType.ColorUsed, new HashSet<byte> {8, 16}},
                 {ColorType.PaletteUsed | ColorType.ColorUsed, new HashSet<byte> {1, 2, 4, 8}},
                 {ColorType.AlphaChannelUsed, new HashSet<byte> {8, 16}},
@@ -58,17 +68,21 @@ namespace Fp.Images.Png {
         /// Create a new <see cref="ImageHeader"/>.
         /// </summary>
         public ImageHeader(int width, int height, byte bitDepth, ColorType colorType,
-            CompressionMethod compressionMethod, FilterMethod filterMethod, InterlaceMethod interlaceMethod) {
-            if (width == 0) {
+            CompressionMethod compressionMethod, FilterMethod filterMethod, InterlaceMethod interlaceMethod)
+        {
+            if (width == 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(width), "Invalid width (0) for image.");
             }
 
-            if (height == 0) {
+            if (height == 0)
+            {
                 throw new ArgumentOutOfRangeException(nameof(height), "Invalid height (0) for image.");
             }
 
             if (!PermittedBitDepths.TryGetValue(colorType, out var permitted)
-                || !permitted.Contains(bitDepth)) {
+                || !permitted.Contains(bitDepth))
+            {
                 throw new ArgumentException($"The bit depth {bitDepth} is not permitted for color type {colorType}.");
             }
 
@@ -82,7 +96,8 @@ namespace Fp.Images.Png {
         }
 
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"w: {Width}, h: {Height}, bitDepth: {BitDepth}, colorType: {ColorType}, " +
                    $"compression: {CompressionMethod}, filter: {FilterMethod}, interlace: {InterlaceMethod}.";
         }

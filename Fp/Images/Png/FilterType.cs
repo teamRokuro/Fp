@@ -1,5 +1,7 @@
-﻿namespace Fp.Images.Png {
-    internal enum FilterType {
+﻿namespace Fp.Images.Png
+{
+    internal enum FilterType
+    {
         /// <summary>
         /// The raw byte is unaltered.
         /// </summary>

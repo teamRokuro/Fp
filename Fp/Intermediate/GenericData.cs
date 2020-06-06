@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Fp.Intermediate {
+namespace Fp.Intermediate
+{
     /// <summary>
     /// Generic data, not to be converted
     /// </summary>
-    public class GenericData : Data {
+    public class GenericData : Data
+    {
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.Generic;
 
@@ -19,6 +21,7 @@ namespace Fp.Intermediate {
         /// Offset in array
         /// </summary>
         public int Offset;
+
         /// <summary>
         /// Length of data
         /// </summary>
@@ -29,7 +32,8 @@ namespace Fp.Intermediate {
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="data">Data in container</param>
-        public GenericData(string basePath, byte[] data) : base(basePath) {
+        public GenericData(string basePath, byte[] data) : base(basePath)
+        {
             Data = data;
             Offset = 0;
             Length = data.Length;
@@ -42,15 +46,19 @@ namespace Fp.Intermediate {
         /// <param name="data">Data in container</param>
         /// <param name="offset">Offset in array</param>
         /// <param name="length">Length of data</param>
-        public GenericData(string basePath, byte[] data, int offset, int length) : base(basePath) {
+        public GenericData(string basePath, byte[] data, int offset, int length) : base(basePath)
+        {
             Data = data;
             Offset = offset;
             Length = length;
         }
 
         /// <inheritdoc />
-        public override bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary<string, string>? formatOptions = null) {
-            switch (format) {
+        public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
+            Dictionary<string, string>? formatOptions = null)
+        {
+            switch (format)
+            {
                 case CommonFormat.Generic:
                     outputStream.Write(Data, 0, Data.Length);
                     return true;

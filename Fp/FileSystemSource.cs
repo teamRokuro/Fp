@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Object for I/O to some filesystem provider
     /// </summary>
-    public abstract class FileSystemSource {
+    public abstract class FileSystemSource
+    {
         /// <summary>
         /// Set when filesystem is being accessed in parallel
         /// (copies input streams)
@@ -28,7 +30,8 @@ namespace Fp {
         /// <param name="fileShare">File sharing mode</param>
         /// <returns>Stream</returns>
         public Stream OpenRead(string path, FileMode fileMode = FileMode.Open, FileShare fileShare =
-            FileShare.ReadWrite | FileShare.Delete) {
+            FileShare.ReadWrite | FileShare.Delete)
+        {
             var src = Processor.GetSeekableStream(OpenReadImpl(path, fileMode, fileShare));
             if (!ParallelAccess || src is MemoryStream) return src;
             var ms = new MemoryStream(new byte[src.Length]);
@@ -93,7 +96,8 @@ namespace Fp {
         /// <returns>True if exists</returns>
         public abstract bool DirectoryExists(string path);
 
-        private class RealFileSystemSource : FileSystemSource {
+        private class RealFileSystemSource : FileSystemSource
+        {
             protected override Stream OpenReadImpl(string path, FileMode fileMode = FileMode.Open,
                 FileShare fileShare = FileShare.ReadWrite | FileShare.Delete)
                 => new FileStream(path, fileMode, FileAccess.Read, fileShare);
@@ -119,12 +123,14 @@ namespace Fp {
         }
 
         internal class SegmentedFileSystemSource : FileSystemSource,
-            IEnumerable<(string path, byte[] buffer, int offset, int length)> {
+            IEnumerable<(string path, byte[] buffer, int offset, int length)>
+        {
             private readonly FileSystemSource _source;
             private readonly List<(string, MemoryStream)> _outputEntries;
             private readonly HashSet<string> _dirs;
 
-            internal SegmentedFileSystemSource(FileSystemSource source) {
+            internal SegmentedFileSystemSource(FileSystemSource source)
+            {
                 _source = source;
                 _outputEntries = new List<(string, MemoryStream)>();
                 _dirs = new HashSet<string>();
@@ -137,7 +143,8 @@ namespace Fp {
 
             public override Stream OpenWrite(string path, FileMode fileMode = FileMode.Create,
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
-                                      FileShare.Write) {
+                                      FileShare.Write)
+            {
                 var stream = new MemoryStream();
                 _outputEntries.Add((path, stream));
                 _dirs.Add(Path.GetDirectoryName(path));
@@ -150,7 +157,8 @@ namespace Fp {
             public override IEnumerable<string> EnumerateDirectories(string path)
                 => _source.EnumerateDirectories(path);
 
-            public override bool CreateDirectory(string path) {
+            public override bool CreateDirectory(string path)
+            {
                 _dirs.Add(path);
                 return true;
             }
@@ -163,12 +171,14 @@ namespace Fp {
                 => _source.DirectoryExists(path) || _dirs.Any(x =>
                     string.Equals(x, path, StringComparison.InvariantCultureIgnoreCase));
 
-            public IEnumerator<(string path, byte[] buffer, int offset, int length)> GetEnumerator() {
-                foreach (var (path, stream) in _outputEntries)
-                    yield return (path, stream.GetBuffer(), 0, (int) stream.Length);
+            public IEnumerator<(string path, byte[] buffer, int offset, int length)> GetEnumerator()
+            {
+                foreach ((string path, MemoryStream stream) in _outputEntries)
+                    yield return (path, stream.GetBuffer(), 0, (int)stream.Length);
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
+            IEnumerator IEnumerable.GetEnumerator()
+            {
                 return GetEnumerator();
             }
         }

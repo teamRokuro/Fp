@@ -1,10 +1,12 @@
 ﻿using System;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// The header for a data chunk in a PNG file.
     /// </summary>
-    public readonly struct ChunkHeader {
+    public readonly struct ChunkHeader
+    {
         /// <summary>
         /// The position/start of the chunk header within the stream.
         /// </summary>
@@ -39,8 +41,10 @@ namespace Fp.Images.Png {
         /// <summary>
         /// Create a new <see cref="ChunkHeader"/>.
         /// </summary>
-        public ChunkHeader(long position, int length, string name) {
-            if (length < 0) {
+        public ChunkHeader(long position, int length, string name)
+        {
+            if (length < 0)
+            {
                 throw new ArgumentException(
                     $"Length less than zero ({length}) encountered when reading chunk at position {position}.");
             }
@@ -51,7 +55,8 @@ namespace Fp.Images.Png {
         }
 
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"{Name} at {Position} (length: {Length}).";
         }
     }

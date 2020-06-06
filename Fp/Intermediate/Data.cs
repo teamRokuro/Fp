@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Fp.Intermediate {
+namespace Fp.Intermediate
+{
     /// <summary>
     /// Intermediate-format data container
     /// </summary>
-    public abstract class Data {
+    public abstract class Data
+    {
         /// <summary>
         /// Base path of resource
         /// </summary>
@@ -21,7 +23,8 @@ namespace Fp.Intermediate {
         /// Create instance of <see cref="Data"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
-        public Data(string basePath) {
+        public Data(string basePath)
+        {
             BasePath = basePath;
         }
 

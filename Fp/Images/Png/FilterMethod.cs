@@ -1,8 +1,10 @@
-﻿namespace Fp.Images.Png {
+﻿namespace Fp.Images.Png
+{
     /// <summary>
     /// Indicates the pre-processing method applied to the image data before compression.
     /// </summary>
-    public enum FilterMethod {
+    public enum FilterMethod
+    {
         /// <summary>
         /// Adaptive filtering with five basic filter types.
         /// </summary>

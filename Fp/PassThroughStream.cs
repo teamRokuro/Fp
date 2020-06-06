@@ -2,12 +2,14 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Stream that acts as a limited-range proxy for another stream
     /// </summary>
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class PassThroughStream : Stream {
+    public class PassThroughStream : Stream
+    {
         private readonly Stream _sourceStream;
         private readonly long _offset;
         private long _length;
@@ -17,7 +19,8 @@ namespace Fp {
         /// </summary>
         /// <param name="sourceStream">Stream to wrap</param>
         /// <param name="length">Length of proxy</param>
-        public PassThroughStream(Stream sourceStream, long length) {
+        public PassThroughStream(Stream sourceStream, long length)
+        {
             _sourceStream = sourceStream;
             _offset = sourceStream.Position;
             _length = length;
@@ -36,7 +39,8 @@ namespace Fp {
         public override long Length => _length;
 
         /// <inheritdoc />
-        public override long Position {
+        public override long Position
+        {
             get => _sourceStream.Position - _offset;
             set => _sourceStream.Position = _offset + value;
         }
@@ -46,7 +50,7 @@ namespace Fp {
 
         /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count) => _sourceStream.Read(buffer, offset,
-            (int) (Math.Min(_length, _sourceStream.Position - _offset + count) - (_sourceStream.Position - _offset)));
+            (int)(Math.Min(_length, _sourceStream.Position - _offset + count) - (_sourceStream.Position - _offset)));
 
         /// <inheritdoc />
         public override long Seek(long offset, SeekOrigin origin) => _sourceStream.Seek(_offset + offset, origin);
@@ -56,6 +60,6 @@ namespace Fp {
 
         /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count) => _sourceStream.Write(buffer, offset,
-            (int) (Math.Min(_length, _sourceStream.Position - _offset + count) - (_sourceStream.Position - _offset)));
+            (int)(Math.Min(_length, _sourceStream.Position - _offset + count) - (_sourceStream.Position - _offset)));
     }
 }

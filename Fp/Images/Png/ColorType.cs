@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// Describes the interpretation of the image data.
     /// </summary>
     [Flags]
-    public enum ColorType : byte {
+    public enum ColorType : byte
+    {
         /// <summary>
         /// Grayscale.
         /// </summary>

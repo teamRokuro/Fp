@@ -1,31 +1,39 @@
 ﻿using System;
 
-namespace Fp.Images.Png {
-    internal static class Decoder {
-        public static (byte bytesPerPixel, byte samplesPerPixel) GetBytesAndSamplesPerPixel(ImageHeader header) {
-            var bitDepthCorrected = (header.BitDepth + 7) / 8;
+namespace Fp.Images.Png
+{
+    internal static class Decoder
+    {
+        public static (byte bytesPerPixel, byte samplesPerPixel) GetBytesAndSamplesPerPixel(ImageHeader header)
+        {
+            int bitDepthCorrected = (header.BitDepth + 7) / 8;
 
-            var samplesPerPixel = SamplesPerPixel(header);
+            byte samplesPerPixel = SamplesPerPixel(header);
 
-            return ((byte) (samplesPerPixel * bitDepthCorrected), samplesPerPixel);
+            return ((byte)(samplesPerPixel * bitDepthCorrected), samplesPerPixel);
         }
 
         public static byte[] Decode(byte[] decompressedData, ImageHeader header, byte bytesPerPixel,
-            byte samplesPerPixel) {
-            switch (header.InterlaceMethod) {
-                case InterlaceMethod.None: {
-                    var bytesPerScanline = BytesPerScanline(header, samplesPerPixel);
+            byte samplesPerPixel)
+        {
+            switch (header.InterlaceMethod)
+            {
+                case InterlaceMethod.None:
+                {
+                    int bytesPerScanline = BytesPerScanline(header, samplesPerPixel);
 
-                    var currentRowStartByteAbsolute = 1;
-                    for (var rowIndex = 0; rowIndex < header.Height; rowIndex++) {
-                        var filterType = (FilterType) decompressedData[currentRowStartByteAbsolute - 1];
+                    int currentRowStartByteAbsolute = 1;
+                    for (int rowIndex = 0; rowIndex < header.Height; rowIndex++)
+                    {
+                        var filterType = (FilterType)decompressedData[currentRowStartByteAbsolute - 1];
 
-                        var previousRowStartByteAbsolute = rowIndex + bytesPerScanline * (rowIndex - 1);
+                        int previousRowStartByteAbsolute = rowIndex + bytesPerScanline * (rowIndex - 1);
 
-                        var end = currentRowStartByteAbsolute + bytesPerScanline;
-                        for (var currentByteAbsolute = currentRowStartByteAbsolute;
+                        int end = currentRowStartByteAbsolute + bytesPerScanline;
+                        for (int currentByteAbsolute = currentRowStartByteAbsolute;
                             currentByteAbsolute < end;
-                            currentByteAbsolute++) {
+                            currentByteAbsolute++)
+                        {
                             ReverseFilter(decompressedData, filterType, previousRowStartByteAbsolute,
                                 currentRowStartByteAbsolute, currentByteAbsolute,
                                 currentByteAbsolute - currentRowStartByteAbsolute, bytesPerPixel);
@@ -36,34 +44,40 @@ namespace Fp.Images.Png {
 
                     return decompressedData;
                 }
-                case InterlaceMethod.Adam7: {
-                    var pixelsPerRow = header.Width * bytesPerPixel;
+                case InterlaceMethod.Adam7:
+                {
+                    int pixelsPerRow = header.Width * bytesPerPixel;
                     var newBytes = new byte[header.Height * pixelsPerRow];
-                    var i = 0;
-                    var previousStartRowByteAbsolute = -1;
+                    int i = 0;
+                    int previousStartRowByteAbsolute = -1;
                     // 7 passes
-                    for (var pass = 0; pass < 7; pass++) {
-                        var numberOfScanlines = Adam7.GetNumberOfScanlinesInPass(header, pass);
-                        var numberOfPixelsPerScanline = Adam7.GetPixelsPerScanlineInPass(header, pass);
+                    for (int pass = 0; pass < 7; pass++)
+                    {
+                        int numberOfScanlines = Adam7.GetNumberOfScanlinesInPass(header, pass);
+                        int numberOfPixelsPerScanline = Adam7.GetPixelsPerScanlineInPass(header, pass);
 
-                        if (numberOfScanlines <= 0 || numberOfPixelsPerScanline <= 0) {
+                        if (numberOfScanlines <= 0 || numberOfPixelsPerScanline <= 0)
+                        {
                             continue;
                         }
 
-                        for (var scanlineIndex = 0; scanlineIndex < numberOfScanlines; scanlineIndex++) {
-                            var filterType = (FilterType) decompressedData[i++];
-                            var rowStartByte = i;
+                        for (int scanlineIndex = 0; scanlineIndex < numberOfScanlines; scanlineIndex++)
+                        {
+                            var filterType = (FilterType)decompressedData[i++];
+                            int rowStartByte = i;
 
-                            for (var j = 0; j < numberOfPixelsPerScanline; j++) {
+                            for (int j = 0; j < numberOfPixelsPerScanline; j++)
+                            {
                                 var pixelIndex = Adam7.GetPixelIndexForScanlineInPass(header, pass, scanlineIndex, j);
-                                for (var k = 0; k < bytesPerPixel; k++) {
-                                    var byteLineNumber = j * bytesPerPixel + k;
+                                for (int k = 0; k < bytesPerPixel; k++)
+                                {
+                                    int byteLineNumber = j * bytesPerPixel + k;
                                     ReverseFilter(decompressedData, filterType, previousStartRowByteAbsolute,
                                         rowStartByte, i, byteLineNumber, bytesPerPixel);
                                     i++;
                                 }
 
-                                var start = pixelsPerRow * pixelIndex.y + pixelIndex.x * bytesPerPixel;
+                                int start = pixelsPerRow * pixelIndex.y + pixelIndex.x * bytesPerPixel;
                                 Array.ConstrainedCopy(decompressedData, rowStartByte + j * bytesPerPixel, newBytes,
                                     start, bytesPerPixel);
                             }
@@ -79,8 +93,10 @@ namespace Fp.Images.Png {
             }
         }
 
-        private static byte SamplesPerPixel(ImageHeader header) {
-            switch (header.ColorType) {
+        private static byte SamplesPerPixel(ImageHeader header)
+        {
+            switch (header.ColorType)
+            {
                 case ColorType.None:
                     return 1;
                 case ColorType.PaletteUsed:
@@ -96,10 +112,12 @@ namespace Fp.Images.Png {
             }
         }
 
-        private static int BytesPerScanline(ImageHeader header, byte samplesPerPixel) {
-            var width = header.Width;
+        private static int BytesPerScanline(ImageHeader header, byte samplesPerPixel)
+        {
+            int width = header.Width;
 
-            switch (header.BitDepth) {
+            switch (header.BitDepth)
+            {
                 case 1:
                     return (width + 7) / 8;
                 case 2:
@@ -115,29 +133,35 @@ namespace Fp.Images.Png {
         }
 
         private static void ReverseFilter(byte[] data, FilterType type, int previousRowStartByteAbsolute,
-            int rowStartByteAbsolute, int byteAbsolute, int rowByteIndex, int bytesPerPixel) {
-            byte GetLeftByteValue() {
-                var leftIndex = rowByteIndex - bytesPerPixel;
-                var leftValue = leftIndex >= 0 ? data[rowStartByteAbsolute + leftIndex] : (byte) 0;
+            int rowStartByteAbsolute, int byteAbsolute, int rowByteIndex, int bytesPerPixel)
+        {
+            byte GetLeftByteValue()
+            {
+                int leftIndex = rowByteIndex - bytesPerPixel;
+                byte leftValue = leftIndex >= 0 ? data[rowStartByteAbsolute + leftIndex] : (byte)0;
                 return leftValue;
             }
 
-            byte GetAboveByteValue() {
-                var upIndex = previousRowStartByteAbsolute + rowByteIndex;
-                return upIndex >= 0 ? data[upIndex] : (byte) 0;
+            byte GetAboveByteValue()
+            {
+                int upIndex = previousRowStartByteAbsolute + rowByteIndex;
+                return upIndex >= 0 ? data[upIndex] : (byte)0;
             }
 
-            byte GetAboveLeftByteValue() {
-                var index = previousRowStartByteAbsolute + rowByteIndex - bytesPerPixel;
+            byte GetAboveLeftByteValue()
+            {
+                int index = previousRowStartByteAbsolute + rowByteIndex - bytesPerPixel;
                 return index < previousRowStartByteAbsolute || previousRowStartByteAbsolute < 0
-                    ? (byte) 0
+                    ? (byte)0
                     : data[index];
             }
 
             // Moved out of the switch for performance.
-            if (type == FilterType.Up) {
-                var above = previousRowStartByteAbsolute + rowByteIndex;
-                if (above < 0) {
+            if (type == FilterType.Up)
+            {
+                int above = previousRowStartByteAbsolute + rowByteIndex;
+                if (above < 0)
+                {
                     return;
                 }
 
@@ -145,9 +169,11 @@ namespace Fp.Images.Png {
                 return;
             }
 
-            if (type == FilterType.Sub) {
-                var leftIndex = rowByteIndex - bytesPerPixel;
-                if (leftIndex < 0) {
+            if (type == FilterType.Sub)
+            {
+                int leftIndex = rowByteIndex - bytesPerPixel;
+                if (leftIndex < 0)
+                {
                     return;
                 }
 
@@ -155,16 +181,17 @@ namespace Fp.Images.Png {
                 return;
             }
 
-            switch (type) {
+            switch (type)
+            {
                 case FilterType.None:
                     return;
                 case FilterType.Average:
-                    data[byteAbsolute] += (byte) ((GetLeftByteValue() + GetAboveByteValue()) / 2);
+                    data[byteAbsolute] += (byte)((GetLeftByteValue() + GetAboveByteValue()) / 2);
                     break;
                 case FilterType.Paeth:
-                    var a = GetLeftByteValue();
-                    var b = GetAboveByteValue();
-                    var c = GetAboveLeftByteValue();
+                    byte a = GetLeftByteValue();
+                    byte b = GetAboveByteValue();
+                    byte c = GetAboveLeftByteValue();
                     data[byteAbsolute] += GetPaethValue(a, b, c);
                     break;
                 default:
@@ -176,13 +203,15 @@ namespace Fp.Images.Png {
         /// Computes a simple linear function of the three neighboring pixels (left, above, upper left),
         /// then chooses as predictor the neighboring pixel closest to the computed value.
         /// </summary>
-        private static byte GetPaethValue(byte a, byte b, byte c) {
-            var p = a + b - c;
-            var pa = Math.Abs(p - a);
-            var pb = Math.Abs(p - b);
-            var pc = Math.Abs(p - c);
+        private static byte GetPaethValue(byte a, byte b, byte c)
+        {
+            int p = a + b - c;
+            int pa = Math.Abs(p - a);
+            int pb = Math.Abs(p - b);
+            int pc = Math.Abs(p - c);
 
-            if (pa <= pb && pa <= pc) {
+            if (pa <= pb && pa <= pc)
+            {
                 return a;
             }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// Provides convenience methods for indexing into a raw byte array to extract pixel values.
     /// </summary>
-    public class RawPngData {
+    public class RawPngData
+    {
         /// <summary>
         /// Raw data
         /// </summary>
@@ -26,8 +28,10 @@ namespace Fp.Images.Png {
         /// <param name="palette">The palette for images using indexed colors.</param>
         /// <param name="colorType">The color type.</param>
         public RawPngData(byte[] data, int bytesPerPixel, int width, InterlaceMethod interlaceMethod, Palette? palette,
-            ColorType colorType) {
-            if (width < 0) {
+            ColorType colorType)
+        {
+            if (width < 0)
+            {
                 throw new ArgumentOutOfRangeException($"Width must be greater than or equal to 0, got {width}.");
             }
 
@@ -46,25 +50,30 @@ namespace Fp.Images.Png {
         /// <param name="y">Y offset</param>
         /// <returns>Pixel value</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public Pixel GetPixel(int x, int y) {
-            var rowStartPixel = _rowOffset + _rowOffset * y + _bytesPerPixel * _width * y;
+        public Pixel GetPixel(int x, int y)
+        {
+            int rowStartPixel = _rowOffset + _rowOffset * y + _bytesPerPixel * _width * y;
 
-            var pixelStartIndex = rowStartPixel + _bytesPerPixel * x;
+            int pixelStartIndex = rowStartPixel + _bytesPerPixel * x;
 
-            var first = Data[pixelStartIndex];
+            byte first = Data[pixelStartIndex];
 
-            if (_palette != null) {
+            if (_palette != null)
+            {
                 return _palette.GetPixel(first);
             }
 
-            switch (_bytesPerPixel) {
+            switch (_bytesPerPixel)
+            {
                 case 1:
                     return new Pixel(first, first, first, 255, true);
                 case 2:
-                    switch (_colorType) {
-                        case ColorType.None: {
+                    switch (_colorType)
+                    {
+                        case ColorType.None:
+                        {
                             byte second = Data[pixelStartIndex + 1];
-                            var value = ToSingleByte(first, second);
+                            byte value = ToSingleByte(first, second);
                             return new Pixel(value, value, value, 255, true);
                         }
                         default:
@@ -74,13 +83,15 @@ namespace Fp.Images.Png {
                 case 3:
                     return new Pixel(first, Data[pixelStartIndex + 1], Data[pixelStartIndex + 2], 255, false);
                 case 4:
-                    switch (_colorType) {
-                        case ColorType.None | ColorType.AlphaChannelUsed: {
-                            var second = Data[pixelStartIndex + 1];
-                            var firstAlpha = Data[pixelStartIndex + 2];
-                            var secondAlpha = Data[pixelStartIndex + 3];
-                            var gray = ToSingleByte(first, second);
-                            var alpha = ToSingleByte(firstAlpha, secondAlpha);
+                    switch (_colorType)
+                    {
+                        case ColorType.None | ColorType.AlphaChannelUsed:
+                        {
+                            byte second = Data[pixelStartIndex + 1];
+                            byte firstAlpha = Data[pixelStartIndex + 2];
+                            byte secondAlpha = Data[pixelStartIndex + 3];
+                            byte gray = ToSingleByte(first, second);
+                            byte alpha = ToSingleByte(firstAlpha, secondAlpha);
                             return new Pixel(gray, gray, gray, alpha, true);
                         }
                         default:
@@ -97,9 +108,10 @@ namespace Fp.Images.Png {
             }
         }
 
-        private static byte ToSingleByte(byte first, byte second) {
-            var us = (first << 8) + second;
-            var result = (byte) Math.Round(255 * us / (double) ushort.MaxValue);
+        private static byte ToSingleByte(byte first, byte second)
+        {
+            int us = (first << 8) + second;
+            byte result = (byte)Math.Round(255 * us / (double)ushort.MaxValue);
             return result;
         }
     }

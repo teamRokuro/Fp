@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Configuration for batch-processing fs with processors
     /// </summary>
-    public struct ProcessorConfiguration {
+    public struct ProcessorConfiguration
+    {
         internal static readonly ProcessorConfiguration Default = new ProcessorConfiguration();
 
         /// <summary>
@@ -19,7 +21,8 @@ namespace Fp {
         /// <param name="args">Arguments</param>
         public ProcessorConfiguration(IReadOnlyList<(bool, string, string)> inputs, string outputRootDirectory,
             int parallel, bool preload,
-            Action<string> logger, IReadOnlyList<string> args) {
+            Action<string> logger, IReadOnlyList<string> args)
+        {
             Inputs = inputs ?? throw new ArgumentNullException(nameof(inputs));
             OutputRootDirectory = outputRootDirectory ?? throw new ArgumentException(nameof(outputRootDirectory));
             Parallel = parallel;
