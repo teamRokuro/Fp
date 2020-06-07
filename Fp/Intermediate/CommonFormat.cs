@@ -13,6 +13,11 @@ namespace Fp.Intermediate
         /// <summary>
         /// Deflate-compressed PNG
         /// </summary>
-        PngDeflate
+        PngDeflate,
+
+        /// <summary>
+        /// PCM WAV file
+        /// </summary>
+        PcmWave
     }
 }

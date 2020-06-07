@@ -17,10 +17,24 @@ namespace Fp.Intermediate
         {
             return format switch
             {
-                CommonFormat.PngDeflate => ".png",
                 CommonFormat.Generic => "", // If appending extension, generic -> no change in extension
+                CommonFormat.PngDeflate => ".png",
+                CommonFormat.PcmWave => ".wav",
                 _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
             };
+        }
+
+        /// <summary>
+        /// Copy <see cref="ArraySegment{T}"/> to new compact array
+        /// </summary>
+        /// <param name="segment">Data to copy</param>
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>Newly allocated array</returns>
+        public static ArraySegment<T> CopySegment<T>(ArraySegment<T> segment)
+        {
+            var arr = new T[segment.Count];
+            segment.AsSpan(0, arr.Length).CopyTo(arr);
+            return new ArraySegment<T>(arr);
         }
     }
 }

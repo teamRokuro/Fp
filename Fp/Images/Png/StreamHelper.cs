@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.IO;
 
 namespace Fp.Images.Png
@@ -13,8 +14,7 @@ namespace Fp.Images.Png
 
         public static int ReadBigEndianInt32(byte[] bytes, int offset)
         {
-            return (bytes[0 + offset] << 24) + (bytes[1 + offset] << 16)
-                                             + (bytes[2 + offset] << 8) + bytes[3 + offset];
+            return BinaryPrimitives.ReadInt32BigEndian(bytes.AsSpan(offset));
         }
 
         public static void WriteBigEndianInt32(Stream stream, int value)

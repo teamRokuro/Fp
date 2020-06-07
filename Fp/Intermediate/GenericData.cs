@@ -15,58 +15,59 @@ namespace Fp.Intermediate
         /// <summary>
         /// Data in container
         /// </summary>
-        public byte[] Data;
-
-        /// <summary>
-        /// Offset in array
-        /// </summary>
-        public int Offset;
+        public readonly ArraySegment<byte>? Bytes;
 
         /// <summary>
         /// Length of data
         /// </summary>
-        public int Length;
+        public readonly int? Length;
 
         /// <summary>
         /// Create new instance of <see cref="GenericData"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
-        /// <param name="data">Data in container</param>
-        public GenericData(string basePath, byte[] data) : base(basePath)
+        /// <param name="length">Length of data</param>
+        public GenericData(string basePath, int? length) : base(basePath)
         {
-            Data = data;
-            Offset = 0;
-            Length = data.Length;
+            Dry = true;
+            Bytes = null;
+            Length = length;
         }
 
+
         /// <summary>
         /// Create new instance of <see cref="GenericData"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
-        /// <param name="data">Data in container</param>
-        /// <param name="offset">Offset in array</param>
-        /// <param name="length">Length of data</param>
-        public GenericData(string basePath, byte[] data, int offset, int length) : base(basePath)
+        /// <param name="bytes">Data in container</param>
+        public GenericData(string basePath, ArraySegment<byte> bytes) : base(basePath)
         {
-            Data = data;
-            Offset = offset;
-            Length = length;
+            Bytes = bytes;
+            Length = bytes.Count;
         }
 
         /// <inheritdoc />
         public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
             Dictionary<string, string>? formatOptions = null)
         {
+            if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
             switch (format)
             {
                 case CommonFormat.Generic:
-                    outputStream.Write(Data, 0, Data.Length);
+                    var data = Bytes!.Value;
+                    outputStream.Write(data.Array, data.Offset, data.Count);
                     return true;
-                case CommonFormat.PngDeflate:
-                    return false;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                    return false;
             }
+        }
+
+        /// <inheritdoc />
+        public override Data IsolateClone()
+        {
+            return Bytes.HasValue
+                ? new GenericData(BasePath, IntermediateUtil.CopySegment(Bytes.Value))
+                : new GenericData(BasePath, Length);
         }
     }
 }

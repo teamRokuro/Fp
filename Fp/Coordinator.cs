@@ -314,21 +314,10 @@ Options";
         {
             try
             {
-                processor.InputRootDirectory = inputRoot;
-                processor.InputFile = file;
-                processor.InputDirectory = Path.GetDirectoryName(file) ?? throw new Exception();
-                processor.OutputRootDirectory = configuration.OutputRootDirectory;
-                processor.OutputDirectory = Processor.BasicJoin(false, configuration.OutputRootDirectory,
-                    processor.InputDirectory.Substring(inputRoot.Length));
-                processor.InputStream = null;
-                processor.OutputStream = null;
-                processor.LittleEndian = true;
-                processor.OutputCounter = 0;
-                processor.FileSystem = fileSystem;
-                processor.Logger = configuration.Logger;
+                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
                 processor.Preload = configuration.Preload;
+                processor.Logger = configuration.Logger;
                 processor.WorkerId = workerId;
-                processor.SupportBackSlash = false;
                 processor.Process(configuration.Args);
             }
             finally

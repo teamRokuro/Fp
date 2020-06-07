@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -12,7 +11,7 @@ namespace Fp.Intermediate
         /// <summary>
         /// Base path of resource
         /// </summary>
-        public string BasePath;
+        public readonly string BasePath;
 
         /// <summary>
         /// Default format for container
@@ -20,10 +19,15 @@ namespace Fp.Intermediate
         public abstract CommonFormat DefaultFormat { get; }
 
         /// <summary>
+        /// If true, object does not contain complete data, e.g. for <see cref="WriteConvertedData"/>
+        /// </summary>
+        public bool Dry { get; protected set; }
+
+        /// <summary>
         /// Create instance of <see cref="Data"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
-        public Data(string basePath)
+        protected Data(string basePath)
         {
             BasePath = basePath;
         }
@@ -35,8 +39,13 @@ namespace Fp.Intermediate
         /// <param name="format">Requested file format</param>
         /// <param name="formatOptions">Format-specific options</param>
         /// <returns>False if requested format is not supported</returns>
-        /// <exception cref="ArgumentOutOfRangeException">If no matching enum value exists</exception>
         public abstract bool WriteConvertedData(Stream outputStream, CommonFormat format,
             Dictionary<string, string>? formatOptions = null);
+
+        /// <summary>
+        /// Create compact standalone clone of data
+        /// </summary>
+        /// <returns>Cloned data</returns>
+        public abstract Data IsolateClone();
     }
 }

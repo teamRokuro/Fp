@@ -17,28 +17,43 @@ namespace Fp.Intermediate
         /// <summary>
         /// RGBA data
         /// </summary>
-        public uint[] Data;
+        public readonly ArraySegment<uint>? Raster;
 
         /// <summary>
         /// Image width
         /// </summary>
-        public int Width;
+        public readonly int Width;
 
         /// <summary>
         /// Image height
         /// </summary>
-        public int Height;
+        public readonly int Height;
 
         /// <summary>
         /// Create new instance of <see cref="Rgba32Data"/>
         /// </summary>
-        /// <param name="baseName">Base name of resource</param>
-        /// <param name="data">RGBA data</param>
+        /// <param name="basePath">Base path of resource</param>
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
-        public Rgba32Data(string baseName, uint[] data, int width, int height) : base(baseName)
+        public Rgba32Data(string basePath, int width, int height) : base(basePath)
         {
-            Data = data;
+            Dry = true;
+            Raster = null;
+            Width = width;
+            Height = height;
+        }
+
+        /// <summary>
+        /// Create new instance of <see cref="Rgba32Data"/>
+        /// </summary>
+        /// <param name="basePath">Base path of resource</param>
+        /// <param name="width">Image width</param>
+        /// <param name="height">Image height</param>
+        /// <param name="raster">RGBA data, or null for dry</param>
+        public Rgba32Data(string basePath, int width, int height, ArraySegment<uint>? raster = null) : base(basePath)
+        {
+            Dry = !raster.HasValue;
+            Raster = raster;
             Width = width;
             Height = height;
         }
@@ -47,16 +62,23 @@ namespace Fp.Intermediate
         public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
             Dictionary<string, string>? formatOptions = null)
         {
+            if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
             switch (format)
             {
                 case CommonFormat.PngDeflate:
-                    PngBuilder.WritePngRgba(outputStream, Data, Width, Height, CompressionLevel.Optimal);
+                    PngBuilder.WritePngRgba(outputStream, Raster!.Value, Width, Height, CompressionLevel.Optimal);
                     return true;
-                case CommonFormat.Generic:
-                    return false;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(format), format, null);
+                    return false;
             }
+        }
+
+        /// <inheritdoc />
+        public override Data IsolateClone()
+        {
+            return Raster.HasValue
+                ? new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CopySegment(Raster.Value))
+                : new Rgba32Data(BasePath, Width, Height);
         }
     }
 }

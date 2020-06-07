@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Fp.Intermediate;
+using static System.Buffers.ArrayPool<byte>;
 
 namespace Fp
 {
@@ -35,9 +36,14 @@ namespace Fp
             Path.DirectorySeparatorChar == '\\' || Path.AltDirectorySeparatorChar == '\\';
 
         /// <summary>
+        /// Hint for segmented processor to perform dry-run
+        /// </summary>
+        public bool Dry;
+
+        /// <summary>
         /// Whether to allow backslash as separator
         /// </summary>
-        public bool SupportBackSlash = false;
+        public bool SupportBackSlash;
 
         /// <summary>
         /// ID of worker thread processor is using
@@ -165,6 +171,28 @@ namespace Fp
         #region Main operation functions
 
         /// <summary>
+        /// Prepare critical state for operation
+        /// </summary>
+        /// <param name="fileSystem">Filesystem source</param>
+        /// <param name="inputRoot">Input root directory</param>
+        /// <param name="outputRoot">Output root directory</param>
+        /// <param name="file">Input file</param>
+        public void Prepare(FileSystemSource fileSystem, string inputRoot, string outputRoot, string file)
+        {
+            InputRootDirectory = inputRoot;
+            InputFile = file;
+            InputDirectory = Path.GetDirectoryName(file) ?? throw new Exception();
+            OutputRootDirectory = outputRoot;
+            OutputDirectory = BasicJoin(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
+            InputStream = null;
+            OutputStream = null;
+            LittleEndian = true;
+            OutputCounter = 0;
+            FileSystem = fileSystem;
+            SupportBackSlash = false;
+        }
+
+        /// <summary>
         /// Process current file
         /// </summary>
         /// <param name="args">Command-line arguments</param>
@@ -224,7 +252,7 @@ namespace Fp
             {
                 ProcessImpl(args);
                 foreach ((string path, byte[] buffer, int offset, int length) in fs)
-                    yield return new GenericData(path, buffer, offset, length);
+                    yield return new GenericData(path, new ArraySegment<byte>(buffer, offset, length));
             }
             finally
             {
@@ -355,7 +383,7 @@ namespace Fp
 
         private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
         {
-            var buf = span.Length < sizeof(long) ? _tempBuffer : ArrayPool<byte>.Shared.Rent(4096);
+            var buf = span.Length < sizeof(long) ? _tempBuffer : Shared.Rent(4096);
             var bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
             try
@@ -377,7 +405,7 @@ namespace Fp
             finally
             {
                 if (buf != _tempBuffer)
-                    ArrayPool<byte>.Shared.Return(buf);
+                    Shared.Return(buf);
             }
         }
 
@@ -2164,7 +2192,7 @@ namespace Fp
         public void ReadHalfArray(Span<float> span, Stream? stream = null)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            var arr = ArrayPool<byte>.Shared.Rent(span.Length * 2);
+            var arr = Shared.Rent(span.Length * 2);
             try
             {
                 var span2 = arr.AsSpan(0, span.Length * 2);
@@ -2173,7 +2201,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(arr);
+                Shared.Return(arr);
             }
         }
 
@@ -2186,7 +2214,7 @@ namespace Fp
         public void ReadHalfArray(Span<float> span, long offset, Stream? stream = null)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            var arr = ArrayPool<byte>.Shared.Rent(span.Length * 2);
+            var arr = Shared.Rent(span.Length * 2);
             try
             {
                 var span2 = arr.AsSpan(0, span.Length * 2);
@@ -2195,7 +2223,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(arr);
+                Shared.Return(arr);
             }
         }
 
@@ -3214,7 +3242,7 @@ namespace Fp
             stream ??= OutputStream ?? throw new InvalidOperationException();
             long origPos = offset.HasValue ? stream.Position : -1;
             Utf8Encoder.Reset();
-            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
+            var tmpBuf = Shared.Rent(4096);
             try
             {
                 if (offset.HasValue)
@@ -3242,7 +3270,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(tmpBuf);
+                Shared.Return(tmpBuf);
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -3280,7 +3308,7 @@ namespace Fp
             long origPos = offset.HasValue ? stream.Position : -1;
             var encoder = GetUtf16Encoder(bigEndian, byteOrderMark);
             encoder.Reset();
-            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
+            var tmpBuf = Shared.Rent(4096);
             try
             {
                 if (offset.HasValue)
@@ -3309,7 +3337,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(tmpBuf);
+                Shared.Return(tmpBuf);
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -3344,7 +3372,7 @@ namespace Fp
             {
                 var realPositions = new long[2];
                 for (int i = 0; i < buffers.Length; i++)
-                    buffers[i] = ArrayPool<byte>.Shared.Rent(Math.Max(matchLength, bufferLength));
+                    buffers[i] = Shared.Rent(Math.Max(matchLength, bufferLength));
                 long basePos = streamOffset;
                 realPositions[0] = basePos;
                 long curPos = basePos;
@@ -3425,7 +3453,7 @@ namespace Fp
                 if (buffers != null)
                     foreach (var t in buffers)
                         if (t != null)
-                            ArrayPool<byte>.Shared.Return(t);
+                            Shared.Return(t);
 
                 stream.Position = initPos;
             }
@@ -3455,7 +3483,7 @@ namespace Fp
             {
                 var realPositions = new long[2];
                 for (int i = 0; i < buffers.Length; i++)
-                    buffers[i] = ArrayPool<byte>.Shared.Rent(Math.Max(matchLength, bufferLength));
+                    buffers[i] = Shared.Rent(Math.Max(matchLength, bufferLength));
                 long basePos = streamOffset;
                 realPositions[0] = basePos;
                 long curPos = basePos;
@@ -3538,7 +3566,7 @@ namespace Fp
                 if (buffers != null)
                     foreach (var t in buffers)
                         if (t != null)
-                            ArrayPool<byte>.Shared.Return(t);
+                            Shared.Return(t);
 
                 stream.Position = initPos;
             }
@@ -4021,7 +4049,8 @@ namespace Fp
         public long MatchFirst(long streamOffset, long streamMaxOffset, byte[] match, int matchOffset,
             int matchLength, int bufferLength = 4096)
         {
-            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset,
+            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+                streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
                 return v;
@@ -4135,7 +4164,8 @@ namespace Fp
             int matchLength, int bufferLength = 4096)
         {
             long u = -1;
-            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset,
+            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+                streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
                 u = v;
@@ -4242,7 +4272,7 @@ namespace Fp
             int bufferLength)
         {
             long outLen = 0;
-            var buffer = ArrayPool<byte>.Shared.Rent(bufferLength);
+            var buffer = Shared.Rent(bufferLength);
             try
             {
                 long left = length;
@@ -4261,7 +4291,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(buffer);
+                Shared.Return(buffer);
             }
 
             return outLen;
@@ -4575,7 +4605,7 @@ namespace Fp
         public long OutputAllSub(string? extension = null, string? filename = null)
             => OutputAllSub(InputStream ?? throw new InvalidOperationException(), extension, filename == null
                 ? null
-                : BasicJoin(
+                : BasicJoin(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -4929,7 +4959,7 @@ namespace Fp
 
         internal static void WriteBaseSpan(Stream stream, Span<byte> span)
         {
-            var buf = ArrayPool<byte>.Shared.Rent(4096);
+            var buf = Shared.Rent(4096);
             var bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
             try
@@ -4946,7 +4976,7 @@ namespace Fp
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(buf);
+                Shared.Return(buf);
             }
         }
 
@@ -4979,7 +5009,7 @@ namespace Fp
         public void OutputAllSub(Span<byte> span, string? extension = null, string? filename = null)
             => OutputAll(span, extension, filename == null
                 ? null
-                : BasicJoin(
+                : BasicJoin(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -5200,7 +5230,7 @@ namespace Fp
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
                 : $"{filename}{extension}";
-            string path = BasicJoin(OutputDirectory,
+            string path = BasicJoin(SupportBackSlash, OutputDirectory,
                 Path.GetFileName(mainFile) ?? throw new ProcessorException($"Null {nameof(mainFile)} provided"),
                 filename);
             if (mkDirs)
