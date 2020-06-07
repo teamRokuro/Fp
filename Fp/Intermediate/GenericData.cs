@@ -63,8 +63,10 @@ namespace Fp.Intermediate
         }
 
         /// <inheritdoc />
-        public override Data IsolateClone()
+        public override Data GetCompact(bool requireNew = false)
         {
+            if (!requireNew && Bytes.HasValue && IntermediateUtil.IsCompactSegment(Bytes.Value))
+                return this;
             return Bytes.HasValue
                 ? new GenericData(BasePath, IntermediateUtil.CopySegment(Bytes.Value))
                 : new GenericData(BasePath, Length);

@@ -43,9 +43,10 @@ namespace Fp.Intermediate
             Dictionary<string, string>? formatOptions = null);
 
         /// <summary>
-        /// Create compact standalone clone of data
+        /// Get compact data
         /// </summary>
+        /// <param name="requireNew">Require new object even if already compact</param>
         /// <returns>Cloned data</returns>
-        public abstract Data IsolateClone();
+        public abstract Data GetCompact(bool requireNew = false);
     }
 }

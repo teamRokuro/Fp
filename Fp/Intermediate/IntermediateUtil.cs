@@ -36,5 +36,16 @@ namespace Fp.Intermediate
             segment.AsSpan(0, arr.Length).CopyTo(arr);
             return new ArraySegment<T>(arr);
         }
+
+        /// <summary>
+        /// Check if segment is compact
+        /// </summary>
+        /// <param name="segment">Segment to check</param>
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>True if compact</returns>
+        public static bool IsCompactSegment<T>(ArraySegment<T> segment)
+        {
+            return segment.Offset == 0 && segment.Count == segment.Array?.Length;
+        }
     }
 }

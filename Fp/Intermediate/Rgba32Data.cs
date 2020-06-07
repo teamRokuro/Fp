@@ -74,8 +74,10 @@ namespace Fp.Intermediate
         }
 
         /// <inheritdoc />
-        public override Data IsolateClone()
+        public override Data GetCompact(bool requireNew = false)
         {
+            if (!requireNew && Raster.HasValue && IntermediateUtil.IsCompactSegment(Raster.Value))
+                return this;
             return Raster.HasValue
                 ? new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CopySegment(Raster.Value))
                 : new Rgba32Data(BasePath, Width, Height);

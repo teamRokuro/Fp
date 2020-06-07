@@ -70,14 +70,20 @@ namespace Fp.Intermediate
         }
 
         /// <inheritdoc />
-        public override Data IsolateClone()
+        public override Data GetCompact(bool requireNew = false)
         {
+            bool paramCompact = PcmInfo.ExtraParams.HasValue &&
+                                IntermediateUtil.IsCompactSegment(PcmInfo.ExtraParams.Value);
+            bool sampleCompact = Samples.HasValue && IntermediateUtil.IsCompactSegment(Samples.Value);
+            if (!requireNew && paramCompact && sampleCompact)
+                return this;
             var info = PcmInfo;
-            if (info.ExtraParams.HasValue)
+            if (info.ExtraParams.HasValue && (requireNew || !paramCompact))
                 info.ExtraParams = IntermediateUtil.CopySegment(info.ExtraParams.Value);
-            return Samples.HasValue
-                ? new PcmData(BasePath, info, IntermediateUtil.CopySegment(Samples.Value))
-                : new PcmData(BasePath, info);
+            var samples = Samples;
+            if (Samples.HasValue && (requireNew || !sampleCompact))
+                samples = IntermediateUtil.CopySegment(Samples.Value);
+            return new PcmData(BasePath, info, samples);
         }
 
 
