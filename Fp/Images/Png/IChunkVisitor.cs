@@ -1,10 +1,12 @@
 ﻿using System.IO;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// Enables execution of custom logic whenever a chunk is read.
     /// </summary>
-    public interface IChunkVisitor {
+    public interface IChunkVisitor
+    {
         /// <summary>
         /// Called by the PNG reader after a chunk is read.
         /// </summary>

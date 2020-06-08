@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// A PNG image. Call <see cref="Open(byte[],IChunkVisitor)"/> to open from file or bytes.
     /// </summary>
-    public class Png {
+    public class Png
+    {
         /// <summary>
         /// Png data
         /// </summary>
@@ -31,7 +33,8 @@ namespace Fp.Images.Png {
         /// </summary>
         public bool HasAlphaChannel => (Header.ColorType & ColorType.AlphaChannelUsed) != 0;
 
-        internal Png(ImageHeader header, RawPngData data) {
+        internal Png(ImageHeader header, RawPngData data)
+        {
             Header = header;
             Data = data ?? throw new ArgumentNullException(nameof(data));
         }
@@ -73,7 +76,8 @@ namespace Fp.Images.Png {
         /// <param name="chunkVisitor">Optional: A visitor which is called whenever a chunk is read by the library.</param>
         /// <remarks>This will open the file to obtain a <see cref="FileStream"/> so will lock the file during reading.</remarks>
         /// <returns>The <see cref="Png"/> data from the file.</returns>
-        public static Png Open(string filePath, IChunkVisitor? chunkVisitor = null) {
+        public static Png Open(string filePath, IChunkVisitor? chunkVisitor = null)
+        {
             using var fileStream = File.OpenRead(filePath);
             return Open(fileStream, chunkVisitor);
         }

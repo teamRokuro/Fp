@@ -1,11 +1,13 @@
 using System;
 using System.IO;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Stream from pointer
     /// </summary>
-    public class PStream : Stream {
+    public class PStream : Stream
+    {
         private readonly IntPtr _mPtr;
         private readonly int _mLength;
         private int _mPosition;
@@ -23,17 +25,20 @@ namespace Fp {
         public override long Length => _mLength;
 
         /// <inheritdoc />
-        public override long Position {
+        public override long Position
+        {
             get => _mPosition;
-            set => _mPosition = (int) value;
+            set => _mPosition = (int)value;
         }
 
         /// <inheritdoc />
-        public override void Flush() {
+        public override void Flush()
+        {
         }
 
         /// <inheritdoc />
-        public override unsafe int Read(byte[] buffer, int offset, int count) {
+        public override unsafe int Read(byte[] buffer, int offset, int count)
+        {
             count = Math.Min(count, Math.Min(_mLength - _mPosition, buffer.Length - offset));
             new Span<byte>((_mPtr + _mPosition).ToPointer(), count).CopyTo(buffer.AsSpan(offset, count));
             _mPosition += count;
@@ -41,16 +46,18 @@ namespace Fp {
         }
 
         /// <inheritdoc />
-        public override long Seek(long offset, SeekOrigin origin) {
-            switch (origin) {
+        public override long Seek(long offset, SeekOrigin origin)
+        {
+            switch (origin)
+            {
                 case SeekOrigin.Begin:
-                    _mPosition = (int) offset;
+                    _mPosition = (int)offset;
                     break;
                 case SeekOrigin.Current:
-                    _mPosition += (int) offset;
+                    _mPosition += (int)offset;
                     break;
                 case SeekOrigin.End:
-                    _mPosition = _mLength + (int) offset;
+                    _mPosition = _mLength + (int)offset;
                     break;
             }
 
@@ -62,12 +69,14 @@ namespace Fp {
         /// </summary>
         /// <param name="value"></param>
         /// <exception cref="NotSupportedException"></exception>
-        public override void SetLength(long value) {
+        public override void SetLength(long value)
+        {
             throw new NotSupportedException();
         }
 
         /// <inheritdoc />
-        public override unsafe void Write(byte[] buffer, int offset, int count) {
+        public override unsafe void Write(byte[] buffer, int offset, int count)
+        {
             if (Math.Min(count, Math.Min(_mLength - _mPosition, buffer.Length - offset)) < count)
                 throw new IndexOutOfRangeException(
                     $"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +
@@ -81,7 +90,8 @@ namespace Fp {
         /// </summary>
         /// <param name="ptr">Pointer</param>
         /// <param name="length">Length</param>
-        public PStream(IntPtr ptr, int length) {
+        public PStream(IntPtr ptr, int length)
+        {
             _mPtr = ptr;
             _mLength = length;
         }

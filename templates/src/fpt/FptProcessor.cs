@@ -1,22 +1,20 @@
+using System;
 using System.Collections.Generic;
 using Fp;
+using Fpt.Intermediate;
 
 namespace Fpt {
-    [ProcessorInfo("Fpt", "yourDescription", "yourExtension1")]
+    [ProcessorInfo("Fpt", "yourDescription", "yourExtendedDescription", "yourExtension1")]
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.2.2
+         * Fp 0.3.0
          */
 
-//-:cnd:noEmit
-#if FpSolo
         // Main function
         public static async System.Threading.Tasks.Task Main(string[] args) =>
-            await Coordinator.CliRunFilesystemAsync(System.Environment.CommandLine, args, System.Console.WriteLine,
+            await Coordinator.CliRunFilesystemAsync(Environment.CommandLine, args, Console.WriteLine,
                 FileSystemSource.Default, () => new FptProcessor());
-#endif
-//+:cnd:noEmit
 
         protected override void ProcessImpl(IReadOnlyList<string> args) {
             // Implement your logic here
@@ -24,7 +22,7 @@ namespace Fpt {
 
         // Alternate segmented processing
         /*
-        protected override IEnumerable<(string path, byte[] buffer, int offset, int length)> ProcessSegmentedImpl(IReadOnlyList<string> args) {
+        protected override IEnumerable<Data> ProcessSegmentedImpl(IReadOnlyList<string> args) {
             // Implement your logic here
             
         }

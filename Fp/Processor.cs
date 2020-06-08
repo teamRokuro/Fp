@@ -8,8 +8,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using Fp.Intermediate;
+using static System.Buffers.ArrayPool<byte>;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Base type for file processors
     /// </summary>
@@ -19,7 +22,8 @@ namespace Fp {
     [SuppressMessage("ReSharper", "NotAccessedField.Global")]
     [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     [SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
-    public partial class Processor : IDisposable {
+    public partial class Processor : IDisposable
+    {
         #region Properties and fields
 
         private const int StringDefaultCapacity = 4 * 1024;
@@ -32,9 +36,14 @@ namespace Fp {
             Path.DirectorySeparatorChar == '\\' || Path.AltDirectorySeparatorChar == '\\';
 
         /// <summary>
+        /// Hint for segmented processor to perform dry-run
+        /// </summary>
+        public bool Dry;
+
+        /// <summary>
         /// Whether to allow backslash as separator
         /// </summary>
-        public bool SupportBackSlash = false;
+        public bool SupportBackSlash;
 
         /// <summary>
         /// ID of worker thread processor is using
@@ -104,9 +113,11 @@ namespace Fp {
         /// <summary>
         /// Whether to read input as little-endian
         /// </summary>
-        public bool LittleEndian {
+        public bool LittleEndian
+        {
             get => _littleEndian;
-            set {
+            set
+            {
                 _littleEndian = value;
                 _swap = BitConverter.IsLittleEndian ^ _littleEndian;
             }
@@ -136,19 +147,20 @@ namespace Fp {
         private Encoder[] Utf16Encoders => _utf16Encoders ??= new Encoder[GUtf16Encodings.Length];
         private Encoder[]? _utf16Encoders;
 
-        private Encoder GetUtf16Encoder(bool bigEndian, bool bom) {
-            var i = (bigEndian ? 1 : 0) + (bom ? 2 : 0);
+        private Encoder GetUtf16Encoder(bool bigEndian, bool bom)
+        {
+            int i = (bigEndian ? 1 : 0) + (bom ? 2 : 0);
             return Utf16Encoders[i] ??= GUtf16Encodings[i].GetEncoder();
         }
 
-        private static Encoding GetUtf16Encoding(bool bigEndian, bool bom) {
+        private static Encoding GetUtf16Encoding(bool bigEndian, bool bom)
+        {
             return GUtf16Encodings[(bigEndian ? 1 : 0) + (bom ? 2 : 0)];
         }
 
-        private static Encoding[] GUtf16Encodings => _gUtf16Encodings ??= new Encoding[] {
-            new UnicodeEncoding(false, false),
-            new UnicodeEncoding(true, false),
-            new UnicodeEncoding(false, true),
+        private static Encoding[] GUtf16Encodings => _gUtf16Encodings ??= new Encoding[]
+        {
+            new UnicodeEncoding(false, false), new UnicodeEncoding(true, false), new UnicodeEncoding(false, true),
             new UnicodeEncoding(true, true)
         };
 
@@ -159,11 +171,34 @@ namespace Fp {
         #region Main operation functions
 
         /// <summary>
+        /// Prepare critical state for operation
+        /// </summary>
+        /// <param name="fileSystem">Filesystem source</param>
+        /// <param name="inputRoot">Input root directory</param>
+        /// <param name="outputRoot">Output root directory</param>
+        /// <param name="file">Input file</param>
+        public void Prepare(FileSystemSource fileSystem, string inputRoot, string outputRoot, string file)
+        {
+            InputRootDirectory = inputRoot;
+            InputFile = file;
+            InputDirectory = Path.GetDirectoryName(file) ?? throw new Exception();
+            OutputRootDirectory = outputRoot;
+            OutputDirectory = BasicJoin(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
+            InputStream = null;
+            OutputStream = null;
+            LittleEndian = true;
+            OutputCounter = 0;
+            FileSystem = fileSystem;
+            SupportBackSlash = false;
+        }
+
+        /// <summary>
         /// Process current file
         /// </summary>
         /// <param name="args">Command-line arguments</param>
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
-        protected virtual void ProcessImpl(IReadOnlyList<string> args) {
+        protected virtual void ProcessImpl(IReadOnlyList<string> args)
+        {
             _overrideProcess = false;
         }
 
@@ -173,8 +208,9 @@ namespace Fp {
         /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
-        protected virtual IEnumerable<(string path, byte[] buffer, int offset, int length)> ProcessSegmentedImpl(
-            IReadOnlyList<string> args) {
+        protected virtual IEnumerable<Data> ProcessSegmentedImpl(
+            IReadOnlyList<string> args)
+        {
             _overrideProcessSegmented = false;
             yield break;
         }
@@ -184,13 +220,16 @@ namespace Fp {
         /// </summary>
         /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        public void Process(IReadOnlyList<string> args) {
+        public void Process(IReadOnlyList<string> args)
+        {
             ProcessImpl(args);
             if (_overrideProcess) return;
-            foreach (var (path, buffer, offset, length) in ProcessSegmentedImpl(args)) {
+            foreach (var data in ProcessSegmentedImpl(args))
+            {
                 using var stream =
-                    (FileSystem ?? throw new InvalidOperationException()).OpenWrite(GenPath(default, path));
-                stream.Write(buffer, offset, length);
+                    (FileSystem ?? throw new InvalidOperationException()).OpenWrite(
+                        GenPath(data.DefaultFormat.GetExtension(), data.BasePath));
+                data.WriteConvertedData(stream, data.DefaultFormat);
             }
         }
 
@@ -199,8 +238,9 @@ namespace Fp {
         /// </summary>
         /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        public IEnumerable<(string path, byte[] buffer, int offset, int length)> ProcessSegmented(
-            IReadOnlyList<string> args) {
+        public IEnumerable<Data> ProcessSegmented(
+            IReadOnlyList<string> args)
+        {
             foreach (var entry in ProcessSegmentedImpl(args))
                 yield return entry;
             if (_overrideProcessSegmented)
@@ -208,12 +248,14 @@ namespace Fp {
             var prevFs = FileSystem ?? throw new InvalidOperationException();
             var fs = new FileSystemSource.SegmentedFileSystemSource(prevFs);
             FileSystem = fs;
-            try {
+            try
+            {
                 ProcessImpl(args);
-                foreach (var entry in fs)
-                    yield return entry;
+                foreach ((string path, byte[] buffer, int offset, int length) in fs)
+                    yield return new GenericData(path, new ArraySegment<byte>(buffer, offset, length));
             }
-            finally {
+            finally
+            {
                 FileSystem = prevFs;
             }
         }
@@ -247,7 +289,8 @@ namespace Fp {
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
-        public bool HasMagic(Stream stream, Span<byte> span, long offset = 0) {
+        public bool HasMagic(Stream stream, Span<byte> span, long offset = 0)
+        {
             Span<byte> span2 = stackalloc byte[span.Length];
             Read(stream, offset, span2, false);
             return span.SequenceEqual(span2);
@@ -322,9 +365,11 @@ namespace Fp {
         public long Skip(long bytes)
             => (InputStream ?? throw new InvalidOperationException()).Seek(bytes, SeekOrigin.Current);
 
-        private static int ReadBaseArray(Stream stream, byte[] array, int offset, int length, bool lenient) {
+        private static int ReadBaseArray(Stream stream, byte[] array, int offset, int length, bool lenient)
+        {
             int left = length, read, tot = 0;
-            do {
+            do
+            {
                 read = stream.Read(array, offset + tot, left);
                 left -= read;
                 tot += read;
@@ -336,27 +381,31 @@ namespace Fp {
             return tot;
         }
 
-        private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient) {
-            var buf = span.Length < sizeof(long) ? _tempBuffer : ArrayPool<byte>.Shared.Rent(4096);
+        private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
+        {
+            var buf = span.Length < sizeof(long) ? _tempBuffer : Shared.Rent(4096);
             var bufSpan = buf.AsSpan();
-            var bufLen = buf.Length;
-            try {
+            int bufLen = buf.Length;
+            try
+            {
                 int left = span.Length, read, tot = 0;
-                do {
+                do
+                {
                     read = stream.Read(buf, 0, Math.Min(left, bufLen));
                     bufSpan.Slice(0, read).CopyTo(span.Slice(tot));
                     left -= read;
                     tot += read;
-                } while (left > 0 && read == 0);
+                } while (left > 0 && read != 0);
 
                 if (left > 0 && !lenient)
                     throw new ProcessorException(
                         $"Failed to read required number of bytes! 0x{read:X} read, 0x{left:X} left, 0x{stream.Position:X} end position");
                 return tot;
             }
-            finally {
+            finally
+            {
                 if (buf != _tempBuffer)
-                    ArrayPool<byte>.Shared.Return(buf);
+                    Shared.Return(buf);
             }
         }
 
@@ -370,13 +419,16 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false) {
+        public int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false)
+        {
             if (forceNew || !(stream is MemoryStream ms) || !ms.TryGetBuffer(out var buf))
                 return ReadBaseSpan(stream, span, lenient);
-            try {
-                return (span = buf.AsSpan((int) ms.Position, span.Length)).Length;
+            try
+            {
+                return (span = buf.AsSpan((int)ms.Position, span.Length)).Length;
             }
-            catch (ArgumentOutOfRangeException exception) {
+            catch (ArgumentOutOfRangeException exception)
+            {
                 throw new ProcessorException("Failed to convert span from memory stream", exception);
             }
         }
@@ -393,12 +445,16 @@ namespace Fp {
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(Stream stream, int length, out Span<byte> span, bool lenient = true,
-            bool forceNew = false) {
-            if (!forceNew && stream is MemoryStream ms && ms.TryGetBuffer(out var buf)) {
-                try {
-                    return (span = buf.AsSpan((int) stream.Position, length)).Length;
+            bool forceNew = false)
+        {
+            if (!forceNew && stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
+            {
+                try
+                {
+                    return (span = buf.AsSpan((int)stream.Position, length)).Length;
                 }
-                catch (ArgumentOutOfRangeException exception) {
+                catch (ArgumentOutOfRangeException exception)
+                {
                     throw new ProcessorException("Failed to convert span from memory stream", exception);
                 }
             }
@@ -416,14 +472,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, Span<byte> span, bool lenient = true) {
+        public int Read(Stream stream, Span<byte> span, bool lenient = true)
+        {
             if (!(stream is MemoryStream ms) || !ms.TryGetBuffer(out var buf))
                 return ReadBaseSpan(stream, span, lenient);
-            try {
-                buf.AsSpan((int) ms.Position, span.Length).CopyTo(span);
+            try
+            {
+                buf.AsSpan((int)ms.Position, span.Length).CopyTo(span);
                 return span.Length;
             }
-            catch (ArgumentOutOfRangeException exception) {
+            catch (ArgumentOutOfRangeException exception)
+            {
                 throw new ProcessorException("Failed to convert span from memory stream", exception);
             }
         }
@@ -474,14 +533,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, long offset, Span<byte> span, bool lenient = true) {
-            var position = stream.Position;
-            try {
+        public int Read(Stream stream, long offset, Span<byte> span, bool lenient = true)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var count = Read(stream, span, lenient);
+                int count = Read(stream, span, lenient);
                 return count;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -495,14 +557,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(long offset, Span<byte> span, bool lenient = true) {
-            var position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+        public int Read(long offset, Span<byte> span, bool lenient = true)
+        {
+            long position = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var count = Read(InputStream, span, lenient);
+                int count = Read(InputStream, span, lenient);
                 return count;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = position;
             }
         }
@@ -519,14 +584,17 @@ namespace Fp {
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(Stream stream, long offset, ref Span<byte> span, bool lenient = true,
-            bool forceNew = false) {
-            var position = stream.Position;
-            try {
+            bool forceNew = false)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var count = Read(stream, ref span, lenient, forceNew);
+                int count = Read(stream, ref span, lenient, forceNew);
                 return count;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -541,14 +609,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(long offset, ref Span<byte> span, bool lenient = true, bool forceNew = false) {
-            var position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+        public int Read(long offset, ref Span<byte> span, bool lenient = true, bool forceNew = false)
+        {
+            long position = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var count = Read(InputStream, ref span, lenient, forceNew);
+                int count = Read(InputStream, ref span, lenient, forceNew);
                 return count;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = position;
             }
         }
@@ -566,14 +637,17 @@ namespace Fp {
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(Stream stream, long offset, int length, out Span<byte> span, bool lenient = true,
-            bool forceNew = false) {
-            var position = stream.Position;
-            try {
+            bool forceNew = false)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var count = Read(stream, length, out span, lenient, forceNew);
+                int count = Read(stream, length, out span, lenient, forceNew);
                 return count;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -589,14 +663,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(long offset, int length, out Span<byte> span, bool lenient = true, bool forceNew = false) {
-            var position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+        public int Read(long offset, int length, out Span<byte> span, bool lenient = true, bool forceNew = false)
+        {
+            long position = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var count = Read(InputStream, length, out span, lenient, forceNew);
+                int count = Read(InputStream, length, out span, lenient, forceNew);
                 return count;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = position;
             }
         }
@@ -641,14 +718,17 @@ namespace Fp {
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public static int Read(Stream stream, long offset, byte[] array, int arrayOffset, int arrayLength,
-            bool lenient = true) {
-            var position = stream.Position;
-            try {
+            bool lenient = true)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var count = Read(stream, array, arrayOffset, arrayLength, lenient);
+                int count = Read(stream, array, arrayOffset, arrayLength, lenient);
                 return count;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -664,14 +744,17 @@ namespace Fp {
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(long offset, byte[] array, int arrayOffset, int arrayLength, bool lenient = true) {
-            var position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+        public int Read(long offset, byte[] array, int arrayOffset, int arrayLength, bool lenient = true)
+        {
+            long position = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var count = Read(InputStream, array, arrayOffset, arrayLength, lenient);
+                int count = Read(InputStream, array, arrayOffset, arrayLength, lenient);
                 return count;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = position;
             }
         }
@@ -730,7 +813,8 @@ namespace Fp {
         /// <param name="stream">Stream to read from</param>
         /// <param name="forceNew">Force use newly allocated buffer</param>
         /// <returns>Array with file contents</returns>
-        public byte[] GetArray(Stream? stream = null, bool forceNew = false) {
+        public byte[] GetArray(Stream? stream = null, bool forceNew = false)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             if (!forceNew && stream is MemoryStream ms)
                 return ms.Capacity == ms.Length && ms.TryGetBuffer(out _) ? ms.GetBuffer() : ms.ToArray();
@@ -748,13 +832,14 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public sbyte ReadS8(Stream? stream = null) {
+        public sbyte ReadS8(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
-                return (sbyte) buf.AsSpan((int) ms.Position)[0];
+                return (sbyte)buf.AsSpan((int)ms.Position)[0];
 
             Read(stream, _tempBuffer, 0, 1, false);
-            return (sbyte) _tempBuffer[0];
+            return (sbyte)_tempBuffer[0];
         }
 
         /// <summary>
@@ -763,13 +848,14 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public sbyte ReadS8(long offset, Stream? stream = null) {
+        public sbyte ReadS8(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
-                return (sbyte) buf.AsSpan((int) offset)[0];
+                return (sbyte)buf.AsSpan((int)offset)[0];
 
             Read(stream, offset, _tempBuffer, 0, 1, false);
-            return (sbyte) _tempBuffer[0];
+            return (sbyte)_tempBuffer[0];
         }
 
         /// <summary>
@@ -778,8 +864,9 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public sbyte GetS8(Span<byte> span, int offset = 0) {
-            return (sbyte) span[offset];
+        public sbyte GetS8(Span<byte> span, int offset = 0)
+        {
+            return (sbyte)span[offset];
         }
 
         /// <summary>
@@ -787,10 +874,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public byte ReadU8(Stream? stream = null) {
+        public byte ReadU8(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
-                return buf.AsSpan((int) ms.Position)[0];
+                return buf.AsSpan((int)ms.Position)[0];
 
             Read(stream, _tempBuffer, 0, 1, false);
             return _tempBuffer[0];
@@ -802,10 +890,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public byte ReadU8(long offset, Stream? stream = null) {
+        public byte ReadU8(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out var buf))
-                return buf.AsSpan((int) offset)[0];
+                return buf.AsSpan((int)offset)[0];
 
             Read(stream, offset, _tempBuffer, 0, 1, false);
             return _tempBuffer[0];
@@ -817,7 +906,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public byte GetU8(Span<byte> span, int offset = 0) {
+        public byte GetU8(Span<byte> span, int offset = 0)
+        {
             return span[offset];
         }
 
@@ -826,9 +916,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public short ReadS16(Stream? stream = null) {
+        public short ReadS16(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 2, out var span2, false);
                 return GetS16(span2);
             }
@@ -844,9 +936,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public short ReadS16(long offset, Stream? stream = null) {
+        public short ReadS16(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 2, out var span2, false);
                 return GetS16(span2);
             }
@@ -862,7 +956,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public short GetS16(Span<byte> span, int offset = 0) {
+        public short GetS16(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, short>(span.Slice(offset, 2))[0];
             Span<byte> span2 = stackalloc byte[2];
@@ -877,7 +972,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public short GetS16NoCopy(Span<byte> span, int offset = 0) {
+        public short GetS16NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             if (_swap)
                 sub.Reverse();
@@ -889,9 +985,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public ushort ReadU16(Stream? stream = null) {
+        public ushort ReadU16(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 2, out var span2, false);
                 return GetU16(span2);
             }
@@ -907,9 +1005,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public ushort ReadU16(long offset, Stream? stream = null) {
+        public ushort ReadU16(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 2, out var span2, false);
                 return GetU16(span2);
             }
@@ -925,7 +1025,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ushort GetU16(Span<byte> span, int offset = 0) {
+        public ushort GetU16(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0];
             Span<byte> span2 = stackalloc byte[2];
@@ -940,7 +1041,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ushort GetU16NoCopy(Span<byte> span, int offset = 0) {
+        public ushort GetU16NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             if (_swap)
                 sub.Reverse();
@@ -952,9 +1054,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public int ReadS32(Stream? stream = null) {
+        public int ReadS32(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 4, out var span2, false);
                 return GetS32(span2);
             }
@@ -970,9 +1074,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public int ReadS32(long offset, Stream? stream = null) {
+        public int ReadS32(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 4, out var span2, false);
                 return GetS32(span2);
             }
@@ -988,7 +1094,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public int GetS32(Span<byte> span, int offset = 0) {
+        public int GetS32(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, int>(span.Slice(offset, 4))[0];
             Span<byte> span2 = stackalloc byte[4];
@@ -1003,7 +1110,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public int GetS32NoCopy(Span<byte> span, int offset = 0) {
+        public int GetS32NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 4);
             if (_swap)
                 sub.Reverse();
@@ -1015,9 +1123,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public uint ReadU32(Stream? stream = null) {
+        public uint ReadU32(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 4, out var span2, false);
                 return GetU32(span2);
             }
@@ -1033,9 +1143,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public uint ReadU32(long offset, Stream? stream = null) {
+        public uint ReadU32(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 4, out var span2, false);
                 return GetU32(span2);
             }
@@ -1051,7 +1163,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public uint GetU32(Span<byte> span, int offset = 0) {
+        public uint GetU32(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, uint>(span.Slice(offset, 4))[0];
             Span<byte> span2 = stackalloc byte[4];
@@ -1066,7 +1179,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public uint GetU32NoCopy(Span<byte> span, int offset = 0) {
+        public uint GetU32NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 4);
             if (_swap)
                 sub.Reverse();
@@ -1078,9 +1192,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public long ReadS64(Stream? stream = null) {
+        public long ReadS64(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 8, out var span2, false);
                 return GetS64(span2);
             }
@@ -1096,9 +1212,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public long ReadS64(long offset, Stream? stream = null) {
+        public long ReadS64(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 8, out var span2, false);
                 return GetS64(span2);
             }
@@ -1114,7 +1232,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public long GetS64(Span<byte> span, int offset = 0) {
+        public long GetS64(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, long>(span.Slice(offset, 8))[0];
             Span<byte> span2 = stackalloc byte[8];
@@ -1129,7 +1248,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public long GetS64NoCopy(Span<byte> span, int offset = 0) {
+        public long GetS64NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 8);
             if (_swap)
                 sub.Reverse();
@@ -1141,9 +1261,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public ulong ReadU64(Stream? stream = null) {
+        public ulong ReadU64(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 8, out var span2, false);
                 return GetU64(span2);
             }
@@ -1159,9 +1281,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public ulong ReadU64(long offset, Stream? stream = null) {
+        public ulong ReadU64(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 8, out var span2, false);
                 return GetU64(span2);
             }
@@ -1177,7 +1301,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ulong GetU64(Span<byte> span, int offset = 0) {
+        public ulong GetU64(Span<byte> span, int offset = 0)
+        {
             if (!_swap)
                 return MemoryMarshal.Cast<byte, ulong>(span.Slice(offset, 8))[0];
             Span<byte> span2 = stackalloc byte[8];
@@ -1192,7 +1317,8 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ulong GetU64NoCopy(Span<byte> span, int offset = 0) {
+        public ulong GetU64NoCopy(Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 8);
             if (_swap)
                 sub.Reverse();
@@ -1204,9 +1330,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public float ReadHalf(Stream? stream = null) {
+        public float ReadHalf(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 2, out var span2, false);
                 return GetSingle(span2);
             }
@@ -1222,9 +1350,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public float ReadHalf(long offset, Stream? stream = null) {
+        public float ReadHalf(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 2, out var span2, false);
                 return GetSingle(span2);
             }
@@ -1248,9 +1378,11 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public float ReadSingle(Stream? stream = null) {
+        public float ReadSingle(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, 4, out var span2, false);
                 return GetSingle(span2);
             }
@@ -1266,9 +1398,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public float ReadSingle(long offset, Stream? stream = null) {
+        public float ReadSingle(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 4, out var span2, false);
                 return GetSingle(span2);
             }
@@ -1292,7 +1426,8 @@ namespace Fp {
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public double ReadDouble(Stream? stream = null) {
+        public double ReadDouble(Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
@@ -1305,9 +1440,11 @@ namespace Fp {
         /// <param name="offset">Offset to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Value</returns>
-        public double ReadDouble(long offset, Stream? stream = null) {
+        public double ReadDouble(long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream) {
+            if (stream is MemoryStream)
+            {
                 Read(stream, offset, 8, out var span2, false);
                 return GetDouble(span2);
             }
@@ -1331,7 +1468,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS8Array(Span<sbyte> span, Stream? stream = null) {
+        public void ReadS8Array(Span<sbyte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<sbyte, byte>(span), false);
         }
@@ -1342,7 +1480,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS8Array(Span<sbyte> span, long offset, Stream? stream = null) {
+        public void ReadS8Array(Span<sbyte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<sbyte, byte>(span), false);
         }
@@ -1352,7 +1491,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS8Array(Span<byte> span, Stream? stream = null) {
+        public void ReadS8Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
         }
@@ -1363,7 +1503,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS8Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadS8Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
         }
@@ -1374,7 +1515,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public sbyte[] ReadS8Array(int count, Stream? stream = null) {
+        public sbyte[] ReadS8Array(int count, Stream? stream = null)
+        {
             var arr = new sbyte[count];
             var span = MemoryMarshal.Cast<sbyte, byte>(arr);
             ReadS8Array(span, stream);
@@ -1388,7 +1530,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public sbyte[] ReadS8Array(long offset, int count, Stream? stream = null) {
+        public sbyte[] ReadS8Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new sbyte[count];
             var span = MemoryMarshal.Cast<sbyte, byte>(arr);
             ReadS8Array(span, offset, stream);
@@ -1402,7 +1545,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU8Array(Span<byte> span, Stream? stream = null) {
+        public void ReadU8Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
         }
@@ -1413,7 +1557,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU8Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadU8Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
         }
@@ -1424,7 +1569,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public byte[] ReadU8Array(int count, Stream? stream = null) {
+        public byte[] ReadU8Array(int count, Stream? stream = null)
+        {
             var arr = new byte[count];
             ReadU8Array(arr, stream);
             return arr;
@@ -1437,7 +1583,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public byte[] ReadU8Array(long offset, int count, Stream? stream = null) {
+        public byte[] ReadU8Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new byte[count];
             ReadU8Array(arr, offset, stream);
             return arr;
@@ -1448,7 +1595,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS16Array(Span<short> span, Stream? stream = null) {
+        public void ReadS16Array(Span<short> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<short, byte>(span), false);
             ConvertS16Array(span);
@@ -1460,7 +1608,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS16Array(Span<short> span, long offset, Stream? stream = null) {
+        public void ReadS16Array(Span<short> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<short, byte>(span), false);
             ConvertS16Array(span);
@@ -1470,9 +1619,10 @@ namespace Fp {
         /// Convert endianness of signed 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS16Array(Span<short> span) {
+        public void ConvertS16Array(Span<short> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1480,7 +1630,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS16Array(Span<byte> span, Stream? stream = null) {
+        public void ReadS16Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS16Array(span);
@@ -1492,7 +1643,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS16Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadS16Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS16Array(span);
@@ -1510,7 +1662,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public short[] ReadS16Array(int count, Stream? stream = null) {
+        public short[] ReadS16Array(int count, Stream? stream = null)
+        {
             var arr = new short[count];
             var span = MemoryMarshal.Cast<short, byte>(arr);
             ReadS16Array(span, stream);
@@ -1524,7 +1677,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public short[] ReadS16Array(long offset, int count, Stream? stream = null) {
+        public short[] ReadS16Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new short[count];
             var span = MemoryMarshal.Cast<short, byte>(arr);
             ReadS16Array(span, offset, stream);
@@ -1536,7 +1690,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU16Array(Span<ushort> span, Stream? stream = null) {
+        public void ReadU16Array(Span<ushort> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<ushort, byte>(span), false);
             ConvertU16Array(span);
@@ -1548,7 +1703,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU16Array(Span<ushort> span, long offset, Stream? stream = null) {
+        public void ReadU16Array(Span<ushort> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<ushort, byte>(span), false);
             ConvertU16Array(span);
@@ -1558,9 +1714,10 @@ namespace Fp {
         /// Convert endianness of unsigned 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU16Array(Span<ushort> span) {
+        public void ConvertU16Array(Span<ushort> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1568,7 +1725,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU16Array(Span<byte> span, Stream? stream = null) {
+        public void ReadU16Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU16Array(span);
@@ -1580,7 +1738,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU16Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadU16Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU16Array(span);
@@ -1598,7 +1757,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public ushort[] ReadU16Array(int count, Stream? stream = null) {
+        public ushort[] ReadU16Array(int count, Stream? stream = null)
+        {
             var arr = new ushort[count];
             var span = MemoryMarshal.Cast<ushort, byte>(arr);
             ReadU16Array(span, stream);
@@ -1612,7 +1772,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public ushort[] ReadU16Array(long offset, int count, Stream? stream = null) {
+        public ushort[] ReadU16Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new ushort[count];
             var span = MemoryMarshal.Cast<ushort, byte>(arr);
             ReadU16Array(span, offset, stream);
@@ -1624,7 +1785,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS32Array(Span<int> span, Stream? stream = null) {
+        public void ReadS32Array(Span<int> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<int, byte>(span), false);
             ConvertS32Array(span);
@@ -1636,7 +1798,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS32Array(Span<int> span, long offset, Stream? stream = null) {
+        public void ReadS32Array(Span<int> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<int, byte>(span), false);
             ConvertS32Array(span);
@@ -1646,9 +1809,10 @@ namespace Fp {
         /// Convert endianness of signed 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS32Array(Span<int> span) {
+        public void ConvertS32Array(Span<int> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1656,7 +1820,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS32Array(Span<byte> span, Stream? stream = null) {
+        public void ReadS32Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS32Array(span);
@@ -1668,7 +1833,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS32Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadS32Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS32Array(span);
@@ -1686,7 +1852,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public int[] ReadS32Array(int count, Stream? stream = null) {
+        public int[] ReadS32Array(int count, Stream? stream = null)
+        {
             var arr = new int[count];
             var span = MemoryMarshal.Cast<int, byte>(arr);
             ReadS32Array(span, stream);
@@ -1700,7 +1867,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public int[] ReadS32Array(long offset, int count, Stream? stream = null) {
+        public int[] ReadS32Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new int[count];
             var span = MemoryMarshal.Cast<int, byte>(arr);
             ReadS32Array(span, offset, stream);
@@ -1712,7 +1880,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU32Array(Span<uint> span, Stream? stream = null) {
+        public void ReadU32Array(Span<uint> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<uint, byte>(span), false);
             ConvertU32Array(span);
@@ -1724,7 +1893,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU32Array(Span<uint> span, long offset, Stream? stream = null) {
+        public void ReadU32Array(Span<uint> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<uint, byte>(span), false);
             ConvertU32Array(span);
@@ -1734,9 +1904,10 @@ namespace Fp {
         /// Convert endianness of unsigned 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU32Array(Span<uint> span) {
+        public void ConvertU32Array(Span<uint> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1744,7 +1915,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU32Array(Span<byte> span, Stream? stream = null) {
+        public void ReadU32Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU32Array(span);
@@ -1756,7 +1928,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU32Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadU32Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU32Array(span);
@@ -1774,7 +1947,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public uint[] ReadU32Array(int count, Stream? stream = null) {
+        public uint[] ReadU32Array(int count, Stream? stream = null)
+        {
             var arr = new uint[count];
             var span = MemoryMarshal.Cast<uint, byte>(arr);
             ReadU32Array(span, stream);
@@ -1788,7 +1962,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public uint[] ReadU32Array(long offset, int count, Stream? stream = null) {
+        public uint[] ReadU32Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new uint[count];
             var span = MemoryMarshal.Cast<uint, byte>(arr);
             ReadU32Array(span, offset, stream);
@@ -1800,7 +1975,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS64Array(Span<long> span, Stream? stream = null) {
+        public void ReadS64Array(Span<long> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<long, byte>(span), false);
             ConvertS64Array(span);
@@ -1812,7 +1988,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS64Array(Span<long> span, long offset, Stream? stream = null) {
+        public void ReadS64Array(Span<long> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<long, byte>(span), false);
             ConvertS64Array(span);
@@ -1822,9 +1999,10 @@ namespace Fp {
         /// Convert endianness of signed 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS64Array(Span<long> span) {
+        public void ConvertS64Array(Span<long> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1832,7 +2010,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS64Array(Span<byte> span, Stream? stream = null) {
+        public void ReadS64Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS64Array(span);
@@ -1844,7 +2023,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadS64Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadS64Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS64Array(span);
@@ -1862,7 +2042,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public long[] ReadS64Array(int count, Stream? stream = null) {
+        public long[] ReadS64Array(int count, Stream? stream = null)
+        {
             var arr = new long[count];
             var span = MemoryMarshal.Cast<long, byte>(arr);
             ReadS64Array(span, stream);
@@ -1876,7 +2057,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public long[] ReadS64Array(long offset, int count, Stream? stream = null) {
+        public long[] ReadS64Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new long[count];
             var span = MemoryMarshal.Cast<long, byte>(arr);
             ReadS64Array(span, offset, stream);
@@ -1888,7 +2070,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU64Array(Span<ulong> span, Stream? stream = null) {
+        public void ReadU64Array(Span<ulong> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<ulong, byte>(span), false);
             ConvertU64Array(span);
@@ -1900,7 +2083,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU64Array(Span<ulong> span, long offset, Stream? stream = null) {
+        public void ReadU64Array(Span<ulong> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<ulong, byte>(span), false);
             ConvertU64Array(span);
@@ -1910,9 +2094,10 @@ namespace Fp {
         /// Convert endianness of unsigned 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU64Array(Span<ulong> span) {
+        public void ConvertU64Array(Span<ulong> span)
+        {
             if (!_swap) return;
-            for (var i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            for (int i = 0; i < span.Length; i++) span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
         }
 
         /// <summary>
@@ -1920,7 +2105,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU64Array(Span<byte> span, Stream? stream = null) {
+        public void ReadU64Array(Span<byte> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU64Array(span);
@@ -1932,7 +2118,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadU64Array(Span<byte> span, long offset, Stream? stream = null) {
+        public void ReadU64Array(Span<byte> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU64Array(span);
@@ -1950,7 +2137,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public ulong[] ReadU64Array(int count, Stream? stream = null) {
+        public ulong[] ReadU64Array(int count, Stream? stream = null)
+        {
             var arr = new ulong[count];
             var span = MemoryMarshal.Cast<ulong, byte>(arr);
             ReadS16Array(span, stream);
@@ -1964,7 +2152,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public ulong[] ReadU64Array(long offset, int count, Stream? stream = null) {
+        public ulong[] ReadU64Array(long offset, int count, Stream? stream = null)
+        {
             var arr = new ulong[count];
             var span = MemoryMarshal.Cast<ulong, byte>(arr);
             ReadS16Array(span, offset, stream);
@@ -1976,9 +2165,10 @@ namespace Fp {
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void ConvertHalfArrayToFloat(Span<byte> source, Span<float> target) {
+        public static void ConvertHalfArrayToFloat(Span<byte> source, Span<float> target)
+        {
             var span = MemoryMarshal.Cast<byte, ushort>(source);
-            for (var i = 0; i < span.Length; i++)
+            for (int i = 0; i < span.Length; i++)
                 target[i] = HalfHelper.HalfToSingle(span[i]);
         }
 
@@ -1987,9 +2177,10 @@ namespace Fp {
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void ConvertFloatArrayToHalf(Span<float> source, Span<byte> target) {
+        public static void ConvertFloatArrayToHalf(Span<float> source, Span<byte> target)
+        {
             var span = MemoryMarshal.Cast<byte, ushort>(target);
-            for (var i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length; i++)
                 span[i] = HalfHelper.SingleToHalf(source[i]);
         }
 
@@ -1998,16 +2189,19 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadHalfArray(Span<float> span, Stream? stream = null) {
+        public void ReadHalfArray(Span<float> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            var arr = ArrayPool<byte>.Shared.Rent(span.Length * 2);
-            try {
+            var arr = Shared.Rent(span.Length * 2);
+            try
+            {
                 var span2 = arr.AsSpan(0, span.Length * 2);
                 Read(stream, span2, false);
                 ConvertHalfArrayToFloat(span2, span);
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(arr);
+            finally
+            {
+                Shared.Return(arr);
             }
         }
 
@@ -2017,16 +2211,19 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadHalfArray(Span<float> span, long offset, Stream? stream = null) {
+        public void ReadHalfArray(Span<float> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            var arr = ArrayPool<byte>.Shared.Rent(span.Length * 2);
-            try {
+            var arr = Shared.Rent(span.Length * 2);
+            try
+            {
                 var span2 = arr.AsSpan(0, span.Length * 2);
                 Read(stream, offset, span2, false);
                 ConvertHalfArrayToFloat(span2, span);
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(arr);
+            finally
+            {
+                Shared.Return(arr);
             }
         }
 
@@ -2036,7 +2233,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public float[] ReadHalfArray(int count, Stream? stream = null) {
+        public float[] ReadHalfArray(int count, Stream? stream = null)
+        {
             var arr = new float[count];
             ReadHalfArray(arr, stream);
             return arr;
@@ -2049,7 +2247,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public float[] ReadHalfArray(long offset, int count, Stream? stream = null) {
+        public float[] ReadHalfArray(long offset, int count, Stream? stream = null)
+        {
             var arr = new float[count];
             ReadHalfArray(arr, offset, stream);
             return arr;
@@ -2060,7 +2259,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadSingleArray(Span<float> span, Stream? stream = null) {
+        public void ReadSingleArray(Span<float> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<float, byte>(span), false);
         }
@@ -2071,7 +2271,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadSingleArray(Span<float> span, long offset, Stream? stream = null) {
+        public void ReadSingleArray(Span<float> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<float, byte>(span), false);
         }
@@ -2082,7 +2283,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public float[] ReadSingleArray(int count, Stream? stream = null) {
+        public float[] ReadSingleArray(int count, Stream? stream = null)
+        {
             var arr = new float[count];
             ReadSingleArray(arr, stream);
             return arr;
@@ -2095,7 +2297,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public float[] ReadSingleArray(long offset, int count, Stream? stream = null) {
+        public float[] ReadSingleArray(long offset, int count, Stream? stream = null)
+        {
             var arr = new float[count];
             ReadSingleArray(arr, offset, stream);
             return arr;
@@ -2106,7 +2309,8 @@ namespace Fp {
         /// </summary>
         /// <param name="span">Span to write to</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadDoubleArray(Span<double> span, Stream? stream = null) {
+        public void ReadDoubleArray(Span<double> span, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<double, byte>(span), false);
         }
@@ -2117,7 +2321,8 @@ namespace Fp {
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset in stream to read from</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
-        public void ReadDoubleArray(Span<double> span, long offset, Stream? stream = null) {
+        public void ReadDoubleArray(Span<double> span, long offset, Stream? stream = null)
+        {
             stream ??= InputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<double, byte>(span), false);
         }
@@ -2128,7 +2333,8 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public double[] ReadDoubleArray(int count, Stream? stream = null) {
+        public double[] ReadDoubleArray(int count, Stream? stream = null)
+        {
             var arr = new double[count];
             ReadDoubleArray(arr, stream);
             return arr;
@@ -2141,13 +2347,15 @@ namespace Fp {
         /// <param name="count">Number of elements to read</param>
         /// <param name="stream">Stream to read from, uses current file if null</param>
         /// <returns>Newly allocated array</returns>
-        public double[] ReadDoubleArray(long offset, int count, Stream? stream = null) {
+        public double[] ReadDoubleArray(long offset, int count, Stream? stream = null)
+        {
             var arr = new double[count];
             ReadDoubleArray(arr, offset, stream);
             return arr;
         }
 
-        private static unsafe string DecodeSpan(ReadOnlySpan<byte> span, Encoding encoding) {
+        private static unsafe string DecodeSpan(ReadOnlySpan<byte> span, Encoding encoding)
+        {
             if (span.Length == 0)
                 return string.Empty;
             fixed (byte* spanFixed = &span.GetPinnableReference())
@@ -2161,24 +2369,28 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
-            try {
-                var c = 0;
-                do {
-                    var v = stream.ReadByte();
+        public string ReadUtf8String(Stream stream, int maxLength = int.MaxValue, bool strict = false)
+        {
+            try
+            {
+                int c = 0;
+                do
+                {
+                    int v = stream.ReadByte();
                     if (v == -1 || v == 0)
                         break;
-                    TempMs.WriteByte((byte) v);
+                    TempMs.WriteByte((byte)v);
                     c++;
                 } while (c < maxLength);
 
-                var str = ReadUtf8String(TempMs.GetBuffer().AsSpan(0, (int) TempMs.Length));
+                string str = ReadUtf8String(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length));
 
                 if (strict)
                     Skip(maxLength - c, stream);
                 return str;
             }
-            finally {
+            finally
+            {
                 if (TempMs.Capacity > StringExcessiveCapacity)
                     TempMs.Capacity = StringDefaultCapacity;
             }
@@ -2193,14 +2405,17 @@ namespace Fp {
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
         public string ReadUtf8StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
-            bool strict = false) {
-            var position = stream.Position;
-            try {
+            bool strict = false)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var str = ReadUtf8String(stream, maxLength, strict);
+                string str = ReadUtf8String(stream, maxLength, strict);
                 return str;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -2221,7 +2436,8 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false) {
+        public string ReadUtf8StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false)
+        {
             return ReadUtf8StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, maxLength,
                 strict);
         }
@@ -2232,9 +2448,10 @@ namespace Fp {
         /// <param name="span">Span to read from</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf8String(Span<byte> span, int maxLength = int.MaxValue) {
-            var lim = Math.Min(span.Length, maxLength);
-            var end = span.Slice(0, lim).IndexOf((byte) 0);
+        public static string ReadUtf8String(Span<byte> span, int maxLength = int.MaxValue)
+        {
+            int lim = Math.Min(span.Length, maxLength);
+            int end = span.Slice(0, lim).IndexOf((byte)0);
             if (end == -1)
                 end = lim;
             return DecodeSpan(span.Slice(0, end), Encoding.UTF8);
@@ -2268,11 +2485,14 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16String(Stream stream, int maxLength = int.MaxValue, bool strict = false) {
-            try {
-                var c = 0;
-                do {
-                    var cc = Read(stream, _tempBuffer, 0, 2);
+        public string ReadUtf16String(Stream stream, int maxLength = int.MaxValue, bool strict = false)
+        {
+            try
+            {
+                int c = 0;
+                do
+                {
+                    int cc = Read(stream, _tempBuffer, 0, 2);
                     c += cc;
                     if (cc != 2 || _tempBuffer[0] == 0 && _tempBuffer[1] == 0)
                         break;
@@ -2281,9 +2501,10 @@ namespace Fp {
 
                 if (strict)
                     Skip(maxLength - c, stream);
-                return ReadUtf16String(TempMs.GetBuffer().AsSpan(0, (int) TempMs.Length));
+                return ReadUtf16String(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length));
             }
-            finally {
+            finally
+            {
                 if (TempMs.Capacity > StringExcessiveCapacity)
                     TempMs.Capacity = StringDefaultCapacity;
             }
@@ -2298,14 +2519,17 @@ namespace Fp {
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
         public string ReadUtf16StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
-            bool strict = false) {
-            var position = stream.Position;
-            try {
+            bool strict = false)
+        {
+            long position = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var str = ReadUtf16String(stream, maxLength, strict);
+                string str = ReadUtf16String(stream, maxLength, strict);
                 return str;
             }
-            finally {
+            finally
+            {
                 stream.Position = position;
             }
         }
@@ -2326,7 +2550,8 @@ namespace Fp {
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false) {
+        public string ReadUtf16StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false)
+        {
             return ReadUtf16StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, maxLength,
                 strict);
         }
@@ -2338,27 +2563,30 @@ namespace Fp {
         /// <param name="span">Span to read from</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf16String(Span<byte> span, int maxLength = int.MaxValue) {
-            var lim = Math.Min(span.Length, maxLength);
-            var end = MemoryMarshal.Cast<byte, char>(span.Slice(0, lim)).IndexOf('\0');
+        public static string ReadUtf16String(Span<byte> span, int maxLength = int.MaxValue)
+        {
+            int lim = Math.Min(span.Length, maxLength);
+            int end = MemoryMarshal.Cast<byte, char>(span.Slice(0, lim)).IndexOf('\0');
             if (end == -1)
                 end = lim;
             else
                 end *= sizeof(char);
-            var big = span.Length >= 2 && span[0] == 0xFE && span[1] == 0xFF;
-            var bom = big || span.Length >= 2 && span[0] == 0xFF && span[1] == 0xFE;
+            bool big = span.Length >= 2 && span[0] == 0xFE && span[1] == 0xFF;
+            bool bom = big || span.Length >= 2 && span[0] == 0xFF && span[1] == 0xFE;
 
-            if (!bom && span.Length > 1) {
+            if (!bom && span.Length > 1)
+            {
                 const int numBytes = 16 * sizeof(char);
                 const float threshold = 0.75f;
                 int countAscii = 0, countTotal = 0, sl = span.Length;
-                for (var i = 0; i < numBytes && i + 1 < sl; i += 2) {
+                for (int i = 0; i < numBytes && i + 1 < sl; i += 2)
+                {
                     if (span[i] == 0 && span[i + 1] < 0x80)
                         countAscii++;
                     countTotal++;
                 }
 
-                big = (float) countAscii / countTotal >= threshold;
+                big = (float)countAscii / countTotal >= threshold;
             }
 
             return DecodeSpan(span.Slice(0, end), GetUtf16Encoding(big, bom));
@@ -2395,8 +2623,9 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(sbyte value, Span<byte> span, int offset = 0) {
-            span[offset] = (byte) value;
+        public void GetBytes(sbyte value, Span<byte> span, int offset = 0)
+        {
+            span[offset] = (byte)value;
         }
 
         /// <summary>
@@ -2405,7 +2634,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(byte value, Span<byte> span, int offset = 0) {
+        public void GetBytes(byte value, Span<byte> span, int offset = 0)
+        {
             span[offset] = value;
         }
 
@@ -2416,7 +2646,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(sbyte value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(sbyte value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[1];
             GetBytes(value, array.AsSpan(offset, 1));
             return array;
@@ -2429,7 +2660,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(byte value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(byte value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[1];
             GetBytes(value, array.AsSpan(offset, 1));
             return array;
@@ -2441,16 +2673,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS8(sbyte value, Stream? stream = null, int? offset = null) {
+        public void WriteS8(sbyte value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(sbyte));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2462,16 +2697,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU8(byte value, Stream? stream = null, int? offset = null) {
+        public void WriteU8(byte value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(byte));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2483,7 +2721,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(short value, Span<byte> span, int offset = 0) {
+        public void GetBytes(short value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             MemoryMarshal.Cast<byte, short>(sub)[0] = value;
             if (_swap)
@@ -2496,7 +2735,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(ushort value, Span<byte> span, int offset = 0) {
+        public void GetBytes(ushort value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             MemoryMarshal.Cast<byte, ushort>(sub)[0] = value;
             if (_swap)
@@ -2510,7 +2750,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(short value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(short value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[2];
             GetBytes(value, array.AsSpan(offset, 2));
             return array;
@@ -2523,7 +2764,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(ushort value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(ushort value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[2];
             GetBytes(value, array.AsSpan(offset, 2));
             return array;
@@ -2535,16 +2777,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS16(short value, Stream? stream = null, int? offset = null) {
+        public void WriteS16(short value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(short));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2556,16 +2801,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU16(ushort value, Stream? stream = null, int? offset = null) {
+        public void WriteU16(ushort value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(ushort));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2577,7 +2825,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(int value, Span<byte> span, int offset = 0) {
+        public void GetBytes(int value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 4);
             MemoryMarshal.Cast<byte, int>(sub)[0] = value;
             if (_swap)
@@ -2590,7 +2839,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(uint value, Span<byte> span, int offset = 0) {
+        public void GetBytes(uint value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 4);
             MemoryMarshal.Cast<byte, uint>(sub)[0] = value;
             if (_swap)
@@ -2604,7 +2854,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(int value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(int value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[4];
             GetBytes(value, array.AsSpan(offset, 4));
             return array;
@@ -2617,7 +2868,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(uint value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(uint value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[4];
             GetBytes(value, array.AsSpan(offset, 4));
             return array;
@@ -2629,16 +2881,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS32(int value, Stream? stream = null, int? offset = null) {
+        public void WriteS32(int value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(int));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2650,16 +2905,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU32(uint value, Stream? stream = null, int? offset = null) {
+        public void WriteU32(uint value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(uint));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2671,7 +2929,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(long value, Span<byte> span, int offset = 0) {
+        public void GetBytes(long value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             MemoryMarshal.Cast<byte, long>(sub)[0] = value;
             if (_swap)
@@ -2684,7 +2943,8 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(ulong value, Span<byte> span, int offset = 0) {
+        public void GetBytes(ulong value, Span<byte> span, int offset = 0)
+        {
             var sub = span.Slice(offset, 2);
             MemoryMarshal.Cast<byte, ulong>(sub)[0] = value;
             if (_swap)
@@ -2698,7 +2958,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(long value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(long value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[8];
             GetBytes(value, array.AsSpan(offset, 8));
             return array;
@@ -2711,9 +2972,10 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(ulong value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(ulong value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[8];
-            GetBytes((long) value, array.AsSpan(offset, 8));
+            GetBytes((long)value, array.AsSpan(offset, 8));
             return array;
         }
 
@@ -2723,16 +2985,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS64(long value, Stream? stream = null, int? offset = null) {
+        public void WriteS64(long value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(long));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2744,16 +3009,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU64(ulong value, Stream? stream = null, int? offset = null) {
+        public void WriteU64(ulong value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(ulong));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2784,7 +3052,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytesHalf(ushort value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytesHalf(ushort value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[2];
             GetBytesHalf(value, array.AsSpan(offset, 2));
             return array;
@@ -2797,7 +3066,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytesHalf(float value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytesHalf(float value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[2];
             GetBytesHalf(value, array.AsSpan(offset, 2));
             return array;
@@ -2809,16 +3079,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteHalf(ushort value, Stream? stream = null, int? offset = null) {
+        public void WriteHalf(ushort value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytesHalf(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(ushort));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2830,16 +3103,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteHalf(float value, Stream? stream = null, int? offset = null) {
+        public void WriteHalf(float value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytesHalf(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(ushort));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2861,7 +3137,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(float value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(float value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[4];
             GetBytes(value, array.AsSpan(offset, 4));
             return array;
@@ -2873,16 +3150,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteSingle(float value, Stream? stream = null, int? offset = null) {
+        public void WriteSingle(float value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(float));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2904,7 +3184,8 @@ namespace Fp {
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytes(double value, byte[]? array = null, int offset = 0) {
+        public byte[] GetBytes(double value, byte[]? array = null, int offset = 0)
+        {
             array ??= new byte[8];
             GetBytes(value, array.AsSpan(offset, 8));
             return array;
@@ -2916,16 +3197,19 @@ namespace Fp {
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteDouble(double value, Stream? stream = null, int? offset = null) {
+        public void WriteDouble(double value, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, _tempBuffer);
-            var origPos = offset.HasValue ? stream.Position : -1;
-            try {
+            long origPos = offset.HasValue ? stream.Position : -1;
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
                 stream.Write(_tempBuffer, 0, sizeof(double));
             }
-            finally {
+            finally
+            {
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2937,8 +3221,10 @@ namespace Fp {
         /// <param name="value">String to test</param>
         /// <param name="nullTerminate">If true, check length with null byte</param>
         /// <returns>Predicted length</returns>
-        public unsafe int GetUtf8Length(string value, bool nullTerminate = true) {
-            fixed (char* c = value) {
+        public unsafe int GetUtf8Length(string value, bool nullTerminate = true)
+        {
+            fixed (char* c = value)
+            {
                 return Utf8Encoder.GetByteCount(c, value.Length, true) + (nullTerminate ? 1 : 0);
             }
         }
@@ -2951,21 +3237,26 @@ namespace Fp {
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
         public unsafe void WriteUtf8String(string value, bool nullTerminate = true, Stream? stream = null,
-            int? offset = null) {
+            int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            var origPos = offset.HasValue ? stream.Position : -1;
+            long origPos = offset.HasValue ? stream.Position : -1;
             Utf8Encoder.Reset();
-            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
-            try {
+            var tmpBuf = Shared.Rent(4096);
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
-                fixed (char* strPtr = value) {
-                    fixed (byte* tmpBufPtr = tmpBuf) {
-                        var vStringOfs = 0;
-                        var vStringLeft = value.Length;
-                        while (vStringLeft > 0) {
+                fixed (char* strPtr = value)
+                {
+                    fixed (byte* tmpBufPtr = tmpBuf)
+                    {
+                        int vStringOfs = 0;
+                        int vStringLeft = value.Length;
+                        while (vStringLeft > 0)
+                        {
                             Utf8Encoder.Convert(strPtr + vStringOfs, vStringLeft, tmpBufPtr, 4096, false,
-                                out var numIn, out var numOut, out _);
+                                out int numIn, out int numOut, out _);
                             vStringOfs += numIn;
                             vStringLeft -= numIn;
                             stream.Write(tmpBuf, 0, numOut);
@@ -2977,8 +3268,9 @@ namespace Fp {
                 _tempBuffer[0] = 0;
                 stream.Write(_tempBuffer, 0, 1);
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(tmpBuf);
+            finally
+            {
+                Shared.Return(tmpBuf);
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -2991,8 +3283,10 @@ namespace Fp {
         /// <param name="nullTerminate">If true, check length with null byte</param>
         /// <param name="bom">If true, check length with byte order mark</param>
         /// <returns>Predicted length</returns>
-        public unsafe int GetUtf16Length(string value, bool nullTerminate = true, bool bom = false) {
-            fixed (char* c = value) {
+        public unsafe int GetUtf16Length(string value, bool nullTerminate = true, bool bom = false)
+        {
+            fixed (char* c = value)
+            {
                 return GetUtf16Encoder(false, bom).GetByteCount(c, value.Length, true) +
                        (nullTerminate ? 2 : 0);
             }
@@ -3008,22 +3302,27 @@ namespace Fp {
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
         public unsafe void WriteUtf16String(string value, bool nullTerminate = true, bool bigEndian = false,
-            bool byteOrderMark = false, Stream? stream = null, int? offset = null) {
+            bool byteOrderMark = false, Stream? stream = null, int? offset = null)
+        {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            var origPos = offset.HasValue ? stream.Position : -1;
+            long origPos = offset.HasValue ? stream.Position : -1;
             var encoder = GetUtf16Encoder(bigEndian, byteOrderMark);
             encoder.Reset();
-            var tmpBuf = ArrayPool<byte>.Shared.Rent(4096);
-            try {
+            var tmpBuf = Shared.Rent(4096);
+            try
+            {
                 if (offset.HasValue)
                     stream.Position = offset.Value;
-                fixed (char* strPtr = value) {
-                    fixed (byte* tmpBufPtr = tmpBuf) {
-                        var vStringOfs = 0;
-                        var vStringLeft = value.Length;
-                        while (vStringLeft > 0) {
+                fixed (char* strPtr = value)
+                {
+                    fixed (byte* tmpBufPtr = tmpBuf)
+                    {
+                        int vStringOfs = 0;
+                        int vStringLeft = value.Length;
+                        while (vStringLeft > 0)
+                        {
                             encoder.Convert(strPtr + vStringOfs, vStringLeft, tmpBufPtr, 4096, false,
-                                out var numIn, out var numOut, out _);
+                                out int numIn, out int numOut, out _);
                             vStringOfs += numIn;
                             vStringLeft -= numIn;
                             stream.Write(tmpBuf, 0, numOut);
@@ -3036,8 +3335,9 @@ namespace Fp {
                 _tempBuffer[1] = 0;
                 stream.Write(_tempBuffer, 0, 2);
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(tmpBuf);
+            finally
+            {
+                Shared.Return(tmpBuf);
                 if (offset.HasValue)
                     stream.Position = origPos;
             }
@@ -3061,48 +3361,55 @@ namespace Fp {
         /// <returns>Enumerator for matches</returns>
         // ReSharper disable once MemberCanBeProtected.Global
         public static IEnumerable<long> Match(Stream stream, long streamOffset, long streamMaxOffset, byte[] match,
-            int matchOffset, int matchLength, int maxCount = int.MaxValue, int bufferLength = 4096) {
+            int matchOffset, int matchLength, int maxCount = int.MaxValue, int bufferLength = 4096)
+        {
             if (maxCount < 1)
                 throw new ArgumentException($"{nameof(maxCount)} has value {maxCount} but must be at least 1");
-            var count = 0;
-            var initPos = stream.Position;
+            int count = 0;
+            long initPos = stream.Position;
             byte[][] buffers = new byte[2][];
-            try {
+            try
+            {
                 var realPositions = new long[2];
-                for (var i = 0; i < buffers.Length; i++)
-                    buffers[i] = ArrayPool<byte>.Shared.Rent(Math.Max(matchLength, bufferLength));
-                var basePos = streamOffset;
+                for (int i = 0; i < buffers.Length; i++)
+                    buffers[i] = Shared.Rent(Math.Max(matchLength, bufferLength));
+                long basePos = streamOffset;
                 realPositions[0] = basePos;
-                var curPos = basePos;
-                var currentReadBufferIndex = 0;
-                var currentReadBufferOffset = 0;
-                var latest = 0;
+                long curPos = basePos;
+                int currentReadBufferIndex = 0;
+                int currentReadBufferOffset = 0;
+                int latest = 0;
 
                 // Loop while offset allows checking for another match
-                while (basePos + matchLength < streamMaxOffset) {
+                while (basePos + matchLength < streamMaxOffset)
+                {
                     int read;
-                    var latestFilled = 0;
+                    int latestFilled = 0;
                     stream.Position = streamOffset;
                     // Read to fill buffer
                     do
                         latestFilled += read = stream.Read(buffers[latest], latestFilled,
-                            (int) Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
+                            (int)Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
                     while (read != 0);
                     // Leave on failure to read (reached end)
                     if (latestFilled == 0)
                         break;
                     streamOffset += latestFilled;
                     // Loop while loaded buffers allow read
-                    while (curPos + matchLength <= realPositions[latest] + latestFilled) {
-                        var tempBufIndex = currentReadBufferIndex;
-                        var tempBufOffset = currentReadBufferOffset;
-                        var ok = true;
+                    while (curPos + matchLength <= realPositions[latest] + latestFilled)
+                    {
+                        int tempBufIndex = currentReadBufferIndex;
+                        int tempBufOffset = currentReadBufferOffset;
+                        bool ok = true;
                         // Check for current offset
-                        for (var i = 0; i < matchLength && ok; i++) {
-                            if (buffers[tempBufIndex][tempBufOffset] != match[matchOffset + i]) {
+                        for (int i = 0; i < matchLength && ok; i++)
+                        {
+                            if (buffers[tempBufIndex][tempBufOffset] != match[matchOffset + i])
+                            {
                                 ok = false;
                             }
-                            else {
+                            else
+                            {
                                 // Update current read buffer
                                 tempBufOffset++;
                                 if (tempBufOffset < buffers[tempBufIndex].Length) continue;
@@ -3111,7 +3418,8 @@ namespace Fp {
                             }
                         }
 
-                        if (ok) {
+                        if (ok)
+                        {
                             yield return curPos;
                             count++;
                             if (count == maxCount)
@@ -3119,14 +3427,15 @@ namespace Fp {
                             curPos += matchLength;
                             currentReadBufferOffset += matchLength;
                         }
-                        else {
+                        else
+                        {
                             curPos++;
                             currentReadBufferOffset++;
                         }
 
                         // Update current read buffer
                         if (currentReadBufferOffset < buffers[currentReadBufferIndex].Length) continue;
-                        var over = currentReadBufferOffset - buffers[currentReadBufferIndex].Length;
+                        int over = currentReadBufferOffset - buffers[currentReadBufferIndex].Length;
                         // Safe to increment buffer index by 1 because buffer length is at least the length of match subarray
                         currentReadBufferIndex = (currentReadBufferIndex + 1) % 2;
                         currentReadBufferOffset = over;
@@ -3139,11 +3448,12 @@ namespace Fp {
                     realPositions[latest] = basePos;
                 }
             }
-            finally {
+            finally
+            {
                 if (buffers != null)
                     foreach (var t in buffers)
                         if (t != null)
-                            ArrayPool<byte>.Shared.Return(t);
+                            Shared.Return(t);
 
                 stream.Position = initPos;
             }
@@ -3160,50 +3470,57 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public static List<long> Match(Stream stream, long streamOffset, long streamMaxOffset, Span<byte> match,
-            int maxCount = int.MaxValue, int bufferLength = 4096) {
+            int maxCount = int.MaxValue, int bufferLength = 4096)
+        {
             if (maxCount < 1)
                 throw new ArgumentException($"{nameof(maxCount)} has value {maxCount} but must be at least 1");
-            var count = 0;
+            int count = 0;
             var res = new List<long>();
-            var initPos = stream.Position;
-            var matchLength = match.Length;
+            long initPos = stream.Position;
+            int matchLength = match.Length;
             byte[][] buffers = new byte[2][];
-            try {
+            try
+            {
                 var realPositions = new long[2];
-                for (var i = 0; i < buffers.Length; i++)
-                    buffers[i] = ArrayPool<byte>.Shared.Rent(Math.Max(matchLength, bufferLength));
-                var basePos = streamOffset;
+                for (int i = 0; i < buffers.Length; i++)
+                    buffers[i] = Shared.Rent(Math.Max(matchLength, bufferLength));
+                long basePos = streamOffset;
                 realPositions[0] = basePos;
-                var curPos = basePos;
-                var currentReadBufferIndex = 0;
-                var currentReadBufferOffset = 0;
-                var latest = 0;
+                long curPos = basePos;
+                int currentReadBufferIndex = 0;
+                int currentReadBufferOffset = 0;
+                int latest = 0;
 
                 // Loop while offset allows checking for another match
-                while (basePos + matchLength < streamMaxOffset) {
+                while (basePos + matchLength < streamMaxOffset)
+                {
                     int read;
-                    var latestFilled = 0;
+                    int latestFilled = 0;
                     stream.Position = streamOffset;
                     // Read to fill buffer
                     do
                         latestFilled += read = stream.Read(buffers[latest], latestFilled,
-                            (int) Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
+                            (int)Math.Min(streamMaxOffset - basePos, buffers[latest].Length) - latestFilled);
                     while (read != 0);
                     // Leave on failure to read (reached end)
                     if (latestFilled == 0)
                         break;
                     streamOffset += latestFilled;
                     // Loop while loaded buffers allow read
-                    while (curPos + matchLength <= realPositions[latest] + latestFilled) {
-                        var tempBufIndex = currentReadBufferIndex;
-                        var tempBufOffset = currentReadBufferOffset;
-                        var ok = true;
+                    while (curPos + matchLength <= realPositions[latest] + latestFilled)
+                    {
+                        int tempBufIndex = currentReadBufferIndex;
+                        int tempBufOffset = currentReadBufferOffset;
+                        bool ok = true;
                         // Check for current offset
-                        for (var i = 0; i < matchLength && ok; i++) {
-                            if (buffers[tempBufIndex][tempBufOffset] != match[i]) {
+                        for (int i = 0; i < matchLength && ok; i++)
+                        {
+                            if (buffers[tempBufIndex][tempBufOffset] != match[i])
+                            {
                                 ok = false;
                             }
-                            else {
+                            else
+                            {
                                 // Update current read buffer
                                 tempBufOffset++;
                                 if (tempBufOffset < buffers[tempBufIndex].Length) continue;
@@ -3212,7 +3529,8 @@ namespace Fp {
                             }
                         }
 
-                        if (ok) {
+                        if (ok)
+                        {
                             res.Add(curPos);
                             count++;
                             if (count == maxCount)
@@ -3220,14 +3538,15 @@ namespace Fp {
                             curPos += matchLength;
                             currentReadBufferOffset += matchLength;
                         }
-                        else {
+                        else
+                        {
                             curPos++;
                             currentReadBufferOffset++;
                         }
 
                         // Update current read buffer
                         if (currentReadBufferOffset < buffers[currentReadBufferIndex].Length) continue;
-                        var over = currentReadBufferOffset - buffers[currentReadBufferIndex].Length;
+                        int over = currentReadBufferOffset - buffers[currentReadBufferIndex].Length;
                         // Safe to increment buffer index by 1 because buffer length is at least the length of match subarray
                         currentReadBufferIndex = (currentReadBufferIndex + 1) % 2;
                         currentReadBufferOffset = over;
@@ -3242,11 +3561,12 @@ namespace Fp {
 
                 return res;
             }
-            finally {
+            finally
+            {
                 if (buffers != null)
                     foreach (var t in buffers)
                         if (t != null)
-                            ArrayPool<byte>.Shared.Return(t);
+                            Shared.Return(t);
 
                 stream.Position = initPos;
             }
@@ -3324,7 +3644,8 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public static IEnumerable<long> Match(Stream stream, long streamOffset, long streamMaxOffset, string match,
-            int bufferLength = 4096) {
+            int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return Match(stream, streamOffset, streamMaxOffset, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3337,7 +3658,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
-        public static IEnumerable<long> Match(Stream stream, long streamOffset, string match, int bufferLength = 4096) {
+        public static IEnumerable<long> Match(Stream stream, long streamOffset, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return Match(stream, streamOffset, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3349,7 +3671,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
-        public static IEnumerable<long> Match(Stream stream, string match, int bufferLength = 4096) {
+        public static IEnumerable<long> Match(Stream stream, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return Match(stream, 0, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3367,8 +3690,9 @@ namespace Fp {
         /// <returns>Position of first match or -1 if no match found</returns>
         public static long MatchFirst(Stream stream, long streamOffset, long streamMaxOffset, byte[] match,
             int matchOffset,
-            int matchLength, int bufferLength = 4096) {
-            foreach (var v in Match(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength,
+            int matchLength, int bufferLength = 4096)
+        {
+            foreach (long v in Match(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength,
                 bufferLength))
                 return v;
             return -1;
@@ -3445,7 +3769,8 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public static long MatchFirst(Stream stream, long streamOffset, long streamMaxOffset, string match,
-            int bufferLength = 4096) {
+            int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchFirst(stream, streamOffset, streamMaxOffset, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3458,7 +3783,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
-        public static long MatchFirst(Stream stream, long streamOffset, string match, int bufferLength = 4096) {
+        public static long MatchFirst(Stream stream, long streamOffset, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchFirst(stream, streamOffset, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3470,7 +3796,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
-        public static long MatchFirst(Stream stream, string match, int bufferLength = 4096) {
+        public static long MatchFirst(Stream stream, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchFirst(stream, 0, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3487,9 +3814,10 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public static long MatchLast(Stream stream, long streamOffset, long streamMaxOffset, byte[] match,
-            int matchOffset, int matchLength, int bufferLength = 4096) {
+            int matchOffset, int matchLength, int bufferLength = 4096)
+        {
             long u = -1;
-            foreach (var v in Match(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength,
+            foreach (long v in Match(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength,
                 bufferLength))
                 u = v;
             return u;
@@ -3566,7 +3894,8 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public static long MatchLast(Stream stream, long streamOffset, long streamMaxOffset, string match,
-            int bufferLength = 4096) {
+            int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchLast(stream, streamOffset, streamMaxOffset, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3579,7 +3908,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
-        public static long MatchLast(Stream stream, long streamOffset, string match, int bufferLength = 4096) {
+        public static long MatchLast(Stream stream, long streamOffset, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchLast(stream, streamOffset, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3591,7 +3921,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
-        public static long MatchLast(Stream stream, string match, int bufferLength = 4096) {
+        public static long MatchLast(Stream stream, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchLast(stream, 0, long.MaxValue, matchArr, 0, matchArr.Length, bufferLength);
         }
@@ -3716,8 +4047,10 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, long streamMaxOffset, byte[] match, int matchOffset,
-            int matchLength, int bufferLength = 4096) {
-            foreach (var v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset,
+            int matchLength, int bufferLength = 4096)
+        {
+            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+                streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
                 return v;
@@ -3828,9 +4161,11 @@ namespace Fp {
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, long streamMaxOffset, byte[] match, int matchOffset,
-            int matchLength, int bufferLength = 4096) {
+            int matchLength, int bufferLength = 4096)
+        {
             long u = -1;
-            foreach (var v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset,
+            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+                streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
                 u = v;
@@ -3917,7 +4252,8 @@ namespace Fp {
         /// <param name="match">Target to match</param>
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
-        public long MatchLast(long streamOffset, string match, int bufferLength = 4096) {
+        public long MatchLast(long streamOffset, string match, int bufferLength = 4096)
+        {
             var matchArr = Encoding.ASCII.GetBytes(match);
             return MatchLast(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue,
                 matchArr, 0, matchArr.Length, bufferLength);
@@ -3933,14 +4269,17 @@ namespace Fp {
             => MatchLast(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
 
         private static long WriteBaseStream(Stream stream, long length, Stream outputStream, bool lenient,
-            int bufferLength) {
+            int bufferLength)
+        {
             long outLen = 0;
-            var buffer = ArrayPool<byte>.Shared.Rent(bufferLength);
-            try {
-                var left = length;
+            var buffer = Shared.Rent(bufferLength);
+            try
+            {
+                long left = length;
                 int read;
-                do {
-                    read = stream.Read(buffer, 0, (int) Math.Min(left, buffer.Length));
+                do
+                {
+                    read = stream.Read(buffer, 0, (int)Math.Min(left, buffer.Length));
                     outputStream.Write(buffer, 0, read);
                     left -= read;
                     outLen += read;
@@ -3950,8 +4289,9 @@ namespace Fp {
                     throw new ProcessorException(
                         $"Failed to read required number of bytes! 0x{read:X} read, 0x{left:X} left, 0x{stream.Position:X} end position");
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(buffer);
+            finally
+            {
+                Shared.Return(buffer);
             }
 
             return outLen;
@@ -3965,7 +4305,8 @@ namespace Fp {
         /// Block cipher padding mode
         /// </summary>
         [SuppressMessage("ReSharper", "InconsistentNaming")]
-        public enum PaddingMode {
+        public enum PaddingMode
+        {
             /// <summary>
             /// End of message is padded with null bytes
             /// </summary>
@@ -4004,7 +4345,8 @@ namespace Fp {
         /// <param name="paddingMode">Padding mode to use</param>
         /// <returns>Depadded length of message</returns>
         public static int GetDepaddedLength(Span<byte> span, PaddingMode paddingMode) =>
-            paddingMode switch {
+            paddingMode switch
+            {
                 PaddingMode.Zero => GetDepaddedLengthZero(span),
                 PaddingMode.Iso_Iec_7816_4 => GetDepaddedLengthIso_Iec_7816_4(span),
                 var p when
@@ -4016,17 +4358,20 @@ namespace Fp {
                 _ => throw new ArgumentOutOfRangeException(nameof(paddingMode), paddingMode, null)
             };
 
-        private static int GetDepaddedLengthZero(Span<byte> span) {
-            for (var i = span.Length; i > 0; i--)
+        private static int GetDepaddedLengthZero(Span<byte> span)
+        {
+            for (int i = span.Length; i > 0; i--)
                 if (span[i - 1] != 0)
                     return i;
             return 0;
         }
 
 
-        private static int GetDepaddedLengthIso_Iec_7816_4(Span<byte> span) {
-            for (var i = span.Length - 1; i >= 0; i--)
-                switch (span[i]) {
+        private static int GetDepaddedLengthIso_Iec_7816_4(Span<byte> span)
+        {
+            for (int i = span.Length - 1; i >= 0; i--)
+                switch (span[i])
+                {
                     case 0x00:
                         break;
                     case 0x80:
@@ -4050,16 +4395,19 @@ namespace Fp {
         /// <param name="validate">Validate characters</param>
         /// <returns>Array with decoded hex string</returns>
         /// <exception cref="ArgumentException">If string has odd length</exception>
-        public static unsafe byte[] DecodeHex(string hex, bool validate = true) {
-            var len = hex.Length;
+        public static unsafe byte[] DecodeHex(string hex, bool validate = true)
+        {
+            int len = hex.Length;
             if (len == 0)
                 return new byte[0];
             if (len % 2 != 0)
                 throw new ArgumentException($"Hex string has length {hex.Length}, must be even");
             len /= 2;
-            fixed (char* buf = &hex.AsSpan().GetPinnableReference()) {
+            fixed (char* buf = &hex.AsSpan().GetPinnableReference())
+            {
                 var rBuf = buf;
-                if (len != 0 && rBuf[0] == '0' && (rBuf[1] == 'x' || rBuf[1] == 'X')) {
+                if (len != 0 && rBuf[0] == '0' && (rBuf[1] == 'x' || rBuf[1] == 'X'))
+                {
                     rBuf += 2;
                     len--;
                 }
@@ -4067,57 +4415,65 @@ namespace Fp {
                 var res = new byte[len];
                 char c;
                 if (validate)
-                    for (var i = 0; i < len; i++) {
+                    for (int i = 0; i < len; i++)
+                    {
                         c = *rBuf++;
-                        if (c > 0x60) {
+                        if (c > 0x60)
+                        {
                             if (c > 0x66)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte) ((c + 9) << 4);
+                            res[i] = (byte)((c + 9) << 4);
                         }
-                        else if (c > 0x40) {
+                        else if (c > 0x40)
+                        {
                             if (c > 0x46)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte) ((c + 9) << 4);
+                            res[i] = (byte)((c + 9) << 4);
                         }
-                        else if (c > 0x2F) {
+                        else if (c > 0x2F)
+                        {
                             if (c > 0x39)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] = (byte) (c << 4);
+                            res[i] = (byte)(c << 4);
                         }
                         else
                             throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
 
                         c = *rBuf++;
-                        if (c > 0x60) {
+                        if (c > 0x60)
+                        {
                             if (c > 0x66)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte) ((c + 9) & 0xf);
+                            res[i] += (byte)((c + 9) & 0xf);
                         }
-                        else if (c > 0x40) {
+                        else if (c > 0x40)
+                        {
                             if (c > 0x46)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte) ((c + 9) & 0xf);
+                            res[i] += (byte)((c + 9) & 0xf);
                         }
-                        else if (c > 0x2F) {
+                        else if (c > 0x2F)
+                        {
                             if (c > 0x39)
                                 throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
-                            res[i] += (byte) (c & 0xf);
+                            res[i] += (byte)(c & 0xf);
                         }
                         else
                             throw new ArgumentException($"Illegal character {c} at position {rBuf - buf}");
                     }
                 else
-                    for (var i = 0; i < len; i++) {
+                    for (int i = 0; i < len; i++)
+                    {
                         c = *rBuf++;
                         if (c < 0x3A)
-                            res[i] = (byte) (c << 4);
+                            res[i] = (byte)(c << 4);
                         else
-                            res[i] = (byte) ((c + 9) << 4);
+                            res[i] = (byte)((c + 9) << 4);
                         c = *rBuf++;
                         if (c < 0x3A)
-                            res[i] += (byte) (c & 0xf);
+                            res[i] += (byte)(c & 0xf);
                         else
-                            res[i] += (byte) ((c + 9) & 0xf);
+                            res[i] += (byte)((c + 9) & 0xf);
                     }
 
                 return res;
@@ -4135,16 +4491,21 @@ namespace Fp {
         /// <param name="program">Program to run</param>
         /// <param name="args">Arguments</param>
         /// <returns>Exit code</returns>
-        public int Execute(bool shellExecute, string program, string args) {
-            var process = new Process {
-                StartInfo = new ProcessStartInfo(program, args) {
-                    RedirectStandardOutput = !shellExecute, UseShellExecute = shellExecute,
+        public int Execute(bool shellExecute, string program, string args)
+        {
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo(program, args)
+                {
+                    RedirectStandardOutput = !shellExecute,
+                    UseShellExecute = shellExecute,
                     RedirectStandardError = !shellExecute
                 }
             };
             LogInfo($"Starting process {program} {args}");
             process.Start();
-            if (!shellExecute) {
+            if (!shellExecute)
+            {
                 LogInfo("Stdout>");
                 string line;
                 while ((line = process.StandardOutput.ReadLine()) != null)
@@ -4193,8 +4554,9 @@ namespace Fp {
         /// <param name="stream">Stream to read from</param>
         /// <param name="outputStream">Stream to write to</param>
         /// <returns>Length of written data</returns>
-        public static long OutputAll(Stream stream, Stream outputStream) {
-            var pos = outputStream.Position;
+        public static long OutputAll(Stream stream, Stream outputStream)
+        {
+            long pos = outputStream.Position;
             stream.CopyTo(outputStream);
             return outputStream.Position - pos;
         }
@@ -4206,7 +4568,8 @@ namespace Fp {
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
         /// <returns>Length of written data</returns>
-        public long OutputAll(Stream stream, string? extension = null, string? filename = null) {
+        public long OutputAll(Stream stream, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputFile(false, extension, filename);
             return OutputAll(stream, fileStream);
         }
@@ -4227,7 +4590,8 @@ namespace Fp {
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
         /// <returns>Length of written data</returns>
-        public long OutputAllSub(Stream stream, string? extension = null, string? filename = null) {
+        public long OutputAllSub(Stream stream, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputSubFile(false, extension, filename);
             return OutputAll(stream, fileStream);
         }
@@ -4241,7 +4605,7 @@ namespace Fp {
         public long OutputAllSub(string? extension = null, string? filename = null)
             => OutputAllSub(InputStream ?? throw new InvalidOperationException(), extension, filename == null
                 ? null
-                : BasicJoin(
+                : BasicJoin(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -4273,15 +4637,18 @@ namespace Fp {
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from <paramref name="stream"/></exception>
         /// <remarks>Original position of <paramref name="stream"/> is restored on completion</remarks>
         public long Output(Stream stream, long offset, long length, Stream? outputStream = null, bool lenient = true,
-            int bufferLength = 4096) {
+            int bufferLength = 4096)
+        {
             outputStream ??= OutputStream ?? throw new InvalidOperationException();
-            var origPos = stream.Position;
-            try {
+            long origPos = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var outLen = Output(stream, length, outputStream, lenient, bufferLength);
+                long outLen = Output(stream, length, outputStream, lenient, bufferLength);
                 return outLen;
             }
-            finally {
+            finally
+            {
                 stream.Position = origPos;
             }
         }
@@ -4319,14 +4686,17 @@ namespace Fp {
         /// <returns>Length of written data</returns>
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from input stream</exception>
         /// <remarks>Original position of input stream is restored on completion</remarks>
-        public long Output(long offset, long length, bool lenient = true, int bufferLength = 4096) {
-            var origPos = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+        public long Output(long offset, long length, bool lenient = true, int bufferLength = 4096)
+        {
+            long origPos = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var outLen = Output(InputStream, length, OutputStream, lenient, bufferLength);
+                long outLen = Output(InputStream, length, OutputStream, lenient, bufferLength);
                 return outLen;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = origPos;
             }
         }
@@ -4352,7 +4722,8 @@ namespace Fp {
         /// <returns>Length of written data</returns>
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from <paramref name="stream"/></exception>
         public long Output(Stream stream, long length, string? extension = null, string? filename = null,
-            bool lenient = true, int bufferLength = 4096) {
+            bool lenient = true, int bufferLength = 4096)
+        {
             using var fileStream = OpenOutputFile(false, extension, filename);
             return Output(stream, length, fileStream, lenient, bufferLength);
         }
@@ -4371,14 +4742,17 @@ namespace Fp {
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from <paramref name="stream"/></exception>
         /// <remarks>Original position of <paramref name="stream"/> is restored on completion</remarks>
         public long Output(Stream stream, long offset, long length, string? extension = null, string? filename = null,
-            bool lenient = true, int bufferLength = 4096) {
-            var origPos = stream.Position;
-            try {
+            bool lenient = true, int bufferLength = 4096)
+        {
+            long origPos = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var outLen = Output(stream, length, extension, filename, lenient, bufferLength);
+                long outLen = Output(stream, length, extension, filename, lenient, bufferLength);
                 return outLen;
             }
-            finally {
+            finally
+            {
                 stream.Position = origPos;
             }
         }
@@ -4411,14 +4785,17 @@ namespace Fp {
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from input stream</exception>
         /// <remarks>Original position of input stream is restored on completion</remarks>
         public long Output(long offset, long length, string? extension = null, string? filename = null,
-            bool lenient = true, int bufferLength = 4096) {
-            var origPos = (InputStream ?? throw new InvalidOperationException()).Position;
-            try {
+            bool lenient = true, int bufferLength = 4096)
+        {
+            long origPos = (InputStream ?? throw new InvalidOperationException()).Position;
+            try
+            {
                 InputStream.Position = offset;
-                var outLen = Output(InputStream, offset, length, extension, filename, lenient, bufferLength);
+                long outLen = Output(InputStream, offset, length, extension, filename, lenient, bufferLength);
                 return outLen;
             }
-            finally {
+            finally
+            {
                 InputStream.Position = origPos;
             }
         }
@@ -4436,7 +4813,8 @@ namespace Fp {
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from <paramref name="stream"/></exception>
         public long OutputSub(Stream stream, long length, string? extension = null, string? filename = null,
             bool lenient = true,
-            int bufferLength = 4096) {
+            int bufferLength = 4096)
+        {
             using var fileStream = OpenOutputSubFile(false, extension, filename);
             return Output(stream, length, fileStream, lenient, bufferLength);
         }
@@ -4456,14 +4834,17 @@ namespace Fp {
         /// <remarks>Original position of <paramref name="stream"/> is restored on completion</remarks>
         public long OutputSub(Stream stream, long offset, long length, string? extension = null,
             string? filename = null,
-            bool lenient = true, int bufferLength = 4096) {
-            var origPos = stream.Position;
-            try {
+            bool lenient = true, int bufferLength = 4096)
+        {
+            long origPos = stream.Position;
+            try
+            {
                 stream.Position = offset;
-                var outLen = OutputSub(stream, length, extension, filename, lenient, bufferLength);
+                long outLen = OutputSub(stream, length, extension, filename, lenient, bufferLength);
                 return outLen;
             }
-            finally {
+            finally
+            {
                 stream.Position = origPos;
             }
         }
@@ -4506,7 +4887,8 @@ namespace Fp {
         /// <param name="array">Array to read from</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
-        public void OutputAll(byte[] array, string? extension = null, string? filename = null) {
+        public void OutputAll(byte[] array, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputFile(false, extension, filename);
             Output(array, 0, array.Length, fileStream);
         }
@@ -4517,7 +4899,8 @@ namespace Fp {
         /// <param name="array">Array to read from</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
-        public void OutputAllSub(byte[] array, string? extension = null, string? filename = null) {
+        public void OutputAllSub(byte[] array, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputSubFile(false, extension, filename);
             OutputAll(array, fileStream);
         }
@@ -4550,7 +4933,8 @@ namespace Fp {
         /// <param name="length">Number of bytes to read</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File or relative path to write to</param>
-        public void Output(byte[] array, int offset, int length, string? extension = null, string? filename = null) {
+        public void Output(byte[] array, int offset, int length, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputFile(false, extension, filename);
             Output(array, offset, length, fileStream);
         }
@@ -4563,7 +4947,8 @@ namespace Fp {
         /// <param name="length">Number of bytes to read</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File or relative path to write to</param>
-        public void OutputSub(byte[] array, int offset, int length, string? extension = null, string? filename = null) {
+        public void OutputSub(byte[] array, int offset, int length, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputSubFile(false, extension, filename);
             Output(array, offset, length, fileStream);
         }
@@ -4572,22 +4957,26 @@ namespace Fp {
 
         #region Output from span utilities
 
-        internal static void WriteBaseSpan(Stream stream, Span<byte> span) {
-            var buf = ArrayPool<byte>.Shared.Rent(4096);
+        internal static void WriteBaseSpan(Stream stream, Span<byte> span)
+        {
+            var buf = Shared.Rent(4096);
             var bufSpan = buf.AsSpan();
-            var bufLen = buf.Length;
-            try {
+            int bufLen = buf.Length;
+            try
+            {
                 int left = span.Length, tot = 0;
-                do {
-                    var toWrite = Math.Min(left, bufLen);
+                do
+                {
+                    int toWrite = Math.Min(left, bufLen);
                     span.Slice(tot, toWrite).CopyTo(bufSpan);
                     stream.Write(buf, 0, toWrite);
                     tot += toWrite;
                     left -= toWrite;
                 } while (left > 0);
             }
-            finally {
-                ArrayPool<byte>.Shared.Return(buf);
+            finally
+            {
+                Shared.Return(buf);
             }
         }
 
@@ -4605,7 +4994,8 @@ namespace Fp {
         /// <param name="span">Span to read from</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
-        public void OutputAll(Span<byte> span, string? extension = null, string? filename = null) {
+        public void OutputAll(Span<byte> span, string? extension = null, string? filename = null)
+        {
             using var fileStream = OpenOutputFile(false, extension, filename);
             OutputAll(span, fileStream);
         }
@@ -4619,7 +5009,7 @@ namespace Fp {
         public void OutputAllSub(Span<byte> span, string? extension = null, string? filename = null)
             => OutputAll(span, extension, filename == null
                 ? null
-                : BasicJoin(
+                : BasicJoin(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -4637,14 +5027,17 @@ namespace Fp {
         /// stream's contents to a new <see cref="MemoryStream"/> instance. The returned object is either
         /// this newly created stream or the passed argument <paramref name="stream"/> if it was already seekable
         /// </remarks>
-        public static Stream GetSeekableStream(Stream stream) {
+        public static Stream GetSeekableStream(Stream stream)
+        {
             if (stream.CanSeek) return stream;
             MemoryStream ms;
-            try {
-                var length = stream.Length;
-                ms = length > int.MaxValue ? new MemoryStream() : new MemoryStream((int) length);
+            try
+            {
+                long length = stream.Length;
+                ms = length > int.MaxValue ? new MemoryStream() : new MemoryStream((int)length);
             }
-            catch {
+            catch
+            {
                 ms = new MemoryStream();
             }
 
@@ -4661,14 +5054,16 @@ namespace Fp {
         /// <param name="asMain">If true, sets <see cref="InputStream"/></param>
         /// <param name="file">File to open, <see cref="InputFile"/> by default</param>
         /// <returns>Created stream</returns>
-        public Stream OpenFile(bool asMain, string? file = null) {
+        public Stream OpenFile(bool asMain, string? file = null)
+        {
             if (FileSystem == null) throw new InvalidOperationException();
             file ??= InputFile ?? throw new InvalidOperationException();
             file = Path.Combine(InputDirectory ?? throw new InvalidOperationException(), file);
             if (!FileSystem.FileExists(file)) throw new FileNotFoundException("File not found", file);
             var stream = FileSystem.OpenRead(file);
             if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _) ||
-                            alreadyMs.Capacity != alreadyMs.Length)) {
+                            alreadyMs.Capacity != alreadyMs.Length))
+            {
                 var ms = new MemoryStream(new byte[stream.Length]);
                 stream.CopyTo(ms);
                 stream.Dispose();
@@ -4704,7 +5099,8 @@ namespace Fp {
         /// </summary>
         /// <param name="asMain">If true, clear <see cref="InputStream"/></param>
         /// <param name="stream">Stream to close</param>
-        public void CloseFile(bool asMain, Stream? stream = null) {
+        public void CloseFile(bool asMain, Stream? stream = null)
+        {
             stream ??= InputStream;
             stream?.Dispose();
             if (asMain)
@@ -4719,7 +5115,8 @@ namespace Fp {
             => CloseFile(true, stream);
 
         private Stream OpenOutputFileInternal(bool sub, bool asMain, string? extension = null,
-            string? filename = null) {
+            string? filename = null)
+        {
             if (FileSystem == null) throw new InvalidOperationException();
             filename = sub ? GenPathSub(extension, filename) : GenPath(extension, filename);
             var stream = FileSystem.OpenWrite(filename);
@@ -4773,7 +5170,8 @@ namespace Fp {
         /// </summary>
         /// <param name="asMain">If true, clear <see cref="OutputStream"/></param>
         /// <param name="stream">Stream to close</param>
-        public void CloseOutputFile(bool asMain, Stream? stream = null) {
+        public void CloseOutputFile(bool asMain, Stream? stream = null)
+        {
             stream ??= OutputStream;
             stream?.Dispose();
             if (asMain)
@@ -4799,7 +5197,8 @@ namespace Fp {
         /// </summary>
         /// <param name="dir">Path to make directories to</param>
         /// <exception cref="IOException"> when failed to create directories</exception>
-        public void MkDirs(string? dir = null) {
+        public void MkDirs(string? dir = null)
+        {
             if (FileSystem == null) throw new InvalidOperationException();
             dir ??= OutputDirectory ?? throw new InvalidOperationException();
             if (!FileSystem.CreateDirectory(dir))
@@ -4824,13 +5223,14 @@ namespace Fp {
         /// <param name="mkDirs">If true, create directories in filesystem</param>
         /// <returns>Generated path</returns>
         public string GenPathSub(string? extension = null, string? filename = null, string? mainFile = null,
-            bool mkDirs = true) {
+            bool mkDirs = true)
+        {
             if (OutputDirectory == null) throw new InvalidOperationException();
             mainFile ??= InputFile ?? throw new InvalidOperationException();
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
                 : $"{filename}{extension}";
-            var path = BasicJoin(OutputDirectory,
+            string path = BasicJoin(SupportBackSlash, OutputDirectory,
                 Path.GetFileName(mainFile) ?? throw new ProcessorException($"Null {nameof(mainFile)} provided"),
                 filename);
             if (mkDirs)
@@ -4839,7 +5239,7 @@ namespace Fp {
         }
 
         /// <summary>
-        /// Generate path 
+        /// Generate path
         /// </summary>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name</param>
@@ -4848,13 +5248,14 @@ namespace Fp {
         /// <param name="mkDirs">If true, create directories in filesystem</param>
         /// <returns>Generated path</returns>
         public string GenPath(string? extension = null, string? filename = null, string? directory = null,
-            string? mainFile = null, bool mkDirs = true) {
+            string? mainFile = null, bool mkDirs = true)
+        {
             if (OutputDirectory == null) throw new InvalidOperationException();
             mainFile ??= InputFile ?? throw new InvalidOperationException();
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
                 : $"{filename}{extension}";
-            var path = Path.Combine(OutputDirectory, directory ?? string.Empty, filename);
+            string path = Path.Combine(OutputDirectory, directory ?? string.Empty, filename);
             if (mkDirs)
                 MkParents(path);
             return path;
@@ -4876,22 +5277,26 @@ namespace Fp {
         /// <param name="paths">Elements to join</param>
         /// <returns>Path</returns>
         /// <exception cref="ProcessorException">If separator is encountered by itself</exception>
-        public static unsafe string BasicJoin(bool supportBackSlash, params string[] paths) {
+        public static unsafe string BasicJoin(bool supportBackSlash, params string[] paths)
+        {
             if (paths.Length < 2)
                 return paths.Length == 0 ? string.Empty : paths[0] ?? throw new ArgumentException("Null element");
-            var capacity = paths.Sum(path => (path ?? throw new ArgumentException("Null element")).Length);
+            int capacity = paths.Sum(path => (path ?? throw new ArgumentException("Null element")).Length);
             var buf = ArrayPool<char>.Shared.Rent(capacity + paths.Length - 1);
-            try {
+            try
+            {
                 var bufSpan = buf.AsSpan();
-                var cIdx = 0;
-                var prevEndWithSeparator = false;
-                foreach (var path in paths) {
-                    var pathLength = path.Length;
+                int cIdx = 0;
+                bool prevEndWithSeparator = false;
+                foreach (string path in paths)
+                {
+                    int pathLength = path.Length;
                     if (pathLength == 0)
                         continue;
                     var span = path.AsSpan();
-                    var first = span[0];
-                    if (first == '/' || supportBackSlash && first == '\\') {
+                    char first = span[0];
+                    if (first == '/' || supportBackSlash && first == '\\')
+                    {
                         if (pathLength == 1)
                             throw new ProcessorException("Joining single-character separator disallowed");
                         if (prevEndWithSeparator)
@@ -4902,14 +5307,15 @@ namespace Fp {
 
                     span.CopyTo(bufSpan.Slice(cIdx));
                     cIdx += span.Length;
-                    var last = span[pathLength - 1];
+                    char last = span[pathLength - 1];
                     prevEndWithSeparator = last == '/' || supportBackSlash && last == '\\';
                 }
 
                 fixed (char* ptr = &bufSpan.GetPinnableReference())
                     return new string(ptr, 0, cIdx);
             }
-            finally {
+            finally
+            {
                 ArrayPool<char>.Shared.Return(buf);
             }
         }
@@ -4943,7 +5349,8 @@ namespace Fp {
         /// <summary>
         /// Cleanup resources
         /// </summary>
-        public void SrcCleanup() {
+        public void SrcCleanup()
+        {
             InputStream?.Dispose();
             OutputStream?.Dispose();
         }
@@ -4958,11 +5365,13 @@ namespace Fp {
         /// <param name="disposing">False if called from finalizer</param>
         // ReSharper disable once VirtualMemberNeverOverridden.Global
         // ReSharper disable once UnusedParameter.Global
-        protected virtual void Dispose(bool disposing) {
+        protected virtual void Dispose(bool disposing)
+        {
         }
 
         /// <inheritdoc />
-        public void Dispose() {
+        public void Dispose()
+        {
             SrcCleanup();
             Dispose(true);
             GC.SuppressFinalize(this);

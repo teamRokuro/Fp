@@ -1,8 +1,10 @@
-﻿namespace Fp.Images.Png {
+﻿namespace Fp.Images.Png
+{
     /// <summary>
     /// Indicates the transmission order of the image data.
     /// </summary>
-    public enum InterlaceMethod : byte {
+    public enum InterlaceMethod : byte
+    {
         /// <summary>
         /// No interlace.
         /// </summary>

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Fp.Images.Png {
-    internal static class Adam7 {
+namespace Fp.Images.Png
+{
+    internal static class Adam7
+    {
         /// <summary>
         /// For a given pass number (1 indexed) the scanline indexes of the lines included in that pass in the 8x8 grid.
         /// </summary>
-        private static readonly IReadOnlyDictionary<int, int[]> PassToScanlineGridIndex = new Dictionary<int, int[]> {
+        private static readonly IReadOnlyDictionary<int, int[]> PassToScanlineGridIndex = new Dictionary<int, int[]>
+        {
             {1, new[] {0}},
             {2, new[] {0}},
             {3, new[] {4}},
@@ -15,7 +18,8 @@ namespace Fp.Images.Png {
             {7, new[] {1, 3, 5, 7}}
         };
 
-        private static readonly IReadOnlyDictionary<int, int[]> PassToScanlineColumnIndex = new Dictionary<int, int[]> {
+        private static readonly IReadOnlyDictionary<int, int[]> PassToScanlineColumnIndex = new Dictionary<int, int[]>
+        {
             {1, new[] {0}},
             {2, new[] {4}},
             {3, new[] {0, 4}},
@@ -44,20 +48,24 @@ namespace Fp.Images.Png {
          *
          */
 
-        public static int GetNumberOfScanlinesInPass(ImageHeader header, int pass) {
+        public static int GetNumberOfScanlinesInPass(ImageHeader header, int pass)
+        {
             var indices = PassToScanlineGridIndex[pass + 1];
 
-            var mod = header.Height % 8;
+            int mod = header.Height % 8;
 
-            var fitsExactly = mod == 0;
+            bool fitsExactly = mod == 0;
 
-            if (fitsExactly) {
+            if (fitsExactly)
+            {
                 return indices.Length * (header.Height / 8);
             }
 
-            var additionalLines = 0;
-            for (var i = 0; i < indices.Length; i++) {
-                if (indices[i] < mod) {
+            int additionalLines = 0;
+            for (int i = 0; i < indices.Length; i++)
+            {
+                if (indices[i] < mod)
+                {
                     additionalLines++;
                 }
             }
@@ -65,20 +73,24 @@ namespace Fp.Images.Png {
             return indices.Length * (header.Height / 8) + additionalLines;
         }
 
-        public static int GetPixelsPerScanlineInPass(ImageHeader header, int pass) {
+        public static int GetPixelsPerScanlineInPass(ImageHeader header, int pass)
+        {
             var indices = PassToScanlineColumnIndex[pass + 1];
 
-            var mod = header.Width % 8;
+            int mod = header.Width % 8;
 
-            var fitsExactly = mod == 0;
+            bool fitsExactly = mod == 0;
 
-            if (fitsExactly) {
+            if (fitsExactly)
+            {
                 return indices.Length * (header.Width / 8);
             }
 
-            var additionalColumns = 0;
-            for (int i = 0; i < indices.Length; i++) {
-                if (indices[i] < mod) {
+            int additionalColumns = 0;
+            for (int i = 0; i < indices.Length; i++)
+            {
+                if (indices[i] < mod)
+                {
                     additionalColumns++;
                 }
             }
@@ -87,14 +99,15 @@ namespace Fp.Images.Png {
         }
 
         public static (int x, int y) GetPixelIndexForScanlineInPass(ImageHeader header, int pass, int scanlineIndex,
-            int indexInScanline) {
+            int indexInScanline)
+        {
             var columnIndices = PassToScanlineColumnIndex[pass + 1];
             var rows = PassToScanlineGridIndex[pass + 1];
 
-            var actualRow = scanlineIndex % rows.Length;
-            var actualCol = indexInScanline % columnIndices.Length;
-            var precedingRows = 8 * (scanlineIndex / rows.Length);
-            var precedingCols = 8 * (indexInScanline / columnIndices.Length);
+            int actualRow = scanlineIndex % rows.Length;
+            int actualCol = indexInScanline % columnIndices.Length;
+            int precedingRows = 8 * (scanlineIndex / rows.Length);
+            int precedingCols = 8 * (indexInScanline / columnIndices.Length);
 
             return (precedingCols + columnIndices[actualCol], precedingRows + rows[actualRow]);
         }

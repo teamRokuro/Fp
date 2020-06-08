@@ -1,8 +1,10 @@
-﻿namespace Fp.Images.Png {
+﻿namespace Fp.Images.Png
+{
     /// <summary>
     /// A pixel in a <see cref="Png"/> image.
     /// </summary>
-    public readonly struct Pixel {
+    public readonly struct Pixel
+    {
         /// <summary>
         /// The red value for the pixel.
         /// </summary>
@@ -36,7 +38,8 @@
         /// <param name="b">The blue value for the pixel.</param>
         /// <param name="a">The alpha transparency value for the pixel.</param>
         /// <param name="isGrayscale">Whether the pixel is grayscale.</param>
-        public Pixel(byte r, byte g, byte b, byte a, bool isGrayscale) {
+        public Pixel(byte r, byte g, byte b, byte a, bool isGrayscale)
+        {
             R = r;
             G = g;
             B = b;
@@ -50,7 +53,8 @@
         /// <param name="r">The red value for the pixel.</param>
         /// <param name="g">The green value for the pixel.</param>
         /// <param name="b">The blue value for the pixel.</param>
-        public Pixel(byte r, byte g, byte b) {
+        public Pixel(byte r, byte g, byte b)
+        {
             R = r;
             G = g;
             B = b;
@@ -62,7 +66,8 @@
         /// Create a new grayscale <see cref="Pixel"/>.
         /// </summary>
         /// <param name="grayscale">The grayscale value.</param>
-        public Pixel(byte grayscale) {
+        public Pixel(byte grayscale)
+        {
             R = grayscale;
             G = grayscale;
             B = grayscale;
@@ -71,8 +76,10 @@
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj) {
-            if (obj is Pixel pixel) {
+        public override bool Equals(object obj)
+        {
+            if (obj is Pixel pixel)
+            {
                 return IsGrayscale == pixel.IsGrayscale
                        && A == pixel.A
                        && R == pixel.R
@@ -88,14 +95,17 @@
         /// </summary>
         /// <param name="other">The other pixel.</param>
         /// <returns><see langword="true"/> if all pixel values are equal otherwise <see langword="false"/>.</returns>
-        public bool Equals(Pixel other) {
+        public bool Equals(Pixel other)
+        {
             return R == other.R && G == other.G && B == other.B && A == other.A && IsGrayscale == other.IsGrayscale;
         }
 
         /// <inheritdoc />
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = R.GetHashCode();
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = R.GetHashCode();
                 hashCode = (hashCode * 397) ^ G.GetHashCode();
                 hashCode = (hashCode * 397) ^ B.GetHashCode();
                 hashCode = (hashCode * 397) ^ A.GetHashCode();
@@ -105,7 +115,8 @@
         }
 
         /// <inheritdoc />
-        public override string ToString() {
+        public override string ToString()
+        {
             return $"({R}, {G}, {B}, {A})";
         }
     }

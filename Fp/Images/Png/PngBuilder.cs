@@ -5,11 +5,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Fp.Images.Png;
 
-namespace Fp.Images.Png {
+namespace Fp.Images.Png
+{
     /// <summary>
     /// Used to construct PNG images. Call <see cref="Create"/> to make a new builder.
     /// </summary>
-    public class PngBuilder {
+    public class PngBuilder
+    {
         /// <summary>
         /// IDAT chunk bytes
         /// </summary>
@@ -34,15 +36,17 @@ namespace Fp.Images.Png {
         /// <summary>
         /// Create a builder for a PNG with the given width and size.
         /// </summary>
-        public static PngBuilder Create(int width, int height, bool hasAlphaChannel) {
-            var bpp = hasAlphaChannel ? 4 : 3;
+        public static PngBuilder Create(int width, int height, bool hasAlphaChannel)
+        {
+            int bpp = hasAlphaChannel ? 4 : 3;
 
-            var length = height * width * bpp + height;
+            int length = height * width * bpp + height;
 
             return new PngBuilder(new byte[length], hasAlphaChannel, width, height, bpp);
         }
 
-        private PngBuilder(byte[] rawData, bool hasAlphaChannel, int width, int height, int bytesPerPixel) {
+        private PngBuilder(byte[] rawData, bool hasAlphaChannel, int width, int height, int bytesPerPixel)
+        {
             _rawData = rawData;
             _hasAlphaChannel = hasAlphaChannel;
             _width = width;
@@ -58,14 +62,16 @@ namespace Fp.Images.Png {
         /// <summary>
         /// Set the pixel value for the given column (x) and row (y).
         /// </summary>
-        public PngBuilder SetPixel(Pixel pixel, int x, int y) {
-            var start = y * (_width * _bytesPerPixel + 1) + 1 + x * _bytesPerPixel;
+        public PngBuilder SetPixel(Pixel pixel, int x, int y)
+        {
+            int start = y * (_width * _bytesPerPixel + 1) + 1 + x * _bytesPerPixel;
 
             _rawData[start++] = pixel.R;
             _rawData[start++] = pixel.G;
             _rawData[start++] = pixel.B;
 
-            if (_hasAlphaChannel) {
+            if (_hasAlphaChannel)
+            {
                 _rawData[start] = pixel.A;
             }
 
@@ -75,7 +81,8 @@ namespace Fp.Images.Png {
         /// <summary>
         /// Get the bytes of the PNG file for this builder.
         /// </summary>
-        public byte[] Save() {
+        public byte[] Save()
+        {
             using var memoryStream = new MemoryStream();
             Save(memoryStream);
             return memoryStream.ToArray();
@@ -84,7 +91,8 @@ namespace Fp.Images.Png {
         /// <summary>
         /// Write the PNG file bytes to the provided stream.
         /// </summary>
-        public void Save(Stream outputStream) {
+        public void Save(Stream outputStream)
+        {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
             var stream = new PngStreamWriteHelper(outputStream);
@@ -97,14 +105,15 @@ namespace Fp.Images.Png {
             stream.WriteByte(8);
 
             var colorType = ColorType.ColorUsed;
-            if (_hasAlphaChannel) {
+            if (_hasAlphaChannel)
+            {
                 colorType |= ColorType.AlphaChannelUsed;
             }
 
-            stream.WriteByte((byte) colorType);
-            stream.WriteByte((byte) CompressionMethod.DeflateWithSlidingWindow);
-            stream.WriteByte((byte) FilterMethod.AdaptiveFiltering);
-            stream.WriteByte((byte) InterlaceMethod.None);
+            stream.WriteByte((byte)colorType);
+            stream.WriteByte((byte)CompressionMethod.DeflateWithSlidingWindow);
+            stream.WriteByte((byte)FilterMethod.AdaptiveFiltering);
+            stream.WriteByte((byte)InterlaceMethod.None);
 
             stream.WriteCrc();
 
@@ -119,7 +128,8 @@ namespace Fp.Images.Png {
             stream.WriteCrc();
         }
 
-        internal static byte[] Compress(Span<byte> data) {
+        internal static byte[] Compress(Span<byte> data)
+        {
             const int headerLength = 2;
             const int checksumLength = 4;
             using var compressStream = new MemoryStream(data.Length);
@@ -134,28 +144,30 @@ namespace Fp.Images.Png {
             result[1] = ChecksumBits;
 
             // Write the compressed data.
-            compressStream.GetBuffer().AsSpan(0, (int) compressStream.Length).CopyTo(result.AsSpan(headerLength));
+            compressStream.GetBuffer().AsSpan(0, (int)compressStream.Length).CopyTo(result.AsSpan(headerLength));
 
             // Write Checksum of raw data.
-            var checksum = Adler32Checksum.Calculate(data);
+            int checksum = Adler32Checksum.Calculate(data);
 
-            var offset = headerLength + compressStream.Length;
+            long offset = headerLength + compressStream.Length;
 
-            result[offset++] = (byte) (checksum >> 24);
-            result[offset++] = (byte) (checksum >> 16);
-            result[offset++] = (byte) (checksum >> 8);
-            result[offset] = (byte) checksum;
+            result[offset++] = (byte)(checksum >> 24);
+            result[offset++] = (byte)(checksum >> 16);
+            result[offset++] = (byte)(checksum >> 8);
+            result[offset] = (byte)checksum;
 
             return result;
         }
 
         // Compress plain rgba
-        internal static byte[] Compress2(Span<byte> data, int width, int height, CompressionLevel compressionLevel) {
+        internal static byte[] Compress2(Span<byte> data, int width, int height, CompressionLevel compressionLevel)
+        {
             const int headerLength = 2;
             const int checksumLength = 4;
             using var compressStream = new MemoryStream(data.Length);
             using var compressor = new DeflateStream(compressStream, compressionLevel, true);
-            for (var y = 0; y < height; y++) {
+            for (int y = 0; y < height; y++)
+            {
                 compressor.WriteByte(0);
                 Processor.WriteBaseSpan(compressor, data.Slice(4 * width * y, 4 * width));
             }
@@ -169,37 +181,24 @@ namespace Fp.Images.Png {
             result[1] = ChecksumBits;
 
             // Write the compressed data.
-            compressStream.GetBuffer().AsSpan(0, (int) compressStream.Length).CopyTo(result.AsSpan(headerLength));
+            compressStream.GetBuffer().AsSpan(0, (int)compressStream.Length).CopyTo(result.AsSpan(headerLength));
 
             // Write Checksum of raw data.
-            var checksum = Adler32Checksum.Calculate(data);
+            int checksum = Adler32Checksum.Calculate(data);
 
-            var offset = headerLength + compressStream.Length;
+            long offset = headerLength + compressStream.Length;
 
-            result[offset++] = (byte) (checksum >> 24);
-            result[offset++] = (byte) (checksum >> 16);
-            result[offset++] = (byte) (checksum >> 8);
-            result[offset] = (byte) checksum;
+            result[offset++] = (byte)(checksum >> 24);
+            result[offset++] = (byte)(checksum >> 16);
+            result[offset++] = (byte)(checksum >> 8);
+            result[offset] = (byte)checksum;
 
             return result;
         }
-    }
-}
 
-namespace Fp {
-    public partial class Processor {
-        /// <summary>
-        /// Write rgba data to stream
-        /// </summary>
-        /// <param name="data">Raw rgba color data</param>
-        /// <param name="width">Width of image</param>
-        /// <param name="height">Height of image</param>
-        /// <param name="compressionLevel">Deflate compression level</param>
-        /// <param name="outputStream">Stream to write to</param>
-        public void WritePngRgba(Span<uint> data, int width, int height,
-            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null) {
-            outputStream ??= OutputStream ?? throw new InvalidOperationException();
-
+        internal static void WritePngRgba(Stream outputStream, Span<uint> data, int width, int height,
+            CompressionLevel compressionLevel)
+        {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
             var stream = new PngStreamWriteHelper(outputStream);
@@ -211,21 +210,42 @@ namespace Fp {
             StreamHelper.WriteBigEndianInt32(stream, height);
             stream.WriteByte(8);
 
-            stream.WriteByte((byte) (ColorType.ColorUsed | ColorType.AlphaChannelUsed));
-            stream.WriteByte((byte) CompressionMethod.DeflateWithSlidingWindow);
-            stream.WriteByte((byte) FilterMethod.AdaptiveFiltering);
-            stream.WriteByte((byte) InterlaceMethod.None);
+            stream.WriteByte((byte)(ColorType.ColorUsed | ColorType.AlphaChannelUsed));
+            stream.WriteByte((byte)CompressionMethod.DeflateWithSlidingWindow);
+            stream.WriteByte((byte)FilterMethod.AdaptiveFiltering);
+            stream.WriteByte((byte)InterlaceMethod.None);
             stream.WriteCrc();
 
-            var imageData = PngBuilder.Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
+            var imageData = Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
             stream.WriteChunkLength(imageData.Length);
-            stream.WriteChunkHeader(PngBuilder.ChunkIDAT);
+            stream.WriteChunkHeader(ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
             stream.WriteCrc();
 
             stream.WriteChunkLength(0);
-            stream.WriteChunkHeader(PngBuilder.ChunkIEND);
+            stream.WriteChunkHeader(ChunkIEND);
             stream.WriteCrc();
+        }
+    }
+}
+
+namespace Fp
+{
+    public partial class Processor
+    {
+        /// <summary>
+        /// Write rgba data to stream
+        /// </summary>
+        /// <param name="data">Raw rgba color data</param>
+        /// <param name="width">Width of image</param>
+        /// <param name="height">Height of image</param>
+        /// <param name="compressionLevel">Deflate compression level</param>
+        /// <param name="outputStream">Stream to write to</param>
+        public void WritePngRgba(Span<uint> data, int width, int height,
+            CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null)
+        {
+            outputStream ??= OutputStream ?? throw new InvalidOperationException();
+            PngBuilder.WritePngRgba(outputStream, data, width, height, compressionLevel);
         }
     }
 }

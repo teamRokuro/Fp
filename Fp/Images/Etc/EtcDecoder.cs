@@ -22,15 +22,18 @@ using Fp.Images.Etc;
 
 #pragma warning disable 1591
 
-namespace Fp.Images.Etc {
+namespace Fp.Images.Etc
+{
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     [SuppressMessage("ReSharper", "IdentifierTypo")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "UnusedParameter.Global")]
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    public static class EtcDecoder {
+    public static class EtcDecoder
+    {
         [Flags]
-        public enum EtcMode : uint {
+        public enum EtcMode : uint
+        {
             EtcIndividual = 0x1,
             EtcDifferential = 0x2,
             EtcT = 0x4,
@@ -43,7 +46,8 @@ namespace Fp.Images.Etc {
         }
 
         [Flags]
-        public enum DecompressionFunctionFlags {
+        public enum DecompressionFunctionFlags
+        {
             None = 0x0,
 
             /// <summary>
@@ -67,23 +71,17 @@ namespace Fp.Images.Etc {
             NonOpaqueOnly = 0x4
         }
 
-        private static readonly int[] Complement3BitshiftedTable = {
-            0, 8, 16, 24, -32, -24, -16, -8
-        };
+        private static readonly int[] Complement3BitshiftedTable = {0, 8, 16, 24, -32, -24, -16, -8};
 
-        private static readonly int[] ModifierTable = {
-            2, 8, -2, -8,
-            5, 17, -5, -17,
-            9, 29, -9, -29,
-            13, 42, -13, -42,
-            18, 60, -18, -60,
-            24, 80, -24, -80,
-            33, 106, -33, -106,
-            47, 183, -47, -183
+        private static readonly int[] ModifierTable =
+        {
+            2, 8, -2, -8, 5, 17, -5, -17, 9, 29, -9, -29, 13, 42, -13, -42, 18, 60, -18, -60, 24, 80, -24, -80, 33,
+            106, -33, -106, 47, 183, -47, -183
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int Clamp2047(int x) {
+        private static int Clamp2047(int x)
+        {
             if (x < 0)
                 return 0;
             if (x > 2047)
@@ -92,7 +90,8 @@ namespace Fp.Images.Etc {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int clamp1023_signed(int x) {
+        private static int clamp1023_signed(int x)
+        {
             if (x < -1023)
                 return -1023;
             if (x > 1023)
@@ -106,13 +105,15 @@ namespace Fp.Images.Etc {
         /// <param name="x"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int Complement3Bitshifted(int x) {
+        private static int Complement3Bitshifted(int x)
+        {
             return Complement3BitshiftedTable[x];
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int complement3bitshifted_slow(int x) {
+        private static int complement3bitshifted_slow(int x)
+        {
             if ((x & 4) != 0)
                 return ((x & 3) - 4) << 3; // Note: shift is arithmetic.
             return x << 3;
@@ -120,33 +121,36 @@ namespace Fp.Images.Etc {
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int Complement3Bit(int x) {
+        private static int Complement3Bit(int x)
+        {
             if ((x & 4) != 0)
                 return (x & 3) - 4;
             return x;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static byte Clamp(int x) => (byte) (x < 0 ? 0 : x > 255 ? 255 : x);
+        private static byte Clamp(int x) => (byte)(x < 0 ? 0 : x > 255 ? 255 : x);
 
-        private static uint Rgba(byte r, byte g, byte b, byte a) {
+        private static uint Rgba(byte r, byte g, byte b, byte a)
+        {
             return BitConverter.IsLittleEndian
-                ? (uint) (r | (g << 8) | (b << 16) | (a << 24))
-                : (uint) ((r << 24) | (g << 16) | (b << 8) | a);
+                ? (uint)(r | (g << 8) | (b << 16) | (a << 24))
+                : (uint)((r << 24) | (g << 16) | (b << 8) | a);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void ProcessPixelEtc1(byte i, uint pixelIndexWord,
             // Define inline function to speed up ETC1 decoding.
             uint tableCodeword, int* baseColorSubblock,
-            byte* pixelBuffer) {
-            var pixelIndex = (int) (((pixelIndexWord & (1 << i)) >> i)
-                                    | ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)));
-            var modifier = ModifierTable[4 * tableCodeword + pixelIndex];
-            var r = Clamp(baseColorSubblock[0] + modifier);
-            var g = Clamp(baseColorSubblock[1] + modifier);
-            var b = Clamp(baseColorSubblock[2] + modifier);
-            var buffer = (uint*) pixelBuffer;
+            byte* pixelBuffer)
+        {
+            int pixelIndex = (int)(((pixelIndexWord & (1 << i)) >> i)
+                                   | ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)));
+            int modifier = ModifierTable[4 * tableCodeword + pixelIndex];
+            byte r = Clamp(baseColorSubblock[0] + modifier);
+            byte g = Clamp(baseColorSubblock[1] + modifier);
+            byte b = Clamp(baseColorSubblock[2] + modifier);
+            var buffer = (uint*)pixelBuffer;
             buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba(r, g, b, 0xff);
         }
 
@@ -159,19 +163,22 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEtc1(byte* bitString, EtcMode etc,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            var differentialMode = bitString[3] & 2;
-            if (differentialMode != 0) {
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            int differentialMode = bitString[3] & 2;
+            if (differentialMode != 0)
+            {
                 if ((etc & EtcMode.EtcDifferential) == 0)
                     return false;
             }
             else if ((etc & EtcMode.EtcIndividual) == 0)
                 return false;
 
-            var flipbit = bitString[3] & 1;
+            int flipbit = bitString[3] & 1;
             var baseColorSubblock1 = stackalloc int[3];
             var baseColorSubblock2 = stackalloc int[3];
-            if (differentialMode != 0) {
+            if (differentialMode != 0)
+            {
                 baseColorSubblock1[0] = bitString[0] & 0xF8;
                 baseColorSubblock1[0] |= (baseColorSubblock1[0] & 224) >> 5;
                 baseColorSubblock1[1] = bitString[1] & 0xF8;
@@ -194,7 +201,8 @@ namespace Fp.Images.Etc {
                     return false;
                 baseColorSubblock2[2] |= (baseColorSubblock2[2] & 224) >> 5;
             }
-            else {
+            else
+            {
                 baseColorSubblock1[0] = bitString[0] & 0xF0;
                 baseColorSubblock1[0] |= baseColorSubblock1[0] >> 4;
                 baseColorSubblock1[1] = bitString[1] & 0xF0;
@@ -209,11 +217,12 @@ namespace Fp.Images.Etc {
                 baseColorSubblock2[2] |= baseColorSubblock2[2] << 4;
             }
 
-            var tableCodeword1 = (uint) ((bitString[3] & 224) >> 5);
-            var tableCodeword2 = (uint) ((bitString[3] & 28) >> 2);
-            var pixelIndexWord = ((uint) bitString[4] << 24) | ((uint) bitString[5] << 16) |
-                                 ((uint) bitString[6] << 8) | bitString[7];
-            if (flipbit == 0) {
+            uint tableCodeword1 = (uint)((bitString[3] & 224) >> 5);
+            uint tableCodeword2 = (uint)((bitString[3] & 28) >> 2);
+            uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
+                                  ((uint)bitString[6] << 8) | bitString[7];
+            if (flipbit == 0)
+            {
                 ProcessPixelEtc1(0, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc1(1, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc1(2, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
@@ -231,7 +240,8 @@ namespace Fp.Images.Etc {
                 ProcessPixelEtc1(14, pixelIndexWord, tableCodeword2, baseColorSubblock2, pixelBuffer);
                 ProcessPixelEtc1(15, pixelIndexWord, tableCodeword2, baseColorSubblock2, pixelBuffer);
             }
-            else {
+            else
+            {
                 ProcessPixelEtc1(0, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc1(1, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc1(2, pixelIndexWord, tableCodeword2, baseColorSubblock2, pixelBuffer);
@@ -258,7 +268,8 @@ namespace Fp.Images.Etc {
         /// </summary>
         /// <param name="bitString"></param>
         /// <returns></returns>
-        public static unsafe EtcMode GetModeEtc1(byte* bitString) {
+        public static unsafe EtcMode GetModeEtc1(byte* bitString)
+        {
             // Figure out the mode.
             return (bitString[3] & 2) == 0
                 ? EtcMode.EtcIndividual
@@ -266,19 +277,19 @@ namespace Fp.Images.Etc {
         }
 
         public static unsafe void SetModeEtc1(byte* bitString, EtcMode etcMode,
-            DecompressionFunctionFlags flags) {
+            DecompressionFunctionFlags flags)
+        {
             if ((etcMode & EtcMode.EtcIndividual) == EtcMode.EtcIndividual)
-                bitString[3] &= unchecked((byte) ~0x2);
+                bitString[3] &= unchecked((byte)~0x2);
             else
                 bitString[3] |= 0x2;
         }
 
-        private static readonly int[] Etc2DistanceTable = {
-            3, 6, 11, 16, 23, 32, 41, 64
-        };
+        private static readonly int[] Etc2DistanceTable = {3, 6, 11, 16, 23, 32, 41, 64};
 
         private static unsafe void ProcessBlockEtc2TOrHMode(byte* bitString, EtcMode etcMode,
-            byte* pixelBuffer) {
+            byte* pixelBuffer)
+        {
             int baseColor1R, baseColor1G, baseColor1B;
             int baseColor2R, baseColor2G, baseColor2B;
             int* paintColorR = stackalloc int[4],
@@ -286,7 +297,8 @@ namespace Fp.Images.Etc {
                 paintColorB = stackalloc int[4];
 
             int distance;
-            if (etcMode == EtcMode.EtcT) {
+            if (etcMode == EtcMode.EtcT)
+            {
                 // T mode.
                 baseColor1R = ((bitString[0] & 0x18) >> 1) | (bitString[0] & 0x3);
                 baseColor1R |= baseColor1R << 4;
@@ -315,7 +327,8 @@ namespace Fp.Images.Etc {
                 paintColorG[3] = Clamp(baseColor2G - distance);
                 paintColorB[3] = Clamp(baseColor2B - distance);
             }
-            else {
+            else
+            {
                 // H mode.
                 baseColor1R = (bitString[0] & 0x78) >> 3;
                 baseColor1R |= baseColor1R << 4;
@@ -331,9 +344,9 @@ namespace Fp.Images.Etc {
                 baseColor2B |= baseColor2B << 4;
                 // da is most significant bit, db is middle bit, least significant bit is
                 // (base_color1 value >= base_color2 value).
-                var baseColor1Value = (baseColor1R << 16) + (baseColor1G << 8) + baseColor1B;
-                var baseColor2Value = (baseColor2R << 16) + (baseColor2G << 8) + baseColor2B;
-                var bit = baseColor1Value >= baseColor2Value ? 1 : 0;
+                int baseColor1Value = (baseColor1R << 16) + (baseColor1G << 8) + baseColor1B;
+                int baseColor2Value = (baseColor2R << 16) + (baseColor2G << 8) + baseColor2B;
+                int bit = baseColor1Value >= baseColor2Value ? 1 : 0;
                 distance = Etc2DistanceTable[(bitString[3] & 0x04) | ((bitString[3] & 0x01) << 1) | bit];
                 paintColorR[0] = Clamp(baseColor1R + distance);
                 paintColorG[0] = Clamp(baseColor1G + distance);
@@ -349,35 +362,37 @@ namespace Fp.Images.Etc {
                 paintColorB[3] = Clamp(baseColor2B - distance);
             }
 
-            var pixelIndexWord = ((uint) bitString[4] << 24) | ((uint) bitString[5] << 16) |
-                                 ((uint) bitString[6] << 8) | bitString[7];
+            uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
+                                  ((uint)bitString[6] << 8) | bitString[7];
 
-            var buffer = (uint*) pixelBuffer;
-            for (var i = 0; i < 16; i++) {
-                var pixelIndex = (int) ((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
-                pixelIndex |= (int) ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)); // Most significant bit.
-                var r = paintColorR[pixelIndex];
-                var g = paintColorG[pixelIndex];
-                var b = paintColorB[pixelIndex];
-                buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba((byte) r, (byte) g, (byte) b, 0xff);
+            var buffer = (uint*)pixelBuffer;
+            for (int i = 0; i < 16; i++)
+            {
+                int pixelIndex = (int)((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
+                pixelIndex |= (int)((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)); // Most significant bit.
+                int r = paintColorR[pixelIndex];
+                int g = paintColorG[pixelIndex];
+                int b = paintColorB[pixelIndex];
+                buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba((byte)r, (byte)g, (byte)b, 0xff);
             }
         }
 
         private static unsafe void ProcessBlockEtc2PlanarMode(byte* bitString,
-            byte* pixelBuffer) {
+            byte* pixelBuffer)
+        {
             // Each color O, H and V is in 6-7-6 format.
-            var ro = (bitString[0] & 0x7E) >> 1;
-            var go = ((bitString[0] & 0x1) << 6) | ((bitString[1] & 0x7E) >> 1);
+            int ro = (bitString[0] & 0x7E) >> 1;
+            int go = ((bitString[0] & 0x1) << 6) | ((bitString[1] & 0x7E) >> 1);
 
-            var bo = ((bitString[1] & 0x1) << 5) | (bitString[2] & 0x18) | ((bitString[2] & 0x03) << 1) |
+            int bo = ((bitString[1] & 0x1) << 5) | (bitString[2] & 0x18) | ((bitString[2] & 0x03) << 1) |
                      ((bitString[3] & 0x80) >> 7);
 
-            var rh = ((bitString[3] & 0x7C) >> 1) | (bitString[3] & 0x1);
-            var gh = (bitString[4] & 0xFE) >> 1;
-            var bh = ((bitString[4] & 0x1) << 5) | ((bitString[5] & 0xF8) >> 3);
-            var rv = ((bitString[5] & 0x7) << 3) | ((bitString[6] & 0xE0) >> 5);
-            var gv = ((bitString[6] & 0x1F) << 2) | ((bitString[7] & 0xC0) >> 6);
-            var bv = bitString[7] & 0x3F;
+            int rh = ((bitString[3] & 0x7C) >> 1) | (bitString[3] & 0x1);
+            int gh = (bitString[4] & 0xFE) >> 1;
+            int bh = ((bitString[4] & 0x1) << 5) | ((bitString[5] & 0xF8) >> 3);
+            int rv = ((bitString[5] & 0x7) << 3) | ((bitString[6] & 0xE0) >> 5);
+            int gv = ((bitString[6] & 0x1F) << 2) | ((bitString[7] & 0xC0) >> 6);
+            int bv = bitString[7] & 0x3F;
             ro = (ro << 2) | ((ro & 0x30) >> 4); // Replicate bits.
             go = (go << 1) | ((go & 0x40) >> 6);
             bo = (bo << 2) | ((bo & 0x30) >> 4);
@@ -388,12 +403,13 @@ namespace Fp.Images.Etc {
             gv = (gv << 1) | ((gv & 0x40) >> 6);
             bv = (bv << 2) | ((bv & 0x30) >> 4);
 
-            var buffer = (uint*) pixelBuffer;
-            for (var y = 0; y < 4; y++)
-            for (var x = 0; x < 4; x++) {
-                var r = Clamp((x * (rh - ro) + y * (rv - ro) + 4 * ro + 2) >> 2);
-                var g = Clamp((x * (gh - go) + y * (gv - go) + 4 * go + 2) >> 2);
-                var b = Clamp((x * (bh - bo) + y * (bv - bo) + 4 * bo + 2) >> 2);
+            var buffer = (uint*)pixelBuffer;
+            for (int y = 0; y < 4; y++)
+            for (int x = 0; x < 4; x++)
+            {
+                byte r = Clamp((x * (rh - ro) + y * (rv - ro) + 4 * ro + 2) >> 2);
+                byte g = Clamp((x * (gh - go) + y * (gv - go) + 4 * go + 2) >> 2);
+                byte b = Clamp((x * (bh - bo) + y * (bv - bo) + 4 * bo + 2) >> 2);
                 buffer[y * 4 + x] = Rgba(r, g, b, 0xff);
             }
         }
@@ -407,9 +423,11 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEtc2(byte* bitString, EtcMode etc,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
             // Figure out the mode.
-            if ((bitString[3] & 2) == 0) {
+            if ((bitString[3] & 2) == 0)
+            {
                 // Individual mode.
                 return DecompressBlockEtc1(bitString, etc, flags,
                     pixelBuffer);
@@ -417,13 +435,14 @@ namespace Fp.Images.Etc {
 
             if ((etc & ~EtcMode.EtcIndividual) == 0)
                 return false;
-            var r = bitString[0] & 0xF8;
+            int r = bitString[0] & 0xF8;
             r += Complement3Bitshifted(bitString[0] & 7);
-            var g = bitString[1] & 0xF8;
+            int g = bitString[1] & 0xF8;
             g += Complement3Bitshifted(bitString[1] & 7);
-            var b = bitString[2] & 0xF8;
+            int b = bitString[2] & 0xF8;
             b += Complement3Bitshifted(bitString[2] & 7);
-            if ((r & 0xFF07) != 0) {
+            if ((r & 0xFF07) != 0)
+            {
                 // T mode.
                 if ((etc & EtcMode.EtcT) == 0)
                     return false;
@@ -433,7 +452,8 @@ namespace Fp.Images.Etc {
                 return true;
             }
 
-            if ((g & 0xFF07) != 0) {
+            if ((g & 0xFF07) != 0)
+            {
                 // H mode.
                 if ((etc & EtcMode.EtcH) == 0)
                     return false;
@@ -443,7 +463,8 @@ namespace Fp.Images.Etc {
                 return true;
             }
 
-            if ((b & 0xFF07) != 0) {
+            if ((b & 0xFF07) != 0)
+            {
                 // Planar mode.
                 if ((etc & EtcMode.EtcPlanar) == 0)
                     return false;
@@ -462,15 +483,16 @@ namespace Fp.Images.Etc {
         /// </summary>
         /// <param name="bitString"></param>
         /// <returns></returns>
-        public static unsafe EtcMode GetModeEtc2(byte* bitString) {
+        public static unsafe EtcMode GetModeEtc2(byte* bitString)
+        {
             if ((bitString[3] & 2) == 0)
                 return EtcMode.EtcIndividual;
 
-            var r = bitString[0] & 0xF8;
+            int r = bitString[0] & 0xF8;
             r += Complement3Bitshifted(bitString[0] & 7);
-            var g = bitString[1] & 0xF8;
+            int g = bitString[1] & 0xF8;
             g += Complement3Bitshifted(bitString[1] & 7);
-            var b = bitString[2] & 0xF8;
+            int b = bitString[2] & 0xF8;
             b += Complement3Bitshifted(bitString[2] & 7);
             if ((r & 0xFF07) != 0)
                 return EtcMode.EtcT;
@@ -482,59 +504,72 @@ namespace Fp.Images.Etc {
         }
 
         public static unsafe void SetModeEtc2Thp(byte* bitString, EtcMode etcMode,
-            DecompressionFunctionFlags flags) {
-            if (etcMode == EtcMode.EtcDifferential) {
+            DecompressionFunctionFlags flags)
+        {
+            if (etcMode == EtcMode.EtcDifferential)
+            {
                 // bitString[0] bits 0, 1, 3, 4 are used.
                 // Bits 2, 5, 6, 7 can be modified.
                 // Modify bits 2, 5, 6, 7 so that R < 0 or R > 31.
-                var rBits5To7Clear = (bitString[0] & 0x18) >> 3;
-                var rComplBit2Clear = Complement3Bit(bitString[0] & 0x3);
-                if (rBits5To7Clear + 0x1C + rComplBit2Clear > 31) {
+                int rBits5To7Clear = (bitString[0] & 0x18) >> 3;
+                int rComplBit2Clear = Complement3Bit(bitString[0] & 0x3);
+                if (rBits5To7Clear + 0x1C + rComplBit2Clear > 31)
+                {
                     // Set bits 5, 6, 7 and clear bit 2.
-                    bitString[0] &= unchecked((byte) ~0x04);
+                    bitString[0] &= unchecked((byte)~0x04);
                     bitString[0] |= 0xE0;
                 }
-                else {
-                    var rComplBit2Set = Complement3Bit((bitString[0] & 0x3) | 0x4);
-                    if (rBits5To7Clear + rComplBit2Set < 0) {
+                else
+                {
+                    int rComplBit2Set = Complement3Bit((bitString[0] & 0x3) | 0x4);
+                    if (rBits5To7Clear + rComplBit2Set < 0)
+                    {
                         // Clear bits 5, 6, 7 and set bit 2.
-                        bitString[0] &= unchecked((byte) ~0xE0);
+                        bitString[0] &= unchecked((byte)~0xE0);
                         bitString[0] |= 0x04;
                     }
                 }
             }
 
-            else if (etcMode == EtcMode.AllModesEtc1) {
-                var gBits5To7Clear = (bitString[1] & 0x18) >> 3;
-                var gComplBit2Clear = Complement3Bit(bitString[1] & 0x3);
-                if (gBits5To7Clear + 0x1C + gComplBit2Clear > 31) {
+            else if (etcMode == EtcMode.AllModesEtc1)
+            {
+                int gBits5To7Clear = (bitString[1] & 0x18) >> 3;
+                int gComplBit2Clear = Complement3Bit(bitString[1] & 0x3);
+                if (gBits5To7Clear + 0x1C + gComplBit2Clear > 31)
+                {
                     // Set bits 5, 6, 7 and clear bit 2.
-                    bitString[1] &= unchecked((byte) ~0x04);
+                    bitString[1] &= unchecked((byte)~0x04);
                     bitString[1] |= 0xE0;
                 }
-                else {
-                    var gComplBit2Set = Complement3Bit((bitString[1] & 0x3) | 0x4);
-                    if (gBits5To7Clear + gComplBit2Set < 0) {
+                else
+                {
+                    int gComplBit2Set = Complement3Bit((bitString[1] & 0x3) | 0x4);
+                    if (gBits5To7Clear + gComplBit2Set < 0)
+                    {
                         // Clear bits 5, 6, 7 and set bit 2.
-                        bitString[1] &= unchecked((byte) ~0xE0);
+                        bitString[1] &= unchecked((byte)~0xE0);
                         bitString[1] |= 0x04;
                     }
                 }
             }
 
-            else if (etcMode == EtcMode.EtcT) {
-                var bBits5To7Clear = (bitString[2] & 0x18) >> 3;
-                var bComplBit2Clear = Complement3Bit(bitString[2] & 0x3);
-                if (bBits5To7Clear + 0x1C + bComplBit2Clear > 31) {
+            else if (etcMode == EtcMode.EtcT)
+            {
+                int bBits5To7Clear = (bitString[2] & 0x18) >> 3;
+                int bComplBit2Clear = Complement3Bit(bitString[2] & 0x3);
+                if (bBits5To7Clear + 0x1C + bComplBit2Clear > 31)
+                {
                     // Set bits 5, 6, 7 and clear bit 2.
-                    bitString[2] &= unchecked((byte) ~0x04);
+                    bitString[2] &= unchecked((byte)~0x04);
                     bitString[2] |= 0xE0;
                 }
-                else {
-                    var bComplBit2Set = Complement3Bit((bitString[2] & 0x3) | 0x4);
-                    if (bBits5To7Clear + bComplBit2Set < 0) {
+                else
+                {
+                    int bComplBit2Set = Complement3Bit((bitString[2] & 0x3) | 0x4);
+                    if (bBits5To7Clear + bComplBit2Set < 0)
+                    {
                         // Clear bits 5, 6, 7 and set bit 2.
-                        bitString[2] &= unchecked((byte) ~0xE0);
+                        bitString[2] &= unchecked((byte)~0xE0);
                         bitString[2] |= 0x04;
                     }
                 }
@@ -542,62 +577,50 @@ namespace Fp.Images.Etc {
         }
 
         public static unsafe void SetModeEtc2(byte* bitString, EtcMode etcMode,
-            DecompressionFunctionFlags flags) {
+            DecompressionFunctionFlags flags)
+        {
             if (etcMode == 0)
                 // Set Individual mode.
-                bitString[3] &= unchecked((byte) ~0x2);
-            else {
+                bitString[3] &= unchecked((byte)~0x2);
+            else
+            {
                 // Set Differential, T, H or P mode.
                 bitString[3] |= 0x2;
                 SetModeEtc2Thp(bitString, etcMode, flags);
             }
         }
 
-        private static readonly int[,] PunchthroughModifierTable = {
-            {
-                0, 8, 0, -8
-            }, {
-                0, 17, 0, -17
-            }, {
-                0, 29, 0, -29
-            }, {
-                0, 42, 0, -42
-            }, {
-                0, 60, 0, -60
-            }, {
-                0, 80, 0, -80
-            }, {
-                0, 106, 0, -106
-            }, {
-                0, 183, 0, -183
-            }
+        private static readonly int[,] PunchthroughModifierTable =
+        {
+            {0, 8, 0, -8}, {0, 17, 0, -17}, {0, 29, 0, -29}, {0, 42, 0, -42}, {0, 60, 0, -60}, {0, 80, 0, -80},
+            {0, 106, 0, -106}, {0, 183, 0, -183}
         };
 
-        private static readonly uint[] PunchthroughMaskTable = {
-            0xFFFFFFFF, 0xFFFFFFFF, 0x00000000, 0xFFFFFFFF
-        };
+        private static readonly uint[] PunchthroughMaskTable = {0xFFFFFFFF, 0xFFFFFFFF, 0x00000000, 0xFFFFFFFF};
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void ProcessPixelEtc2Punchthrough(byte i,
             uint pixelIndexWord, uint tableCodeword,
-            int* baseColorSubblock, byte* pixelBuffer) {
-            var pixelIndex = (int) (((pixelIndexWord & (1 << i)) >> i)
-                                    | ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)));
+            int* baseColorSubblock, byte* pixelBuffer)
+        {
+            int pixelIndex = (int)(((pixelIndexWord & (1 << i)) >> i)
+                                   | ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)));
 
-            var modifier = PunchthroughModifierTable[tableCodeword, pixelIndex];
-            var r = Clamp(baseColorSubblock[0] + modifier);
-            var g = Clamp(baseColorSubblock[1] + modifier);
-            var b = Clamp(baseColorSubblock[2] + modifier);
-            var mask = PunchthroughMaskTable[pixelIndex];
-            var buffer = (uint*) pixelBuffer;
+            int modifier = PunchthroughModifierTable[tableCodeword, pixelIndex];
+            byte r = Clamp(baseColorSubblock[0] + modifier);
+            byte g = Clamp(baseColorSubblock[1] + modifier);
+            byte b = Clamp(baseColorSubblock[2] + modifier);
+            uint mask = PunchthroughMaskTable[pixelIndex];
+            var buffer = (uint*)pixelBuffer;
             buffer[(i & 3) * 4 + ((i & 12) >> 2)] =
                 Rgba(r, g, b, 0xff) & (BitConverter.IsLittleEndian ? mask : BinaryPrimitives.ReverseEndianness(mask));
         }
 
 
         private static unsafe void ProcessBlockEtc2PunchthroughDifferentialMode(byte* bitString,
-            byte* pixelBuffer) {
-            var flipbit = bitString[3] & 1;
+            byte* pixelBuffer)
+        {
+            int flipbit = bitString[3] & 1;
             var baseColorSubblock1 = stackalloc int[3];
             var baseColorSubblock2 = stackalloc int[3];
             baseColorSubblock1[0] = bitString[0] & 0xF8;
@@ -615,12 +638,13 @@ namespace Fp.Images.Etc {
             baseColorSubblock2[2] = bitString[2] & 0xF8;
             baseColorSubblock2[2] += Complement3Bitshifted(bitString[2] & 7);
             baseColorSubblock2[2] |= (baseColorSubblock2[2] & 224) >> 5;
-            var tableCodeword1 = (uint) ((bitString[3] & 224) >> 5);
-            var tableCodeword2 = (uint) ((bitString[3] & 28) >> 2);
+            uint tableCodeword1 = (uint)((bitString[3] & 224) >> 5);
+            uint tableCodeword2 = (uint)((bitString[3] & 28) >> 2);
 
-            var pixelIndexWord = ((uint) bitString[4] << 24) | ((uint) bitString[5] << 16) |
-                                 ((uint) bitString[6] << 8) | bitString[7];
-            if (flipbit == 0) {
+            uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
+                                  ((uint)bitString[6] << 8) | bitString[7];
+            if (flipbit == 0)
+            {
                 ProcessPixelEtc2Punchthrough(0, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc2Punchthrough(1, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc2Punchthrough(2, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
@@ -639,7 +663,8 @@ namespace Fp.Images.Etc {
                 ProcessPixelEtc2Punchthrough(15, pixelIndexWord, tableCodeword2, baseColorSubblock2, pixelBuffer);
             }
 
-            else {
+            else
+            {
                 ProcessPixelEtc2Punchthrough(0, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc2Punchthrough(1, pixelIndexWord, tableCodeword1, baseColorSubblock1, pixelBuffer);
                 ProcessPixelEtc2Punchthrough(2, pixelIndexWord, tableCodeword2, baseColorSubblock2, pixelBuffer);
@@ -660,7 +685,8 @@ namespace Fp.Images.Etc {
         }
 
         private static unsafe void ProcessBlockEtc2PunchthroughTOrHMode(byte* bitString,
-            EtcMode etcMode, byte* pixelBuffer) {
+            EtcMode etcMode, byte* pixelBuffer)
+        {
             int baseColor1R, baseColor1G, baseColor1B;
             int baseColor2R, baseColor2G, baseColor2B;
             int* paintColorR = stackalloc int[4],
@@ -668,7 +694,8 @@ namespace Fp.Images.Etc {
                 paintColorB = stackalloc int[4];
 
             int distance;
-            if (etcMode == EtcMode.EtcT) {
+            if (etcMode == EtcMode.EtcT)
+            {
                 // T mode.
                 baseColor1R = ((bitString[0] & 0x18) >> 1) | (bitString[0] & 0x3);
                 baseColor1R |= baseColor1R << 4;
@@ -697,7 +724,8 @@ namespace Fp.Images.Etc {
                 paintColorG[3] = Clamp(baseColor2G - distance);
                 paintColorB[3] = Clamp(baseColor2B - distance);
             }
-            else {
+            else
+            {
                 // H mode.
                 baseColor1R = (bitString[0] & 0x78) >> 3;
                 baseColor1R |= baseColor1R << 4;
@@ -713,9 +741,9 @@ namespace Fp.Images.Etc {
                 baseColor2B |= baseColor2B << 4;
                 // da is most significant bit, db is middle bit, least significant bit is
                 // (base_color1 value >= base_color2 value).
-                var baseColor1Value = (baseColor1R << 16) + (baseColor1G << 8) + baseColor1B;
-                var baseColor2Value = (baseColor2R << 16) + (baseColor2G << 8) + baseColor2B;
-                var bit = baseColor1Value >= baseColor2Value ? 1 : 0;
+                int baseColor1Value = (baseColor1R << 16) + (baseColor1G << 8) + baseColor1B;
+                int baseColor2Value = (baseColor2R << 16) + (baseColor2G << 8) + baseColor2B;
+                int bit = baseColor1Value >= baseColor2Value ? 1 : 0;
                 distance = Etc2DistanceTable[(bitString[3] & 0x04) | ((bitString[3] & 0x01) << 1) | bit];
                 paintColorR[0] = Clamp(baseColor1R + distance);
                 paintColorG[0] = Clamp(baseColor1G + distance);
@@ -731,18 +759,19 @@ namespace Fp.Images.Etc {
                 paintColorB[3] = Clamp(baseColor2B - distance);
             }
 
-            var pixelIndexWord = ((uint) bitString[4] << 24) | ((uint) bitString[5] << 16) |
-                                 ((uint) bitString[6] << 8) | bitString[7];
+            uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
+                                  ((uint)bitString[6] << 8) | bitString[7];
 
-            var buffer = (uint*) pixelBuffer;
-            for (var i = 0; i < 16; i++) {
-                var pixelIndex = (int) ((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
-                pixelIndex |= (int) ((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)); // Most significant bit.
-                var r = paintColorR[pixelIndex];
-                var g = paintColorG[pixelIndex];
-                var b = paintColorB[pixelIndex];
-                var mask = PunchthroughMaskTable[pixelIndex];
-                buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba((byte) r, (byte) g, (byte) b, 0xff) &
+            var buffer = (uint*)pixelBuffer;
+            for (int i = 0; i < 16; i++)
+            {
+                int pixelIndex = (int)((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
+                pixelIndex |= (int)((pixelIndexWord & (0x10000 << i)) >> (16 + i - 1)); // Most significant bit.
+                int r = paintColorR[pixelIndex];
+                int g = paintColorG[pixelIndex];
+                int b = paintColorB[pixelIndex];
+                uint mask = PunchthroughMaskTable[pixelIndex];
+                buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba((byte)r, (byte)g, (byte)b, 0xff) &
                                                         (BitConverter.IsLittleEndian
                                                             ? mask
                                                             : BinaryPrimitives.ReverseEndianness(mask));
@@ -758,24 +787,27 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEtc2Punchthrough(byte* bitString, EtcMode etc,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            var r = bitString[0] & 0xF8;
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            int r = bitString[0] & 0xF8;
             r += Complement3Bitshifted(bitString[0] & 7);
-            var g = bitString[1] & 0xF8;
+            int g = bitString[1] & 0xF8;
             g += Complement3Bitshifted(bitString[1] & 7);
-            var b = bitString[2] & 0xF8;
+            int b = bitString[2] & 0xF8;
             b += Complement3Bitshifted(bitString[2] & 7);
 
-            var opaque = (bitString[3] & 2) != 0;
+            bool opaque = (bitString[3] & 2) != 0;
             if (opaque && (flags & DecompressionFunctionFlags.NonOpaqueOnly) != 0)
                 return false;
             if (!opaque && (flags & DecompressionFunctionFlags.OpaqueOnly) != 0)
                 return false;
-            if ((r & 0xFF07) != 0) {
+            if ((r & 0xFF07) != 0)
+            {
                 // T mode.
                 if ((etc & EtcMode.EtcT) == 0)
                     return false;
-                if (opaque) {
+                if (opaque)
+                {
                     ProcessBlockEtc2TOrHMode(bitString, EtcMode.EtcT,
                         pixelBuffer);
                     return true;
@@ -787,11 +819,13 @@ namespace Fp.Images.Etc {
                 return true;
             }
 
-            if ((g & 0xFF07) != 0) {
+            if ((g & 0xFF07) != 0)
+            {
                 // H mode.
                 if ((etc & EtcMode.EtcH) == 0)
                     return false;
-                if (opaque) {
+                if (opaque)
+                {
                     ProcessBlockEtc2TOrHMode(bitString, EtcMode.EtcH,
                         pixelBuffer);
                     return true;
@@ -803,7 +837,8 @@ namespace Fp.Images.Etc {
                 return true;
             }
 
-            if ((b & 0xFF07) != 0) {
+            if ((b & 0xFF07) != 0)
+            {
                 // Planar mode.
                 if ((etc & EtcMode.EtcPlanar) == 0)
                     return false;
@@ -831,14 +866,15 @@ namespace Fp.Images.Etc {
         /// </summary>
         /// <param name="bitString"></param>
         /// <returns></returns>
-        public static unsafe EtcMode GetModeEtc2Punchthrough(byte* bitString) {
+        public static unsafe EtcMode GetModeEtc2Punchthrough(byte* bitString)
+        {
             // Figure out the mode.
             //	int opaque = bitString[3] & 2;
-            var r = bitString[0] & 0xF8;
+            int r = bitString[0] & 0xF8;
             r += Complement3Bitshifted(bitString[0] & 7);
-            var g = bitString[1] & 0xF8;
+            int g = bitString[1] & 0xF8;
             g += Complement3Bitshifted(bitString[1] & 7);
-            var b = bitString[2] & 0xF8;
+            int b = bitString[2] & 0xF8;
             b += Complement3Bitshifted(bitString[2] & 7);
             if ((r & 0xFF07) != 0)
                 return EtcMode.EtcT;
@@ -850,36 +886,29 @@ namespace Fp.Images.Etc {
         }
 
         private static unsafe void SetModeEtc2Punchthrough(byte* bitString, EtcMode etcMode,
-            DecompressionFunctionFlags flags) {
+            DecompressionFunctionFlags flags)
+        {
             if ((flags & DecompressionFunctionFlags.NonOpaqueOnly) != 0)
-                bitString[3] &= unchecked((byte) ~0x2);
+                bitString[3] &= unchecked((byte)~0x2);
             if ((flags & DecompressionFunctionFlags.OpaqueOnly) != 0)
                 bitString[3] |= 0x2;
             SetModeEtc2Thp(bitString, etcMode, flags);
         }
 
-        private static readonly sbyte[,] EacModifierTable = {
-            {-3, -6, -9, -15, 2, 5, 8, 14},
-            {-3, -7, -10, -13, 2, 6, 9, 12},
-            {-2, -5, -8, -13, 1, 4, 7, 12},
-            {-2, -4, -6, -13, 1, 3, 5, 12},
-            {-3, -6, -8, -12, 2, 5, 7, 11},
-            {-3, -7, -9, -11, 2, 6, 8, 10},
-            {-4, -7, -8, -11, 3, 6, 7, 10},
-            {-3, -5, -8, -11, 2, 4, 7, 10},
-            {-2, -6, -8, -10, 1, 5, 7, 9},
-            {-2, -5, -8, -10, 1, 4, 7, 9},
-            {-2, -4, -8, -10, 1, 3, 7, 9},
-            {-2, -5, -7, -10, 1, 4, 6, 9},
-            {-3, -4, -7, -10, 2, 3, 6, 9},
-            {-1, -2, -3, -10, 0, 1, 2, 9},
-            {-4, -6, -8, -9, 3, 5, 7, 8},
+        private static readonly sbyte[,] EacModifierTable =
+        {
+            {-3, -6, -9, -15, 2, 5, 8, 14}, {-3, -7, -10, -13, 2, 6, 9, 12}, {-2, -5, -8, -13, 1, 4, 7, 12},
+            {-2, -4, -6, -13, 1, 3, 5, 12}, {-3, -6, -8, -12, 2, 5, 7, 11}, {-3, -7, -9, -11, 2, 6, 8, 10},
+            {-4, -7, -8, -11, 3, 6, 7, 10}, {-3, -5, -8, -11, 2, 4, 7, 10}, {-2, -6, -8, -10, 1, 5, 7, 9},
+            {-2, -5, -8, -10, 1, 4, 7, 9}, {-2, -4, -8, -10, 1, 3, 7, 9}, {-2, -5, -7, -10, 1, 4, 6, 9},
+            {-3, -4, -7, -10, 2, 3, 6, 9}, {-1, -2, -3, -10, 0, 1, 2, 9}, {-4, -6, -8, -9, 3, 5, 7, 8},
             {-3, -5, -7, -9, 2, 4, 6, 8}
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void ProcessPixelEac(byte i, ulong pixels, sbyte* modifierTable, int baseCodeword,
-            int multiplier, byte* pixelBuffer) {
+            int multiplier, byte* pixelBuffer)
+        {
             int modifier = modifierTable[(pixels >> (45 - i * 3)) & 7];
             pixelBuffer[((i & 3) * 4 + ((i & 12) >> 2)) * 4 + 3] =
                 Clamp(baseCodeword + modifier * multiplier);
@@ -894,21 +923,23 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEtc2Eac(byte* bitstring, EtcMode modeMask,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
             bool r = DecompressBlockEtc2(&bitstring[8], modeMask, flags, pixelBuffer);
             if (!r)
                 return false;
             // Decode the alpha part.
             int baseCodeword = bitstring[0];
-            fixed (sbyte* modifierTableB = EacModifierTable) {
+            fixed (sbyte* modifierTableB = EacModifierTable)
+            {
                 var modifierTable = modifierTableB + (bitstring[1] & 0x0F) * 8;
                 int multiplier = (bitstring[1] & 0xF0) >> 4;
                 if (multiplier == 0 && (flags & DecompressionFunctionFlags.Encode) != DecompressionFunctionFlags.Encode)
                     // Not allowed in encoding. Decoder should handle it.
                     return false;
-                ulong pixels = ((ulong) bitstring[2] << 40) | ((ulong) bitstring[3] << 32) |
-                               ((ulong) bitstring[4] << 24)
-                               | ((ulong) bitstring[5] << 16) | ((ulong) bitstring[6] << 8) | bitstring[7];
+                ulong pixels = ((ulong)bitstring[2] << 40) | ((ulong)bitstring[3] << 32) |
+                               ((ulong)bitstring[4] << 24)
+                               | ((ulong)bitstring[5] << 16) | ((ulong)bitstring[6] << 8) | bitstring[7];
                 ProcessPixelEac(0, pixels, modifierTable, baseCodeword, multiplier, pixelBuffer);
                 ProcessPixelEac(1, pixels, modifierTable, baseCodeword, multiplier, pixelBuffer);
                 ProcessPixelEac(2, pixels, modifierTable, baseCodeword, multiplier, pixelBuffer);
@@ -934,21 +965,24 @@ namespace Fp.Images.Etc {
         /// </summary>
         /// <param name="bitstring"></param>
         /// <returns></returns>
-        public static unsafe EtcMode GetModeEtc2Eac(byte* bitstring) {
+        public static unsafe EtcMode GetModeEtc2Eac(byte* bitstring)
+        {
             return GetModeEtc2(&bitstring[8]);
         }
 
-        public static unsafe void SetModeETC2_EAC(byte* bitstring, EtcMode mode, DecompressionFunctionFlags flags) {
+        public static unsafe void SetModeETC2_EAC(byte* bitstring, EtcMode mode, DecompressionFunctionFlags flags)
+        {
             SetModeEtc2(&bitstring[8], mode, flags);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Clamp0To2047(int x) {
+        public static uint Clamp0To2047(int x)
+        {
             if (x < 0)
                 return 0;
             if (x > 2047)
                 return 2047;
-            return (uint) x;
+            return (uint)x;
         }
 
 
@@ -964,22 +998,25 @@ namespace Fp.Images.Etc {
         /// <param name="offset"></param>
         /// <param name="pixelBuffer"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe void DecodeBlockEac11Bit(ulong qword, int shift, int offset, byte* pixelBuffer) {
-            int baseCodewordTimes8Plus4 = (int) (((qword & 0xFF00000000000000) >> (56 - 3)) | 0x4);
-            int modifierIndex = (int) ((qword & 0x000F000000000000) >> 48);
-            fixed (sbyte* modifierTableB = EacModifierTable) {
+        private static unsafe void DecodeBlockEac11Bit(ulong qword, int shift, int offset, byte* pixelBuffer)
+        {
+            int baseCodewordTimes8Plus4 = (int)(((qword & 0xFF00000000000000) >> (56 - 3)) | 0x4);
+            int modifierIndex = (int)((qword & 0x000F000000000000) >> 48);
+            fixed (sbyte* modifierTableB = EacModifierTable)
+            {
                 var modifierTable = modifierTableB + modifierIndex * 8;
-                int multiplierTimes8 = (int) ((qword & 0x00F0000000000000) >> (52 - 3));
+                int multiplierTimes8 = (int)((qword & 0x00F0000000000000) >> (52 - 3));
                 if (multiplierTimes8 == 0)
                     multiplierTimes8 = 1;
-                ushort* buffer = (ushort*) pixelBuffer;
-                for (int i = 0; i < 16; i++) {
-                    int pixelIndex = (int) ((qword & (ulong) (0x0000E00000000000 >> (i * 3))) >> (45 - i * 3));
+                ushort* buffer = (ushort*)pixelBuffer;
+                for (int i = 0; i < 16; i++)
+                {
+                    int pixelIndex = (int)((qword & (ulong)(0x0000E00000000000 >> (i * 3))) >> (45 - i * 3));
                     int modifier = modifierTable[pixelIndex];
                     uint value = Clamp0To2047(baseCodewordTimes8Plus4 +
                                               modifier * multiplierTimes8);
                     buffer[(((i & 3) * 4 + ((i & 12) >> 2)) << shift) + offset] =
-                        (ushort) ((value << 5) | (value >> 6)); // Replicate bits to 16-bit.
+                        (ushort)((value << 5) | (value >> 6)); // Replicate bits to 16-bit.
                 }
             }
         }
@@ -994,11 +1031,12 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEacR11(byte* bitstring, EtcMode modeMask,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            ulong qword = ((ulong) bitstring[0] << 56) | ((ulong) bitstring[1] << 48) |
-                          ((ulong) bitstring[2] << 40) |
-                          ((ulong) bitstring[3] << 32) | ((ulong) bitstring[4] << 24) |
-                          ((ulong) bitstring[5] << 16) | ((ulong) bitstring[6] << 8) | bitstring[7];
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            ulong qword = ((ulong)bitstring[0] << 56) | ((ulong)bitstring[1] << 48) |
+                          ((ulong)bitstring[2] << 40) |
+                          ((ulong)bitstring[3] << 32) | ((ulong)bitstring[4] << 24) |
+                          ((ulong)bitstring[5] << 16) | ((ulong)bitstring[6] << 8) | bitstring[7];
             DecodeBlockEac11Bit(qword, 0, 0, pixelBuffer);
             return true;
         }
@@ -1013,22 +1051,24 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEacRg11(byte* bitstring, EtcMode modeMask,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            ulong redQword = ((ulong) bitstring[0] << 56) | ((ulong) bitstring[1] << 48) |
-                             ((ulong) bitstring[2] << 40) |
-                             ((ulong) bitstring[3] << 32) | ((ulong) bitstring[4] << 24) |
-                             ((ulong) bitstring[5] << 16) | ((ulong) bitstring[6] << 8) | bitstring[7];
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            ulong redQword = ((ulong)bitstring[0] << 56) | ((ulong)bitstring[1] << 48) |
+                             ((ulong)bitstring[2] << 40) |
+                             ((ulong)bitstring[3] << 32) | ((ulong)bitstring[4] << 24) |
+                             ((ulong)bitstring[5] << 16) | ((ulong)bitstring[6] << 8) | bitstring[7];
             DecodeBlockEac11Bit(redQword, 1, 0, pixelBuffer);
-            ulong greenQword = ((ulong) bitstring[8] << 56) | ((ulong) bitstring[9] << 48) |
-                               ((ulong) bitstring[10] << 40) |
-                               ((ulong) bitstring[11] << 32) | ((ulong) bitstring[12] << 24) |
-                               ((ulong) bitstring[13] << 16) | ((ulong) bitstring[14] << 8) | bitstring[15];
+            ulong greenQword = ((ulong)bitstring[8] << 56) | ((ulong)bitstring[9] << 48) |
+                               ((ulong)bitstring[10] << 40) |
+                               ((ulong)bitstring[11] << 32) | ((ulong)bitstring[12] << 24) |
+                               ((ulong)bitstring[13] << 16) | ((ulong)bitstring[14] << 8) | bitstring[15];
             DecodeBlockEac11Bit(greenQword, 1, 1, pixelBuffer);
             return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int ClampMinus1023To1023(int x) {
+        private static int ClampMinus1023To1023(int x)
+        {
             if (x < -1023)
                 return -1023;
             if (x > 1023)
@@ -1037,12 +1077,13 @@ namespace Fp.Images.Etc {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ushort ReplicateSigned11BitsTo16Bits(int value) {
+        private static ushort ReplicateSigned11BitsTo16Bits(int value)
+        {
             if (value >= 0)
-                return (ushort) ((value << 5) | (value >> 5));
+                return (ushort)((value << 5) | (value >> 5));
             value = -value;
             value = (value << 5) | (value >> 5);
-            return (ushort) -value;
+            return (ushort)-value;
         }
 
 
@@ -1060,21 +1101,24 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool DecodeBlockEacSigned11Bit(ulong qword, int shift, int offset, byte* pixelBuffer) {
-            int baseCodeword = (sbyte) ((qword & 0xFF00000000000000) >> 56); // Signed 8 bits.
+        public static unsafe bool DecodeBlockEacSigned11Bit(ulong qword, int shift, int offset, byte* pixelBuffer)
+        {
+            int baseCodeword = (sbyte)((qword & 0xFF00000000000000) >> 56); // Signed 8 bits.
             if (baseCodeword == -128)
                 // Not allowed in encoding. Decoder should handle it but we don't do that yet.
                 return false;
             int baseCodewordTimes8 = baseCodeword << 3; // Arithmetic shift.
-            int modifierIndex = (int) ((qword & 0x000F000000000000) >> 48);
-            fixed (sbyte* modifierTableB = EacModifierTable) {
+            int modifierIndex = (int)((qword & 0x000F000000000000) >> 48);
+            fixed (sbyte* modifierTableB = EacModifierTable)
+            {
                 var modifierTable = modifierTableB + modifierIndex * 8;
-                int multiplierTimes8 = (int) ((qword & 0x00F0000000000000) >> (52 - 3));
+                int multiplierTimes8 = (int)((qword & 0x00F0000000000000) >> (52 - 3));
                 if (multiplierTimes8 == 0)
                     multiplierTimes8 = 1;
-                ushort* buffer = (ushort*) pixelBuffer;
-                for (int i = 0; i < 16; i++) {
-                    int pixelIndex = (int) ((qword & (ulong) (0x0000E00000000000 >> (i * 3))) >> (45 - i * 3));
+                ushort* buffer = (ushort*)pixelBuffer;
+                for (int i = 0; i < 16; i++)
+                {
+                    int pixelIndex = (int)((qword & (ulong)(0x0000E00000000000 >> (i * 3))) >> (45 - i * 3));
                     int modifier = modifierTable[pixelIndex];
                     int value = ClampMinus1023To1023(baseCodewordTimes8 +
                                                      modifier * multiplierTimes8);
@@ -1094,11 +1138,12 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEacSignedR11(byte* bitstring, EtcMode modeMask,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            ulong qword = ((ulong) bitstring[0] << 56) | ((ulong) bitstring[1] << 48) |
-                          ((ulong) bitstring[2] << 40) |
-                          ((ulong) bitstring[3] << 32) | ((ulong) bitstring[4] << 24) |
-                          ((ulong) bitstring[5] << 16) | ((ulong) bitstring[6] << 8) | bitstring[7];
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            ulong qword = ((ulong)bitstring[0] << 56) | ((ulong)bitstring[1] << 48) |
+                          ((ulong)bitstring[2] << 40) |
+                          ((ulong)bitstring[3] << 32) | ((ulong)bitstring[4] << 24) |
+                          ((ulong)bitstring[5] << 16) | ((ulong)bitstring[6] << 8) | bitstring[7];
             return DecodeBlockEacSigned11Bit(qword, 0, 0, pixelBuffer);
         }
 
@@ -1111,25 +1156,28 @@ namespace Fp.Images.Etc {
         /// <param name="pixelBuffer"></param>
         /// <returns></returns>
         public static unsafe bool DecompressBlockEacSignedRg11(byte* bitstring, EtcMode modeMask,
-            DecompressionFunctionFlags flags, byte* pixelBuffer) {
-            ulong redQword = ((ulong) bitstring[0] << 56) | ((ulong) bitstring[1] << 48) |
-                             ((ulong) bitstring[2] << 40) |
-                             ((ulong) bitstring[3] << 32) | ((ulong) bitstring[4] << 24) |
-                             ((ulong) bitstring[5] << 16) | ((ulong) bitstring[6] << 8) | bitstring[7];
+            DecompressionFunctionFlags flags, byte* pixelBuffer)
+        {
+            ulong redQword = ((ulong)bitstring[0] << 56) | ((ulong)bitstring[1] << 48) |
+                             ((ulong)bitstring[2] << 40) |
+                             ((ulong)bitstring[3] << 32) | ((ulong)bitstring[4] << 24) |
+                             ((ulong)bitstring[5] << 16) | ((ulong)bitstring[6] << 8) | bitstring[7];
             bool r = DecodeBlockEacSigned11Bit(redQword, 1, 0, pixelBuffer);
             if (!r)
                 return false;
-            ulong greenQword = ((ulong) bitstring[8] << 56) | ((ulong) bitstring[9] << 48) |
-                               ((ulong) bitstring[10] << 40) |
-                               ((ulong) bitstring[11] << 32) | ((ulong) bitstring[12] << 24) |
-                               ((ulong) bitstring[13] << 16) | ((ulong) bitstring[14] << 8) | bitstring[15];
+            ulong greenQword = ((ulong)bitstring[8] << 56) | ((ulong)bitstring[9] << 48) |
+                               ((ulong)bitstring[10] << 40) |
+                               ((ulong)bitstring[11] << 32) | ((ulong)bitstring[12] << 24) |
+                               ((ulong)bitstring[13] << 16) | ((ulong)bitstring[14] << 8) | bitstring[15];
             return DecodeBlockEacSigned11Bit(greenQword, 1, 1, pixelBuffer);
         }
     }
 }
 
-namespace Fp {
-    public partial class Processor {
+namespace Fp
+{
+    public partial class Processor
+    {
         /// <summary>
         /// Decode ETC2-compressed image
         /// </summary>
@@ -1139,28 +1187,35 @@ namespace Fp {
         /// <param name="height">Output height</param>
         /// <param name="hasAlpha">Image has alpha channel</param>
         /// <returns>True if succeeded</returns>
-        public static unsafe bool DecodeEtc2(Span<byte> src, Span<uint> img, int width, int height, bool hasAlpha) {
-            var w = (width + 3) / 4 * 4;
-            var h = (height + 3) / 4 * 4;
+        public static unsafe bool DecodeEtc2(Span<byte> src, Span<uint> img, int width, int height, bool hasAlpha)
+        {
+            int w = (width + 3) / 4 * 4;
+            int h = (height + 3) / 4 * 4;
 
-            fixed (byte* bsrc = &src.GetPinnableReference()) {
+            fixed (byte* bsrc = &src.GetPinnableReference())
+            {
                 var srcP = hasAlpha ? bsrc + 64 / 8 : bsrc;
                 var tar = stackalloc uint[4 * 4];
-                var tar2 = (byte*) tar;
-                for (var y = 0; y < h / 4; y++) {
-                    for (var x = 0; x < w / 4; x++) {
+                var tar2 = (byte*)tar;
+                for (int y = 0; y < h / 4; y++)
+                {
+                    for (int x = 0; x < w / 4; x++)
+                    {
                         bool res;
                         res = EtcDecoder.DecompressBlockEtc2(srcP, EtcDecoder.EtcMode.AllModesEtc2,
                             EtcDecoder.DecompressionFunctionFlags.None, tar2);
                         if (!res) return false;
-                        if (hasAlpha) {
+                        if (hasAlpha)
+                        {
                             res = EtcDecoder.DecompressBlockEtc2Eac(srcP - 64 / 8, EtcDecoder.EtcMode.AllModesEtc2,
                                 EtcDecoder.DecompressionFunctionFlags.None, tar2);
                             if (!res) return false;
                         }
 
-                        for (var yy = 0; yy < 4; yy++) {
-                            for (var xx = 0; xx < 4; xx++) {
+                        for (int yy = 0; yy < 4; yy++)
+                        {
+                            for (int xx = 0; xx < 4; xx++)
+                            {
                                 if (x * 4 + xx >= width || y * 4 + yy >= height) continue;
                                 img[(y * 4 + yy) * width + x * 4 + xx] = tar[yy * 4 + xx];
                             }

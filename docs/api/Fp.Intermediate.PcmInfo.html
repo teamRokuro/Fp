@@ -1,0 +1,588 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Struct PcmInfo
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Struct PcmInfo
+   ">
+    <meta name="generator" content="docfx 2.53.1.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../icon.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Fp.Intermediate.PcmInfo">
+  
+  
+  <h1 id="Fp_Intermediate_PcmInfo" data-uid="Fp.Intermediate.PcmInfo" class="text-break">Struct PcmInfo
+  </h1>
+  <div class="markdown level0 summary"><p>PCM metadata</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Intermediate.html">Fp.Intermediate</a></h6>
+  <h6><strong>Assembly</strong>: Fp.dll</h6>
+  <h5 id="Fp_Intermediate_PcmInfo_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public struct PcmInfo</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo__ctor_System_Int16_System_Int32_System_Int16_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.%23ctor(System.Int16%2CSystem.Int32%2CSystem.Int16%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L114">View Source</a>
+  </span>
+  <a id="Fp_Intermediate_PcmInfo__ctor_" data-uid="Fp.Intermediate.PcmInfo.#ctor*"></a>
+  <h4 id="Fp_Intermediate_PcmInfo__ctor_System_Int16_System_Int32_System_Int16_System_Int32_" data-uid="Fp.Intermediate.PcmInfo.#ctor(System.Int16,System.Int32,System.Int16,System.Int32)">PcmInfo(Int16, Int32, Int16, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.PcmInfo.html">PcmInfo</a> for PCM data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PcmInfo(short numChannels, int sampleRate, short bitsPerSample, int numSamples)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">numChannels</span></td>
+        <td><p>Mono = 1, Stereo = 2, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">sampleRate</span></td>
+        <td><p>8000, 44100, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">bitsPerSample</span></td>
+        <td><p>8 bits = 8, 16 bits = 16, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">numSamples</span></td>
+        <td><p>Number of samples (shared count between channels)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo__ctor_System_Int32_System_Int16_System_Int16_System_Int32_System_Int32_System_Int16_System_Int16_System_Int16_System_Nullable_ArraySegment_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.%23ctor(System.Int32%2CSystem.Int16%2CSystem.Int16%2CSystem.Int32%2CSystem.Int32%2CSystem.Int16%2CSystem.Int16%2CSystem.Int16%2CSystem.Nullable%7BArraySegment%7BSystem.Byte%7D%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L91">View Source</a>
+  </span>
+  <a id="Fp_Intermediate_PcmInfo__ctor_" data-uid="Fp.Intermediate.PcmInfo.#ctor*"></a>
+  <h4 id="Fp_Intermediate_PcmInfo__ctor_System_Int32_System_Int16_System_Int16_System_Int32_System_Int32_System_Int16_System_Int16_System_Int16_System_Nullable_ArraySegment_System_Byte___System_Int32_" data-uid="Fp.Intermediate.PcmInfo.#ctor(System.Int32,System.Int16,System.Int16,System.Int32,System.Int32,System.Int16,System.Int16,System.Int16,System.Nullable{ArraySegment{System.Byte}},System.Int32)">PcmInfo(Int32, Int16, Int16, Int32, Int32, Int16, Int16, Int16, Nullable&lt;ArraySegment&lt;Byte&gt;&gt;, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.PcmInfo.html">PcmInfo</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PcmInfo(int subChunk1Size, short audioFormat, short numChannels, int sampleRate, int byteRate, short blockAlign, short bitsPerSample, short extraParamSize, ArraySegment&lt;byte&gt;? extraParams, int subChunk2Size)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">subChunk1Size</span></td>
+        <td><p>16 for PCM.  This is the size of the
+rest of the Subchunk which follows this number.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">audioFormat</span></td>
+        <td><p>PCM = 1 (i.e. Linear quantization)
+Values other than 1 indicate some
+form of compression.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">numChannels</span></td>
+        <td><p>Mono = 1, Stereo = 2, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">sampleRate</span></td>
+        <td><p>8000, 44100, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">byteRate</span></td>
+        <td><p>== SampleRate * NumChannels * BitsPerSample/8</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">blockAlign</span></td>
+        <td><p>== NumChannels * BitsPerSample/8
+The number of bytes for one sample including
+all channels.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">bitsPerSample</span></td>
+        <td><p>8 bits = 8, 16 bits = 16, etc.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">extraParamSize</span></td>
+        <td><p>if PCM, then doesn't exist</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">ArraySegment</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td><span class="parametername">extraParams</span></td>
+        <td><p>space for extra parameters</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">subChunk2Size</span></td>
+        <td><p>== NumSamples * NumChannels * BitsPerSample/8
+This is the number of bytes in the data.
+You can also think of this as the size
+of the read of the subchunk following this
+number.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_AudioFormat.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.AudioFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L21">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_AudioFormat" data-uid="Fp.Intermediate.PcmInfo.AudioFormat">AudioFormat</h4>
+  <div class="markdown level1 summary"><p>PCM = 1 (i.e. Linear quantization)
+Values other than 1 indicate some
+form of compression.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short AudioFormat</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_BitsPerSample.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.BitsPerSample%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L48">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_BitsPerSample" data-uid="Fp.Intermediate.PcmInfo.BitsPerSample">BitsPerSample</h4>
+  <div class="markdown level1 summary"><p>8 bits = 8, 16 bits = 16, etc.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short BitsPerSample</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_BlockAlign.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.BlockAlign%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L43">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_BlockAlign" data-uid="Fp.Intermediate.PcmInfo.BlockAlign">BlockAlign</h4>
+  <div class="markdown level1 summary"><p>== NumChannels * BitsPerSample/8
+The number of bytes for one sample including
+all channels.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short BlockAlign</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_ByteRate.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.ByteRate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L36">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_ByteRate" data-uid="Fp.Intermediate.PcmInfo.ByteRate">ByteRate</h4>
+  <div class="markdown level1 summary"><p>== SampleRate * NumChannels * BitsPerSample/8</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ByteRate</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_ExtraParams.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.ExtraParams%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L58">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_ExtraParams" data-uid="Fp.Intermediate.PcmInfo.ExtraParams">ExtraParams</h4>
+  <div class="markdown level1 summary"><p>space for extra parameters</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ArraySegment&lt;byte&gt;? ExtraParams</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">ArraySegment</span>&lt;<span class="xref">System.Byte</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_ExtraParamSize.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.ExtraParamSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L53">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_ExtraParamSize" data-uid="Fp.Intermediate.PcmInfo.ExtraParamSize">ExtraParamSize</h4>
+  <div class="markdown level1 summary"><p>if PCM, then doesn't exist</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short ExtraParamSize</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_NumChannels.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.NumChannels%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L26">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_NumChannels" data-uid="Fp.Intermediate.PcmInfo.NumChannels">NumChannels</h4>
+  <div class="markdown level1 summary"><p>Mono = 1, Stereo = 2, etc.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short NumChannels</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_SampleRate.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.SampleRate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L31">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_SampleRate" data-uid="Fp.Intermediate.PcmInfo.SampleRate">SampleRate</h4>
+  <div class="markdown level1 summary"><p>8000, 44100, etc.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SampleRate</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_SubChunk1Size.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.SubChunk1Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L14">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_SubChunk1Size" data-uid="Fp.Intermediate.PcmInfo.SubChunk1Size">SubChunk1Size</h4>
+  <div class="markdown level1 summary"><p>16 for PCM.  This is the size of the
+rest of the Subchunk which follows this number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SubChunk1Size</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo_SubChunk2Size.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo.SubChunk2Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L67">View Source</a>
+  </span>
+  <h4 id="Fp_Intermediate_PcmInfo_SubChunk2Size" data-uid="Fp.Intermediate.PcmInfo.SubChunk2Size">SubChunk2Size</h4>
+  <div class="markdown level1 summary"><p>== NumSamples * NumChannels * BitsPerSample/8
+This is the number of bytes in the data.
+You can also think of this as the size
+of the read of the subchunk following this
+number.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int SubChunk2Size</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.0/apiSpec/new?filename=Fp_Intermediate_PcmInfo.md&amp;value=---%0Auid%3A%20Fp.Intermediate.PcmInfo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.0/Fp/Intermediate/PcmInfo.cs/#L8" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
