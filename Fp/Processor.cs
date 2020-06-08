@@ -270,17 +270,36 @@ namespace Fp
         /// <param name="sibling">Filename to check</param>
         /// <returns>True if file with provided name exists next to current file</returns>
         public bool HasSibling(string sibling) =>
-            (FileSystem ?? throw new InvalidOperationException()).FileExists(Path.Combine(InputDirectory, sibling));
+            (FileSystem ?? throw new InvalidOperationException())
+            .FileExists(Path.Combine(InputDirectory, sibling));
 
         /// <summary>
-        /// Check if a file has the given extension
+        /// Check if a file exists in the same folder as specified path
         /// </summary>
-        /// <param name="extension">File extension to check</param>
-        /// <param name="file">File to check, uses current file if null</param>
-        /// <returns>True if extension matches</returns>
-        public bool HasExtension(string extension, string? file = null) =>
-            (file ?? InputFile ?? throw new InvalidOperationException()).ToLowerInvariant()
-            .EndsWith(extension.ToLowerInvariant(), StringComparison.Ordinal);
+        /// <param name="path">Main path</param>
+        /// <param name="sibling">Filename to check</param>
+        /// <returns>True if file with provided name exists next to current file</returns>
+        public bool PathHasSibling(string path, string sibling) =>
+            (FileSystem ?? throw new InvalidOperationException())
+            .FileExists(Path.Combine(Path.GetDirectoryName(path), sibling));
+
+        /// <summary>
+        /// Check if current file has any one of the given extensions
+        /// </summary>
+        /// <param name="extensions">File extensions to check</param>
+        /// <returns>True if any extension matches</returns>
+        public bool HasExtension(params string[] extensions) =>
+            PathHasExtension(InputFile ?? throw new InvalidOperationException(), extensions);
+
+        /// <summary>
+        /// Check if a file has any one of the given extensions
+        /// </summary>
+        /// <param name="extensions">File extensions to check</param>
+        /// <param name="file">File to check</param>
+        /// <returns>True if any extension matches</returns>
+        public static bool PathHasExtension(string file, params string[] extensions) =>
+            extensions.Any(extension =>
+                extension == null || file.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
         /// Check if a span has a specific value at a certain offset
@@ -289,10 +308,8 @@ namespace Fp
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public bool HasMagic(Span<byte> source, Span<byte> span, int offset = 0)
-        {
-            return span.SequenceEqual(source.Slice(offset, span.Length));
-        }
+        public bool HasMagic(Span<byte> source, Span<byte> span, int offset = 0) =>
+            span.SequenceEqual(source.Slice(offset, span.Length));
 
         /// <summary>
         /// Check if a span has a specific value at a certain offset
