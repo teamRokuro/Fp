@@ -132,7 +132,7 @@ namespace Fp.Tests
             using (var ms = new MemoryStream())
             {
                 ms.SetLength(0);
-                processor.WritePngRgba(buf2S, png.Width, png.Height, CompressionLevel.Optimal, ms);
+                processor.WritePngRgba32(buf2S, png.Width, png.Height, CompressionLevel.Optimal, ms);
                 ms.Position = 0;
                 data3 = Processor.ReadPng(ms).Data.Data;
             }

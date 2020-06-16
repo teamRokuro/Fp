@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace Fp.Intermediate
     /// <summary>
     /// Intermediate-format data container
     /// </summary>
-    public abstract class Data
+    public abstract class Data : IDisposable
     {
         /// <summary>
         /// Base path of resource
@@ -42,11 +43,7 @@ namespace Fp.Intermediate
         public abstract bool WriteConvertedData(Stream outputStream, CommonFormat format,
             Dictionary<string, string>? formatOptions = null);
 
-        /// <summary>
-        /// Get compact data
-        /// </summary>
-        /// <param name="requireNew">Require new object even if already compact</param>
-        /// <returns>Cloned data</returns>
-        public abstract Data GetCompact(bool requireNew = false);
+        /// <inheritdoc />
+        public abstract void Dispose();
     }
 }

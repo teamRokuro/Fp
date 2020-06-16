@@ -40,7 +40,7 @@
 
         private static uint[] GenerateMantissaTable()
         {
-            var mantissaTable = new uint[2048];
+            uint[] mantissaTable = new uint[2048];
             mantissaTable[0] = 0;
             for (int i = 1; i < 1024; i++)
             {
@@ -57,7 +57,7 @@
 
         private static uint[] GenerateExponentTable()
         {
-            var exponentTable = new uint[64];
+            uint[] exponentTable = new uint[64];
             exponentTable[0] = 0;
             for (int i = 1; i < 31; i++)
             {
@@ -78,7 +78,7 @@
 
         private static ushort[] GenerateOffsetTable()
         {
-            var offsetTable = new ushort[64];
+            ushort[] offsetTable = new ushort[64];
             offsetTable[0] = 0;
             for (int i = 1; i < 32; i++)
             {
@@ -96,7 +96,7 @@
 
         private static ushort[] GenerateBaseTable()
         {
-            var baseTable = new ushort[512];
+            ushort[] baseTable = new ushort[512];
             for (int i = 0; i < 256; ++i)
             {
                 sbyte e = (sbyte)(127 - i);
@@ -137,7 +137,7 @@
 
         private static sbyte[] GenerateShiftTable()
         {
-            var shiftTable = new sbyte[512];
+            sbyte[] shiftTable = new sbyte[512];
             for (int i = 0; i < 256; ++i)
             {
                 sbyte e = (sbyte)(127 - i);

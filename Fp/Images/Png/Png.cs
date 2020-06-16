@@ -78,7 +78,7 @@ namespace Fp.Images.Png
         /// <returns>The <see cref="Png"/> data from the file.</returns>
         public static Png Open(string filePath, IChunkVisitor? chunkVisitor = null)
         {
-            using var fileStream = File.OpenRead(filePath);
+            using FileStream fileStream = File.OpenRead(filePath);
             return Open(fileStream, chunkVisitor);
         }
     }

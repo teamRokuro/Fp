@@ -50,7 +50,7 @@ namespace Fp.Images.Png
 
         public static int GetNumberOfScanlinesInPass(ImageHeader header, int pass)
         {
-            var indices = PassToScanlineGridIndex[pass + 1];
+            int[] indices = PassToScanlineGridIndex[pass + 1];
 
             int mod = header.Height % 8;
 
@@ -75,7 +75,7 @@ namespace Fp.Images.Png
 
         public static int GetPixelsPerScanlineInPass(ImageHeader header, int pass)
         {
-            var indices = PassToScanlineColumnIndex[pass + 1];
+            int[] indices = PassToScanlineColumnIndex[pass + 1];
 
             int mod = header.Width % 8;
 
@@ -101,8 +101,8 @@ namespace Fp.Images.Png
         public static (int x, int y) GetPixelIndexForScanlineInPass(ImageHeader header, int pass, int scanlineIndex,
             int indexInScanline)
         {
-            var columnIndices = PassToScanlineColumnIndex[pass + 1];
-            var rows = PassToScanlineGridIndex[pass + 1];
+            int[] columnIndices = PassToScanlineColumnIndex[pass + 1];
+            int[] rows = PassToScanlineGridIndex[pass + 1];
 
             int actualRow = scanlineIndex % rows.Length;
             int actualCol = indexInScanline % columnIndices.Length;

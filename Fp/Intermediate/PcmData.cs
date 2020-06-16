@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ namespace Fp.Intermediate
     /// <summary>
     /// PCM audio data
     /// </summary>
-    public class PcmData : Data
+    public class PcmData : BufferData<byte>
     {
         private static readonly byte[] _chunkNames =
         {
@@ -22,20 +23,14 @@ namespace Fp.Intermediate
         public readonly PcmInfo PcmInfo;
 
         /// <summary>
-        /// PCM data
-        /// </summary>
-        public readonly ArraySegment<byte>? Samples;
-
-        /// <summary>
         /// Create new instance of <see cref="PcmData"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="pcmInfo"></param>
-        public PcmData(string basePath, PcmInfo pcmInfo) : base(basePath)
+        public PcmData(string basePath, PcmInfo pcmInfo) : base(basePath, pcmInfo.SubChunk2Size)
         {
             Dry = true;
             PcmInfo = pcmInfo;
-            Samples = null;
         }
 
         /// <summary>
@@ -43,12 +38,23 @@ namespace Fp.Intermediate
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="pcmInfo">PCM metadata</param>
-        /// <param name="samples">PCM data, or null for dry</param>
-        public PcmData(string basePath, PcmInfo pcmInfo, ArraySegment<byte>? samples = null) : base(basePath)
+        /// <param name="memoryOwner">Owner of PCM data buffer</param>
+        /// <param name="contentLength">Length of content</param>
+        public PcmData(string basePath, PcmInfo pcmInfo, IMemoryOwner<byte> memoryOwner, int contentLength) : base(
+            basePath, memoryOwner, contentLength)
         {
-            Dry = !samples.HasValue;
             PcmInfo = pcmInfo;
-            Samples = samples;
+        }
+
+        /// <summary>
+        /// Create new instance of <see cref="PcmData"/>
+        /// </summary>
+        /// <param name="basePath">Base path of resource</param>
+        /// <param name="pcmInfo">PCM metadata</param>
+        /// <param name="buffer">PCM data</param>
+        public PcmData(string basePath, PcmInfo pcmInfo, Memory<byte> buffer) : base(basePath, buffer)
+        {
+            PcmInfo = pcmInfo;
         }
 
         /// <inheritdoc />
@@ -62,28 +68,11 @@ namespace Fp.Intermediate
             switch (format)
             {
                 case CommonFormat.PcmWave:
-                    WritePcmWave(outputStream, PcmInfo, Samples!.Value);
+                    WritePcmWave(outputStream, PcmInfo, Buffer.Span.Slice(0, ContentLength));
                     return true;
                 default:
                     return false;
             }
-        }
-
-        /// <inheritdoc />
-        public override Data GetCompact(bool requireNew = false)
-        {
-            bool paramCompact = PcmInfo.ExtraParams.HasValue &&
-                                IntermediateUtil.IsCompactSegment(PcmInfo.ExtraParams.Value);
-            bool sampleCompact = Samples.HasValue && IntermediateUtil.IsCompactSegment(Samples.Value);
-            if (!requireNew && paramCompact && sampleCompact)
-                return this;
-            var info = PcmInfo;
-            if (info.ExtraParams.HasValue && (requireNew || !paramCompact))
-                info.ExtraParams = IntermediateUtil.CopySegment(info.ExtraParams.Value);
-            var samples = Samples;
-            if (Samples.HasValue && (requireNew || !sampleCompact))
-                samples = IntermediateUtil.CopySegment(Samples.Value);
-            return new PcmData(BasePath, info, samples);
         }
 
 
@@ -92,7 +81,7 @@ namespace Fp.Intermediate
         {
             int hLen = 12 + 8 + pcmInfo.SubChunk1Size + 8;
             byte[] buffer = Shared.Rent(hLen);
-            var bufferSpan = buffer.AsSpan(0, hLen);
+            Span<byte> bufferSpan = buffer.AsSpan(0, hLen);
             try
             {
                 // RIFF (main chunk)

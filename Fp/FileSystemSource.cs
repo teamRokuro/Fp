@@ -32,9 +32,9 @@ namespace Fp
         public Stream OpenRead(string path, FileMode fileMode = FileMode.Open, FileShare fileShare =
             FileShare.ReadWrite | FileShare.Delete)
         {
-            var src = Processor.GetSeekableStream(OpenReadImpl(path, fileMode, fileShare));
+            Stream src = Processor.GetSeekableStream(OpenReadImpl(path, fileMode, fileShare));
             if (!ParallelAccess || src is MemoryStream) return src;
-            var ms = new MemoryStream(new byte[src.Length]);
+            MemoryStream ms = new MemoryStream(new byte[src.Length]);
             src.CopyTo(ms);
             ms.Position = 0;
             return ms;
@@ -145,7 +145,7 @@ namespace Fp
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
                                       FileShare.Write)
             {
-                var stream = new MemoryStream();
+                MemoryStream stream = new MemoryStream();
                 _outputEntries.Add((path, stream));
                 _dirs.Add(Path.GetDirectoryName(path));
                 return stream;

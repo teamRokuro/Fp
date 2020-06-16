@@ -32,7 +32,7 @@ namespace Fp.Intermediate
         /// <returns>Newly allocated array</returns>
         public static ArraySegment<T> CopySegment<T>(ArraySegment<T> segment)
         {
-            var arr = new T[segment.Count];
+            T[] arr = new T[segment.Count];
             segment.AsSpan(0, arr.Length).CopyTo(arr);
             return new ArraySegment<T>(arr);
         }

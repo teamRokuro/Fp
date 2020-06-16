@@ -1,7 +1,9 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 using Fp.Images.Png;
 
 namespace Fp.Intermediate
@@ -9,15 +11,10 @@ namespace Fp.Intermediate
     /// <summary>
     /// 32-bit RGBA data
     /// </summary>
-    public class Rgba32Data : Data
+    public class Rgba32Data<T> : BufferData<T> where T : unmanaged
     {
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.PngDeflate;
-
-        /// <summary>
-        /// RGBA data
-        /// </summary>
-        public readonly ArraySegment<uint>? Raster;
 
         /// <summary>
         /// Image width
@@ -30,30 +27,42 @@ namespace Fp.Intermediate
         public readonly int Height;
 
         /// <summary>
-        /// Create new instance of <see cref="Rgba32Data"/>
+        /// Create new instance of <see cref="Rgba32Data{T}"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
-        public Rgba32Data(string basePath, int width, int height) : base(basePath)
+        public Rgba32Data(string basePath, int width, int height) : base(basePath, width * height)
         {
             Dry = true;
-            Raster = null;
             Width = width;
             Height = height;
         }
 
         /// <summary>
-        /// Create new instance of <see cref="Rgba32Data"/>
+        /// Create new instance of <see cref="Rgba32Data{T}"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
-        /// <param name="raster">RGBA data, or null for dry</param>
-        public Rgba32Data(string basePath, int width, int height, ArraySegment<uint>? raster = null) : base(basePath)
+        /// <param name="memoryOwner">Owner of PCM data buffer</param>
+        /// <param name="contentLength">Length of content</param>
+        public Rgba32Data(string basePath, int width, int height, IMemoryOwner<T> memoryOwner, int contentLength) :
+            base(basePath, memoryOwner, contentLength)
         {
-            Dry = !raster.HasValue;
-            Raster = raster;
+            Width = width;
+            Height = height;
+        }
+
+        /// <summary>
+        /// Create new instance of <see cref="Rgba32Data{T}"/>
+        /// </summary>
+        /// <param name="basePath">Base path of resource</param>
+        /// <param name="width">Image width</param>
+        /// <param name="height">Image height</param>
+        /// <param name="buffer">PCM data</param>
+        public Rgba32Data(string basePath, int width, int height, Memory<T> buffer) : base(basePath, buffer)
+        {
             Width = width;
             Height = height;
         }
@@ -66,21 +75,12 @@ namespace Fp.Intermediate
             switch (format)
             {
                 case CommonFormat.PngDeflate:
-                    PngBuilder.WritePngRgba(outputStream, Raster!.Value, Width, Height, CompressionLevel.Optimal);
+                    PngBuilder.WritePngRgba32(outputStream, MemoryMarshal.Cast<T, uint>(Buffer.Span), Width, Height,
+                        CompressionLevel.Optimal);
                     return true;
                 default:
                     return false;
             }
-        }
-
-        /// <inheritdoc />
-        public override Data GetCompact(bool requireNew = false)
-        {
-            if (!requireNew && Raster.HasValue && IntermediateUtil.IsCompactSegment(Raster.Value))
-                return this;
-            return Raster.HasValue
-                ? new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CopySegment(Raster.Value))
-                : new Rgba32Data(BasePath, Width, Height);
         }
     }
 }

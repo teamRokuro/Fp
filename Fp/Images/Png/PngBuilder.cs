@@ -83,7 +83,7 @@ namespace Fp.Images.Png
         /// </summary>
         public byte[] Save()
         {
-            using var memoryStream = new MemoryStream();
+            using MemoryStream memoryStream = new MemoryStream();
             Save(memoryStream);
             return memoryStream.ToArray();
         }
@@ -95,7 +95,7 @@ namespace Fp.Images.Png
         {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
-            var stream = new PngStreamWriteHelper(outputStream);
+            PngStreamWriteHelper stream = new PngStreamWriteHelper(outputStream);
 
             stream.WriteChunkLength(13);
             stream.WriteChunkHeader(ImageHeader.HeaderBytes);
@@ -104,7 +104,7 @@ namespace Fp.Images.Png
             StreamHelper.WriteBigEndianInt32(stream, _height);
             stream.WriteByte(8);
 
-            var colorType = ColorType.ColorUsed;
+            ColorType colorType = ColorType.ColorUsed;
             if (_hasAlphaChannel)
             {
                 colorType |= ColorType.AlphaChannelUsed;
@@ -117,7 +117,7 @@ namespace Fp.Images.Png
 
             stream.WriteCrc();
 
-            var imageData = Compress(_rawData);
+            byte[] imageData = Compress(_rawData);
             stream.WriteChunkLength(imageData.Length);
             stream.WriteChunkHeader(ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
@@ -132,12 +132,12 @@ namespace Fp.Images.Png
         {
             const int headerLength = 2;
             const int checksumLength = 4;
-            using var compressStream = new MemoryStream(data.Length);
-            using var compressor = new DeflateStream(compressStream, CompressionLevel.Fastest, true);
+            using MemoryStream compressStream = new MemoryStream(data.Length);
+            using DeflateStream compressor = new DeflateStream(compressStream, CompressionLevel.Fastest, true);
             Processor.WriteBaseSpan(compressor, data);
             compressor.Close();
 
-            var result = new byte[headerLength + compressStream.Length + checksumLength];
+            byte[] result = new byte[headerLength + compressStream.Length + checksumLength];
 
             // Write the ZLib header.
             result[0] = Deflate32KbWindow;
@@ -164,8 +164,8 @@ namespace Fp.Images.Png
         {
             const int headerLength = 2;
             const int checksumLength = 4;
-            using var compressStream = new MemoryStream(data.Length);
-            using var compressor = new DeflateStream(compressStream, compressionLevel, true);
+            using MemoryStream compressStream = new MemoryStream(data.Length);
+            using DeflateStream compressor = new DeflateStream(compressStream, compressionLevel, true);
             for (int y = 0; y < height; y++)
             {
                 compressor.WriteByte(0);
@@ -174,7 +174,7 @@ namespace Fp.Images.Png
 
             compressor.Close();
 
-            var result = new byte[headerLength + compressStream.Length + checksumLength];
+            byte[] result = new byte[headerLength + compressStream.Length + checksumLength];
 
             // Write the ZLib header.
             result[0] = Deflate32KbWindow;
@@ -196,12 +196,12 @@ namespace Fp.Images.Png
             return result;
         }
 
-        internal static void WritePngRgba(Stream outputStream, Span<uint> data, int width, int height,
-            CompressionLevel compressionLevel)
+        internal static void WritePngRgba32<T>(Stream outputStream, Span<T> data, int width, int height,
+            CompressionLevel compressionLevel) where T : unmanaged
         {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
 
-            var stream = new PngStreamWriteHelper(outputStream);
+            PngStreamWriteHelper stream = new PngStreamWriteHelper(outputStream);
 
             stream.WriteChunkLength(13);
             stream.WriteChunkHeader(ImageHeader.HeaderBytes);
@@ -216,7 +216,7 @@ namespace Fp.Images.Png
             stream.WriteByte((byte)InterlaceMethod.None);
             stream.WriteCrc();
 
-            var imageData = Compress2(MemoryMarshal.Cast<uint, byte>(data), width, height, compressionLevel);
+            byte[] imageData = Compress2(MemoryMarshal.Cast<T, byte>(data), width, height, compressionLevel);
             stream.WriteChunkLength(imageData.Length);
             stream.WriteChunkHeader(ChunkIDAT);
             stream.Write(imageData, 0, imageData.Length);
@@ -241,11 +241,12 @@ namespace Fp
         /// <param name="height">Height of image</param>
         /// <param name="compressionLevel">Deflate compression level</param>
         /// <param name="outputStream">Stream to write to</param>
-        public void WritePngRgba(Span<uint> data, int width, int height,
+        public void WritePngRgba32<T>(Span<T> data, int width, int height,
             CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null)
+            where T : unmanaged
         {
             outputStream ??= OutputStream ?? throw new InvalidOperationException();
-            PngBuilder.WritePngRgba(outputStream, data, width, height, compressionLevel);
+            PngBuilder.WritePngRgba32(outputStream, data, width, height, compressionLevel);
         }
     }
 }
