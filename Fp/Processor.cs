@@ -309,8 +309,8 @@ namespace Fp
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public bool HasMagic(Span<byte> source, Span<byte> span, int offset = 0) =>
-            span.SequenceEqual(source.Slice(offset, span.Length));
+        public static bool HasMagic(Span<byte> source, Span<byte> span, int offset = 0) =>
+            source.Length - offset >= span.Length && span.SequenceEqual(source.Slice(offset, span.Length));
 
         /// <summary>
         /// Check if a span has a specific value at a certain offset
@@ -319,7 +319,7 @@ namespace Fp
         /// <param name="array">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public bool HasMagic(Span<byte> source, byte[] array, int offset = 0)
+        public static bool HasMagic(Span<byte> source, byte[] array, int offset = 0)
             => HasMagic(source, array.AsSpan(), offset);
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace Fp
         /// <param name="str">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public bool HasMagic(Span<byte> source, string str, int offset = 0)
+        public static bool HasMagic(Span<byte> source, string str, int offset = 0)
             => HasMagic(source, Encoding.UTF8.GetBytes(str).AsSpan(), offset);
 
         /// <summary>
@@ -342,8 +342,8 @@ namespace Fp
         public bool HasMagic(Stream stream, Span<byte> span, long offset = 0)
         {
             Span<byte> span2 = stackalloc byte[span.Length];
-            Read(stream, offset, span2, false);
-            return span.SequenceEqual(span2);
+            int read = Read(stream, offset, span2);
+            return read == span.Length && span.SequenceEqual(span2);
         }
 
         /// <summary>
@@ -433,8 +433,8 @@ namespace Fp
 
         private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
         {
-            byte[] buf = span.Length < sizeof(long) ? _tempBuffer : Shared.Rent(4096);
-            Span<byte> bufSpan = buf.AsSpan();
+            var buf = span.Length <= sizeof(long) ? _tempBuffer : Shared.Rent(4096);
+            var bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
             try
             {
