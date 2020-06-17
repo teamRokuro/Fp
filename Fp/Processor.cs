@@ -183,7 +183,7 @@ namespace Fp
             InputFile = file;
             InputDirectory = Path.GetDirectoryName(file) ?? throw new Exception();
             OutputRootDirectory = outputRoot;
-            OutputDirectory = BasicJoin(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
+            OutputDirectory = Join(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
             InputStream = null;
             OutputStream = null;
             LittleEndian = true;
@@ -4630,7 +4630,7 @@ namespace Fp
         public long OutputAllSub(string? extension = null, string? filename = null)
             => OutputAllSub(InputStream ?? throw new InvalidOperationException(), extension, filename == null
                 ? null
-                : BasicJoin(SupportBackSlash,
+                : Join(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -5034,7 +5034,7 @@ namespace Fp
         public void OutputAllSub(Span<byte> span, string? extension = null, string? filename = null)
             => OutputAll(span, extension, filename == null
                 ? null
-                : BasicJoin(SupportBackSlash,
+                : Join(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
                     throw new ProcessorException($"Null filename for path {InputFile}"), filename));
 
@@ -5255,7 +5255,7 @@ namespace Fp
             filename = filename == null
                 ? $"{Path.GetFileNameWithoutExtension(mainFile)}_{OutputCounter++:D8}{extension}"
                 : $"{filename}{extension}";
-            string path = BasicJoin(SupportBackSlash, OutputDirectory,
+            string path = Join(SupportBackSlash, OutputDirectory,
                 Path.GetFileName(mainFile) ?? throw new ProcessorException($"Null {nameof(mainFile)} provided"),
                 filename);
             if (mkDirs)
@@ -5292,8 +5292,8 @@ namespace Fp
         /// <param name="paths">Elements to join</param>
         /// <returns>Path</returns>
         /// <exception cref="Exception">If separator is encountered by itself</exception>
-        public string BasicJoin(params string[] paths)
-            => BasicJoin(SupportBackSlash, paths);
+        public string Join(params string[] paths)
+            => Join(SupportBackSlash, paths);
 
         /// <summary>
         /// Create path from components
@@ -5302,7 +5302,7 @@ namespace Fp
         /// <param name="paths">Elements to join</param>
         /// <returns>Path</returns>
         /// <exception cref="ProcessorException">If separator is encountered by itself</exception>
-        public static unsafe string BasicJoin(bool supportBackSlash, params string[] paths)
+        public static unsafe string Join(bool supportBackSlash, params string[] paths)
         {
             if (paths.Length < 2)
                 return paths.Length == 0 ? string.Empty : paths[0] ?? throw new ArgumentException("Null element");

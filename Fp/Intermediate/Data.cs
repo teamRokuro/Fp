@@ -7,7 +7,7 @@ namespace Fp.Intermediate
     /// <summary>
     /// Intermediate-format data container
     /// </summary>
-    public abstract class Data : IDisposable
+    public abstract class Data : IDisposable, ICloneable
     {
         /// <summary>
         /// Base path of resource
@@ -45,5 +45,8 @@ namespace Fp.Intermediate
 
         /// <inheritdoc />
         public abstract void Dispose();
+
+        /// <inheritdoc />
+        public abstract object Clone();
     }
 }

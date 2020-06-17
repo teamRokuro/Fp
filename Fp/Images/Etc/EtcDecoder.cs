@@ -1192,37 +1192,39 @@ namespace Fp
             int w = (width + 3) / 4 * 4;
             int h = (height + 3) / 4 * 4;
 
-            fixed (byte* bsrc = &src.GetPinnableReference(), pImgSrc = &img.GetPinnableReference())
+            fixed (byte* bsrc = &src.GetPinnableReference())
             {
                 byte* srcP = hasAlpha ? bsrc + 64 / 8 : bsrc;
-                uint* pImg = (uint*)pImgSrc;
-                uint* tar = stackalloc uint[4 * 4];
-                byte* tar2 = (byte*)tar;
-                for (int y = 0; y < h / 4; y++)
+                fixed (uint* pImg = &img.GetPinnableReference())
                 {
-                    for (int x = 0; x < w / 4; x++)
+                    uint* tar = stackalloc uint[4 * 4];
+                    byte* tar2 = (byte*)tar;
+                    for (int y = 0; y < h / 4; y++)
                     {
-                        bool res;
-                        res = EtcDecoder.DecompressBlockEtc2(srcP, EtcDecoder.EtcMode.AllModesEtc2,
-                            EtcDecoder.DecompressionFunctionFlags.None, tar2);
-                        if (!res) return false;
-                        if (hasAlpha)
+                        for (int x = 0; x < w / 4; x++)
                         {
-                            res = EtcDecoder.DecompressBlockEtc2Eac(srcP - 64 / 8, EtcDecoder.EtcMode.AllModesEtc2,
+                            bool res;
+                            res = EtcDecoder.DecompressBlockEtc2(srcP, EtcDecoder.EtcMode.AllModesEtc2,
                                 EtcDecoder.DecompressionFunctionFlags.None, tar2);
                             if (!res) return false;
-                        }
-
-                        for (int yy = 0; yy < 4; yy++)
-                        {
-                            for (int xx = 0; xx < 4; xx++)
+                            if (hasAlpha)
                             {
-                                if (x * 4 + xx >= width || y * 4 + yy >= height) continue;
-                                pImg[(y * 4 + yy) * width + x * 4 + xx] = tar[yy * 4 + xx];
+                                res = EtcDecoder.DecompressBlockEtc2Eac(srcP - 64 / 8, EtcDecoder.EtcMode.AllModesEtc2,
+                                    EtcDecoder.DecompressionFunctionFlags.None, tar2);
+                                if (!res) return false;
                             }
-                        }
 
-                        srcP += hasAlpha ? 128 / 8 : 64 / 8;
+                            for (int yy = 0; yy < 4; yy++)
+                            {
+                                for (int xx = 0; xx < 4; xx++)
+                                {
+                                    if (x * 4 + xx >= width || y * 4 + yy >= height) continue;
+                                    pImg[(y * 4 + yy) * width + x * 4 + xx] = tar[yy * 4 + xx];
+                                }
+                            }
+
+                            srcP += hasAlpha ? 128 / 8 : 64 / 8;
+                        }
                     }
                 }
             }

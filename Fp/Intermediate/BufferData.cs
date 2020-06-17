@@ -21,24 +21,24 @@ namespace Fp.Intermediate
         /// <summary>
         /// Buffer
         /// </summary>
-        public readonly Memory<T> Buffer;
+        public Memory<T> Buffer { get; private set; }
 
         /// <summary>
         /// Buffer content length
         /// </summary>
-        public readonly int ContentLength;
+        public readonly int Count;
 
         /// <summary>
         /// Create new instance of <see cref="BufferData{T}"/>
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
-        /// <param name="contentLength">Length of content</param>
-        public BufferData(string basePath, int contentLength) : base(basePath)
+        /// <param name="count">Length of content</param>
+        public BufferData(string basePath, int count) : base(basePath)
         {
             Dry = true;
             _memoryOwner = null;
             Buffer = Memory<T>.Empty;
-            ContentLength = contentLength;
+            Count = count;
         }
 
         /// <summary>
@@ -46,12 +46,13 @@ namespace Fp.Intermediate
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="memoryOwner">Owner of data buffer</param>
-        /// <param name="contentLength">Length of content</param>
-        public BufferData(string basePath, IMemoryOwner<T> memoryOwner, int contentLength) : base(basePath)
+        /// <param name="count">Length of content</param>
+        public BufferData(string basePath, IMemoryOwner<T> memoryOwner, int? count = default) : base(basePath)
         {
             _memoryOwner = memoryOwner;
             Buffer = _memoryOwner.Memory;
-            ContentLength = contentLength;
+            Dry = Buffer.IsEmpty;
+            Count = count ?? Buffer.Length;
         }
 
         /// <summary>
@@ -62,8 +63,22 @@ namespace Fp.Intermediate
         public BufferData(string basePath, Memory<T> buffer) : base(basePath)
         {
             Buffer = buffer;
+            Dry = Buffer.IsEmpty;
             _memoryOwner = null;
-            ContentLength = buffer.Length;
+            Count = buffer.Length;
+        }
+
+        /// <summary>
+        /// Get span of specified type from buffer
+        /// </summary>
+        /// <typeparam name="TWant">Target type</typeparam>
+        /// <returns>Span</returns>
+        /// <exception cref="ObjectDisposedException">If object was disposed</exception>
+        public Span<TWant> AsSpan<TWant>() where TWant : unmanaged
+        {
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(BufferData<T>));
+            return MemoryMarshal.Cast<T, TWant>(Buffer.Span);
         }
 
         /// <inheritdoc />
@@ -71,15 +86,27 @@ namespace Fp.Intermediate
             Dictionary<string, string>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(BufferData<T>));
             switch (format)
             {
                 case CommonFormat.Generic:
                     Processor.WriteBaseSpan(outputStream,
-                        MemoryMarshal.Cast<T, byte>(Buffer.Span.Slice(0, ContentLength)));
+                        MemoryMarshal.Cast<T, byte>(Buffer.Span.Slice(0, Count)));
                     return true;
                 default:
                     return false;
             }
+        }
+
+        /// <inheritdoc />
+        public override object Clone()
+        {
+            if (Dry)
+                return new BufferData<T>(BasePath, Count);
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(BufferData<T>));
+            return new BufferData<T>(BasePath, IntermediateUtil.CloneBuffer(Buffer));
         }
 
         /// <summary>
@@ -95,6 +122,7 @@ namespace Fp.Intermediate
 
             if (disposing)
             {
+                Buffer = Memory<T>.Empty;
                 _memoryOwner?.Dispose();
             }
         }

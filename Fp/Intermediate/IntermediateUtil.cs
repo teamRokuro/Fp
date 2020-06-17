@@ -38,14 +38,15 @@ namespace Fp.Intermediate
         }
 
         /// <summary>
-        /// Check if segment is compact
+        /// Clone buffer to newly allocated array
         /// </summary>
-        /// <param name="segment">Segment to check</param>
-        /// <typeparam name="T">Type</typeparam>
-        /// <returns>True if compact</returns>
-        public static bool IsCompactSegment<T>(ArraySegment<T> segment)
+        /// <param name="memory">Memory to clone</param>
+        /// <returns>New array</returns>
+        public static Memory<T> CloneBuffer<T>(Memory<T> memory)
         {
-            return segment.Offset == 0 && segment.Count == segment.Array?.Length;
+            T[] target = new T[memory.Length];
+            memory.CopyTo(target);
+            return target;
         }
     }
 }

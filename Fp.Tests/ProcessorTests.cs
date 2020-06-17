@@ -97,15 +97,15 @@ namespace Fp.Tests
         }
 
         [Test]
-        public void TestBasicJoin()
+        public void TestJoin()
         {
-            Assert.AreEqual("/A/B/C/D/", Processor.BasicJoin(false, "/A", "/B", "C/", "/D/"));
-            Assert.AreEqual("/A/B", Processor.BasicJoin(false, "/A", "B"));
-            Assert.AreEqual("/A/B", Processor.BasicJoin(false, "/A", "", "", "B"));
-            Assert.AreEqual(@"/Source/Path/\x/", Processor.BasicJoin(false, "/Source", "/Path/", @"\x/"));
-            Assert.AreEqual(@"C:\A\B\C\D\E", Processor.BasicJoin(true, @"C:\A", @"\B", @"C\", @"\D\", "E"));
-            Assert.AreEqual(@"C:\A\B", Processor.BasicJoin(true, @"C:\A", "B"));
-            Assert.AreEqual(@"C:\A/B", Processor.BasicJoin(true, @"C:\A", "/B"));
+            Assert.AreEqual("/A/B/C/D/", Processor.Join(false, "/A", "/B", "C/", "/D/"));
+            Assert.AreEqual("/A/B", Processor.Join(false, "/A", "B"));
+            Assert.AreEqual("/A/B", Processor.Join(false, "/A", "", "", "B"));
+            Assert.AreEqual(@"/Source/Path/\x/", Processor.Join(false, "/Source", "/Path/", @"\x/"));
+            Assert.AreEqual(@"C:\A\B\C\D\E", Processor.Join(true, @"C:\A", @"\B", @"C\", @"\D\", "E"));
+            Assert.AreEqual(@"C:\A\B", Processor.Join(true, @"C:\A", "B"));
+            Assert.AreEqual(@"C:\A/B", Processor.Join(true, @"C:\A", "/B"));
         }
 
         [Test]

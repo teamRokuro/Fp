@@ -39,9 +39,9 @@ namespace Fp.Intermediate
         /// <param name="basePath">Base path of resource</param>
         /// <param name="pcmInfo">PCM metadata</param>
         /// <param name="memoryOwner">Owner of PCM data buffer</param>
-        /// <param name="contentLength">Length of content</param>
-        public PcmData(string basePath, PcmInfo pcmInfo, IMemoryOwner<byte> memoryOwner, int contentLength) : base(
-            basePath, memoryOwner, contentLength)
+        /// <param name="count">Length of content</param>
+        public PcmData(string basePath, PcmInfo pcmInfo, IMemoryOwner<byte> memoryOwner,
+            int? count = default) : base(basePath, memoryOwner, count)
         {
             PcmInfo = pcmInfo;
         }
@@ -65,16 +65,30 @@ namespace Fp.Intermediate
             Dictionary<string, string>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(PcmData));
             switch (format)
             {
                 case CommonFormat.PcmWave:
-                    WritePcmWave(outputStream, PcmInfo, Buffer.Span.Slice(0, ContentLength));
+                    WritePcmWave(outputStream, PcmInfo, Buffer.Span.Slice(0, Count));
                     return true;
                 default:
                     return false;
             }
         }
 
+        /// <inheritdoc />
+        public override object Clone()
+        {
+            PcmInfo info = PcmInfo;
+            if (info.ExtraParams.HasValue)
+                info.ExtraParams = IntermediateUtil.CopySegment(info.ExtraParams.Value);
+            if (Dry)
+                return new PcmData(BasePath, info);
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(PcmData));
+            return new PcmData(BasePath, info, IntermediateUtil.CloneBuffer(Buffer));
+        }
 
         // http://soundfile.sapp.org/doc/WaveFormat/
         private static void WritePcmWave(Stream outputStream, PcmInfo pcmInfo, Span<byte> data)
