@@ -80,7 +80,7 @@ namespace Fp.Images.Png
                 throw new ArgumentOutOfRangeException(nameof(height), "Invalid height (0) for image.");
             }
 
-            if (!PermittedBitDepths.TryGetValue(colorType, out var permitted)
+            if (!PermittedBitDepths.TryGetValue(colorType, out HashSet<byte> permitted)
                 || !permitted.Contains(bitDepth))
             {
                 throw new ArgumentException($"The bit depth {bitDepth} is not permitted for color type {colorType}.");

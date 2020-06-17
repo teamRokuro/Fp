@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -9,15 +10,10 @@ namespace Fp.Intermediate
     /// <summary>
     /// 32-bit RGBA data
     /// </summary>
-    public class Rgba32Data : Data
+    public class Rgba32Data : BufferData<uint>
     {
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.PngDeflate;
-
-        /// <summary>
-        /// RGBA data
-        /// </summary>
-        public readonly ArraySegment<uint>? Raster;
 
         /// <summary>
         /// Image width
@@ -35,10 +31,9 @@ namespace Fp.Intermediate
         /// <param name="basePath">Base path of resource</param>
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
-        public Rgba32Data(string basePath, int width, int height) : base(basePath)
+        public Rgba32Data(string basePath, int width, int height) : base(basePath, width * height)
         {
             Dry = true;
-            Raster = null;
             Width = width;
             Height = height;
         }
@@ -49,11 +44,24 @@ namespace Fp.Intermediate
         /// <param name="basePath">Base path of resource</param>
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
-        /// <param name="raster">RGBA data, or null for dry</param>
-        public Rgba32Data(string basePath, int width, int height, ArraySegment<uint>? raster = null) : base(basePath)
+        /// <param name="memoryOwner">Owner of PCM data buffer</param>
+        /// <param name="count">Length of content</param>
+        public Rgba32Data(string basePath, int width, int height, IMemoryOwner<uint> memoryOwner,
+            int? count = default) : base(basePath, memoryOwner, count)
         {
-            Dry = !raster.HasValue;
-            Raster = raster;
+            Width = width;
+            Height = height;
+        }
+
+        /// <summary>
+        /// Create new instance of <see cref="Rgba32Data"/>
+        /// </summary>
+        /// <param name="basePath">Base path of resource</param>
+        /// <param name="width">Image width</param>
+        /// <param name="height">Image height</param>
+        /// <param name="buffer">PCM data</param>
+        public Rgba32Data(string basePath, int width, int height, Memory<uint> buffer) : base(basePath, buffer)
+        {
             Width = width;
             Height = height;
         }
@@ -63,10 +71,13 @@ namespace Fp.Intermediate
             Dictionary<string, string>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(Rgba32Data));
             switch (format)
             {
                 case CommonFormat.PngDeflate:
-                    PngBuilder.WritePngRgba(outputStream, Raster!.Value, Width, Height, CompressionLevel.Optimal);
+                    PngBuilder.WritePngRgba32(outputStream, Buffer.Span, Width, Height,
+                        CompressionLevel.Optimal);
                     return true;
                 default:
                     return false;
@@ -74,13 +85,13 @@ namespace Fp.Intermediate
         }
 
         /// <inheritdoc />
-        public override Data GetCompact(bool requireNew = false)
+        public override object Clone()
         {
-            if (!requireNew && Raster.HasValue && IntermediateUtil.IsCompactSegment(Raster.Value))
-                return this;
-            return Raster.HasValue
-                ? new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CopySegment(Raster.Value))
-                : new Rgba32Data(BasePath, Width, Height);
+            if (Dry)
+                return new Rgba32Data(BasePath, Width, Height);
+            if (Buffer.IsEmpty)
+                throw new ObjectDisposedException(nameof(Rgba32Data));
+            return new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CloneBuffer(Buffer));
         }
     }
 }

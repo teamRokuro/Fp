@@ -29,8 +29,8 @@ namespace Fp
             bool enableParallel, out ProcessorConfiguration configuration)
         {
             configuration = ProcessorConfiguration.Default;
-            var inputs = new List<(bool, string, string)>();
-            var exArgs = new List<string>();
+            List<(bool, string, string)> inputs = new List<(bool, string, string)>();
+            List<string> exArgs = new List<string>();
             string? outputRootDirectory = null;
             int parallel = 0;
             bool preload = false;
@@ -151,7 +151,7 @@ Options";
             FileSystemSource fileSystem,
             params Func<Processor>[] processorFactories)
         {
-            if (!CliGetConfiguration(exeName, args, logger, false, out var conf)) return;
+            if (!CliGetConfiguration(exeName, args, logger, false, out ProcessorConfiguration conf)) return;
             switch (conf.Parallel)
             {
                 case 0:
@@ -177,7 +177,7 @@ Options";
             FileSystemSource fileSystem,
             params Func<Processor>[] processorFactories)
         {
-            if (!CliGetConfiguration(exeName, args, logger, true, out var conf)) return;
+            if (!CliGetConfiguration(exeName, args, logger, true, out ProcessorConfiguration conf)) return;
             switch (conf.Parallel)
             {
                 case 0:
@@ -212,16 +212,16 @@ Options";
                     $"Cannot start operation with Parallel value of {configuration.Parallel}");
             int parallelCount = Math.Min(TaskScheduler.Current.MaximumConcurrencyLevel, configuration.Parallel);
             int baseCount = processorFactories.Length;
-            var processors = new Processor[parallelCount, baseCount];
+            Processor[,] processors = new Processor[parallelCount, baseCount];
             for (int iParallel = 0; iParallel < parallelCount; iParallel++)
             for (int iBase = 0; iBase < baseCount; iBase++)
                 processors[iParallel, iBase] = processorFactories[iBase].Invoke();
 
-            var dQueue = new Queue<(string, string)>();
-            var fQueue = new Queue<(string, string)>();
+            Queue<(string, string)> dQueue = new Queue<(string, string)>();
+            Queue<(string, string)> fQueue = new Queue<(string, string)>();
             foreach ((bool isFile, string dir, string item) in configuration.Inputs)
                 (isFile ? fQueue : dQueue).Enqueue((dir, item));
-            var tasks = new List<Task>();
+            List<Task> tasks = new List<Task>();
             fileSystem.ParallelAccess = true;
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {
@@ -233,14 +233,14 @@ Options";
                         int iParallelLcl = tasks.Count;
                         while (tasks.Count >= parallelCount)
                         {
-                            var completed = await Task.WhenAny(tasks);
+                            Task completed = await Task.WhenAny(tasks);
                             iParallelLcl = tasks.IndexOf(completed);
                             tasks.Remove(completed);
                         }
 
                         int iBaseLcl = iBase;
 
-                        var task = Task.Run(() =>
+                        Task task = Task.Run(() =>
                             OperateFile(processors[iParallelLcl, iBaseLcl], file, inputRoot, configuration, fileSystem,
                                 iParallelLcl));
                         tasks.Insert(iParallelLcl, task);
@@ -278,11 +278,11 @@ Options";
                 throw new ArgumentException(
                     $"Cannot start synchronous operation with {nameof(configuration.Parallel)} value of {configuration.Parallel}, use {nameof(Coordinator)}.{nameof(OperateAsync)} instead");
             int baseCount = processorFactories.Length;
-            var processors = new Processor[baseCount];
+            Processor[] processors = new Processor[baseCount];
             for (int iBase = 0; iBase < baseCount; iBase++)
                 processors[iBase] = processorFactories[iBase].Invoke();
-            var dQueue = new Queue<(string, string)>();
-            var fQueue = new Queue<(string, string)>();
+            Queue<(string, string)> dQueue = new Queue<(string, string)>();
+            Queue<(string, string)> fQueue = new Queue<(string, string)>();
             foreach ((bool isFile, string dir, string item) in configuration.Inputs)
                 (isFile ? fQueue : dQueue).Enqueue((dir, item));
             while (fQueue.Count != 0 || dQueue.Count != 0)

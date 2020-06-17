@@ -21,7 +21,7 @@ namespace Fp.Images.Png
                     $"The provided stream of type {stream.GetType().FullName} was not readable.");
             }
 
-            var validHeader = HasValidHeader(stream);
+            HeaderValidationResult validHeader = HasValidHeader(stream);
 
             if (!validHeader.IsValid)
             {
@@ -29,17 +29,17 @@ namespace Fp.Images.Png
                     $"The provided stream did not start with the PNG header. Got {validHeader}.");
             }
 
-            var crc = new byte[4];
-            var imageHeader = ReadImageHeader(stream, crc);
+            byte[] crc = new byte[4];
+            ImageHeader imageHeader = ReadImageHeader(stream, crc);
 
             bool hasEncounteredImageEnd = false;
 
             Palette? palette = null;
 
-            using var output = new MemoryStream();
-            using (var memoryStream = new MemoryStream())
+            using MemoryStream output = new MemoryStream();
+            using (MemoryStream memoryStream = new MemoryStream())
             {
-                while (TryReadChunkHeader(stream, out var header))
+                while (TryReadChunkHeader(stream, out ChunkHeader header))
                 {
                     if (hasEncounteredImageEnd)
                     {
@@ -47,7 +47,7 @@ namespace Fp.Images.Png
                             $"Found another chunk {header} after already reading the IEND chunk.");
                     }
 
-                    var bytes = new byte[header.Length];
+                    byte[] bytes = new byte[header.Length];
                     int read = stream.Read(bytes, 0, bytes.Length);
                     if (read != bytes.Length)
                     {
@@ -103,12 +103,12 @@ namespace Fp.Images.Png
                 memoryStream.Flush();
                 memoryStream.Seek(2, SeekOrigin.Begin);
 
-                using var deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress);
+                using DeflateStream deflateStream = new DeflateStream(memoryStream, CompressionMode.Decompress);
                 deflateStream.CopyTo(output);
                 deflateStream.Close();
             }
 
-            var bytesOut = output.ToArray();
+            byte[] bytesOut = output.ToArray();
 
             (byte bytesPerPixel, byte samplesPerPixel) = Decoder.GetBytesAndSamplesPerPixel(imageHeader);
 
@@ -131,7 +131,7 @@ namespace Fp.Images.Png
             chunkHeader = default;
 
             long position = stream.Position;
-            if (!StreamHelper.TryReadHeaderBytes(stream, out var headerBytes))
+            if (!StreamHelper.TryReadHeaderBytes(stream, out byte[] headerBytes))
             {
                 return false;
             }
@@ -147,7 +147,7 @@ namespace Fp.Images.Png
 
         private static ImageHeader ReadImageHeader(Stream stream, byte[] crc)
         {
-            if (!TryReadChunkHeader(stream, out var header))
+            if (!TryReadChunkHeader(stream, out ChunkHeader header))
             {
                 throw new ArgumentException("The provided stream did not contain a single chunk.");
             }
@@ -162,7 +162,7 @@ namespace Fp.Images.Png
                 throw new ArgumentException($"The first chunk did not have a length of 13 bytes: {header}.");
             }
 
-            var ihdrBytes = new byte[13];
+            byte[] ihdrBytes = new byte[13];
             int read = stream.Read(ihdrBytes, 0, ihdrBytes.Length);
 
             if (read != 13)

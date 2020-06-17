@@ -97,7 +97,7 @@ namespace Fp.Ciphers.BlowFish
                 if (BitConverter.IsLittleEndian)
                     for (int i = 0; i < len; i += 8)
                     {
-                        var block = ct + i;
+                        byte* block = ct + i;
                         ulong tmp = *(ulong*)block;
                         BlockDecryptLe(block, p, s0, s1, s2, s3);
                         *(ulong*)block ^= iv;
@@ -106,7 +106,7 @@ namespace Fp.Ciphers.BlowFish
                 else
                     for (int i = 0; i < len; i += 8)
                     {
-                        var block = ct + i;
+                        byte* block = ct + i;
                         ulong tmp = *(ulong*)block;
                         BlockDecryptBe(block, p, s0, s1, s2, s3);
                         *(ulong*)block ^= iv;
@@ -206,9 +206,9 @@ namespace Fp.Ciphers.BlowFish
                     s1 = (uint*)(b + S1Off),
                     s2 = (uint*)(b + S2Off),
                     s3 = (uint*)(b + S3Off);
-                var block = stackalloc byte[8];
-                var blL = (uint*)block;
-                var blR = (uint*)(block + 4);
+                byte* block = stackalloc byte[8];
+                uint* blL = (uint*)block;
+                uint* blR = (uint*)(block + 4);
                 *blL = 0;
                 *blR = 0;
                 int j = 0;
@@ -370,8 +370,8 @@ namespace Fp.Ciphers.BlowFish
 
         private static unsafe void BlockDecryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
-            var blL = (uint*)block;
-            var blR = (uint*)(block + 4);
+            uint* blL = (uint*)block;
+            uint* blR = (uint*)(block + 4);
             byte nTmp = *block;
             *block = block[3];
             block[3] = nTmp;
@@ -416,8 +416,8 @@ namespace Fp.Ciphers.BlowFish
 
         private static unsafe void BlockDecryptBe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
-            var blL = (uint*)block;
-            var blR = (uint*)(block + 4);
+            uint* blL = (uint*)block;
+            uint* blR = (uint*)(block + 4);
 
             *blL ^= p[17];
             for (byte i = 16; i > 0; i -= 2)
@@ -437,8 +437,8 @@ namespace Fp.Ciphers.BlowFish
 
         private static unsafe void EncryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
-            var blL = (uint*)block;
-            var blR = (uint*)(block + 4);
+            uint* blL = (uint*)block;
+            uint* blR = (uint*)(block + 4);
 
             *blL ^= p[0];
             for (byte i = 0; i < 16; i += 2)
@@ -458,8 +458,8 @@ namespace Fp.Ciphers.BlowFish
 
         private static unsafe void EncryptBe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
-            var blL = (uint*)block;
-            var blR = (uint*)(block + 4);
+            uint* blL = (uint*)block;
+            uint* blR = (uint*)(block + 4);
 
             *blL ^= p[0];
             for (byte i = 0; i < 16; i += 2)
@@ -697,7 +697,7 @@ namespace Fp
         /// <param name="key">Cipher key</param>
         public static void DecryptBlowfishEcb(Span<byte> src, Span<byte> key)
         {
-            using var bf = new Blowfish().SetKey(key);
+            using Blowfish bf = new Blowfish().SetKey(key);
             bf.DecryptEcb(src);
         }
 
@@ -709,7 +709,7 @@ namespace Fp
         /// <param name="iv">IV (CBC/CTR)</param>
         public static void DecryptBlowfishCbc(Span<byte> src, Span<byte> key, Span<byte> iv = default)
         {
-            using var bf = new Blowfish().SetKey(key);
+            using Blowfish bf = new Blowfish().SetKey(key);
             (iv.Length == 0 ? bf.SetBlankIv() : bf.SetIv(iv)).DecryptCbc(src);
         }
     }

@@ -25,7 +25,7 @@ namespace Fp.Images.Png
                     int currentRowStartByteAbsolute = 1;
                     for (int rowIndex = 0; rowIndex < header.Height; rowIndex++)
                     {
-                        var filterType = (FilterType)decompressedData[currentRowStartByteAbsolute - 1];
+                        FilterType filterType = (FilterType)decompressedData[currentRowStartByteAbsolute - 1];
 
                         int previousRowStartByteAbsolute = rowIndex + bytesPerScanline * (rowIndex - 1);
 
@@ -47,7 +47,7 @@ namespace Fp.Images.Png
                 case InterlaceMethod.Adam7:
                 {
                     int pixelsPerRow = header.Width * bytesPerPixel;
-                    var newBytes = new byte[header.Height * pixelsPerRow];
+                    byte[] newBytes = new byte[header.Height * pixelsPerRow];
                     int i = 0;
                     int previousStartRowByteAbsolute = -1;
                     // 7 passes
@@ -63,12 +63,13 @@ namespace Fp.Images.Png
 
                         for (int scanlineIndex = 0; scanlineIndex < numberOfScanlines; scanlineIndex++)
                         {
-                            var filterType = (FilterType)decompressedData[i++];
+                            FilterType filterType = (FilterType)decompressedData[i++];
                             int rowStartByte = i;
 
                             for (int j = 0; j < numberOfPixelsPerScanline; j++)
                             {
-                                var pixelIndex = Adam7.GetPixelIndexForScanlineInPass(header, pass, scanlineIndex, j);
+                                (int x, int y) pixelIndex =
+                                    Adam7.GetPixelIndexForScanlineInPass(header, pass, scanlineIndex, j);
                                 for (int k = 0; k < bytesPerPixel; k++)
                                 {
                                     int byteLineNumber = j * bytesPerPixel + k;

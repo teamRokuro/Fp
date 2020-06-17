@@ -32,20 +32,21 @@ namespace Fp.Intermediate
         /// <returns>Newly allocated array</returns>
         public static ArraySegment<T> CopySegment<T>(ArraySegment<T> segment)
         {
-            var arr = new T[segment.Count];
+            T[] arr = new T[segment.Count];
             segment.AsSpan(0, arr.Length).CopyTo(arr);
             return new ArraySegment<T>(arr);
         }
 
         /// <summary>
-        /// Check if segment is compact
+        /// Clone buffer to newly allocated array
         /// </summary>
-        /// <param name="segment">Segment to check</param>
-        /// <typeparam name="T">Type</typeparam>
-        /// <returns>True if compact</returns>
-        public static bool IsCompactSegment<T>(ArraySegment<T> segment)
+        /// <param name="memory">Memory to clone</param>
+        /// <returns>New array</returns>
+        public static Memory<T> CloneBuffer<T>(Memory<T> memory)
         {
-            return segment.Offset == 0 && segment.Count == segment.Array?.Length;
+            T[] target = new T[memory.Length];
+            memory.CopyTo(target);
+            return target;
         }
     }
 }

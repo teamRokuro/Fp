@@ -11,46 +11,46 @@ namespace Fp.Intermediate
         /// 16 for PCM.  This is the size of the
         /// rest of the Subchunk which follows this number.
         /// </summary>
-        public int SubChunk1Size;
+        public readonly int SubChunk1Size;
 
         /// <summary>
         /// PCM = 1 (i.e. Linear quantization)
         /// Values other than 1 indicate some
         /// form of compression.
         /// </summary>
-        public short AudioFormat;
+        public readonly short AudioFormat;
 
         /// <summary>
         /// Mono = 1, Stereo = 2, etc.
         /// </summary>
-        public short NumChannels;
+        public readonly short NumChannels;
 
         /// <summary>
         /// 8000, 44100, etc.
         /// </summary>
-        public int SampleRate;
+        public readonly int SampleRate;
 
         /// <summary>
         /// == SampleRate * NumChannels * BitsPerSample/8
         /// </summary>
-        public int ByteRate;
+        public readonly int ByteRate;
 
         /// <summary>
         /// == NumChannels * BitsPerSample/8
         /// The number of bytes for one sample including
         /// all channels.
         /// </summary>
-        public short BlockAlign;
+        public readonly short BlockAlign;
 
         /// <summary>
         /// 8 bits = 8, 16 bits = 16, etc.
         /// </summary>
-        public short BitsPerSample;
+        public readonly short BitsPerSample;
 
         /// <summary>
         /// if PCM, then doesn't exist
         /// </summary>
-        public short ExtraParamSize;
+        public readonly short ExtraParamSize;
 
         /// <summary>
         /// space for extra parameters
@@ -64,7 +64,7 @@ namespace Fp.Intermediate
         /// of the read of the subchunk following this
         /// number.
         /// </summary>
-        public int SubChunk2Size;
+        public readonly int SubChunk2Size;
 
         /// <summary>
         /// Create new instance of <see cref="PcmInfo"/>

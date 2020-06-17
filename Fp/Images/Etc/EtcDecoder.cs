@@ -150,7 +150,7 @@ namespace Fp.Images.Etc
             byte r = Clamp(baseColorSubblock[0] + modifier);
             byte g = Clamp(baseColorSubblock[1] + modifier);
             byte b = Clamp(baseColorSubblock[2] + modifier);
-            var buffer = (uint*)pixelBuffer;
+            uint* buffer = (uint*)pixelBuffer;
             buffer[(i & 3) * 4 + ((i & 12) >> 2)] = Rgba(r, g, b, 0xff);
         }
 
@@ -175,8 +175,8 @@ namespace Fp.Images.Etc
                 return false;
 
             int flipbit = bitString[3] & 1;
-            var baseColorSubblock1 = stackalloc int[3];
-            var baseColorSubblock2 = stackalloc int[3];
+            int* baseColorSubblock1 = stackalloc int[3];
+            int* baseColorSubblock2 = stackalloc int[3];
             if (differentialMode != 0)
             {
                 baseColorSubblock1[0] = bitString[0] & 0xF8;
@@ -365,7 +365,7 @@ namespace Fp.Images.Etc
             uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
                                   ((uint)bitString[6] << 8) | bitString[7];
 
-            var buffer = (uint*)pixelBuffer;
+            uint* buffer = (uint*)pixelBuffer;
             for (int i = 0; i < 16; i++)
             {
                 int pixelIndex = (int)((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
@@ -403,7 +403,7 @@ namespace Fp.Images.Etc
             gv = (gv << 1) | ((gv & 0x40) >> 6);
             bv = (bv << 2) | ((bv & 0x30) >> 4);
 
-            var buffer = (uint*)pixelBuffer;
+            uint* buffer = (uint*)pixelBuffer;
             for (int y = 0; y < 4; y++)
             for (int x = 0; x < 4; x++)
             {
@@ -611,7 +611,7 @@ namespace Fp.Images.Etc
             byte g = Clamp(baseColorSubblock[1] + modifier);
             byte b = Clamp(baseColorSubblock[2] + modifier);
             uint mask = PunchthroughMaskTable[pixelIndex];
-            var buffer = (uint*)pixelBuffer;
+            uint* buffer = (uint*)pixelBuffer;
             buffer[(i & 3) * 4 + ((i & 12) >> 2)] =
                 Rgba(r, g, b, 0xff) & (BitConverter.IsLittleEndian ? mask : BinaryPrimitives.ReverseEndianness(mask));
         }
@@ -621,8 +621,8 @@ namespace Fp.Images.Etc
             byte* pixelBuffer)
         {
             int flipbit = bitString[3] & 1;
-            var baseColorSubblock1 = stackalloc int[3];
-            var baseColorSubblock2 = stackalloc int[3];
+            int* baseColorSubblock1 = stackalloc int[3];
+            int* baseColorSubblock2 = stackalloc int[3];
             baseColorSubblock1[0] = bitString[0] & 0xF8;
             baseColorSubblock1[0] |= (baseColorSubblock1[0] & 224) >> 5;
             baseColorSubblock1[1] = bitString[1] & 0xF8;
@@ -762,7 +762,7 @@ namespace Fp.Images.Etc
             uint pixelIndexWord = ((uint)bitString[4] << 24) | ((uint)bitString[5] << 16) |
                                   ((uint)bitString[6] << 8) | bitString[7];
 
-            var buffer = (uint*)pixelBuffer;
+            uint* buffer = (uint*)pixelBuffer;
             for (int i = 0; i < 16; i++)
             {
                 int pixelIndex = (int)((pixelIndexWord & (1 << i)) >> i); // Least significant bit.
@@ -932,7 +932,7 @@ namespace Fp.Images.Etc
             int baseCodeword = bitstring[0];
             fixed (sbyte* modifierTableB = EacModifierTable)
             {
-                var modifierTable = modifierTableB + (bitstring[1] & 0x0F) * 8;
+                sbyte* modifierTable = modifierTableB + (bitstring[1] & 0x0F) * 8;
                 int multiplier = (bitstring[1] & 0xF0) >> 4;
                 if (multiplier == 0 && (flags & DecompressionFunctionFlags.Encode) != DecompressionFunctionFlags.Encode)
                     // Not allowed in encoding. Decoder should handle it.
@@ -1004,7 +1004,7 @@ namespace Fp.Images.Etc
             int modifierIndex = (int)((qword & 0x000F000000000000) >> 48);
             fixed (sbyte* modifierTableB = EacModifierTable)
             {
-                var modifierTable = modifierTableB + modifierIndex * 8;
+                sbyte* modifierTable = modifierTableB + modifierIndex * 8;
                 int multiplierTimes8 = (int)((qword & 0x00F0000000000000) >> (52 - 3));
                 if (multiplierTimes8 == 0)
                     multiplierTimes8 = 1;
@@ -1087,7 +1087,7 @@ namespace Fp.Images.Etc
         }
 
 
-// 
+//
         /// <summary>
         /// For each pixel, decode an 11-bit signed integer and store as follows:
         /// If shift and offset are zero, store each value in consecutive 16 bit values in pixel_buffer.
@@ -1111,7 +1111,7 @@ namespace Fp.Images.Etc
             int modifierIndex = (int)((qword & 0x000F000000000000) >> 48);
             fixed (sbyte* modifierTableB = EacModifierTable)
             {
-                var modifierTable = modifierTableB + modifierIndex * 8;
+                sbyte* modifierTable = modifierTableB + modifierIndex * 8;
                 int multiplierTimes8 = (int)((qword & 0x00F0000000000000) >> (52 - 3));
                 if (multiplierTimes8 == 0)
                     multiplierTimes8 = 1;
@@ -1194,34 +1194,37 @@ namespace Fp
 
             fixed (byte* bsrc = &src.GetPinnableReference())
             {
-                var srcP = hasAlpha ? bsrc + 64 / 8 : bsrc;
-                var tar = stackalloc uint[4 * 4];
-                var tar2 = (byte*)tar;
-                for (int y = 0; y < h / 4; y++)
+                byte* srcP = hasAlpha ? bsrc + 64 / 8 : bsrc;
+                fixed (uint* pImg = &img.GetPinnableReference())
                 {
-                    for (int x = 0; x < w / 4; x++)
+                    uint* tar = stackalloc uint[4 * 4];
+                    byte* tar2 = (byte*)tar;
+                    for (int y = 0; y < h / 4; y++)
                     {
-                        bool res;
-                        res = EtcDecoder.DecompressBlockEtc2(srcP, EtcDecoder.EtcMode.AllModesEtc2,
-                            EtcDecoder.DecompressionFunctionFlags.None, tar2);
-                        if (!res) return false;
-                        if (hasAlpha)
+                        for (int x = 0; x < w / 4; x++)
                         {
-                            res = EtcDecoder.DecompressBlockEtc2Eac(srcP - 64 / 8, EtcDecoder.EtcMode.AllModesEtc2,
+                            bool res;
+                            res = EtcDecoder.DecompressBlockEtc2(srcP, EtcDecoder.EtcMode.AllModesEtc2,
                                 EtcDecoder.DecompressionFunctionFlags.None, tar2);
                             if (!res) return false;
-                        }
-
-                        for (int yy = 0; yy < 4; yy++)
-                        {
-                            for (int xx = 0; xx < 4; xx++)
+                            if (hasAlpha)
                             {
-                                if (x * 4 + xx >= width || y * 4 + yy >= height) continue;
-                                img[(y * 4 + yy) * width + x * 4 + xx] = tar[yy * 4 + xx];
+                                res = EtcDecoder.DecompressBlockEtc2Eac(srcP - 64 / 8, EtcDecoder.EtcMode.AllModesEtc2,
+                                    EtcDecoder.DecompressionFunctionFlags.None, tar2);
+                                if (!res) return false;
                             }
-                        }
 
-                        srcP += hasAlpha ? 128 / 8 : 64 / 8;
+                            for (int yy = 0; yy < 4; yy++)
+                            {
+                                for (int xx = 0; xx < 4; xx++)
+                                {
+                                    if (x * 4 + xx >= width || y * 4 + yy >= height) continue;
+                                    pImg[(y * 4 + yy) * width + x * 4 + xx] = tar[yy * 4 + xx];
+                                }
+                            }
+
+                            srcP += hasAlpha ? 128 / 8 : 64 / 8;
+                        }
                     }
                 }
             }
