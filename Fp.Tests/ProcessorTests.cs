@@ -25,7 +25,7 @@ namespace Fp.Tests
                 ms.Write(arr, 0, arr.Length);
             int next = 0;
             int mCount = 0;
-            foreach (long match in Processor.Match(ms, 0, ms.Length, arr, 0, arr.Length))
+            foreach (long match in Processor.Match(ms, 0, ms.Length, arr.AsMemory(), 0, arr.Length))
             {
                 Assert.AreEqual(next, match);
                 next += arr.Length;
@@ -46,7 +46,7 @@ namespace Fp.Tests
             processor.WriteUtf8String(pontoonString, true, ms);
             var pontoonArr = ms.ToArray();
             ms.SetLength(0);
-            string pontoonRes = Processor.ReadUtf8String(pontoonArr);
+            string pontoonRes = Processor.ReadUtf8String(pontoonArr.AsSpan());
             Assert.AreEqual(pontoonString, pontoonRes);
 
             // Check basic UTF-8 with null
@@ -55,20 +55,20 @@ namespace Fp.Tests
             processor.WriteUtf8String(floaterinoString2, true, ms);
             var floaterinoArr = ms.ToArray();
             ms.SetLength(0);
-            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr);
+            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr.AsSpan());
             Assert.AreEqual(floaterinoString, floaterinoRes);
 
             // Check basic UTF-16
             const string hailHydraString = "hail hydra";
             var hailHydraArr = Encoding.Unicode.GetBytes(hailHydraString);
-            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr);
+            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr.AsSpan());
             Assert.AreEqual(hailHydraString, hailHydraRes);
 
             // Check basic UTF-16 with null
             const string hydraString = "hydra";
             const string hydraString2 = "hydra\0hemert";
             var hydraArr = Encoding.Unicode.GetBytes(hydraString2);
-            string hydraRes = Processor.ReadUtf16String(hydraArr);
+            string hydraRes = Processor.ReadUtf16String(hydraArr.AsSpan());
             Assert.AreEqual(hydraString, hydraRes);
 
             // Check UTF-16LE + bom
@@ -76,7 +76,7 @@ namespace Fp.Tests
             processor.WriteUtf16String(hailHydraString2, true, false, true, ms);
             var hailHydra2Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr);
+            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr.AsSpan());
             Assert.AreEqual(hailHydraString2, hailHydra2Res);
 
             // Check UTF-16BE + bom
@@ -84,7 +84,7 @@ namespace Fp.Tests
             processor.WriteUtf16String(hailHydraString3, true, true, true, ms);
             var hailHydra3Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr);
+            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr.AsSpan());
             Assert.AreEqual(hailHydraString3, hailHydra3Res);
 
             // Check UTF-16LE + bom from stream

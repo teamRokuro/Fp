@@ -9,7 +9,23 @@ namespace Fp.Intermediate
     /// <summary>
     /// Buffer containing unstructured data
     /// </summary>
-    public class BufferData<T> : Data where T : unmanaged
+    public abstract class BufferData : Data
+    {
+        /// <inheritdoc />
+        protected BufferData(string basePath) : base(basePath) {
+        }
+
+        /// <summary>
+        /// Get span of specified type from buffer
+        /// </summary>
+        /// <typeparam name="TWant">Target type</typeparam>
+        /// <returns>Span</returns>
+        /// <exception cref="ObjectDisposedException">If object was disposed</exception>
+        public abstract Span<TWant> AsSpan<TWant>() where TWant : unmanaged;
+    }
+
+    /// <inheritdoc />
+    public class BufferData<T> : BufferData where T : unmanaged
     {
         private bool _disposed = false;
 
@@ -68,13 +84,8 @@ namespace Fp.Intermediate
             Count = buffer.Length;
         }
 
-        /// <summary>
-        /// Get span of specified type from buffer
-        /// </summary>
-        /// <typeparam name="TWant">Target type</typeparam>
-        /// <returns>Span</returns>
-        /// <exception cref="ObjectDisposedException">If object was disposed</exception>
-        public Span<TWant> AsSpan<TWant>() where TWant : unmanaged
+        /// <inheritdoc />
+        public override Span<TWant> AsSpan<TWant>()
         {
             if (Buffer.IsEmpty)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
