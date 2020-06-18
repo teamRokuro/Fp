@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Crc32
+    <title>Class BufferData
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Crc32
+    <meta name="title" content="Class BufferData
    ">
     <meta name="generator" content="docfx 2.53.1.0">
     
@@ -68,21 +68,46 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Fp.Images.Png.Crc32">
+            <article class="content wrap" id="_content" data-uid="Fp.Intermediate.BufferData">
   
   
-  <h1 id="Fp_Images_Png_Crc32" data-uid="Fp.Images.Png.Crc32" class="text-break">Class Crc32
+  <h1 id="Fp_Intermediate_BufferData" data-uid="Fp.Intermediate.BufferData" class="text-break">Class BufferData
   </h1>
-  <div class="markdown level0 summary"><p>32-bit Cyclic Redundancy Code used by the PNG for checking the data is intact.</p>
+  <div class="markdown level0 summary"><p>Buffer containing unstructured data</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Crc32</span></div>
+    <div class="level1"><a class="xref" href="Fp.Intermediate.Data.html">Data</a></div>
+    <div class="level2"><span class="xref">BufferData</span></div>
+      <div class="level3"><a class="xref" href="Fp.Intermediate.BufferData-1.html">BufferData&lt;T&gt;</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><span class="xref">System.ICloneable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_BasePath">Data.BasePath</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_DefaultFormat">Data.DefaultFormat</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dry">Data.Dry</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__">Data.WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dispose">Data.Dispose()</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Clone">Data.Clone()</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -105,47 +130,67 @@
       <span class="xref">System.Object.ToString()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Images.Png.html">Fp.Images.Png</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Intermediate.html">Fp.Intermediate</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
-  <h5 id="Fp_Images_Png_Crc32_syntax">Syntax</h5>
+  <h5 id="Fp_Intermediate_BufferData_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class Crc32</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BufferData : Data, IDisposable, ICloneable</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Intermediate_BufferData__ctor_System_String_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Intermediate/BufferData.cs/#L15">View Source</a>
+  </span>
+  <a id="Fp_Intermediate_BufferData__ctor_" data-uid="Fp.Intermediate.BufferData.#ctor*"></a>
+  <h4 id="Fp_Intermediate_BufferData__ctor_System_String_" data-uid="Fp.Intermediate.BufferData.#ctor(System.String)">BufferData(String)</h4>
+  <div class="markdown level1 summary"><p>Create instance of <a class="xref" href="Fp.Intermediate.Data.html">Data</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected BufferData(string basePath)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">basePath</span></td>
+        <td><p>Base path of resource</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Images_Png_Crc32_Calculate_System_Span_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Images.Png.Crc32.Calculate(System.Span%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Intermediate_BufferData_AsSpan__1.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData.AsSpan%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Images/Png/Crc32.cs/#L39">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Intermediate/BufferData.cs/#L24">View Source</a>
   </span>
-  <a id="Fp_Images_Png_Crc32_Calculate_" data-uid="Fp.Images.Png.Crc32.Calculate*"></a>
-  <h4 id="Fp_Images_Png_Crc32_Calculate_System_Span_System_Byte__" data-uid="Fp.Images.Png.Crc32.Calculate(System.Span{System.Byte})">Calculate(Span&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Calculate the CRC32 for data.</p>
+  <a id="Fp_Intermediate_BufferData_AsSpan_" data-uid="Fp.Intermediate.BufferData.AsSpan*"></a>
+  <h4 id="Fp_Intermediate_BufferData_AsSpan__1" data-uid="Fp.Intermediate.BufferData.AsSpan``1">AsSpan&lt;TWant&gt;()</h4>
+  <div class="markdown level1 summary"><p>Get span of specified type from buffer</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static uint Calculate(Span&lt;byte&gt; data)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract ReadOnlySpan&lt;TWant&gt; AsSpan&lt;TWant&gt;()
+    where TWant : struct</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">data</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -156,64 +201,51 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.UInt32</span></td>
-        <td></td>
+        <td><span class="xref">System.ReadOnlySpan</span>&lt;TWant&gt;</td>
+        <td><p>Span</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Images_Png_Crc32_Calculate_System_Span_System_Byte__System_Span_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Images.Png.Crc32.Calculate(System.Span%7BSystem.Byte%7D%2CSystem.Span%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Images/Png/Crc32.cs/#L54">View Source</a>
-  </span>
-  <a id="Fp_Images_Png_Crc32_Calculate_" data-uid="Fp.Images.Png.Crc32.Calculate*"></a>
-  <h4 id="Fp_Images_Png_Crc32_Calculate_System_Span_System_Byte__System_Span_System_Byte__" data-uid="Fp.Images.Png.Crc32.Calculate(System.Span{System.Byte},System.Span{System.Byte})">Calculate(Span&lt;Byte&gt;, Span&lt;Byte&gt;)</h4>
-  <div class="markdown level1 summary"><p>Calculate the combined CRC32 for data.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static uint Calculate(Span&lt;byte&gt; data, Span&lt;byte&gt; data2)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
-        <th>Type</th>
         <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">data</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">data2</span></td>
-        <td></td>
+        <td><span class="parametername">TWant</span></td>
+        <td><p>Target type</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
+  <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
-        <th>Description</th>
+        <th>Condition</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.UInt32</span></td>
-        <td></td>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>If object was disposed</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+  <div>
+      <span class="xref">System.ICloneable</span>
+  </div>
 </article>
           </div>
           
@@ -222,10 +254,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Images_Png_Crc32.md&amp;value=---%0Auid%3A%20Fp.Images.Png.Crc32%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.3/apiSpec/new?filename=Fp_Intermediate_BufferData.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Images/Png/Crc32.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.3/Fp/Intermediate/BufferData.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

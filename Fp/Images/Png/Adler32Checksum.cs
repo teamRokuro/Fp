@@ -3,7 +3,7 @@
 namespace Fp.Images.Png
 {
     /// <summary>
-    /// Used to calculate the Adler-32 checksum used for ZLIB data in accordance with 
+    /// Used to calculate the Adler-32 checksum used for ZLIB data in accordance with
     /// RFC 1950: ZLIB Compressed Data Format Specification.
     /// </summary>
     public static class Adler32Checksum
@@ -14,7 +14,7 @@ namespace Fp.Images.Png
         /// <summary>
         /// Calculate the Adler-32 checksum for some data.
         /// </summary>
-        public static int Calculate(Span<byte> data)
+        public static int Calculate(ReadOnlySpan<byte> data)
         {
             // s1 is the sum of all bytes.
             int s1 = 1;

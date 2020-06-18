@@ -160,7 +160,7 @@ namespace Fp.Images.Png
         }
 
         // Compress plain rgba
-        internal static byte[] Compress2(Span<byte> data, int width, int height, CompressionLevel compressionLevel)
+        internal static byte[] Compress2(ReadOnlySpan<byte> data, int width, int height, CompressionLevel compressionLevel)
         {
             const int headerLength = 2;
             const int checksumLength = 4;
@@ -196,7 +196,7 @@ namespace Fp.Images.Png
             return result;
         }
 
-        internal static void WritePngRgba32<T>(Stream outputStream, Span<T> data, int width, int height,
+        internal static void WritePngRgba32<T>(Stream outputStream, ReadOnlySpan<T> data, int width, int height,
             CompressionLevel compressionLevel) where T : unmanaged
         {
             outputStream.Write(HeaderValidationResult.ExpectedHeader, 0, HeaderValidationResult.ExpectedHeader.Length);
@@ -241,7 +241,7 @@ namespace Fp
         /// <param name="height">Height of image</param>
         /// <param name="compressionLevel">Deflate compression level</param>
         /// <param name="outputStream">Stream to write to</param>
-        public void WritePngRgba32<T>(Span<T> data, int width, int height,
+        public void WritePngRgba32<T>(ReadOnlySpan<T> data, int width, int height,
             CompressionLevel compressionLevel = CompressionLevel.Optimal, Stream? outputStream = null)
             where T : unmanaged
         {

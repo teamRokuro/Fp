@@ -43,7 +43,7 @@ namespace Fp.Intermediate
         /// </summary>
         /// <param name="memory">Memory to clone</param>
         /// <returns>New array</returns>
-        public static Memory<T> CloneBuffer<T>(Memory<T> memory)
+        public static Memory<T> CloneBuffer<T>(ReadOnlyMemory<T> memory)
         {
             T[] target = new T[memory.Length];
             memory.CopyTo(target);
