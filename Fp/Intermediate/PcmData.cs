@@ -52,7 +52,7 @@ namespace Fp.Intermediate
         /// <param name="basePath">Base path of resource</param>
         /// <param name="pcmInfo">PCM metadata</param>
         /// <param name="buffer">PCM data</param>
-        public PcmData(string basePath, PcmInfo pcmInfo, Memory<byte> buffer) : base(basePath, buffer)
+        public PcmData(string basePath, PcmInfo pcmInfo, ReadOnlyMemory<byte> buffer) : base(basePath, buffer)
         {
             PcmInfo = pcmInfo;
         }

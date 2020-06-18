@@ -1783,15 +1783,15 @@ references:
   fullName.vb: Fp.Intermediate.BufferData(Of T).BufferData(System.String, System.Int32)
   nameWithType: BufferData<T>.BufferData(String, Int32)
   nameWithType.vb: BufferData(Of T).BufferData(String, Int32)
-- uid: Fp.Intermediate.BufferData`1.#ctor(System.String,System.Memory{`0})
-  name: BufferData(String, Memory<T>)
-  href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1__ctor_System_String_System_Memory__0__
-  commentId: M:Fp.Intermediate.BufferData`1.#ctor(System.String,System.Memory{`0})
-  name.vb: BufferData(String, Memory(Of T))
-  fullName: Fp.Intermediate.BufferData<T>.BufferData(System.String, System.Memory<T>)
-  fullName.vb: Fp.Intermediate.BufferData(Of T).BufferData(System.String, System.Memory(Of T))
-  nameWithType: BufferData<T>.BufferData(String, Memory<T>)
-  nameWithType.vb: BufferData(Of T).BufferData(String, Memory(Of T))
+- uid: Fp.Intermediate.BufferData`1.#ctor(System.String,System.ReadOnlyMemory{`0})
+  name: BufferData(String, ReadOnlyMemory<T>)
+  href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1__ctor_System_String_System_ReadOnlyMemory__0__
+  commentId: M:Fp.Intermediate.BufferData`1.#ctor(System.String,System.ReadOnlyMemory{`0})
+  name.vb: BufferData(String, ReadOnlyMemory(Of T))
+  fullName: Fp.Intermediate.BufferData<T>.BufferData(System.String, System.ReadOnlyMemory<T>)
+  fullName.vb: Fp.Intermediate.BufferData(Of T).BufferData(System.String, System.ReadOnlyMemory(Of T))
+  nameWithType: BufferData<T>.BufferData(String, ReadOnlyMemory<T>)
+  nameWithType.vb: BufferData(Of T).BufferData(String, ReadOnlyMemory(Of T))
 - uid: Fp.Intermediate.BufferData`1.#ctor*
   name: BufferData
   href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1__ctor_
@@ -3002,15 +3002,15 @@ references:
   fullName.vb: Fp.Intermediate.PcmData.PcmData(System.String, Fp.Intermediate.PcmInfo, System.Buffers.IMemoryOwner(Of System.Byte), System.Nullable(Of System.Int32))
   nameWithType: PcmData.PcmData(String, PcmInfo, IMemoryOwner<Byte>, Nullable<Int32>)
   nameWithType.vb: PcmData.PcmData(String, PcmInfo, IMemoryOwner(Of Byte), Nullable(Of Int32))
-- uid: Fp.Intermediate.PcmData.#ctor(System.String,Fp.Intermediate.PcmInfo,System.Memory{System.Byte})
-  name: PcmData(String, PcmInfo, Memory<Byte>)
-  href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData__ctor_System_String_Fp_Intermediate_PcmInfo_System_Memory_System_Byte__
-  commentId: M:Fp.Intermediate.PcmData.#ctor(System.String,Fp.Intermediate.PcmInfo,System.Memory{System.Byte})
-  name.vb: PcmData(String, PcmInfo, Memory(Of Byte))
-  fullName: Fp.Intermediate.PcmData.PcmData(System.String, Fp.Intermediate.PcmInfo, System.Memory<System.Byte>)
-  fullName.vb: Fp.Intermediate.PcmData.PcmData(System.String, Fp.Intermediate.PcmInfo, System.Memory(Of System.Byte))
-  nameWithType: PcmData.PcmData(String, PcmInfo, Memory<Byte>)
-  nameWithType.vb: PcmData.PcmData(String, PcmInfo, Memory(Of Byte))
+- uid: Fp.Intermediate.PcmData.#ctor(System.String,Fp.Intermediate.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  name: PcmData(String, PcmInfo, ReadOnlyMemory<Byte>)
+  href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData__ctor_System_String_Fp_Intermediate_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.Intermediate.PcmData.#ctor(System.String,Fp.Intermediate.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  name.vb: PcmData(String, PcmInfo, ReadOnlyMemory(Of Byte))
+  fullName: Fp.Intermediate.PcmData.PcmData(System.String, Fp.Intermediate.PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.Intermediate.PcmData.PcmData(System.String, Fp.Intermediate.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  nameWithType: PcmData.PcmData(String, PcmInfo, ReadOnlyMemory<Byte>)
+  nameWithType.vb: PcmData.PcmData(String, PcmInfo, ReadOnlyMemory(Of Byte))
 - uid: Fp.Intermediate.PcmData.#ctor*
   name: PcmData
   href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData__ctor_
@@ -3175,15 +3175,15 @@ references:
   fullName.vb: Fp.Intermediate.Rgba32Data.Rgba32Data(System.String, System.Int32, System.Int32, System.Buffers.IMemoryOwner(Of System.UInt32), System.Nullable(Of System.Int32))
   nameWithType: Rgba32Data.Rgba32Data(String, Int32, Int32, IMemoryOwner<UInt32>, Nullable<Int32>)
   nameWithType.vb: Rgba32Data.Rgba32Data(String, Int32, Int32, IMemoryOwner(Of UInt32), Nullable(Of Int32))
-- uid: Fp.Intermediate.Rgba32Data.#ctor(System.String,System.Int32,System.Int32,System.Memory{System.UInt32})
-  name: Rgba32Data(String, Int32, Int32, Memory<UInt32>)
-  href: api/Fp.Intermediate.Rgba32Data.html#Fp_Intermediate_Rgba32Data__ctor_System_String_System_Int32_System_Int32_System_Memory_System_UInt32__
-  commentId: M:Fp.Intermediate.Rgba32Data.#ctor(System.String,System.Int32,System.Int32,System.Memory{System.UInt32})
-  name.vb: Rgba32Data(String, Int32, Int32, Memory(Of UInt32))
-  fullName: Fp.Intermediate.Rgba32Data.Rgba32Data(System.String, System.Int32, System.Int32, System.Memory<System.UInt32>)
-  fullName.vb: Fp.Intermediate.Rgba32Data.Rgba32Data(System.String, System.Int32, System.Int32, System.Memory(Of System.UInt32))
-  nameWithType: Rgba32Data.Rgba32Data(String, Int32, Int32, Memory<UInt32>)
-  nameWithType.vb: Rgba32Data.Rgba32Data(String, Int32, Int32, Memory(Of UInt32))
+- uid: Fp.Intermediate.Rgba32Data.#ctor(System.String,System.Int32,System.Int32,System.ReadOnlyMemory{System.UInt32})
+  name: Rgba32Data(String, Int32, Int32, ReadOnlyMemory<UInt32>)
+  href: api/Fp.Intermediate.Rgba32Data.html#Fp_Intermediate_Rgba32Data__ctor_System_String_System_Int32_System_Int32_System_ReadOnlyMemory_System_UInt32__
+  commentId: M:Fp.Intermediate.Rgba32Data.#ctor(System.String,System.Int32,System.Int32,System.ReadOnlyMemory{System.UInt32})
+  name.vb: Rgba32Data(String, Int32, Int32, ReadOnlyMemory(Of UInt32))
+  fullName: Fp.Intermediate.Rgba32Data.Rgba32Data(System.String, System.Int32, System.Int32, System.ReadOnlyMemory<System.UInt32>)
+  fullName.vb: Fp.Intermediate.Rgba32Data.Rgba32Data(System.String, System.Int32, System.Int32, System.ReadOnlyMemory(Of System.UInt32))
+  nameWithType: Rgba32Data.Rgba32Data(String, Int32, Int32, ReadOnlyMemory<UInt32>)
+  nameWithType.vb: Rgba32Data.Rgba32Data(String, Int32, Int32, ReadOnlyMemory(Of UInt32))
 - uid: Fp.Intermediate.Rgba32Data.#ctor*
   name: Rgba32Data
   href: api/Fp.Intermediate.Rgba32Data.html#Fp_Intermediate_Rgba32Data__ctor_

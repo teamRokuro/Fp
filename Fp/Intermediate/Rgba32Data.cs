@@ -60,7 +60,7 @@ namespace Fp.Intermediate
         /// <param name="width">Image width</param>
         /// <param name="height">Image height</param>
         /// <param name="buffer">PCM data</param>
-        public Rgba32Data(string basePath, int width, int height, Memory<uint> buffer) : base(basePath, buffer)
+        public Rgba32Data(string basePath, int width, int height, ReadOnlyMemory<uint> buffer) : base(basePath, buffer)
         {
             Width = width;
             Height = height;
