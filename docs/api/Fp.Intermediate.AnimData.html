@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class Data
+    <title>Class AnimData
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class Data
+    <meta name="title" content="Class AnimData
    ">
     <meta name="generator" content="docfx 2.53.1.0">
     
@@ -68,21 +68,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Fp.Intermediate.Data">
+            <article class="content wrap" id="_content" data-uid="Fp.Intermediate.AnimData">
   
   
-  <h1 id="Fp_Intermediate_Data" data-uid="Fp.Intermediate.Data" class="text-break">Class Data
+  <h1 id="Fp_Intermediate_AnimData" data-uid="Fp.Intermediate.AnimData" class="text-break">Class AnimData
   </h1>
-  <div class="markdown level0 summary"><p>Intermediate-format data container</p>
+  <div class="markdown level0 summary"><p>3D model animation data</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Data</span></div>
-      <div class="level2"><a class="xref" href="Fp.Intermediate.AnimData.html">AnimData</a></div>
-      <div class="level2"><a class="xref" href="Fp.Intermediate.BufferData.html">BufferData</a></div>
-      <div class="level2"><a class="xref" href="Fp.Intermediate.ModelData.html">ModelData</a></div>
+    <div class="level1"><a class="xref" href="Fp.Intermediate.Data.html">Data</a></div>
+    <div class="level2"><span class="xref">AnimData</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -91,6 +89,12 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_BasePath">Data.BasePath</a>
+    </div>
+    <div>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dry">Data.Dry</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -115,27 +119,27 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Intermediate.html">Fp.Intermediate</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
-  <h5 id="Fp_Intermediate_Data_syntax">Syntax</h5>
+  <h5 id="Fp_Intermediate_AnimData_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Data : IDisposable, ICloneable</code></pre>
+    <pre><code class="lang-csharp hljs">public class AnimData : Data, IDisposable, ICloneable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data__ctor_System_String_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData__ctor_System_String_Fp_Intermediate_Model_MdlAnim_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.%23ctor(System.String%2CFp.Intermediate.Model.MdlAnim)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L31">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L23">View Source</a>
   </span>
-  <a id="Fp_Intermediate_Data__ctor_" data-uid="Fp.Intermediate.Data.#ctor*"></a>
-  <h4 id="Fp_Intermediate_Data__ctor_System_String_" data-uid="Fp.Intermediate.Data.#ctor(System.String)">Data(String)</h4>
-  <div class="markdown level1 summary"><p>Create instance of <a class="xref" href="Fp.Intermediate.Data.html">Data</a></p>
+  <a id="Fp_Intermediate_AnimData__ctor_" data-uid="Fp.Intermediate.AnimData.#ctor*"></a>
+  <h4 id="Fp_Intermediate_AnimData__ctor_System_String_Fp_Intermediate_Model_MdlAnim_" data-uid="Fp.Intermediate.AnimData.#ctor(System.String,Fp.Intermediate.Model.MdlAnim)">AnimData(String, MdlAnim)</h4>
+  <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.AnimData.html">AnimData</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Data(string basePath)</code></pre>
+    <pre><code class="lang-csharp hljs">public AnimData(string basePath, MdlAnim anim)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -150,29 +154,34 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">basePath</span></td>
-        <td><p>Base path of resource</p>
-</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Fp.Intermediate.Model.MdlAnim.html">MdlAnim</a></td>
+        <td><span class="parametername">anim</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_BasePath.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.BasePath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData_Anim.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.Anim%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L15">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L16">View Source</a>
   </span>
-  <h4 id="Fp_Intermediate_Data_BasePath" data-uid="Fp.Intermediate.Data.BasePath">BasePath</h4>
-  <div class="markdown level1 summary"><p>Base path of resource</p>
+  <a id="Fp_Intermediate_AnimData_Anim_" data-uid="Fp.Intermediate.AnimData.Anim*"></a>
+  <h4 id="Fp_Intermediate_AnimData_Anim" data-uid="Fp.Intermediate.AnimData.Anim">Anim</h4>
+  <div class="markdown level1 summary"><p>Animation</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly string BasePath</code></pre>
+    <pre><code class="lang-csharp hljs">public MdlAnim Anim { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -182,28 +191,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><a class="xref" href="Fp.Intermediate.Model.MdlAnim.html">MdlAnim</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h3 id="properties">Properties
-  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_DefaultFormat.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.DefaultFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData_DefaultFormat.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.DefaultFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L20">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L29">View Source</a>
   </span>
-  <a id="Fp_Intermediate_Data_DefaultFormat_" data-uid="Fp.Intermediate.Data.DefaultFormat*"></a>
-  <h4 id="Fp_Intermediate_Data_DefaultFormat" data-uid="Fp.Intermediate.Data.DefaultFormat">DefaultFormat</h4>
+  <a id="Fp_Intermediate_AnimData_DefaultFormat_" data-uid="Fp.Intermediate.AnimData.DefaultFormat*"></a>
+  <h4 id="Fp_Intermediate_AnimData_DefaultFormat" data-uid="Fp.Intermediate.AnimData.DefaultFormat">DefaultFormat</h4>
   <div class="markdown level1 summary"><p>Default format for container</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract CommonFormat DefaultFormat { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override CommonFormat DefaultFormat { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -220,53 +227,24 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_Dry.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.Dry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L25">View Source</a>
-  </span>
-  <a id="Fp_Intermediate_Data_Dry_" data-uid="Fp.Intermediate.Data.Dry*"></a>
-  <h4 id="Fp_Intermediate_Data_Dry" data-uid="Fp.Intermediate.Data.Dry">Dry</h4>
-  <div class="markdown level1 summary"><p>If true, object does not contain complete data, e.g. for <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Dry { get; protected set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_DefaultFormat">Data.DefaultFormat</a></div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_Clone.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData_Clone.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L50">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L40">View Source</a>
   </span>
-  <a id="Fp_Intermediate_Data_Clone_" data-uid="Fp.Intermediate.Data.Clone*"></a>
-  <h4 id="Fp_Intermediate_Data_Clone" data-uid="Fp.Intermediate.Data.Clone">Clone()</h4>
+  <a id="Fp_Intermediate_AnimData_Clone_" data-uid="Fp.Intermediate.AnimData.Clone*"></a>
+  <h4 id="Fp_Intermediate_AnimData_Clone" data-uid="Fp.Intermediate.AnimData.Clone">Clone()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object Clone()</code></pre>
+    <pre><code class="lang-csharp hljs">public override object Clone()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -283,36 +261,40 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Clone">Data.Clone()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_Dispose.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData_Dispose.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L47">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L36">View Source</a>
   </span>
-  <a id="Fp_Intermediate_Data_Dispose_" data-uid="Fp.Intermediate.Data.Dispose*"></a>
-  <h4 id="Fp_Intermediate_Data_Dispose" data-uid="Fp.Intermediate.Data.Dispose">Dispose()</h4>
+  <a id="Fp_Intermediate_AnimData_Dispose_" data-uid="Fp.Intermediate.AnimData.Dispose*"></a>
+  <h4 id="Fp_Intermediate_AnimData_Dispose" data-uid="Fp.Intermediate.AnimData.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void Dispose()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Dispose()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dispose">Data.Dispose()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data.WriteConvertedData(System.IO.Stream%2CFp.Intermediate.CommonFormat%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream%2CFp.Intermediate.CommonFormat%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L43">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L32">View Source</a>
   </span>
-  <a id="Fp_Intermediate_Data_WriteConvertedData_" data-uid="Fp.Intermediate.Data.WriteConvertedData*"></a>
-  <h4 id="Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Fp.Intermediate.Data.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</h4>
+  <a id="Fp_Intermediate_AnimData_WriteConvertedData_" data-uid="Fp.Intermediate.AnimData.WriteConvertedData*"></a>
+  <h4 id="Fp_Intermediate_AnimData_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</h4>
   <div class="markdown level1 summary"><p>Get stream of data converted to common file format</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary&lt;string, string&gt; formatOptions = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary&lt;string, string&gt; formatOptions = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -360,6 +342,8 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__">Data.WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.IDisposable</span>
@@ -375,10 +359,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_Data.md&amp;value=---%0Auid%3A%20Fp.Intermediate.Data%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.4/apiSpec/new?filename=Fp_Intermediate_AnimData.md&amp;value=---%0Auid%3A%20Fp.Intermediate.AnimData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/Data.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.4/Fp/Intermediate/AnimData.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
