@@ -21,7 +21,7 @@ namespace Fp.Intermediate
         /// <typeparam name="TWant">Target type</typeparam>
         /// <returns>Span</returns>
         /// <exception cref="ObjectDisposedException">If object was disposed</exception>
-        public abstract Span<TWant> AsSpan<TWant>() where TWant : unmanaged;
+        public abstract ReadOnlySpan<TWant> AsSpan<TWant>() where TWant : unmanaged;
     }
 
     /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace Fp.Intermediate
         /// <summary>
         /// Buffer
         /// </summary>
-        public Memory<T> Buffer { get; private set; }
+        public ReadOnlyMemory<T> Buffer { get; private set; }
 
         /// <summary>
         /// Buffer content length
@@ -85,7 +85,7 @@ namespace Fp.Intermediate
         }
 
         /// <inheritdoc />
-        public override Span<TWant> AsSpan<TWant>()
+        public override ReadOnlySpan<TWant> AsSpan<TWant>()
         {
             if (Buffer.IsEmpty)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
