@@ -76,7 +76,7 @@ namespace Fp.Intermediate
         /// </summary>
         /// <param name="basePath">Base path of resource</param>
         /// <param name="buffer">Data in container</param>
-        public BufferData(string basePath, Memory<T> buffer) : base(basePath)
+        public BufferData(string basePath, ReadOnlyMemory<T> buffer) : base(basePath)
         {
             Buffer = buffer;
             Dry = Buffer.IsEmpty;
