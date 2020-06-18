@@ -91,7 +91,7 @@ namespace Fp.Intermediate
         }
 
         // http://soundfile.sapp.org/doc/WaveFormat/
-        private static void WritePcmWave(Stream outputStream, PcmInfo pcmInfo, Span<byte> data)
+        private static void WritePcmWave(Stream outputStream, PcmInfo pcmInfo, ReadOnlySpan<byte> data)
         {
             int hLen = 12 + 8 + pcmInfo.SubChunk1Size + 8;
             byte[] buffer = Shared.Rent(hLen);

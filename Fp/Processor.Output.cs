@@ -421,7 +421,7 @@ namespace Fp
 
         #region Output from span utilities
 
-        internal static void WriteBaseSpan(Stream stream, Span<byte> span)
+        internal static void WriteBaseSpan(Stream stream, ReadOnlySpan<byte> span)
         {
             byte[] buf = Shared.Rent(4096);
             Span<byte> bufSpan = buf.AsSpan();
