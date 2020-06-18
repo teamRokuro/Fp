@@ -20,6 +20,7 @@ namespace Fp.Intermediate
                 CommonFormat.Generic => "", // If appending extension, generic -> no change in extension
                 CommonFormat.PngDeflate => ".png",
                 CommonFormat.PcmWave => ".wav",
+                CommonFormat.ExportUnsupported => "",
                 _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
             };
         }

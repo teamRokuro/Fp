@@ -18,6 +18,10 @@ namespace Fp.Intermediate
         /// <summary>
         /// PCM WAV file
         /// </summary>
-        PcmWave
+        PcmWave,
+        /// <summary>
+        /// Export for data format is not supported
+        /// </summary>
+        ExportUnsupported
     }
 }
