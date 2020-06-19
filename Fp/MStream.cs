@@ -94,5 +94,7 @@ namespace Fp
             _memory = memory;
             _length = memory.Length;
         }
+
+        internal Memory<byte> GetMemory() => _memory;
     }
 }

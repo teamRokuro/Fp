@@ -494,22 +494,25 @@ namespace Fp
         public byte[] GetArray(Stream? stream = null, bool forceNew = false)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (!forceNew && stream is MemoryStream ms)
-            {
-                return ms.Capacity == ms.Length && ms.TryGetBuffer(out _) ? ms.GetBuffer() : ms.ToArray();
-            }
-
-            try
-            {
-                byte[] arr = new byte[stream.Length - stream.Position];
-                Read(stream, arr, false);
-                return arr;
-            }
-            catch (Exception)
-            {
-                // Fallback to MemoryStream copy
-                MemoryStream ms2 = new MemoryStream();
-                return ms2.ToArray();
+            switch (stream) {
+                case MStream mes:
+                    return mes.GetMemory().ToArray();
+                case MemoryStream ms when !forceNew:
+                    return ms.Capacity == ms.Length && ms.TryGetBuffer(out _) ? ms.GetBuffer() : ms.ToArray();
+                default:
+                    try
+                    {
+                        byte[] arr = new byte[stream.Length - stream.Position];
+                        Read(stream, arr, false);
+                        return arr;
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback to MemoryStream copy
+                        MemoryStream ms2 = new MemoryStream();
+                        stream.CopyTo(ms2);
+                        return ms2.ToArray();
+                    }
             }
         }
 
@@ -518,25 +521,29 @@ namespace Fp
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <returns>Array with file contents</returns>
+        /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
         public ReadOnlyMemory<byte> GetMemory(Stream? stream = null)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buffer))
-            {
-                return buffer;
-            }
-
-            try
-            {
-                byte[] arr = new byte[stream.Length - stream.Position];
-                Read(stream, arr, false);
-                return arr;
-            }
-            catch (Exception)
-            {
-                // Fallback to MemoryStream copy
-                MemoryStream ms2 = new MemoryStream();
-                return ms2.GetBuffer().AsMemory(0, (int)ms2.Length);
+            switch (stream) {
+                case MStream mes:
+                    return mes.GetMemory();
+                case MemoryStream ms when ms.TryGetBuffer(out ArraySegment<byte> buffer):
+                    return buffer;
+                default:
+                    try
+                    {
+                        byte[] arr = new byte[stream.Length - stream.Position];
+                        Read(stream, arr, false);
+                        return arr;
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback to MemoryStream copy
+                        MemoryStream ms2 = new MemoryStream();
+                        stream.CopyTo(ms2);
+                        return ms2.GetBuffer().AsMemory(0, (int)ms2.Length);
+                    }
             }
         }
 
