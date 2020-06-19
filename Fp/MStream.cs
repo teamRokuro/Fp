@@ -39,7 +39,7 @@ namespace Fp
         }
 
         /// <inheritdoc />
-        public override int ReadByte() => _position >= _length ? -1 : _memory.Span[_position];
+        public override int ReadByte() => _position >= _length ? -1 : _memory.Span[_position++];
 
         /// <inheritdoc />
         public override int Read(byte[] buffer, int offset, int count)

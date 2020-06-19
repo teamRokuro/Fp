@@ -7,7 +7,7 @@
     
     <ItemGroup>
         <PackageReference Include="Microsoft.DotNet.ILCompiler" Version="1.0.0-alpha-*"/>
-        <PackageReference Include="Fp" Version="0.3.6"/>
+        <PackageReference Include="Fp" Version="0.3.7"/>
     </ItemGroup>
 
 </Project>
