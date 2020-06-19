@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Fp;
-using Fpt.Intermediate;
+using Fp.Intermediate;
 
 namespace Fpt {
     [ProcessorInfo("Fpt", "yourDescription", "yourExtendedDescription", "yourExtension1")]
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.3.4
+         * Fp 0.3.5
          */
 
         // Main function
