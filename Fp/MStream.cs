@@ -85,7 +85,7 @@ namespace Fp
         /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (!_canWrite) throw new InvalidOperationException("Cannot write on read-only stream");
+            if (!_canWrite) throw new NotSupportedException("Cannot write on read-only stream");
             if (Math.Min(count, Math.Min(_length - _position, buffer.Length - offset)) < count)
                 throw new IndexOutOfRangeException(
                     $"Array of length {buffer.Length}, offset {offset} and count {count} could not be used to " +

@@ -486,7 +486,7 @@ namespace Fp
             => Read(offset, array, 0, array.Length, lenient);
 
         /// <summary>
-        /// Get byte array from input starting at current position
+        /// Get byte array from input
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <param name="forceNew">Force use newly allocated buffer</param>
@@ -494,15 +494,19 @@ namespace Fp
         public byte[] GetArray(Stream? stream = null, bool forceNew = false)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            switch (stream) {
+            if (!stream.CanSeek)
+                throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
+            switch (stream)
+            {
                 case MStream mes:
                     return mes.GetMemory().ToArray();
                 case MemoryStream ms when !forceNew:
                     return ms.Capacity == ms.Length && ms.TryGetBuffer(out _) ? ms.GetBuffer() : ms.ToArray();
                 default:
+                    stream.Position = 0;
                     try
                     {
-                        byte[] arr = new byte[stream.Length - stream.Position];
+                        byte[] arr = new byte[stream.Length];
                         Read(stream, arr, false);
                         return arr;
                     }
@@ -517,7 +521,7 @@ namespace Fp
         }
 
         /// <summary>
-        /// Get read-only memory from input starting at current position
+        /// Get read-only memory from input
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <returns>Array with file contents</returns>
@@ -525,15 +529,19 @@ namespace Fp
         public ReadOnlyMemory<byte> GetMemory(Stream? stream = null)
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
-            switch (stream) {
+            if (!stream.CanSeek)
+                throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
+            switch (stream)
+            {
                 case MStream mes:
                     return mes.GetMemory();
                 case MemoryStream ms when ms.TryGetBuffer(out ArraySegment<byte> buffer):
                     return buffer;
                 default:
+                    stream.Position = 0;
                     try
                     {
-                        byte[] arr = new byte[stream.Length - stream.Position];
+                        byte[] arr = new byte[stream.Length];
                         Read(stream, arr, false);
                         return arr;
                     }

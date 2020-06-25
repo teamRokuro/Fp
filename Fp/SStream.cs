@@ -52,8 +52,8 @@ namespace Fp
         /// <inheritdoc />
         public override long Position
         {
-            get => CanSeek ? _position : throw new InvalidOperationException();
-            set => _position = CanSeek ? value : throw new InvalidOperationException();
+            get => CanSeek ? _position : throw new NotSupportedException();
+            set => _position = CanSeek ? value : throw new NotSupportedException();
         }
 
         /// <inheritdoc />
@@ -73,7 +73,7 @@ namespace Fp
         /// <inheritdoc />
         public override long Seek(long offset, SeekOrigin origin)
         {
-            if (!CanSeek) throw new InvalidOperationException();
+            if (!CanSeek) throw new NotSupportedException();
             if (!Isolate && origin == SeekOrigin.Current)
                 return _position = _sourceStream.Seek(offset, SeekOrigin.Begin) - _offset;
             return _position = origin switch
