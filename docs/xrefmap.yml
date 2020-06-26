@@ -135,6 +135,274 @@ references:
   isSpec: "True"
   fullName: Fp.Ciphers.BlowFish.Blowfish.SetKey
   nameWithType: Blowfish.SetKey
+- uid: Fp.CircleBuffer`1
+  name: CircleBuffer<T>
+  href: api/Fp.CircleBuffer-1.html
+  commentId: T:Fp.CircleBuffer`1
+  name.vb: CircleBuffer(Of T)
+  fullName: Fp.CircleBuffer<T>
+  fullName.vb: Fp.CircleBuffer(Of T)
+  nameWithType: CircleBuffer<T>
+  nameWithType.vb: CircleBuffer(Of T)
+- uid: Fp.CircleBuffer`1.#ctor(System.Int32)
+  name: CircleBuffer(Int32)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1__ctor_System_Int32_
+  commentId: M:Fp.CircleBuffer`1.#ctor(System.Int32)
+  fullName: Fp.CircleBuffer<T>.CircleBuffer(System.Int32)
+  fullName.vb: Fp.CircleBuffer(Of T).CircleBuffer(System.Int32)
+  nameWithType: CircleBuffer<T>.CircleBuffer(Int32)
+  nameWithType.vb: CircleBuffer(Of T).CircleBuffer(Int32)
+- uid: Fp.CircleBuffer`1.#ctor*
+  name: CircleBuffer
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1__ctor_
+  commentId: Overload:Fp.CircleBuffer`1.#ctor
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.CircleBuffer
+  fullName.vb: Fp.CircleBuffer(Of T).CircleBuffer
+  nameWithType: CircleBuffer<T>.CircleBuffer
+  nameWithType.vb: CircleBuffer(Of T).CircleBuffer
+- uid: Fp.CircleBuffer`1.Add(`0)
+  name: Add(T)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Add__0_
+  commentId: M:Fp.CircleBuffer`1.Add(`0)
+  fullName: Fp.CircleBuffer<T>.Add(T)
+  fullName.vb: Fp.CircleBuffer(Of T).Add(T)
+  nameWithType: CircleBuffer<T>.Add(T)
+  nameWithType.vb: CircleBuffer(Of T).Add(T)
+- uid: Fp.CircleBuffer`1.Add*
+  name: Add
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Add_
+  commentId: Overload:Fp.CircleBuffer`1.Add
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Add
+  fullName.vb: Fp.CircleBuffer(Of T).Add
+  nameWithType: CircleBuffer<T>.Add
+  nameWithType.vb: CircleBuffer(Of T).Add
+- uid: Fp.CircleBuffer`1.Capacity
+  name: Capacity
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Capacity
+  commentId: P:Fp.CircleBuffer`1.Capacity
+  fullName: Fp.CircleBuffer<T>.Capacity
+  fullName.vb: Fp.CircleBuffer(Of T).Capacity
+  nameWithType: CircleBuffer<T>.Capacity
+  nameWithType.vb: CircleBuffer(Of T).Capacity
+- uid: Fp.CircleBuffer`1.Capacity*
+  name: Capacity
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Capacity_
+  commentId: Overload:Fp.CircleBuffer`1.Capacity
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Capacity
+  fullName.vb: Fp.CircleBuffer(Of T).Capacity
+  nameWithType: CircleBuffer<T>.Capacity
+  nameWithType.vb: CircleBuffer(Of T).Capacity
+- uid: Fp.CircleBuffer`1.Clear
+  name: Clear()
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Clear
+  commentId: M:Fp.CircleBuffer`1.Clear
+  fullName: Fp.CircleBuffer<T>.Clear()
+  fullName.vb: Fp.CircleBuffer(Of T).Clear()
+  nameWithType: CircleBuffer<T>.Clear()
+  nameWithType.vb: CircleBuffer(Of T).Clear()
+- uid: Fp.CircleBuffer`1.Clear*
+  name: Clear
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Clear_
+  commentId: Overload:Fp.CircleBuffer`1.Clear
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Clear
+  fullName.vb: Fp.CircleBuffer(Of T).Clear
+  nameWithType: CircleBuffer<T>.Clear
+  nameWithType.vb: CircleBuffer(Of T).Clear
+- uid: Fp.CircleBuffer`1.Contains(`0)
+  name: Contains(T)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Contains__0_
+  commentId: M:Fp.CircleBuffer`1.Contains(`0)
+  fullName: Fp.CircleBuffer<T>.Contains(T)
+  fullName.vb: Fp.CircleBuffer(Of T).Contains(T)
+  nameWithType: CircleBuffer<T>.Contains(T)
+  nameWithType.vb: CircleBuffer(Of T).Contains(T)
+- uid: Fp.CircleBuffer`1.Contains*
+  name: Contains
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Contains_
+  commentId: Overload:Fp.CircleBuffer`1.Contains
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Contains
+  fullName.vb: Fp.CircleBuffer(Of T).Contains
+  nameWithType: CircleBuffer<T>.Contains
+  nameWithType.vb: CircleBuffer(Of T).Contains
+- uid: Fp.CircleBuffer`1.CopyTo(`0[],System.Int32)
+  name: CopyTo(T[], Int32)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_CopyTo__0___System_Int32_
+  commentId: M:Fp.CircleBuffer`1.CopyTo(`0[],System.Int32)
+  name.vb: CopyTo(T(), Int32)
+  fullName: Fp.CircleBuffer<T>.CopyTo(T[], System.Int32)
+  fullName.vb: Fp.CircleBuffer(Of T).CopyTo(T(), System.Int32)
+  nameWithType: CircleBuffer<T>.CopyTo(T[], Int32)
+  nameWithType.vb: CircleBuffer(Of T).CopyTo(T(), Int32)
+- uid: Fp.CircleBuffer`1.CopyTo*
+  name: CopyTo
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_CopyTo_
+  commentId: Overload:Fp.CircleBuffer`1.CopyTo
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.CopyTo
+  fullName.vb: Fp.CircleBuffer(Of T).CopyTo
+  nameWithType: CircleBuffer<T>.CopyTo
+  nameWithType.vb: CircleBuffer(Of T).CopyTo
+- uid: Fp.CircleBuffer`1.Count
+  name: Count
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Count
+  commentId: P:Fp.CircleBuffer`1.Count
+  fullName: Fp.CircleBuffer<T>.Count
+  fullName.vb: Fp.CircleBuffer(Of T).Count
+  nameWithType: CircleBuffer<T>.Count
+  nameWithType.vb: CircleBuffer(Of T).Count
+- uid: Fp.CircleBuffer`1.Count*
+  name: Count
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Count_
+  commentId: Overload:Fp.CircleBuffer`1.Count
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Count
+  fullName.vb: Fp.CircleBuffer(Of T).Count
+  nameWithType: CircleBuffer<T>.Count
+  nameWithType.vb: CircleBuffer(Of T).Count
+- uid: Fp.CircleBuffer`1.GetEnumerator
+  name: GetEnumerator()
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_GetEnumerator
+  commentId: M:Fp.CircleBuffer`1.GetEnumerator
+  fullName: Fp.CircleBuffer<T>.GetEnumerator()
+  fullName.vb: Fp.CircleBuffer(Of T).GetEnumerator()
+  nameWithType: CircleBuffer<T>.GetEnumerator()
+  nameWithType.vb: CircleBuffer(Of T).GetEnumerator()
+- uid: Fp.CircleBuffer`1.GetEnumerator*
+  name: GetEnumerator
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_GetEnumerator_
+  commentId: Overload:Fp.CircleBuffer`1.GetEnumerator
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.GetEnumerator
+  fullName.vb: Fp.CircleBuffer(Of T).GetEnumerator
+  nameWithType: CircleBuffer<T>.GetEnumerator
+  nameWithType.vb: CircleBuffer(Of T).GetEnumerator
+- uid: Fp.CircleBuffer`1.IndexOf(`0)
+  name: IndexOf(T)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_IndexOf__0_
+  commentId: M:Fp.CircleBuffer`1.IndexOf(`0)
+  fullName: Fp.CircleBuffer<T>.IndexOf(T)
+  fullName.vb: Fp.CircleBuffer(Of T).IndexOf(T)
+  nameWithType: CircleBuffer<T>.IndexOf(T)
+  nameWithType.vb: CircleBuffer(Of T).IndexOf(T)
+- uid: Fp.CircleBuffer`1.IndexOf*
+  name: IndexOf
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_IndexOf_
+  commentId: Overload:Fp.CircleBuffer`1.IndexOf
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.IndexOf
+  fullName.vb: Fp.CircleBuffer(Of T).IndexOf
+  nameWithType: CircleBuffer<T>.IndexOf
+  nameWithType.vb: CircleBuffer(Of T).IndexOf
+- uid: Fp.CircleBuffer`1.Insert(System.Int32,`0)
+  name: Insert(Int32, T)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Insert_System_Int32__0_
+  commentId: M:Fp.CircleBuffer`1.Insert(System.Int32,`0)
+  fullName: Fp.CircleBuffer<T>.Insert(System.Int32, T)
+  fullName.vb: Fp.CircleBuffer(Of T).Insert(System.Int32, T)
+  nameWithType: CircleBuffer<T>.Insert(Int32, T)
+  nameWithType.vb: CircleBuffer(Of T).Insert(Int32, T)
+- uid: Fp.CircleBuffer`1.Insert*
+  name: Insert
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Insert_
+  commentId: Overload:Fp.CircleBuffer`1.Insert
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Insert
+  fullName.vb: Fp.CircleBuffer(Of T).Insert
+  nameWithType: CircleBuffer<T>.Insert
+  nameWithType.vb: CircleBuffer(Of T).Insert
+- uid: Fp.CircleBuffer`1.IsReadOnly
+  name: IsReadOnly
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_IsReadOnly
+  commentId: P:Fp.CircleBuffer`1.IsReadOnly
+  fullName: Fp.CircleBuffer<T>.IsReadOnly
+  fullName.vb: Fp.CircleBuffer(Of T).IsReadOnly
+  nameWithType: CircleBuffer<T>.IsReadOnly
+  nameWithType.vb: CircleBuffer(Of T).IsReadOnly
+- uid: Fp.CircleBuffer`1.IsReadOnly*
+  name: IsReadOnly
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_IsReadOnly_
+  commentId: Overload:Fp.CircleBuffer`1.IsReadOnly
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.IsReadOnly
+  fullName.vb: Fp.CircleBuffer(Of T).IsReadOnly
+  nameWithType: CircleBuffer<T>.IsReadOnly
+  nameWithType.vb: CircleBuffer(Of T).IsReadOnly
+- uid: Fp.CircleBuffer`1.Item(System.Int32)
+  name: Item[Int32]
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Item_System_Int32_
+  commentId: P:Fp.CircleBuffer`1.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: Fp.CircleBuffer<T>.Item[System.Int32]
+  fullName.vb: Fp.CircleBuffer(Of T).Item(System.Int32)
+  nameWithType: CircleBuffer<T>.Item[Int32]
+  nameWithType.vb: CircleBuffer(Of T).Item(Int32)
+- uid: Fp.CircleBuffer`1.Item*
+  name: Item
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Item_
+  commentId: Overload:Fp.CircleBuffer`1.Item
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Item
+  fullName.vb: Fp.CircleBuffer(Of T).Item
+  nameWithType: CircleBuffer<T>.Item
+  nameWithType.vb: CircleBuffer(Of T).Item
+- uid: Fp.CircleBuffer`1.Remove(`0)
+  name: Remove(T)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Remove__0_
+  commentId: M:Fp.CircleBuffer`1.Remove(`0)
+  fullName: Fp.CircleBuffer<T>.Remove(T)
+  fullName.vb: Fp.CircleBuffer(Of T).Remove(T)
+  nameWithType: CircleBuffer<T>.Remove(T)
+  nameWithType.vb: CircleBuffer(Of T).Remove(T)
+- uid: Fp.CircleBuffer`1.Remove*
+  name: Remove
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_Remove_
+  commentId: Overload:Fp.CircleBuffer`1.Remove
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.Remove
+  fullName.vb: Fp.CircleBuffer(Of T).Remove
+  nameWithType: CircleBuffer<T>.Remove
+  nameWithType.vb: CircleBuffer(Of T).Remove
+- uid: Fp.CircleBuffer`1.RemoveAt(System.Int32)
+  name: RemoveAt(Int32)
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_RemoveAt_System_Int32_
+  commentId: M:Fp.CircleBuffer`1.RemoveAt(System.Int32)
+  fullName: Fp.CircleBuffer<T>.RemoveAt(System.Int32)
+  fullName.vb: Fp.CircleBuffer(Of T).RemoveAt(System.Int32)
+  nameWithType: CircleBuffer<T>.RemoveAt(Int32)
+  nameWithType.vb: CircleBuffer(Of T).RemoveAt(Int32)
+- uid: Fp.CircleBuffer`1.RemoveAt*
+  name: RemoveAt
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_RemoveAt_
+  commentId: Overload:Fp.CircleBuffer`1.RemoveAt
+  isSpec: "True"
+  fullName: Fp.CircleBuffer<T>.RemoveAt
+  fullName.vb: Fp.CircleBuffer(Of T).RemoveAt
+  nameWithType: CircleBuffer<T>.RemoveAt
+  nameWithType.vb: CircleBuffer(Of T).RemoveAt
+- uid: Fp.CircleBuffer`1.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator()
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_System_Collections_IEnumerable_GetEnumerator
+  commentId: M:Fp.CircleBuffer`1.System#Collections#IEnumerable#GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+  fullName: Fp.CircleBuffer<T>.System.Collections.IEnumerable.GetEnumerator()
+  fullName.vb: Fp.CircleBuffer(Of T).System.Collections.IEnumerable.GetEnumerator()
+  nameWithType: CircleBuffer<T>.IEnumerable.GetEnumerator()
+  nameWithType.vb: CircleBuffer(Of T).System.Collections.IEnumerable.GetEnumerator()
+- uid: Fp.CircleBuffer`1.System#Collections#IEnumerable#GetEnumerator*
+  name: IEnumerable.GetEnumerator
+  href: api/Fp.CircleBuffer-1.html#Fp_CircleBuffer_1_System_Collections_IEnumerable_GetEnumerator_
+  commentId: Overload:Fp.CircleBuffer`1.System#Collections#IEnumerable#GetEnumerator
+  isSpec: "True"
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+  fullName: Fp.CircleBuffer<T>.System.Collections.IEnumerable.GetEnumerator
+  fullName.vb: Fp.CircleBuffer(Of T).System.Collections.IEnumerable.GetEnumerator
+  nameWithType: CircleBuffer<T>.IEnumerable.GetEnumerator
+  nameWithType.vb: CircleBuffer(Of T).System.Collections.IEnumerable.GetEnumerator
 - uid: Fp.Coordinator
   name: Coordinator
   href: api/Fp.Coordinator.html
@@ -381,6 +649,52 @@ references:
   isSpec: "True"
   fullName: Fp.HalfHelper.SingleToHalf
   nameWithType: HalfHelper.SingleToHalf
+- uid: Fp.HexAnsiPrint
+  name: HexAnsiPrint
+  href: api/Fp.HexAnsiPrint.html
+  commentId: T:Fp.HexAnsiPrint
+  fullName: Fp.HexAnsiPrint
+  nameWithType: HexAnsiPrint
+- uid: Fp.HexAnsiPrint.Colors
+  name: Colors
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Colors
+  commentId: F:Fp.HexAnsiPrint.Colors
+  fullName: Fp.HexAnsiPrint.Colors
+  nameWithType: HexAnsiPrint.Colors
+- uid: Fp.HexAnsiPrint.PosWidth
+  name: PosWidth
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_PosWidth
+  commentId: F:Fp.HexAnsiPrint.PosWidth
+  fullName: Fp.HexAnsiPrint.PosWidth
+  nameWithType: HexAnsiPrint.PosWidth
+- uid: Fp.HexAnsiPrint.Print(System.ReadOnlySpan{System.Byte},System.ValueTuple{System.Int32,System.Int32,System.String,System.Drawing.Color}[],System.Boolean,System.Boolean)
+  name: Print(ReadOnlySpan<Byte>, (Int32 offset, Int32 length, String label, Color color)[], Boolean, Boolean)
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Print_System_ReadOnlySpan_System_Byte__System_ValueTuple_System_Int32_System_Int32_System_String_System_Drawing_Color____System_Boolean_System_Boolean_
+  commentId: M:Fp.HexAnsiPrint.Print(System.ReadOnlySpan{System.Byte},System.ValueTuple{System.Int32,System.Int32,System.String,System.Drawing.Color}[],System.Boolean,System.Boolean)
+  name.vb: Print(ReadOnlySpan(Of Byte), (offset As Int32, length As Int32, label As String, color As Color)(), Boolean, Boolean)
+  fullName: Fp.HexAnsiPrint.Print(System.ReadOnlySpan<System.Byte>, System.ValueTuple<System.Int32, System.Int32, System.String, System.Drawing.Color>[], System.Boolean, System.Boolean)
+  fullName.vb: Fp.HexAnsiPrint.Print(System.ReadOnlySpan(Of System.Byte), System.ValueTuple(Of System.Int32, System.Int32, System.String, System.Drawing.Color)(), System.Boolean, System.Boolean)
+  nameWithType: HexAnsiPrint.Print(ReadOnlySpan<Byte>, (Int32 offset, Int32 length, String label, Color color)[], Boolean, Boolean)
+  nameWithType.vb: HexAnsiPrint.Print(ReadOnlySpan(Of Byte), (offset As Int32, length As Int32, label As String, color As Color)(), Boolean, Boolean)
+- uid: Fp.HexAnsiPrint.Print*
+  name: Print
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Print_
+  commentId: Overload:Fp.HexAnsiPrint.Print
+  isSpec: "True"
+  fullName: Fp.HexAnsiPrint.Print
+  nameWithType: HexAnsiPrint.Print
+- uid: Fp.HexAnsiPrint.Sequences
+  name: Sequences
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Sequences
+  commentId: F:Fp.HexAnsiPrint.Sequences
+  fullName: Fp.HexAnsiPrint.Sequences
+  nameWithType: HexAnsiPrint.Sequences
+- uid: Fp.HexAnsiPrint.TextWidth
+  name: TextWidth
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_TextWidth
+  commentId: F:Fp.HexAnsiPrint.TextWidth
+  fullName: Fp.HexAnsiPrint.TextWidth
+  nameWithType: HexAnsiPrint.TextWidth
 - uid: Fp.Images.Dxt
   name: Fp.Images.Dxt
   href: api/Fp.Images.Dxt.html
@@ -1635,93 +1949,6 @@ references:
   commentId: N:Fp.Intermediate
   fullName: Fp.Intermediate
   nameWithType: Fp.Intermediate
-- uid: Fp.Intermediate.AnimData
-  name: AnimData
-  href: api/Fp.Intermediate.AnimData.html
-  commentId: T:Fp.Intermediate.AnimData
-  fullName: Fp.Intermediate.AnimData
-  nameWithType: AnimData
-- uid: Fp.Intermediate.AnimData.#ctor(System.String,Fp.Intermediate.Model.MdlAnim)
-  name: AnimData(String, MdlAnim)
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData__ctor_System_String_Fp_Intermediate_Model_MdlAnim_
-  commentId: M:Fp.Intermediate.AnimData.#ctor(System.String,Fp.Intermediate.Model.MdlAnim)
-  fullName: Fp.Intermediate.AnimData.AnimData(System.String, Fp.Intermediate.Model.MdlAnim)
-  nameWithType: AnimData.AnimData(String, MdlAnim)
-- uid: Fp.Intermediate.AnimData.#ctor*
-  name: AnimData
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData__ctor_
-  commentId: Overload:Fp.Intermediate.AnimData.#ctor
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.AnimData
-  nameWithType: AnimData.AnimData
-- uid: Fp.Intermediate.AnimData.Anim
-  name: Anim
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Anim
-  commentId: P:Fp.Intermediate.AnimData.Anim
-  fullName: Fp.Intermediate.AnimData.Anim
-  nameWithType: AnimData.Anim
-- uid: Fp.Intermediate.AnimData.Anim*
-  name: Anim
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Anim_
-  commentId: Overload:Fp.Intermediate.AnimData.Anim
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.Anim
-  nameWithType: AnimData.Anim
-- uid: Fp.Intermediate.AnimData.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Clone
-  commentId: M:Fp.Intermediate.AnimData.Clone
-  fullName: Fp.Intermediate.AnimData.Clone()
-  nameWithType: AnimData.Clone()
-- uid: Fp.Intermediate.AnimData.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Clone_
-  commentId: Overload:Fp.Intermediate.AnimData.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.Clone
-  nameWithType: AnimData.Clone
-- uid: Fp.Intermediate.AnimData.DefaultFormat
-  name: DefaultFormat
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_DefaultFormat
-  commentId: P:Fp.Intermediate.AnimData.DefaultFormat
-  fullName: Fp.Intermediate.AnimData.DefaultFormat
-  nameWithType: AnimData.DefaultFormat
-- uid: Fp.Intermediate.AnimData.DefaultFormat*
-  name: DefaultFormat
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_DefaultFormat_
-  commentId: Overload:Fp.Intermediate.AnimData.DefaultFormat
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.DefaultFormat
-  nameWithType: AnimData.DefaultFormat
-- uid: Fp.Intermediate.AnimData.Dispose
-  name: Dispose()
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Dispose
-  commentId: M:Fp.Intermediate.AnimData.Dispose
-  fullName: Fp.Intermediate.AnimData.Dispose()
-  nameWithType: AnimData.Dispose()
-- uid: Fp.Intermediate.AnimData.Dispose*
-  name: Dispose
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_Dispose_
-  commentId: Overload:Fp.Intermediate.AnimData.Dispose
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.Dispose
-  nameWithType: AnimData.Dispose
-- uid: Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})
-  name: WriteConvertedData(Stream, CommonFormat, Dictionary<String, String>)
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: WriteConvertedData(Stream, CommonFormat, Dictionary(Of String, String))
-  fullName: Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream, Fp.Intermediate.CommonFormat, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Fp.Intermediate.AnimData.WriteConvertedData(System.IO.Stream, Fp.Intermediate.CommonFormat, System.Collections.Generic.Dictionary(Of System.String, System.String))
-  nameWithType: AnimData.WriteConvertedData(Stream, CommonFormat, Dictionary<String, String>)
-  nameWithType.vb: AnimData.WriteConvertedData(Stream, CommonFormat, Dictionary(Of String, String))
-- uid: Fp.Intermediate.AnimData.WriteConvertedData*
-  name: WriteConvertedData
-  href: api/Fp.Intermediate.AnimData.html#Fp_Intermediate_AnimData_WriteConvertedData_
-  commentId: Overload:Fp.Intermediate.AnimData.WriteConvertedData
-  isSpec: "True"
-  fullName: Fp.Intermediate.AnimData.WriteConvertedData
-  nameWithType: AnimData.WriteConvertedData
 - uid: Fp.Intermediate.BufferData
   name: BufferData
   href: api/Fp.Intermediate.BufferData.html
@@ -2095,892 +2322,6 @@ references:
   isSpec: "True"
   fullName: Fp.Intermediate.IntermediateUtil.GetExtension
   nameWithType: IntermediateUtil.GetExtension
-- uid: Fp.Intermediate.Model
-  name: Fp.Intermediate.Model
-  href: api/Fp.Intermediate.Model.html
-  commentId: N:Fp.Intermediate.Model
-  fullName: Fp.Intermediate.Model
-  nameWithType: Fp.Intermediate.Model
-- uid: Fp.Intermediate.Model.Bone
-  name: Bone
-  href: api/Fp.Intermediate.Model.Bone.html
-  commentId: T:Fp.Intermediate.Model.Bone
-  fullName: Fp.Intermediate.Model.Bone
-  nameWithType: Bone
-- uid: Fp.Intermediate.Model.Bone.BindPose
-  name: BindPose
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_BindPose
-  commentId: P:Fp.Intermediate.Model.Bone.BindPose
-  fullName: Fp.Intermediate.Model.Bone.BindPose
-  nameWithType: Bone.BindPose
-- uid: Fp.Intermediate.Model.Bone.BindPose*
-  name: BindPose
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_BindPose_
-  commentId: Overload:Fp.Intermediate.Model.Bone.BindPose
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Bone.BindPose
-  nameWithType: Bone.BindPose
-- uid: Fp.Intermediate.Model.Bone.BoneName
-  name: BoneName
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_BoneName
-  commentId: P:Fp.Intermediate.Model.Bone.BoneName
-  fullName: Fp.Intermediate.Model.Bone.BoneName
-  nameWithType: Bone.BoneName
-- uid: Fp.Intermediate.Model.Bone.BoneName*
-  name: BoneName
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_BoneName_
-  commentId: Overload:Fp.Intermediate.Model.Bone.BoneName
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Bone.BoneName
-  nameWithType: Bone.BoneName
-- uid: Fp.Intermediate.Model.Bone.Type
-  name: Type
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_Type
-  commentId: P:Fp.Intermediate.Model.Bone.Type
-  fullName: Fp.Intermediate.Model.Bone.Type
-  nameWithType: Bone.Type
-- uid: Fp.Intermediate.Model.Bone.Type*
-  name: Type
-  href: api/Fp.Intermediate.Model.Bone.html#Fp_Intermediate_Model_Bone_Type_
-  commentId: Overload:Fp.Intermediate.Model.Bone.Type
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Bone.Type
-  nameWithType: Bone.Type
-- uid: Fp.Intermediate.Model.BoneType
-  name: BoneType
-  href: api/Fp.Intermediate.Model.BoneType.html
-  commentId: T:Fp.Intermediate.Model.BoneType
-  fullName: Fp.Intermediate.Model.BoneType
-  nameWithType: BoneType
-- uid: Fp.Intermediate.Model.BoneType.Head
-  name: Head
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Head
-  commentId: F:Fp.Intermediate.Model.BoneType.Head
-  fullName: Fp.Intermediate.Model.BoneType.Head
-  nameWithType: BoneType.Head
-- uid: Fp.Intermediate.Model.BoneType.Hips
-  name: Hips
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Hips
-  commentId: F:Fp.Intermediate.Model.BoneType.Hips
-  fullName: Fp.Intermediate.Model.BoneType.Hips
-  nameWithType: BoneType.Hips
-- uid: Fp.Intermediate.Model.BoneType.LeftArm
-  name: LeftArm
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftArm
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftArm
-  fullName: Fp.Intermediate.Model.BoneType.LeftArm
-  nameWithType: BoneType.LeftArm
-- uid: Fp.Intermediate.Model.BoneType.LeftFoot
-  name: LeftFoot
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftFoot
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftFoot
-  fullName: Fp.Intermediate.Model.BoneType.LeftFoot
-  nameWithType: BoneType.LeftFoot
-- uid: Fp.Intermediate.Model.BoneType.LeftForeArm
-  name: LeftForeArm
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftForeArm
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftForeArm
-  fullName: Fp.Intermediate.Model.BoneType.LeftForeArm
-  nameWithType: BoneType.LeftForeArm
-- uid: Fp.Intermediate.Model.BoneType.LeftHand
-  name: LeftHand
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHand
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHand
-  fullName: Fp.Intermediate.Model.BoneType.LeftHand
-  nameWithType: BoneType.LeftHand
-- uid: Fp.Intermediate.Model.BoneType.LeftHandIndex1
-  name: LeftHandIndex1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandIndex1
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandIndex1
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandIndex1
-  nameWithType: BoneType.LeftHandIndex1
-- uid: Fp.Intermediate.Model.BoneType.LeftHandIndex2
-  name: LeftHandIndex2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandIndex2
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandIndex2
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandIndex2
-  nameWithType: BoneType.LeftHandIndex2
-- uid: Fp.Intermediate.Model.BoneType.LeftHandIndex3
-  name: LeftHandIndex3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandIndex3
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandIndex3
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandIndex3
-  nameWithType: BoneType.LeftHandIndex3
-- uid: Fp.Intermediate.Model.BoneType.LeftHandIndex4
-  name: LeftHandIndex4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandIndex4
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandIndex4
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandIndex4
-  nameWithType: BoneType.LeftHandIndex4
-- uid: Fp.Intermediate.Model.BoneType.LeftHandMiddle1
-  name: LeftHandMiddle1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandMiddle1
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandMiddle1
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandMiddle1
-  nameWithType: BoneType.LeftHandMiddle1
-- uid: Fp.Intermediate.Model.BoneType.LeftHandMiddle2
-  name: LeftHandMiddle2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandMiddle2
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandMiddle2
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandMiddle2
-  nameWithType: BoneType.LeftHandMiddle2
-- uid: Fp.Intermediate.Model.BoneType.LeftHandMiddle3
-  name: LeftHandMiddle3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandMiddle3
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandMiddle3
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandMiddle3
-  nameWithType: BoneType.LeftHandMiddle3
-- uid: Fp.Intermediate.Model.BoneType.LeftHandMiddle4
-  name: LeftHandMiddle4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandMiddle4
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandMiddle4
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandMiddle4
-  nameWithType: BoneType.LeftHandMiddle4
-- uid: Fp.Intermediate.Model.BoneType.LeftHandPinky1
-  name: LeftHandPinky1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandPinky1
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandPinky1
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandPinky1
-  nameWithType: BoneType.LeftHandPinky1
-- uid: Fp.Intermediate.Model.BoneType.LeftHandPinky2
-  name: LeftHandPinky2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandPinky2
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandPinky2
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandPinky2
-  nameWithType: BoneType.LeftHandPinky2
-- uid: Fp.Intermediate.Model.BoneType.LeftHandPinky3
-  name: LeftHandPinky3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandPinky3
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandPinky3
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandPinky3
-  nameWithType: BoneType.LeftHandPinky3
-- uid: Fp.Intermediate.Model.BoneType.LeftHandPinky4
-  name: LeftHandPinky4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandPinky4
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandPinky4
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandPinky4
-  nameWithType: BoneType.LeftHandPinky4
-- uid: Fp.Intermediate.Model.BoneType.LeftHandRing1
-  name: LeftHandRing1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandRing1
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandRing1
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandRing1
-  nameWithType: BoneType.LeftHandRing1
-- uid: Fp.Intermediate.Model.BoneType.LeftHandRing2
-  name: LeftHandRing2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandRing2
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandRing2
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandRing2
-  nameWithType: BoneType.LeftHandRing2
-- uid: Fp.Intermediate.Model.BoneType.LeftHandRing3
-  name: LeftHandRing3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandRing3
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandRing3
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandRing3
-  nameWithType: BoneType.LeftHandRing3
-- uid: Fp.Intermediate.Model.BoneType.LeftHandRing4
-  name: LeftHandRing4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandRing4
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandRing4
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandRing4
-  nameWithType: BoneType.LeftHandRing4
-- uid: Fp.Intermediate.Model.BoneType.LeftHandThumb1
-  name: LeftHandThumb1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandThumb1
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandThumb1
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandThumb1
-  nameWithType: BoneType.LeftHandThumb1
-- uid: Fp.Intermediate.Model.BoneType.LeftHandThumb2
-  name: LeftHandThumb2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandThumb2
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandThumb2
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandThumb2
-  nameWithType: BoneType.LeftHandThumb2
-- uid: Fp.Intermediate.Model.BoneType.LeftHandThumb3
-  name: LeftHandThumb3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandThumb3
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandThumb3
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandThumb3
-  nameWithType: BoneType.LeftHandThumb3
-- uid: Fp.Intermediate.Model.BoneType.LeftHandThumb4
-  name: LeftHandThumb4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftHandThumb4
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftHandThumb4
-  fullName: Fp.Intermediate.Model.BoneType.LeftHandThumb4
-  nameWithType: BoneType.LeftHandThumb4
-- uid: Fp.Intermediate.Model.BoneType.LeftLeg
-  name: LeftLeg
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftLeg
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftLeg
-  fullName: Fp.Intermediate.Model.BoneType.LeftLeg
-  nameWithType: BoneType.LeftLeg
-- uid: Fp.Intermediate.Model.BoneType.LeftShoulder
-  name: LeftShoulder
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftShoulder
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftShoulder
-  fullName: Fp.Intermediate.Model.BoneType.LeftShoulder
-  nameWithType: BoneType.LeftShoulder
-- uid: Fp.Intermediate.Model.BoneType.LeftToeBase
-  name: LeftToeBase
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftToeBase
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftToeBase
-  fullName: Fp.Intermediate.Model.BoneType.LeftToeBase
-  nameWithType: BoneType.LeftToeBase
-- uid: Fp.Intermediate.Model.BoneType.LeftUpLeg
-  name: LeftUpLeg
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_LeftUpLeg
-  commentId: F:Fp.Intermediate.Model.BoneType.LeftUpLeg
-  fullName: Fp.Intermediate.Model.BoneType.LeftUpLeg
-  nameWithType: BoneType.LeftUpLeg
-- uid: Fp.Intermediate.Model.BoneType.Neck
-  name: Neck
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Neck
-  commentId: F:Fp.Intermediate.Model.BoneType.Neck
-  fullName: Fp.Intermediate.Model.BoneType.Neck
-  nameWithType: BoneType.Neck
-- uid: Fp.Intermediate.Model.BoneType.None
-  name: None
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_None
-  commentId: F:Fp.Intermediate.Model.BoneType.None
-  fullName: Fp.Intermediate.Model.BoneType.None
-  nameWithType: BoneType.None
-- uid: Fp.Intermediate.Model.BoneType.RightArm
-  name: RightArm
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightArm
-  commentId: F:Fp.Intermediate.Model.BoneType.RightArm
-  fullName: Fp.Intermediate.Model.BoneType.RightArm
-  nameWithType: BoneType.RightArm
-- uid: Fp.Intermediate.Model.BoneType.RightFoot
-  name: RightFoot
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightFoot
-  commentId: F:Fp.Intermediate.Model.BoneType.RightFoot
-  fullName: Fp.Intermediate.Model.BoneType.RightFoot
-  nameWithType: BoneType.RightFoot
-- uid: Fp.Intermediate.Model.BoneType.RightForeArm
-  name: RightForeArm
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightForeArm
-  commentId: F:Fp.Intermediate.Model.BoneType.RightForeArm
-  fullName: Fp.Intermediate.Model.BoneType.RightForeArm
-  nameWithType: BoneType.RightForeArm
-- uid: Fp.Intermediate.Model.BoneType.RightHand
-  name: RightHand
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHand
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHand
-  fullName: Fp.Intermediate.Model.BoneType.RightHand
-  nameWithType: BoneType.RightHand
-- uid: Fp.Intermediate.Model.BoneType.RightHandIndex1
-  name: RightHandIndex1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandIndex1
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandIndex1
-  fullName: Fp.Intermediate.Model.BoneType.RightHandIndex1
-  nameWithType: BoneType.RightHandIndex1
-- uid: Fp.Intermediate.Model.BoneType.RightHandIndex2
-  name: RightHandIndex2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandIndex2
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandIndex2
-  fullName: Fp.Intermediate.Model.BoneType.RightHandIndex2
-  nameWithType: BoneType.RightHandIndex2
-- uid: Fp.Intermediate.Model.BoneType.RightHandIndex3
-  name: RightHandIndex3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandIndex3
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandIndex3
-  fullName: Fp.Intermediate.Model.BoneType.RightHandIndex3
-  nameWithType: BoneType.RightHandIndex3
-- uid: Fp.Intermediate.Model.BoneType.RightHandIndex4
-  name: RightHandIndex4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandIndex4
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandIndex4
-  fullName: Fp.Intermediate.Model.BoneType.RightHandIndex4
-  nameWithType: BoneType.RightHandIndex4
-- uid: Fp.Intermediate.Model.BoneType.RightHandMiddle1
-  name: RightHandMiddle1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandMiddle1
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandMiddle1
-  fullName: Fp.Intermediate.Model.BoneType.RightHandMiddle1
-  nameWithType: BoneType.RightHandMiddle1
-- uid: Fp.Intermediate.Model.BoneType.RightHandMiddle2
-  name: RightHandMiddle2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandMiddle2
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandMiddle2
-  fullName: Fp.Intermediate.Model.BoneType.RightHandMiddle2
-  nameWithType: BoneType.RightHandMiddle2
-- uid: Fp.Intermediate.Model.BoneType.RightHandMiddle3
-  name: RightHandMiddle3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandMiddle3
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandMiddle3
-  fullName: Fp.Intermediate.Model.BoneType.RightHandMiddle3
-  nameWithType: BoneType.RightHandMiddle3
-- uid: Fp.Intermediate.Model.BoneType.RightHandMiddle4
-  name: RightHandMiddle4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandMiddle4
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandMiddle4
-  fullName: Fp.Intermediate.Model.BoneType.RightHandMiddle4
-  nameWithType: BoneType.RightHandMiddle4
-- uid: Fp.Intermediate.Model.BoneType.RightHandPinky1
-  name: RightHandPinky1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandPinky1
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandPinky1
-  fullName: Fp.Intermediate.Model.BoneType.RightHandPinky1
-  nameWithType: BoneType.RightHandPinky1
-- uid: Fp.Intermediate.Model.BoneType.RightHandPinky2
-  name: RightHandPinky2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandPinky2
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandPinky2
-  fullName: Fp.Intermediate.Model.BoneType.RightHandPinky2
-  nameWithType: BoneType.RightHandPinky2
-- uid: Fp.Intermediate.Model.BoneType.RightHandPinky3
-  name: RightHandPinky3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandPinky3
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandPinky3
-  fullName: Fp.Intermediate.Model.BoneType.RightHandPinky3
-  nameWithType: BoneType.RightHandPinky3
-- uid: Fp.Intermediate.Model.BoneType.RightHandPinky4
-  name: RightHandPinky4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandPinky4
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandPinky4
-  fullName: Fp.Intermediate.Model.BoneType.RightHandPinky4
-  nameWithType: BoneType.RightHandPinky4
-- uid: Fp.Intermediate.Model.BoneType.RightHandRing1
-  name: RightHandRing1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandRing1
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandRing1
-  fullName: Fp.Intermediate.Model.BoneType.RightHandRing1
-  nameWithType: BoneType.RightHandRing1
-- uid: Fp.Intermediate.Model.BoneType.RightHandRing2
-  name: RightHandRing2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandRing2
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandRing2
-  fullName: Fp.Intermediate.Model.BoneType.RightHandRing2
-  nameWithType: BoneType.RightHandRing2
-- uid: Fp.Intermediate.Model.BoneType.RightHandRing3
-  name: RightHandRing3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandRing3
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandRing3
-  fullName: Fp.Intermediate.Model.BoneType.RightHandRing3
-  nameWithType: BoneType.RightHandRing3
-- uid: Fp.Intermediate.Model.BoneType.RightHandRing4
-  name: RightHandRing4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandRing4
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandRing4
-  fullName: Fp.Intermediate.Model.BoneType.RightHandRing4
-  nameWithType: BoneType.RightHandRing4
-- uid: Fp.Intermediate.Model.BoneType.RightHandThumb1
-  name: RightHandThumb1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandThumb1
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandThumb1
-  fullName: Fp.Intermediate.Model.BoneType.RightHandThumb1
-  nameWithType: BoneType.RightHandThumb1
-- uid: Fp.Intermediate.Model.BoneType.RightHandThumb2
-  name: RightHandThumb2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandThumb2
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandThumb2
-  fullName: Fp.Intermediate.Model.BoneType.RightHandThumb2
-  nameWithType: BoneType.RightHandThumb2
-- uid: Fp.Intermediate.Model.BoneType.RightHandThumb3
-  name: RightHandThumb3
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandThumb3
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandThumb3
-  fullName: Fp.Intermediate.Model.BoneType.RightHandThumb3
-  nameWithType: BoneType.RightHandThumb3
-- uid: Fp.Intermediate.Model.BoneType.RightHandThumb4
-  name: RightHandThumb4
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightHandThumb4
-  commentId: F:Fp.Intermediate.Model.BoneType.RightHandThumb4
-  fullName: Fp.Intermediate.Model.BoneType.RightHandThumb4
-  nameWithType: BoneType.RightHandThumb4
-- uid: Fp.Intermediate.Model.BoneType.RightLeg
-  name: RightLeg
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightLeg
-  commentId: F:Fp.Intermediate.Model.BoneType.RightLeg
-  fullName: Fp.Intermediate.Model.BoneType.RightLeg
-  nameWithType: BoneType.RightLeg
-- uid: Fp.Intermediate.Model.BoneType.RightShoulder
-  name: RightShoulder
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightShoulder
-  commentId: F:Fp.Intermediate.Model.BoneType.RightShoulder
-  fullName: Fp.Intermediate.Model.BoneType.RightShoulder
-  nameWithType: BoneType.RightShoulder
-- uid: Fp.Intermediate.Model.BoneType.RightToeBase
-  name: RightToeBase
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightToeBase
-  commentId: F:Fp.Intermediate.Model.BoneType.RightToeBase
-  fullName: Fp.Intermediate.Model.BoneType.RightToeBase
-  nameWithType: BoneType.RightToeBase
-- uid: Fp.Intermediate.Model.BoneType.RightUpLeg
-  name: RightUpLeg
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_RightUpLeg
-  commentId: F:Fp.Intermediate.Model.BoneType.RightUpLeg
-  fullName: Fp.Intermediate.Model.BoneType.RightUpLeg
-  nameWithType: BoneType.RightUpLeg
-- uid: Fp.Intermediate.Model.BoneType.Spine
-  name: Spine
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Spine
-  commentId: F:Fp.Intermediate.Model.BoneType.Spine
-  fullName: Fp.Intermediate.Model.BoneType.Spine
-  nameWithType: BoneType.Spine
-- uid: Fp.Intermediate.Model.BoneType.Spine1
-  name: Spine1
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Spine1
-  commentId: F:Fp.Intermediate.Model.BoneType.Spine1
-  fullName: Fp.Intermediate.Model.BoneType.Spine1
-  nameWithType: BoneType.Spine1
-- uid: Fp.Intermediate.Model.BoneType.Spine2
-  name: Spine2
-  href: api/Fp.Intermediate.Model.BoneType.html#Fp_Intermediate_Model_BoneType_Spine2
-  commentId: F:Fp.Intermediate.Model.BoneType.Spine2
-  fullName: Fp.Intermediate.Model.BoneType.Spine2
-  nameWithType: BoneType.Spine2
-- uid: Fp.Intermediate.Model.Material
-  name: Material
-  href: api/Fp.Intermediate.Model.Material.html
-  commentId: T:Fp.Intermediate.Model.Material
-  fullName: Fp.Intermediate.Model.Material
-  nameWithType: Material
-- uid: Fp.Intermediate.Model.Material.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Clone
-  commentId: M:Fp.Intermediate.Model.Material.Clone
-  fullName: Fp.Intermediate.Model.Material.Clone()
-  nameWithType: Material.Clone()
-- uid: Fp.Intermediate.Model.Material.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Clone_
-  commentId: Overload:Fp.Intermediate.Model.Material.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Material.Clone
-  nameWithType: Material.Clone
-- uid: Fp.Intermediate.Model.Material.Properties
-  name: Properties
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Properties
-  commentId: P:Fp.Intermediate.Model.Material.Properties
-  fullName: Fp.Intermediate.Model.Material.Properties
-  nameWithType: Material.Properties
-- uid: Fp.Intermediate.Model.Material.Properties*
-  name: Properties
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Properties_
-  commentId: Overload:Fp.Intermediate.Model.Material.Properties
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Material.Properties
-  nameWithType: Material.Properties
-- uid: Fp.Intermediate.Model.Material.Textures
-  name: Textures
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Textures
-  commentId: P:Fp.Intermediate.Model.Material.Textures
-  fullName: Fp.Intermediate.Model.Material.Textures
-  nameWithType: Material.Textures
-- uid: Fp.Intermediate.Model.Material.Textures*
-  name: Textures
-  href: api/Fp.Intermediate.Model.Material.html#Fp_Intermediate_Model_Material_Textures_
-  commentId: Overload:Fp.Intermediate.Model.Material.Textures
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.Material.Textures
-  nameWithType: Material.Textures
-- uid: Fp.Intermediate.Model.MdlAnim
-  name: MdlAnim
-  href: api/Fp.Intermediate.Model.MdlAnim.html
-  commentId: T:Fp.Intermediate.Model.MdlAnim
-  fullName: Fp.Intermediate.Model.MdlAnim
-  nameWithType: MdlAnim
-- uid: Fp.Intermediate.Model.MdlAnim.Bones
-  name: Bones
-  href: api/Fp.Intermediate.Model.MdlAnim.html#Fp_Intermediate_Model_MdlAnim_Bones
-  commentId: F:Fp.Intermediate.Model.MdlAnim.Bones
-  fullName: Fp.Intermediate.Model.MdlAnim.Bones
-  nameWithType: MdlAnim.Bones
-- uid: Fp.Intermediate.Model.MdlAnim.BoneSubAnims
-  name: BoneSubAnims
-  href: api/Fp.Intermediate.Model.MdlAnim.html#Fp_Intermediate_Model_MdlAnim_BoneSubAnims
-  commentId: F:Fp.Intermediate.Model.MdlAnim.BoneSubAnims
-  fullName: Fp.Intermediate.Model.MdlAnim.BoneSubAnims
-  nameWithType: MdlAnim.BoneSubAnims
-- uid: Fp.Intermediate.Model.MdlAnim.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.Model.MdlAnim.html#Fp_Intermediate_Model_MdlAnim_Clone
-  commentId: M:Fp.Intermediate.Model.MdlAnim.Clone
-  fullName: Fp.Intermediate.Model.MdlAnim.Clone()
-  nameWithType: MdlAnim.Clone()
-- uid: Fp.Intermediate.Model.MdlAnim.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.Model.MdlAnim.html#Fp_Intermediate_Model_MdlAnim_Clone_
-  commentId: Overload:Fp.Intermediate.Model.MdlAnim.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.MdlAnim.Clone
-  nameWithType: MdlAnim.Clone
-- uid: Fp.Intermediate.Model.MdlMesh
-  name: MdlMesh
-  href: api/Fp.Intermediate.Model.MdlMesh.html
-  commentId: T:Fp.Intermediate.Model.MdlMesh
-  fullName: Fp.Intermediate.Model.MdlMesh
-  nameWithType: MdlMesh
-- uid: Fp.Intermediate.Model.MdlMesh.Bones
-  name: Bones
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_Bones
-  commentId: F:Fp.Intermediate.Model.MdlMesh.Bones
-  fullName: Fp.Intermediate.Model.MdlMesh.Bones
-  nameWithType: MdlMesh.Bones
-- uid: Fp.Intermediate.Model.MdlMesh.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_Clone
-  commentId: M:Fp.Intermediate.Model.MdlMesh.Clone
-  fullName: Fp.Intermediate.Model.MdlMesh.Clone()
-  nameWithType: MdlMesh.Clone()
-- uid: Fp.Intermediate.Model.MdlMesh.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_Clone_
-  commentId: Overload:Fp.Intermediate.Model.MdlMesh.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.MdlMesh.Clone
-  nameWithType: MdlMesh.Clone
-- uid: Fp.Intermediate.Model.MdlMesh.FitUniqueName
-  name: FitUniqueName
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_FitUniqueName
-  commentId: F:Fp.Intermediate.Model.MdlMesh.FitUniqueName
-  fullName: Fp.Intermediate.Model.MdlMesh.FitUniqueName
-  nameWithType: MdlMesh.FitUniqueName
-- uid: Fp.Intermediate.Model.MdlMesh.SubMeshes
-  name: SubMeshes
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_SubMeshes
-  commentId: F:Fp.Intermediate.Model.MdlMesh.SubMeshes
-  fullName: Fp.Intermediate.Model.MdlMesh.SubMeshes
-  nameWithType: MdlMesh.SubMeshes
-- uid: Fp.Intermediate.Model.MdlMesh.UniqueName
-  name: UniqueName
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_UniqueName
-  commentId: F:Fp.Intermediate.Model.MdlMesh.UniqueName
-  fullName: Fp.Intermediate.Model.MdlMesh.UniqueName
-  nameWithType: MdlMesh.UniqueName
-- uid: Fp.Intermediate.Model.MdlMesh.VariantTypeName
-  name: VariantTypeName
-  href: api/Fp.Intermediate.Model.MdlMesh.html#Fp_Intermediate_Model_MdlMesh_VariantTypeName
-  commentId: F:Fp.Intermediate.Model.MdlMesh.VariantTypeName
-  fullName: Fp.Intermediate.Model.MdlMesh.VariantTypeName
-  nameWithType: MdlMesh.VariantTypeName
-- uid: Fp.Intermediate.Model.MdlSubAnim
-  name: MdlSubAnim
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html
-  commentId: T:Fp.Intermediate.Model.MdlSubAnim
-  fullName: Fp.Intermediate.Model.MdlSubAnim
-  nameWithType: MdlSubAnim
-- uid: Fp.Intermediate.Model.MdlSubAnim.BoneId
-  name: BoneId
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_BoneId
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.BoneId
-  fullName: Fp.Intermediate.Model.MdlSubAnim.BoneId
-  nameWithType: MdlSubAnim.BoneId
-- uid: Fp.Intermediate.Model.MdlSubAnim.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_Clone
-  commentId: M:Fp.Intermediate.Model.MdlSubAnim.Clone
-  fullName: Fp.Intermediate.Model.MdlSubAnim.Clone()
-  nameWithType: MdlSubAnim.Clone()
-- uid: Fp.Intermediate.Model.MdlSubAnim.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_Clone_
-  commentId: Overload:Fp.Intermediate.Model.MdlSubAnim.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.MdlSubAnim.Clone
-  nameWithType: MdlSubAnim.Clone
-- uid: Fp.Intermediate.Model.MdlSubAnim.PositionCount
-  name: PositionCount
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_PositionCount
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.PositionCount
-  fullName: Fp.Intermediate.Model.MdlSubAnim.PositionCount
-  nameWithType: MdlSubAnim.PositionCount
-- uid: Fp.Intermediate.Model.MdlSubAnim.PositionTimes
-  name: PositionTimes
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_PositionTimes
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.PositionTimes
-  fullName: Fp.Intermediate.Model.MdlSubAnim.PositionTimes
-  nameWithType: MdlSubAnim.PositionTimes
-- uid: Fp.Intermediate.Model.MdlSubAnim.PositionX
-  name: PositionX
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_PositionX
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.PositionX
-  fullName: Fp.Intermediate.Model.MdlSubAnim.PositionX
-  nameWithType: MdlSubAnim.PositionX
-- uid: Fp.Intermediate.Model.MdlSubAnim.PositionY
-  name: PositionY
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_PositionY
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.PositionY
-  fullName: Fp.Intermediate.Model.MdlSubAnim.PositionY
-  nameWithType: MdlSubAnim.PositionY
-- uid: Fp.Intermediate.Model.MdlSubAnim.PositionZ
-  name: PositionZ
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_PositionZ
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.PositionZ
-  fullName: Fp.Intermediate.Model.MdlSubAnim.PositionZ
-  nameWithType: MdlSubAnim.PositionZ
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationCount
-  name: RotationCount
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationCount
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationCount
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationCount
-  nameWithType: MdlSubAnim.RotationCount
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationTimes
-  name: RotationTimes
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationTimes
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationTimes
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationTimes
-  nameWithType: MdlSubAnim.RotationTimes
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationW
-  name: RotationW
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationW
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationW
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationW
-  nameWithType: MdlSubAnim.RotationW
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationX
-  name: RotationX
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationX
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationX
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationX
-  nameWithType: MdlSubAnim.RotationX
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationY
-  name: RotationY
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationY
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationY
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationY
-  nameWithType: MdlSubAnim.RotationY
-- uid: Fp.Intermediate.Model.MdlSubAnim.RotationZ
-  name: RotationZ
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_RotationZ
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.RotationZ
-  fullName: Fp.Intermediate.Model.MdlSubAnim.RotationZ
-  nameWithType: MdlSubAnim.RotationZ
-- uid: Fp.Intermediate.Model.MdlSubAnim.ScalingCount
-  name: ScalingCount
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_ScalingCount
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.ScalingCount
-  fullName: Fp.Intermediate.Model.MdlSubAnim.ScalingCount
-  nameWithType: MdlSubAnim.ScalingCount
-- uid: Fp.Intermediate.Model.MdlSubAnim.ScalingTimes
-  name: ScalingTimes
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_ScalingTimes
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.ScalingTimes
-  fullName: Fp.Intermediate.Model.MdlSubAnim.ScalingTimes
-  nameWithType: MdlSubAnim.ScalingTimes
-- uid: Fp.Intermediate.Model.MdlSubAnim.ScalingX
-  name: ScalingX
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_ScalingX
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.ScalingX
-  fullName: Fp.Intermediate.Model.MdlSubAnim.ScalingX
-  nameWithType: MdlSubAnim.ScalingX
-- uid: Fp.Intermediate.Model.MdlSubAnim.ScalingY
-  name: ScalingY
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_ScalingY
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.ScalingY
-  fullName: Fp.Intermediate.Model.MdlSubAnim.ScalingY
-  nameWithType: MdlSubAnim.ScalingY
-- uid: Fp.Intermediate.Model.MdlSubAnim.ScalingZ
-  name: ScalingZ
-  href: api/Fp.Intermediate.Model.MdlSubAnim.html#Fp_Intermediate_Model_MdlSubAnim_ScalingZ
-  commentId: F:Fp.Intermediate.Model.MdlSubAnim.ScalingZ
-  fullName: Fp.Intermediate.Model.MdlSubAnim.ScalingZ
-  nameWithType: MdlSubAnim.ScalingZ
-- uid: Fp.Intermediate.Model.MdlSubMesh
-  name: MdlSubMesh
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html
-  commentId: T:Fp.Intermediate.Model.MdlSubMesh
-  fullName: Fp.Intermediate.Model.MdlSubMesh
-  nameWithType: MdlSubMesh
-- uid: Fp.Intermediate.Model.MdlSubMesh.BoneIds
-  name: BoneIds
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_BoneIds
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.BoneIds
-  fullName: Fp.Intermediate.Model.MdlSubMesh.BoneIds
-  nameWithType: MdlSubMesh.BoneIds
-- uid: Fp.Intermediate.Model.MdlSubMesh.BoneWeights
-  name: BoneWeights
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_BoneWeights
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.BoneWeights
-  fullName: Fp.Intermediate.Model.MdlSubMesh.BoneWeights
-  nameWithType: MdlSubMesh.BoneWeights
-- uid: Fp.Intermediate.Model.MdlSubMesh.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_Clone
-  commentId: M:Fp.Intermediate.Model.MdlSubMesh.Clone
-  fullName: Fp.Intermediate.Model.MdlSubMesh.Clone()
-  nameWithType: MdlSubMesh.Clone()
-- uid: Fp.Intermediate.Model.MdlSubMesh.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_Clone_
-  commentId: Overload:Fp.Intermediate.Model.MdlSubMesh.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.MdlSubMesh.Clone
-  nameWithType: MdlSubMesh.Clone
-- uid: Fp.Intermediate.Model.MdlSubMesh.MaterialIdx
-  name: MaterialIdx
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_MaterialIdx
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.MaterialIdx
-  fullName: Fp.Intermediate.Model.MdlSubMesh.MaterialIdx
-  nameWithType: MdlSubMesh.MaterialIdx
-- uid: Fp.Intermediate.Model.MdlSubMesh.Normals
-  name: Normals
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_Normals
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.Normals
-  fullName: Fp.Intermediate.Model.MdlSubMesh.Normals
-  nameWithType: MdlSubMesh.Normals
-- uid: Fp.Intermediate.Model.MdlSubMesh.Triangles
-  name: Triangles
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_Triangles
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.Triangles
-  fullName: Fp.Intermediate.Model.MdlSubMesh.Triangles
-  nameWithType: MdlSubMesh.Triangles
-- uid: Fp.Intermediate.Model.MdlSubMesh.UVs
-  name: UVs
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_UVs
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.UVs
-  fullName: Fp.Intermediate.Model.MdlSubMesh.UVs
-  nameWithType: MdlSubMesh.UVs
-- uid: Fp.Intermediate.Model.MdlSubMesh.VertexCount
-  name: VertexCount
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_VertexCount
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.VertexCount
-  fullName: Fp.Intermediate.Model.MdlSubMesh.VertexCount
-  nameWithType: MdlSubMesh.VertexCount
-- uid: Fp.Intermediate.Model.MdlSubMesh.Vertices
-  name: Vertices
-  href: api/Fp.Intermediate.Model.MdlSubMesh.html#Fp_Intermediate_Model_MdlSubMesh_Vertices
-  commentId: F:Fp.Intermediate.Model.MdlSubMesh.Vertices
-  fullName: Fp.Intermediate.Model.MdlSubMesh.Vertices
-  nameWithType: MdlSubMesh.Vertices
-- uid: Fp.Intermediate.Model.ModelUtil
-  name: ModelUtil
-  href: api/Fp.Intermediate.Model.ModelUtil.html
-  commentId: T:Fp.Intermediate.Model.ModelUtil
-  fullName: Fp.Intermediate.Model.ModelUtil
-  nameWithType: ModelUtil
-- uid: Fp.Intermediate.Model.ModelUtil.BoneSync(Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh@,Fp.Intermediate.Model.MdlMesh)
-  name: BoneSync(MdlMesh, MdlMesh, out MdlMesh, MdlMesh)
-  href: api/Fp.Intermediate.Model.ModelUtil.html#Fp_Intermediate_Model_ModelUtil_BoneSync_Fp_Intermediate_Model_MdlMesh_Fp_Intermediate_Model_MdlMesh_Fp_Intermediate_Model_MdlMesh__Fp_Intermediate_Model_MdlMesh_
-  commentId: M:Fp.Intermediate.Model.ModelUtil.BoneSync(Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh@,Fp.Intermediate.Model.MdlMesh)
-  name.vb: BoneSync(MdlMesh, MdlMesh, ByRef MdlMesh, MdlMesh)
-  fullName: Fp.Intermediate.Model.ModelUtil.BoneSync(Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh, out Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh)
-  fullName.vb: Fp.Intermediate.Model.ModelUtil.BoneSync(Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh, ByRef Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh)
-  nameWithType: ModelUtil.BoneSync(MdlMesh, MdlMesh, out MdlMesh, MdlMesh)
-  nameWithType.vb: ModelUtil.BoneSync(MdlMesh, MdlMesh, ByRef MdlMesh, MdlMesh)
-- uid: Fp.Intermediate.Model.ModelUtil.BoneSync*
-  name: BoneSync
-  href: api/Fp.Intermediate.Model.ModelUtil.html#Fp_Intermediate_Model_ModelUtil_BoneSync_
-  commentId: Overload:Fp.Intermediate.Model.ModelUtil.BoneSync
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.ModelUtil.BoneSync
-  nameWithType: ModelUtil.BoneSync
-- uid: Fp.Intermediate.Model.ModelUtil.Refit(Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh)
-  name: Refit(MdlMesh, MdlMesh, MdlMesh, MdlMesh)
-  href: api/Fp.Intermediate.Model.ModelUtil.html#Fp_Intermediate_Model_ModelUtil_Refit_Fp_Intermediate_Model_MdlMesh_Fp_Intermediate_Model_MdlMesh_Fp_Intermediate_Model_MdlMesh_Fp_Intermediate_Model_MdlMesh_
-  commentId: M:Fp.Intermediate.Model.ModelUtil.Refit(Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh,Fp.Intermediate.Model.MdlMesh)
-  fullName: Fp.Intermediate.Model.ModelUtil.Refit(Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh, Fp.Intermediate.Model.MdlMesh)
-  nameWithType: ModelUtil.Refit(MdlMesh, MdlMesh, MdlMesh, MdlMesh)
-- uid: Fp.Intermediate.Model.ModelUtil.Refit*
-  name: Refit
-  href: api/Fp.Intermediate.Model.ModelUtil.html#Fp_Intermediate_Model_ModelUtil_Refit_
-  commentId: Overload:Fp.Intermediate.Model.ModelUtil.Refit
-  isSpec: "True"
-  fullName: Fp.Intermediate.Model.ModelUtil.Refit
-  nameWithType: ModelUtil.Refit
-- uid: Fp.Intermediate.ModelData
-  name: ModelData
-  href: api/Fp.Intermediate.ModelData.html
-  commentId: T:Fp.Intermediate.ModelData
-  fullName: Fp.Intermediate.ModelData
-  nameWithType: ModelData
-- uid: Fp.Intermediate.ModelData.#ctor(System.String,Fp.Intermediate.Model.MdlMesh,System.Collections.Generic.List{Fp.Intermediate.Model.Material})
-  name: ModelData(String, MdlMesh, List<Material>)
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData__ctor_System_String_Fp_Intermediate_Model_MdlMesh_System_Collections_Generic_List_Fp_Intermediate_Model_Material__
-  commentId: M:Fp.Intermediate.ModelData.#ctor(System.String,Fp.Intermediate.Model.MdlMesh,System.Collections.Generic.List{Fp.Intermediate.Model.Material})
-  name.vb: ModelData(String, MdlMesh, List(Of Material))
-  fullName: Fp.Intermediate.ModelData.ModelData(System.String, Fp.Intermediate.Model.MdlMesh, System.Collections.Generic.List<Fp.Intermediate.Model.Material>)
-  fullName.vb: Fp.Intermediate.ModelData.ModelData(System.String, Fp.Intermediate.Model.MdlMesh, System.Collections.Generic.List(Of Fp.Intermediate.Model.Material))
-  nameWithType: ModelData.ModelData(String, MdlMesh, List<Material>)
-  nameWithType.vb: ModelData.ModelData(String, MdlMesh, List(Of Material))
-- uid: Fp.Intermediate.ModelData.#ctor*
-  name: ModelData
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData__ctor_
-  commentId: Overload:Fp.Intermediate.ModelData.#ctor
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.ModelData
-  nameWithType: ModelData.ModelData
-- uid: Fp.Intermediate.ModelData.Clone
-  name: Clone()
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Clone
-  commentId: M:Fp.Intermediate.ModelData.Clone
-  fullName: Fp.Intermediate.ModelData.Clone()
-  nameWithType: ModelData.Clone()
-- uid: Fp.Intermediate.ModelData.Clone*
-  name: Clone
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Clone_
-  commentId: Overload:Fp.Intermediate.ModelData.Clone
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.Clone
-  nameWithType: ModelData.Clone
-- uid: Fp.Intermediate.ModelData.DefaultFormat
-  name: DefaultFormat
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_DefaultFormat
-  commentId: P:Fp.Intermediate.ModelData.DefaultFormat
-  fullName: Fp.Intermediate.ModelData.DefaultFormat
-  nameWithType: ModelData.DefaultFormat
-- uid: Fp.Intermediate.ModelData.DefaultFormat*
-  name: DefaultFormat
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_DefaultFormat_
-  commentId: Overload:Fp.Intermediate.ModelData.DefaultFormat
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.DefaultFormat
-  nameWithType: ModelData.DefaultFormat
-- uid: Fp.Intermediate.ModelData.Dispose
-  name: Dispose()
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Dispose
-  commentId: M:Fp.Intermediate.ModelData.Dispose
-  fullName: Fp.Intermediate.ModelData.Dispose()
-  nameWithType: ModelData.Dispose()
-- uid: Fp.Intermediate.ModelData.Dispose*
-  name: Dispose
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Dispose_
-  commentId: Overload:Fp.Intermediate.ModelData.Dispose
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.Dispose
-  nameWithType: ModelData.Dispose
-- uid: Fp.Intermediate.ModelData.Materials
-  name: Materials
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Materials
-  commentId: P:Fp.Intermediate.ModelData.Materials
-  fullName: Fp.Intermediate.ModelData.Materials
-  nameWithType: ModelData.Materials
-- uid: Fp.Intermediate.ModelData.Materials*
-  name: Materials
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Materials_
-  commentId: Overload:Fp.Intermediate.ModelData.Materials
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.Materials
-  nameWithType: ModelData.Materials
-- uid: Fp.Intermediate.ModelData.Mesh
-  name: Mesh
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Mesh
-  commentId: P:Fp.Intermediate.ModelData.Mesh
-  fullName: Fp.Intermediate.ModelData.Mesh
-  nameWithType: ModelData.Mesh
-- uid: Fp.Intermediate.ModelData.Mesh*
-  name: Mesh
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_Mesh_
-  commentId: Overload:Fp.Intermediate.ModelData.Mesh
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.Mesh
-  nameWithType: ModelData.Mesh
-- uid: Fp.Intermediate.ModelData.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})
-  name: WriteConvertedData(Stream, CommonFormat, Dictionary<String, String>)
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__
-  commentId: M:Fp.Intermediate.ModelData.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})
-  name.vb: WriteConvertedData(Stream, CommonFormat, Dictionary(Of String, String))
-  fullName: Fp.Intermediate.ModelData.WriteConvertedData(System.IO.Stream, Fp.Intermediate.CommonFormat, System.Collections.Generic.Dictionary<System.String, System.String>)
-  fullName.vb: Fp.Intermediate.ModelData.WriteConvertedData(System.IO.Stream, Fp.Intermediate.CommonFormat, System.Collections.Generic.Dictionary(Of System.String, System.String))
-  nameWithType: ModelData.WriteConvertedData(Stream, CommonFormat, Dictionary<String, String>)
-  nameWithType.vb: ModelData.WriteConvertedData(Stream, CommonFormat, Dictionary(Of String, String))
-- uid: Fp.Intermediate.ModelData.WriteConvertedData*
-  name: WriteConvertedData
-  href: api/Fp.Intermediate.ModelData.html#Fp_Intermediate_ModelData_WriteConvertedData_
-  commentId: Overload:Fp.Intermediate.ModelData.WriteConvertedData
-  isSpec: "True"
-  fullName: Fp.Intermediate.ModelData.WriteConvertedData
-  nameWithType: ModelData.WriteConvertedData
 - uid: Fp.Intermediate.PcmData
   name: PcmData
   href: api/Fp.Intermediate.PcmData.html
@@ -3260,6 +2601,15 @@ references:
   fullName.vb: Fp.MStream.MStream(System.Memory(Of System.Byte))
   nameWithType: MStream.MStream(Memory<Byte>)
   nameWithType.vb: MStream.MStream(Memory(Of Byte))
+- uid: Fp.MStream.#ctor(System.ReadOnlyMemory{System.Byte})
+  name: MStream(ReadOnlyMemory<Byte>)
+  href: api/Fp.MStream.html#Fp_MStream__ctor_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.MStream.#ctor(System.ReadOnlyMemory{System.Byte})
+  name.vb: MStream(ReadOnlyMemory(Of Byte))
+  fullName: Fp.MStream.MStream(System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.MStream.MStream(System.ReadOnlyMemory(Of System.Byte))
+  nameWithType: MStream.MStream(ReadOnlyMemory<Byte>)
+  nameWithType.vb: MStream.MStream(ReadOnlyMemory(Of Byte))
 - uid: Fp.MStream.#ctor*
   name: MStream
   href: api/Fp.MStream.html#Fp_MStream__ctor_
@@ -3361,6 +2711,19 @@ references:
   isSpec: "True"
   fullName: Fp.MStream.Read
   nameWithType: MStream.Read
+- uid: Fp.MStream.ReadByte
+  name: ReadByte()
+  href: api/Fp.MStream.html#Fp_MStream_ReadByte
+  commentId: M:Fp.MStream.ReadByte
+  fullName: Fp.MStream.ReadByte()
+  nameWithType: MStream.ReadByte()
+- uid: Fp.MStream.ReadByte*
+  name: ReadByte
+  href: api/Fp.MStream.html#Fp_MStream_ReadByte_
+  commentId: Overload:Fp.MStream.ReadByte
+  isSpec: "True"
+  fullName: Fp.MStream.ReadByte
+  nameWithType: MStream.ReadByte
 - uid: Fp.MStream.Seek(System.Int64,System.IO.SeekOrigin)
   name: Seek(Int64, SeekOrigin)
   href: api/Fp.MStream.html#Fp_MStream_Seek_System_Int64_System_IO_SeekOrigin_
@@ -3403,161 +2766,180 @@ references:
   isSpec: "True"
   fullName: Fp.MStream.Write
   nameWithType: MStream.Write
-- uid: Fp.PassThroughStream
-  name: PassThroughStream
-  href: api/Fp.PassThroughStream.html
-  commentId: T:Fp.PassThroughStream
-  fullName: Fp.PassThroughStream
-  nameWithType: PassThroughStream
-- uid: Fp.PassThroughStream.#ctor(System.IO.Stream,System.Int64)
-  name: PassThroughStream(Stream, Int64)
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream__ctor_System_IO_Stream_System_Int64_
-  commentId: M:Fp.PassThroughStream.#ctor(System.IO.Stream,System.Int64)
-  fullName: Fp.PassThroughStream.PassThroughStream(System.IO.Stream, System.Int64)
-  nameWithType: PassThroughStream.PassThroughStream(Stream, Int64)
-- uid: Fp.PassThroughStream.#ctor*
-  name: PassThroughStream
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream__ctor_
-  commentId: Overload:Fp.PassThroughStream.#ctor
+- uid: Fp.MultiBufferStream
+  name: MultiBufferStream
+  href: api/Fp.MultiBufferStream.html
+  commentId: T:Fp.MultiBufferStream
+  fullName: Fp.MultiBufferStream
+  nameWithType: MultiBufferStream
+- uid: Fp.MultiBufferStream.#ctor(System.IO.Stream,System.Boolean,System.Int32,System.Int32)
+  name: MultiBufferStream(Stream, Boolean, Int32, Int32)
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream__ctor_System_IO_Stream_System_Boolean_System_Int32_System_Int32_
+  commentId: M:Fp.MultiBufferStream.#ctor(System.IO.Stream,System.Boolean,System.Int32,System.Int32)
+  fullName: Fp.MultiBufferStream.MultiBufferStream(System.IO.Stream, System.Boolean, System.Int32, System.Int32)
+  nameWithType: MultiBufferStream.MultiBufferStream(Stream, Boolean, Int32, Int32)
+- uid: Fp.MultiBufferStream.#ctor*
+  name: MultiBufferStream
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream__ctor_
+  commentId: Overload:Fp.MultiBufferStream.#ctor
   isSpec: "True"
-  fullName: Fp.PassThroughStream.PassThroughStream
-  nameWithType: PassThroughStream.PassThroughStream
-- uid: Fp.PassThroughStream.CanRead
+  fullName: Fp.MultiBufferStream.MultiBufferStream
+  nameWithType: MultiBufferStream.MultiBufferStream
+- uid: Fp.MultiBufferStream.CanRead
   name: CanRead
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanRead
-  commentId: P:Fp.PassThroughStream.CanRead
-  fullName: Fp.PassThroughStream.CanRead
-  nameWithType: PassThroughStream.CanRead
-- uid: Fp.PassThroughStream.CanRead*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanRead
+  commentId: P:Fp.MultiBufferStream.CanRead
+  fullName: Fp.MultiBufferStream.CanRead
+  nameWithType: MultiBufferStream.CanRead
+- uid: Fp.MultiBufferStream.CanRead*
   name: CanRead
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanRead_
-  commentId: Overload:Fp.PassThroughStream.CanRead
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanRead_
+  commentId: Overload:Fp.MultiBufferStream.CanRead
   isSpec: "True"
-  fullName: Fp.PassThroughStream.CanRead
-  nameWithType: PassThroughStream.CanRead
-- uid: Fp.PassThroughStream.CanSeek
+  fullName: Fp.MultiBufferStream.CanRead
+  nameWithType: MultiBufferStream.CanRead
+- uid: Fp.MultiBufferStream.CanSeek
   name: CanSeek
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanSeek
-  commentId: P:Fp.PassThroughStream.CanSeek
-  fullName: Fp.PassThroughStream.CanSeek
-  nameWithType: PassThroughStream.CanSeek
-- uid: Fp.PassThroughStream.CanSeek*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanSeek
+  commentId: P:Fp.MultiBufferStream.CanSeek
+  fullName: Fp.MultiBufferStream.CanSeek
+  nameWithType: MultiBufferStream.CanSeek
+- uid: Fp.MultiBufferStream.CanSeek*
   name: CanSeek
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanSeek_
-  commentId: Overload:Fp.PassThroughStream.CanSeek
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanSeek_
+  commentId: Overload:Fp.MultiBufferStream.CanSeek
   isSpec: "True"
-  fullName: Fp.PassThroughStream.CanSeek
-  nameWithType: PassThroughStream.CanSeek
-- uid: Fp.PassThroughStream.CanWrite
+  fullName: Fp.MultiBufferStream.CanSeek
+  nameWithType: MultiBufferStream.CanSeek
+- uid: Fp.MultiBufferStream.CanWrite
   name: CanWrite
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanWrite
-  commentId: P:Fp.PassThroughStream.CanWrite
-  fullName: Fp.PassThroughStream.CanWrite
-  nameWithType: PassThroughStream.CanWrite
-- uid: Fp.PassThroughStream.CanWrite*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanWrite
+  commentId: P:Fp.MultiBufferStream.CanWrite
+  fullName: Fp.MultiBufferStream.CanWrite
+  nameWithType: MultiBufferStream.CanWrite
+- uid: Fp.MultiBufferStream.CanWrite*
   name: CanWrite
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_CanWrite_
-  commentId: Overload:Fp.PassThroughStream.CanWrite
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_CanWrite_
+  commentId: Overload:Fp.MultiBufferStream.CanWrite
   isSpec: "True"
-  fullName: Fp.PassThroughStream.CanWrite
-  nameWithType: PassThroughStream.CanWrite
-- uid: Fp.PassThroughStream.Flush
+  fullName: Fp.MultiBufferStream.CanWrite
+  nameWithType: MultiBufferStream.CanWrite
+- uid: Fp.MultiBufferStream.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Dispose_System_Boolean_
+  commentId: M:Fp.MultiBufferStream.Dispose(System.Boolean)
+  fullName: Fp.MultiBufferStream.Dispose(System.Boolean)
+  nameWithType: MultiBufferStream.Dispose(Boolean)
+- uid: Fp.MultiBufferStream.Dispose*
+  name: Dispose
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Dispose_
+  commentId: Overload:Fp.MultiBufferStream.Dispose
+  isSpec: "True"
+  fullName: Fp.MultiBufferStream.Dispose
+  nameWithType: MultiBufferStream.Dispose
+- uid: Fp.MultiBufferStream.Flush
   name: Flush()
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Flush
-  commentId: M:Fp.PassThroughStream.Flush
-  fullName: Fp.PassThroughStream.Flush()
-  nameWithType: PassThroughStream.Flush()
-- uid: Fp.PassThroughStream.Flush*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Flush
+  commentId: M:Fp.MultiBufferStream.Flush
+  fullName: Fp.MultiBufferStream.Flush()
+  nameWithType: MultiBufferStream.Flush()
+- uid: Fp.MultiBufferStream.Flush*
   name: Flush
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Flush_
-  commentId: Overload:Fp.PassThroughStream.Flush
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Flush_
+  commentId: Overload:Fp.MultiBufferStream.Flush
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Flush
-  nameWithType: PassThroughStream.Flush
-- uid: Fp.PassThroughStream.Length
+  fullName: Fp.MultiBufferStream.Flush
+  nameWithType: MultiBufferStream.Flush
+- uid: Fp.MultiBufferStream.LargeReadOverride
+  name: LargeReadOverride
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_LargeReadOverride
+  commentId: F:Fp.MultiBufferStream.LargeReadOverride
+  fullName: Fp.MultiBufferStream.LargeReadOverride
+  nameWithType: MultiBufferStream.LargeReadOverride
+- uid: Fp.MultiBufferStream.Length
   name: Length
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Length
-  commentId: P:Fp.PassThroughStream.Length
-  fullName: Fp.PassThroughStream.Length
-  nameWithType: PassThroughStream.Length
-- uid: Fp.PassThroughStream.Length*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Length
+  commentId: P:Fp.MultiBufferStream.Length
+  fullName: Fp.MultiBufferStream.Length
+  nameWithType: MultiBufferStream.Length
+- uid: Fp.MultiBufferStream.Length*
   name: Length
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Length_
-  commentId: Overload:Fp.PassThroughStream.Length
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Length_
+  commentId: Overload:Fp.MultiBufferStream.Length
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Length
-  nameWithType: PassThroughStream.Length
-- uid: Fp.PassThroughStream.Position
+  fullName: Fp.MultiBufferStream.Length
+  nameWithType: MultiBufferStream.Length
+- uid: Fp.MultiBufferStream.Position
   name: Position
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Position
-  commentId: P:Fp.PassThroughStream.Position
-  fullName: Fp.PassThroughStream.Position
-  nameWithType: PassThroughStream.Position
-- uid: Fp.PassThroughStream.Position*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Position
+  commentId: P:Fp.MultiBufferStream.Position
+  fullName: Fp.MultiBufferStream.Position
+  nameWithType: MultiBufferStream.Position
+- uid: Fp.MultiBufferStream.Position*
   name: Position
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Position_
-  commentId: Overload:Fp.PassThroughStream.Position
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Position_
+  commentId: Overload:Fp.MultiBufferStream.Position
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Position
-  nameWithType: PassThroughStream.Position
-- uid: Fp.PassThroughStream.Read(System.Byte[],System.Int32,System.Int32)
+  fullName: Fp.MultiBufferStream.Position
+  nameWithType: MultiBufferStream.Position
+- uid: Fp.MultiBufferStream.Read(System.Byte[],System.Int32,System.Int32)
   name: Read(Byte[], Int32, Int32)
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Read_System_Byte___System_Int32_System_Int32_
-  commentId: M:Fp.PassThroughStream.Read(System.Byte[],System.Int32,System.Int32)
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Read_System_Byte___System_Int32_System_Int32_
+  commentId: M:Fp.MultiBufferStream.Read(System.Byte[],System.Int32,System.Int32)
   name.vb: Read(Byte(), Int32, Int32)
-  fullName: Fp.PassThroughStream.Read(System.Byte[], System.Int32, System.Int32)
-  fullName.vb: Fp.PassThroughStream.Read(System.Byte(), System.Int32, System.Int32)
-  nameWithType: PassThroughStream.Read(Byte[], Int32, Int32)
-  nameWithType.vb: PassThroughStream.Read(Byte(), Int32, Int32)
-- uid: Fp.PassThroughStream.Read*
+  fullName: Fp.MultiBufferStream.Read(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: Fp.MultiBufferStream.Read(System.Byte(), System.Int32, System.Int32)
+  nameWithType: MultiBufferStream.Read(Byte[], Int32, Int32)
+  nameWithType.vb: MultiBufferStream.Read(Byte(), Int32, Int32)
+- uid: Fp.MultiBufferStream.Read*
   name: Read
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Read_
-  commentId: Overload:Fp.PassThroughStream.Read
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Read_
+  commentId: Overload:Fp.MultiBufferStream.Read
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Read
-  nameWithType: PassThroughStream.Read
-- uid: Fp.PassThroughStream.Seek(System.Int64,System.IO.SeekOrigin)
+  fullName: Fp.MultiBufferStream.Read
+  nameWithType: MultiBufferStream.Read
+- uid: Fp.MultiBufferStream.Seek(System.Int64,System.IO.SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:Fp.PassThroughStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: Fp.PassThroughStream.Seek(System.Int64, System.IO.SeekOrigin)
-  nameWithType: PassThroughStream.Seek(Int64, SeekOrigin)
-- uid: Fp.PassThroughStream.Seek*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Seek_System_Int64_System_IO_SeekOrigin_
+  commentId: M:Fp.MultiBufferStream.Seek(System.Int64,System.IO.SeekOrigin)
+  fullName: Fp.MultiBufferStream.Seek(System.Int64, System.IO.SeekOrigin)
+  nameWithType: MultiBufferStream.Seek(Int64, SeekOrigin)
+- uid: Fp.MultiBufferStream.Seek*
   name: Seek
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Seek_
-  commentId: Overload:Fp.PassThroughStream.Seek
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Seek_
+  commentId: Overload:Fp.MultiBufferStream.Seek
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Seek
-  nameWithType: PassThroughStream.Seek
-- uid: Fp.PassThroughStream.SetLength(System.Int64)
+  fullName: Fp.MultiBufferStream.Seek
+  nameWithType: MultiBufferStream.Seek
+- uid: Fp.MultiBufferStream.SetLength(System.Int64)
   name: SetLength(Int64)
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_SetLength_System_Int64_
-  commentId: M:Fp.PassThroughStream.SetLength(System.Int64)
-  fullName: Fp.PassThroughStream.SetLength(System.Int64)
-  nameWithType: PassThroughStream.SetLength(Int64)
-- uid: Fp.PassThroughStream.SetLength*
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_SetLength_System_Int64_
+  commentId: M:Fp.MultiBufferStream.SetLength(System.Int64)
+  fullName: Fp.MultiBufferStream.SetLength(System.Int64)
+  nameWithType: MultiBufferStream.SetLength(Int64)
+- uid: Fp.MultiBufferStream.SetLength*
   name: SetLength
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_SetLength_
-  commentId: Overload:Fp.PassThroughStream.SetLength
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_SetLength_
+  commentId: Overload:Fp.MultiBufferStream.SetLength
   isSpec: "True"
-  fullName: Fp.PassThroughStream.SetLength
-  nameWithType: PassThroughStream.SetLength
-- uid: Fp.PassThroughStream.Write(System.Byte[],System.Int32,System.Int32)
+  fullName: Fp.MultiBufferStream.SetLength
+  nameWithType: MultiBufferStream.SetLength
+- uid: Fp.MultiBufferStream.Write(System.Byte[],System.Int32,System.Int32)
   name: Write(Byte[], Int32, Int32)
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Write_System_Byte___System_Int32_System_Int32_
-  commentId: M:Fp.PassThroughStream.Write(System.Byte[],System.Int32,System.Int32)
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Write_System_Byte___System_Int32_System_Int32_
+  commentId: M:Fp.MultiBufferStream.Write(System.Byte[],System.Int32,System.Int32)
   name.vb: Write(Byte(), Int32, Int32)
-  fullName: Fp.PassThroughStream.Write(System.Byte[], System.Int32, System.Int32)
-  fullName.vb: Fp.PassThroughStream.Write(System.Byte(), System.Int32, System.Int32)
-  nameWithType: PassThroughStream.Write(Byte[], Int32, Int32)
-  nameWithType.vb: PassThroughStream.Write(Byte(), Int32, Int32)
-- uid: Fp.PassThroughStream.Write*
+  fullName: Fp.MultiBufferStream.Write(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: Fp.MultiBufferStream.Write(System.Byte(), System.Int32, System.Int32)
+  nameWithType: MultiBufferStream.Write(Byte[], Int32, Int32)
+  nameWithType.vb: MultiBufferStream.Write(Byte(), Int32, Int32)
+- uid: Fp.MultiBufferStream.Write*
   name: Write
-  href: api/Fp.PassThroughStream.html#Fp_PassThroughStream_Write_
-  commentId: Overload:Fp.PassThroughStream.Write
+  href: api/Fp.MultiBufferStream.html#Fp_MultiBufferStream_Write_
+  commentId: Overload:Fp.MultiBufferStream.Write
   isSpec: "True"
-  fullName: Fp.PassThroughStream.Write
-  nameWithType: PassThroughStream.Write
+  fullName: Fp.MultiBufferStream.Write
+  nameWithType: MultiBufferStream.Write
 - uid: Fp.Processor
   name: Processor
   href: api/Fp.Processor.html
@@ -3784,6 +3166,12 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ConvertU64Array
   nameWithType: Processor.ConvertU64Array
+- uid: Fp.Processor.Debug
+  name: Debug
+  href: api/Fp.Processor.html#Fp_Processor_Debug
+  commentId: F:Fp.Processor.Debug
+  fullName: Fp.Processor.Debug
+  nameWithType: Processor.Debug
 - uid: Fp.Processor.DecodeDxt1(System.Int32,System.Int32,System.Span{System.Byte},System.Span{System.UInt32})
   name: DecodeDxt1(Int32, Int32, Span<Byte>, Span<UInt32>)
   href: api/Fp.Processor.html#Fp_Processor_DecodeDxt1_System_Int32_System_Int32_System_Span_System_Byte__System_Span_System_UInt32__
@@ -5565,6 +4953,57 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.MatchLast
   nameWithType: Processor.MatchLast
+- uid: Fp.Processor.MemAnnotations
+  name: MemAnnotations
+  href: api/Fp.Processor.html#Fp_Processor_MemAnnotations
+  commentId: F:Fp.Processor.MemAnnotations
+  fullName: Fp.Processor.MemAnnotations
+  nameWithType: Processor.MemAnnotations
+- uid: Fp.Processor.MemClear
+  name: MemClear()
+  href: api/Fp.Processor.html#Fp_Processor_MemClear
+  commentId: M:Fp.Processor.MemClear
+  fullName: Fp.Processor.MemClear()
+  nameWithType: Processor.MemClear()
+- uid: Fp.Processor.MemClear*
+  name: MemClear
+  href: api/Fp.Processor.html#Fp_Processor_MemClear_
+  commentId: Overload:Fp.Processor.MemClear
+  isSpec: "True"
+  fullName: Fp.Processor.MemClear
+  nameWithType: Processor.MemClear
+- uid: Fp.Processor.MemLabel(System.ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.String,System.Nullable{System.Drawing.Color})
+  name: MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, String, Nullable<Color>)
+  href: api/Fp.Processor.html#Fp_Processor_MemLabel_System_ReadOnlyMemory_System_Byte__System_Int32_System_Int32_System_String_System_Nullable_System_Drawing_Color__
+  commentId: M:Fp.Processor.MemLabel(System.ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.String,System.Nullable{System.Drawing.Color})
+  name.vb: MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, String, Nullable(Of Color))
+  fullName: Fp.Processor.MemLabel(System.ReadOnlyMemory<System.Byte>, System.Int32, System.Int32, System.String, System.Nullable<System.Drawing.Color>)
+  fullName.vb: Fp.Processor.MemLabel(System.ReadOnlyMemory(Of System.Byte), System.Int32, System.Int32, System.String, System.Nullable(Of System.Drawing.Color))
+  nameWithType: Processor.MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, String, Nullable<Color>)
+  nameWithType.vb: Processor.MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, String, Nullable(Of Color))
+- uid: Fp.Processor.MemLabel*
+  name: MemLabel
+  href: api/Fp.Processor.html#Fp_Processor_MemLabel_
+  commentId: Overload:Fp.Processor.MemLabel
+  isSpec: "True"
+  fullName: Fp.Processor.MemLabel
+  nameWithType: Processor.MemLabel
+- uid: Fp.Processor.MemPrint(System.ReadOnlyMemory{System.Byte},System.Boolean,System.Boolean)
+  name: MemPrint(ReadOnlyMemory<Byte>, Boolean, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_MemPrint_System_ReadOnlyMemory_System_Byte__System_Boolean_System_Boolean_
+  commentId: M:Fp.Processor.MemPrint(System.ReadOnlyMemory{System.Byte},System.Boolean,System.Boolean)
+  name.vb: MemPrint(ReadOnlyMemory(Of Byte), Boolean, Boolean)
+  fullName: Fp.Processor.MemPrint(System.ReadOnlyMemory<System.Byte>, System.Boolean, System.Boolean)
+  fullName.vb: Fp.Processor.MemPrint(System.ReadOnlyMemory(Of System.Byte), System.Boolean, System.Boolean)
+  nameWithType: Processor.MemPrint(ReadOnlyMemory<Byte>, Boolean, Boolean)
+  nameWithType.vb: Processor.MemPrint(ReadOnlyMemory(Of Byte), Boolean, Boolean)
+- uid: Fp.Processor.MemPrint*
+  name: MemPrint
+  href: api/Fp.Processor.html#Fp_Processor_MemPrint_
+  commentId: Overload:Fp.Processor.MemPrint
+  isSpec: "True"
+  fullName: Fp.Processor.MemPrint
+  nameWithType: Processor.MemPrint
 - uid: Fp.Processor.MkDirs(System.String)
   name: MkDirs(String)
   href: api/Fp.Processor.html#Fp_Processor_MkDirs_System_String_
@@ -7454,15 +6893,15 @@ references:
   commentId: T:Fp.ProcessorConfiguration
   fullName: Fp.ProcessorConfiguration
   nameWithType: ProcessorConfiguration
-- uid: Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
-  name: ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
-  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Boolean_System_String_System_String___System_String_System_Int32_System_Boolean_System_Action_System_String__System_Collections_Generic_IReadOnlyList_System_String__
-  commentId: M:Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
-  name.vb: ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
-  fullName: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList<System.ValueTuple<System.Boolean, System.String, System.String>>, System.String, System.Int32, System.Boolean, System.Action<System.String>, System.Collections.Generic.IReadOnlyList<System.String>)
-  fullName.vb: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList(Of System.ValueTuple(Of System.Boolean, System.String, System.String)), System.String, System.Int32, System.Boolean, System.Action(Of System.String), System.Collections.Generic.IReadOnlyList(Of System.String))
-  nameWithType: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Action<String>, IReadOnlyList<String>)
-  nameWithType.vb: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Action(Of String), IReadOnlyList(Of String))
+- uid: Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  name: ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Boolean, Action<String>, IReadOnlyList<String>)
+  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Boolean_System_String_System_String___System_String_System_Int32_System_Boolean_System_Boolean_System_Action_System_String__System_Collections_Generic_IReadOnlyList_System_String__
+  commentId: M:Fp.ProcessorConfiguration.#ctor(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Boolean,System.String,System.String}},System.String,System.Int32,System.Boolean,System.Boolean,System.Action{System.String},System.Collections.Generic.IReadOnlyList{System.String})
+  name.vb: ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Boolean, Action(Of String), IReadOnlyList(Of String))
+  fullName: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList<System.ValueTuple<System.Boolean, System.String, System.String>>, System.String, System.Int32, System.Boolean, System.Boolean, System.Action<System.String>, System.Collections.Generic.IReadOnlyList<System.String>)
+  fullName.vb: Fp.ProcessorConfiguration.ProcessorConfiguration(System.Collections.Generic.IReadOnlyList(Of System.ValueTuple(Of System.Boolean, System.String, System.String)), System.String, System.Int32, System.Boolean, System.Boolean, System.Action(Of System.String), System.Collections.Generic.IReadOnlyList(Of System.String))
+  nameWithType: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList<(Boolean, String, String)>, String, Int32, Boolean, Boolean, Action<String>, IReadOnlyList<String>)
+  nameWithType.vb: ProcessorConfiguration.ProcessorConfiguration(IReadOnlyList(Of (Boolean, String, String)), String, Int32, Boolean, Boolean, Action(Of String), IReadOnlyList(Of String))
 - uid: Fp.ProcessorConfiguration.#ctor*
   name: ProcessorConfiguration
   href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration__ctor_
@@ -7483,6 +6922,19 @@ references:
   isSpec: "True"
   fullName: Fp.ProcessorConfiguration.Args
   nameWithType: ProcessorConfiguration.Args
+- uid: Fp.ProcessorConfiguration.Debug
+  name: Debug
+  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration_Debug
+  commentId: P:Fp.ProcessorConfiguration.Debug
+  fullName: Fp.ProcessorConfiguration.Debug
+  nameWithType: ProcessorConfiguration.Debug
+- uid: Fp.ProcessorConfiguration.Debug*
+  name: Debug
+  href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration_Debug_
+  commentId: Overload:Fp.ProcessorConfiguration.Debug
+  isSpec: "True"
+  fullName: Fp.ProcessorConfiguration.Debug
+  nameWithType: ProcessorConfiguration.Debug
 - uid: Fp.ProcessorConfiguration.Inputs
   name: Inputs
   href: api/Fp.ProcessorConfiguration.html#Fp_ProcessorConfiguration_Inputs
@@ -7802,3 +7254,164 @@ references:
   isSpec: "True"
   fullName: Fp.PStream.Write
   nameWithType: PStream.Write
+- uid: Fp.SStream
+  name: SStream
+  href: api/Fp.SStream.html
+  commentId: T:Fp.SStream
+  fullName: Fp.SStream
+  nameWithType: SStream
+- uid: Fp.SStream.#ctor(System.IO.Stream,System.Int64,System.Boolean)
+  name: SStream(Stream, Int64, Boolean)
+  href: api/Fp.SStream.html#Fp_SStream__ctor_System_IO_Stream_System_Int64_System_Boolean_
+  commentId: M:Fp.SStream.#ctor(System.IO.Stream,System.Int64,System.Boolean)
+  fullName: Fp.SStream.SStream(System.IO.Stream, System.Int64, System.Boolean)
+  nameWithType: SStream.SStream(Stream, Int64, Boolean)
+- uid: Fp.SStream.#ctor*
+  name: SStream
+  href: api/Fp.SStream.html#Fp_SStream__ctor_
+  commentId: Overload:Fp.SStream.#ctor
+  isSpec: "True"
+  fullName: Fp.SStream.SStream
+  nameWithType: SStream.SStream
+- uid: Fp.SStream.CanRead
+  name: CanRead
+  href: api/Fp.SStream.html#Fp_SStream_CanRead
+  commentId: P:Fp.SStream.CanRead
+  fullName: Fp.SStream.CanRead
+  nameWithType: SStream.CanRead
+- uid: Fp.SStream.CanRead*
+  name: CanRead
+  href: api/Fp.SStream.html#Fp_SStream_CanRead_
+  commentId: Overload:Fp.SStream.CanRead
+  isSpec: "True"
+  fullName: Fp.SStream.CanRead
+  nameWithType: SStream.CanRead
+- uid: Fp.SStream.CanSeek
+  name: CanSeek
+  href: api/Fp.SStream.html#Fp_SStream_CanSeek
+  commentId: P:Fp.SStream.CanSeek
+  fullName: Fp.SStream.CanSeek
+  nameWithType: SStream.CanSeek
+- uid: Fp.SStream.CanSeek*
+  name: CanSeek
+  href: api/Fp.SStream.html#Fp_SStream_CanSeek_
+  commentId: Overload:Fp.SStream.CanSeek
+  isSpec: "True"
+  fullName: Fp.SStream.CanSeek
+  nameWithType: SStream.CanSeek
+- uid: Fp.SStream.CanWrite
+  name: CanWrite
+  href: api/Fp.SStream.html#Fp_SStream_CanWrite
+  commentId: P:Fp.SStream.CanWrite
+  fullName: Fp.SStream.CanWrite
+  nameWithType: SStream.CanWrite
+- uid: Fp.SStream.CanWrite*
+  name: CanWrite
+  href: api/Fp.SStream.html#Fp_SStream_CanWrite_
+  commentId: Overload:Fp.SStream.CanWrite
+  isSpec: "True"
+  fullName: Fp.SStream.CanWrite
+  nameWithType: SStream.CanWrite
+- uid: Fp.SStream.Flush
+  name: Flush()
+  href: api/Fp.SStream.html#Fp_SStream_Flush
+  commentId: M:Fp.SStream.Flush
+  fullName: Fp.SStream.Flush()
+  nameWithType: SStream.Flush()
+- uid: Fp.SStream.Flush*
+  name: Flush
+  href: api/Fp.SStream.html#Fp_SStream_Flush_
+  commentId: Overload:Fp.SStream.Flush
+  isSpec: "True"
+  fullName: Fp.SStream.Flush
+  nameWithType: SStream.Flush
+- uid: Fp.SStream.Isolate
+  name: Isolate
+  href: api/Fp.SStream.html#Fp_SStream_Isolate
+  commentId: F:Fp.SStream.Isolate
+  fullName: Fp.SStream.Isolate
+  nameWithType: SStream.Isolate
+- uid: Fp.SStream.Length
+  name: Length
+  href: api/Fp.SStream.html#Fp_SStream_Length
+  commentId: P:Fp.SStream.Length
+  fullName: Fp.SStream.Length
+  nameWithType: SStream.Length
+- uid: Fp.SStream.Length*
+  name: Length
+  href: api/Fp.SStream.html#Fp_SStream_Length_
+  commentId: Overload:Fp.SStream.Length
+  isSpec: "True"
+  fullName: Fp.SStream.Length
+  nameWithType: SStream.Length
+- uid: Fp.SStream.Position
+  name: Position
+  href: api/Fp.SStream.html#Fp_SStream_Position
+  commentId: P:Fp.SStream.Position
+  fullName: Fp.SStream.Position
+  nameWithType: SStream.Position
+- uid: Fp.SStream.Position*
+  name: Position
+  href: api/Fp.SStream.html#Fp_SStream_Position_
+  commentId: Overload:Fp.SStream.Position
+  isSpec: "True"
+  fullName: Fp.SStream.Position
+  nameWithType: SStream.Position
+- uid: Fp.SStream.Read(System.Byte[],System.Int32,System.Int32)
+  name: Read(Byte[], Int32, Int32)
+  href: api/Fp.SStream.html#Fp_SStream_Read_System_Byte___System_Int32_System_Int32_
+  commentId: M:Fp.SStream.Read(System.Byte[],System.Int32,System.Int32)
+  name.vb: Read(Byte(), Int32, Int32)
+  fullName: Fp.SStream.Read(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: Fp.SStream.Read(System.Byte(), System.Int32, System.Int32)
+  nameWithType: SStream.Read(Byte[], Int32, Int32)
+  nameWithType.vb: SStream.Read(Byte(), Int32, Int32)
+- uid: Fp.SStream.Read*
+  name: Read
+  href: api/Fp.SStream.html#Fp_SStream_Read_
+  commentId: Overload:Fp.SStream.Read
+  isSpec: "True"
+  fullName: Fp.SStream.Read
+  nameWithType: SStream.Read
+- uid: Fp.SStream.Seek(System.Int64,System.IO.SeekOrigin)
+  name: Seek(Int64, SeekOrigin)
+  href: api/Fp.SStream.html#Fp_SStream_Seek_System_Int64_System_IO_SeekOrigin_
+  commentId: M:Fp.SStream.Seek(System.Int64,System.IO.SeekOrigin)
+  fullName: Fp.SStream.Seek(System.Int64, System.IO.SeekOrigin)
+  nameWithType: SStream.Seek(Int64, SeekOrigin)
+- uid: Fp.SStream.Seek*
+  name: Seek
+  href: api/Fp.SStream.html#Fp_SStream_Seek_
+  commentId: Overload:Fp.SStream.Seek
+  isSpec: "True"
+  fullName: Fp.SStream.Seek
+  nameWithType: SStream.Seek
+- uid: Fp.SStream.SetLength(System.Int64)
+  name: SetLength(Int64)
+  href: api/Fp.SStream.html#Fp_SStream_SetLength_System_Int64_
+  commentId: M:Fp.SStream.SetLength(System.Int64)
+  fullName: Fp.SStream.SetLength(System.Int64)
+  nameWithType: SStream.SetLength(Int64)
+- uid: Fp.SStream.SetLength*
+  name: SetLength
+  href: api/Fp.SStream.html#Fp_SStream_SetLength_
+  commentId: Overload:Fp.SStream.SetLength
+  isSpec: "True"
+  fullName: Fp.SStream.SetLength
+  nameWithType: SStream.SetLength
+- uid: Fp.SStream.Write(System.Byte[],System.Int32,System.Int32)
+  name: Write(Byte[], Int32, Int32)
+  href: api/Fp.SStream.html#Fp_SStream_Write_System_Byte___System_Int32_System_Int32_
+  commentId: M:Fp.SStream.Write(System.Byte[],System.Int32,System.Int32)
+  name.vb: Write(Byte(), Int32, Int32)
+  fullName: Fp.SStream.Write(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: Fp.SStream.Write(System.Byte(), System.Int32, System.Int32)
+  nameWithType: SStream.Write(Byte[], Int32, Int32)
+  nameWithType.vb: SStream.Write(Byte(), Int32, Int32)
+- uid: Fp.SStream.Write*
+  name: Write
+  href: api/Fp.SStream.html#Fp_SStream_Write_
+  commentId: Overload:Fp.SStream.Write
+  isSpec: "True"
+  fullName: Fp.SStream.Write
+  nameWithType: SStream.Write

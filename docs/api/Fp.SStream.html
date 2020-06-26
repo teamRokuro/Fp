@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class PStream
+    <title>Class SStream
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class PStream
+    <meta name="title" content="Class SStream
    ">
     <meta name="generator" content="docfx 2.53.1.0">
     
@@ -68,12 +68,12 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Fp.PStream">
+            <article class="content wrap" id="_content" data-uid="Fp.SStream">
   
   
-  <h1 id="Fp_PStream" data-uid="Fp.PStream" class="text-break">Class PStream
+  <h1 id="Fp_SStream" data-uid="Fp.SStream" class="text-break">Class SStream
   </h1>
-  <div class="markdown level0 summary"><p>Stream from pointer</p>
+  <div class="markdown level0 summary"><p>Stream that acts as a limited-range proxy for another stream</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -81,7 +81,7 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
     <div class="level2"><span class="xref">System.IO.Stream</span></div>
-    <div class="level3"><span class="xref">PStream</span></div>
+    <div class="level3"><span class="xref">SStream</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -203,27 +203,27 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.html">Fp</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
-  <h5 id="Fp_PStream_syntax">Syntax</h5>
+  <h5 id="Fp_SStream_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PStream : Stream, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public class SStream : Stream, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream__ctor_System_IntPtr_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.PStream.%23ctor(System.IntPtr%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream__ctor_System_IO_Stream_System_Int64_System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.SStream.%23ctor(System.IO.Stream%2CSystem.Int64%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L93">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L24">View Source</a>
   </span>
-  <a id="Fp_PStream__ctor_" data-uid="Fp.PStream.#ctor*"></a>
-  <h4 id="Fp_PStream__ctor_System_IntPtr_System_Int32_" data-uid="Fp.PStream.#ctor(System.IntPtr,System.Int32)">PStream(IntPtr, Int32)</h4>
-  <div class="markdown level1 summary"><p>Create new instance</p>
+  <a id="Fp_SStream__ctor_" data-uid="Fp.SStream.#ctor*"></a>
+  <h4 id="Fp_SStream__ctor_System_IO_Stream_System_Int64_System_Boolean_" data-uid="Fp.SStream.#ctor(System.IO.Stream,System.Int64,System.Boolean)">SStream(Stream, Int64, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Create a limited-range proxy from the current position with a specified length</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PStream(IntPtr ptr, int length)</code></pre>
+    <pre><code class="lang-csharp hljs">public SStream(Stream sourceStream, long length, bool isolate = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -236,16 +236,54 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.IntPtr</span></td>
-        <td><span class="parametername">ptr</span></td>
-        <td><p>Pointer</p>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">sourceStream</span></td>
+        <td><p>Stream to wrap</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Int64</span></td>
         <td><span class="parametername">length</span></td>
-        <td><p>Length</p>
+        <td><p>Length of proxy</p>
 </td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isolate</span></td>
+        <td><p>If true, enforces stream position for object before reads</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Isolate.md&amp;value=---%0Auid%3A%20Fp.SStream.Isolate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L38">View Source</a>
+  </span>
+  <h4 id="Fp_SStream_Isolate" data-uid="Fp.SStream.Isolate">Isolate</h4>
+  <div class="markdown level1 summary"><p>If true, enforces stream position for object before reads</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public readonly bool Isolate</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -253,13 +291,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_CanRead.md&amp;value=---%0Auid%3A%20Fp.PStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_CanRead.md&amp;value=---%0Auid%3A%20Fp.SStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L16">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L41">View Source</a>
   </span>
-  <a id="Fp_PStream_CanRead_" data-uid="Fp.PStream.CanRead*"></a>
-  <h4 id="Fp_PStream_CanRead" data-uid="Fp.PStream.CanRead">CanRead</h4>
+  <a id="Fp_SStream_CanRead_" data-uid="Fp.SStream.CanRead*"></a>
+  <h4 id="Fp_SStream_CanRead" data-uid="Fp.SStream.CanRead">CanRead</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -285,13 +323,13 @@
   <div><span class="xref">System.IO.Stream.CanRead</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_CanSeek.md&amp;value=---%0Auid%3A%20Fp.PStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_CanSeek.md&amp;value=---%0Auid%3A%20Fp.SStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L19">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L44">View Source</a>
   </span>
-  <a id="Fp_PStream_CanSeek_" data-uid="Fp.PStream.CanSeek*"></a>
-  <h4 id="Fp_PStream_CanSeek" data-uid="Fp.PStream.CanSeek">CanSeek</h4>
+  <a id="Fp_SStream_CanSeek_" data-uid="Fp.SStream.CanSeek*"></a>
+  <h4 id="Fp_SStream_CanSeek" data-uid="Fp.SStream.CanSeek">CanSeek</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -317,13 +355,13 @@
   <div><span class="xref">System.IO.Stream.CanSeek</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_CanWrite.md&amp;value=---%0Auid%3A%20Fp.PStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_CanWrite.md&amp;value=---%0Auid%3A%20Fp.SStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L22">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L47">View Source</a>
   </span>
-  <a id="Fp_PStream_CanWrite_" data-uid="Fp.PStream.CanWrite*"></a>
-  <h4 id="Fp_PStream_CanWrite" data-uid="Fp.PStream.CanWrite">CanWrite</h4>
+  <a id="Fp_SStream_CanWrite_" data-uid="Fp.SStream.CanWrite*"></a>
+  <h4 id="Fp_SStream_CanWrite" data-uid="Fp.SStream.CanWrite">CanWrite</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -349,13 +387,13 @@
   <div><span class="xref">System.IO.Stream.CanWrite</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Length.md&amp;value=---%0Auid%3A%20Fp.PStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Length.md&amp;value=---%0Auid%3A%20Fp.SStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L25">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L50">View Source</a>
   </span>
-  <a id="Fp_PStream_Length_" data-uid="Fp.PStream.Length*"></a>
-  <h4 id="Fp_PStream_Length" data-uid="Fp.PStream.Length">Length</h4>
+  <a id="Fp_SStream_Length_" data-uid="Fp.SStream.Length*"></a>
+  <h4 id="Fp_SStream_Length" data-uid="Fp.SStream.Length">Length</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -381,13 +419,13 @@
   <div><span class="xref">System.IO.Stream.Length</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Position.md&amp;value=---%0Auid%3A%20Fp.PStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Position.md&amp;value=---%0Auid%3A%20Fp.SStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L28">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L53">View Source</a>
   </span>
-  <a id="Fp_PStream_Position_" data-uid="Fp.PStream.Position*"></a>
-  <h4 id="Fp_PStream_Position" data-uid="Fp.PStream.Position">Position</h4>
+  <a id="Fp_SStream_Position_" data-uid="Fp.SStream.Position*"></a>
+  <h4 id="Fp_SStream_Position" data-uid="Fp.SStream.Position">Position</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -415,13 +453,13 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Flush.md&amp;value=---%0Auid%3A%20Fp.PStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Flush.md&amp;value=---%0Auid%3A%20Fp.SStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L35">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L60">View Source</a>
   </span>
-  <a id="Fp_PStream_Flush_" data-uid="Fp.PStream.Flush*"></a>
-  <h4 id="Fp_PStream_Flush" data-uid="Fp.PStream.Flush">Flush()</h4>
+  <a id="Fp_SStream_Flush_" data-uid="Fp.SStream.Flush*"></a>
+  <h4 id="Fp_SStream_Flush" data-uid="Fp.SStream.Flush">Flush()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -432,13 +470,13 @@
   <div><span class="xref">System.IO.Stream.Flush()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.PStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.SStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L40">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L63">View Source</a>
   </span>
-  <a id="Fp_PStream_Read_" data-uid="Fp.PStream.Read*"></a>
-  <h4 id="Fp_PStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="Fp.PStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
+  <a id="Fp_SStream_Read_" data-uid="Fp.SStream.Read*"></a>
+  <h4 id="Fp_SStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="Fp.SStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -491,13 +529,13 @@
   <div><span class="xref">System.IO.Stream.Read(System.Byte[], System.Int32, System.Int32)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20Fp.PStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20Fp.SStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L49">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L74">View Source</a>
   </span>
-  <a id="Fp_PStream_Seek_" data-uid="Fp.PStream.Seek*"></a>
-  <h4 id="Fp_PStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="Fp.PStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
+  <a id="Fp_SStream_Seek_" data-uid="Fp.SStream.Seek*"></a>
+  <h4 id="Fp_SStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="Fp.SStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -545,15 +583,14 @@
   <div><span class="xref">System.IO.Stream.Seek(System.Int64, System.IO.SeekOrigin)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Fp.PStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Fp.SStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L72">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L89">View Source</a>
   </span>
-  <a id="Fp_PStream_SetLength_" data-uid="Fp.PStream.SetLength*"></a>
-  <h4 id="Fp_PStream_SetLength_System_Int64_" data-uid="Fp.PStream.SetLength(System.Int64)">SetLength(Int64)</h4>
-  <div class="markdown level1 summary"><p>Not supported</p>
-</div>
+  <a id="Fp_SStream_SetLength_" data-uid="Fp.SStream.SetLength*"></a>
+  <h4 id="Fp_SStream_SetLength_System_Int64_" data-uid="Fp.SStream.SetLength(System.Int64)">SetLength(Int64)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -578,30 +615,15 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.IO.Stream.SetLength(System.Int64)</span></div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.NotSupportedException</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.PStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.SStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L78">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L100">View Source</a>
   </span>
-  <a id="Fp_PStream_Write_" data-uid="Fp.PStream.Write*"></a>
-  <h4 id="Fp_PStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="Fp.PStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
+  <a id="Fp_SStream_Write_" data-uid="Fp.SStream.Write*"></a>
+  <h4 id="Fp_SStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="Fp.SStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -649,10 +671,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_PStream.md&amp;value=---%0Auid%3A%20Fp.PStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_SStream.md&amp;value=---%0Auid%3A%20Fp.SStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/PStream.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/SStream.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
