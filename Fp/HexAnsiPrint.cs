@@ -25,7 +25,9 @@ namespace Fp
 
         static HexAnsiPrint()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+
+            try
             {
                 // https://gist.github.com/tomzorz/6142d69852f831fb5393654c90a1f22e
                 // TODO Accelerate add standard library path
@@ -50,15 +52,12 @@ namespace Fp
                 }
                 finally
                 {
-                    try
-                    {
-                        Decelerate.This(lib);
-                    }
-                    catch
-                    {
-                        // Ignored
-                    }
+                    Decelerate.This(lib);
                 }
+            }
+            catch
+            {
+                // Ignored
             }
         }
 
@@ -194,7 +193,8 @@ namespace Fp
             while (annotationPrintQueue.Count > 0)
             {
                 (_, _, string label, Color color) = annotationPrintQueue.Dequeue();
-                Console.Write($"{{0,{2 + PosWidth + 1 + w * (space ? 3 : 2) + (space ? 0 : 1)}}}{Sequences[color]}", ' ');
+                Console.Write($"{{0,{2 + PosWidth + 1 + w * (space ? 3 : 2) + (space ? 0 : 1)}}}{Sequences[color]}",
+                    ' ');
                 Console.WriteLine(label.Length > TextWidth
                     ? label.Substring(0, TextWidth)
                     : label);
