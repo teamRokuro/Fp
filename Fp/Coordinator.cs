@@ -34,6 +34,7 @@ namespace Fp
             string? outputRootDirectory = null;
             int parallel = 0;
             bool preload = false;
+            bool debug = false;
             bool argTime = false;
             for (int i = 0; i < args.Count; i++)
             {
@@ -56,6 +57,10 @@ namespace Fp
                 {
                     case "-":
                         argTime = true;
+                        break;
+                    case "d":
+                    case "-debug":
+                        debug = true;
                         break;
                     case "m" when enableParallel:
                     case "-multithread" when enableParallel:
@@ -110,7 +115,8 @@ Parameters
     inputs           : Input files/directories.
     args             : Arguments for processor. (Optional)
 
-Options";
+Options
+    -d|--debug       : Enable debug";
                 if (enableParallel)
                     usageStr += @"
     -m|--multithread : Use specified # of workers";
@@ -133,7 +139,8 @@ Options";
                         DefaultOutputFolderName);
             }
 
-            configuration = new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, logger, exArgs);
+            configuration =
+                new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, debug, logger, exArgs);
             return true;
         }
 
@@ -210,18 +217,22 @@ Options";
             if (configuration.Parallel < 0)
                 throw new ArgumentException(
                     $"Cannot start operation with Parallel value of {configuration.Parallel}");
-            int parallelCount = Math.Min(TaskScheduler.Current.MaximumConcurrencyLevel, configuration.Parallel);
+            int parallelCount = Math.Min(TaskScheduler.Current.MaximumConcurrencyLevel,
+                Math.Max(1, configuration.Parallel));
             int baseCount = processorFactories.Length;
-            Processor[,] processors = new Processor[parallelCount, baseCount];
+            Processor[] processors = new Processor[parallelCount * baseCount];
+            bool[] actives = new bool[processors.Length];
             for (int iParallel = 0; iParallel < parallelCount; iParallel++)
             for (int iBase = 0; iBase < baseCount; iBase++)
-                processors[iParallel, iBase] = processorFactories[iBase].Invoke();
+                processors[iParallel * baseCount + iBase] = processorFactories[iBase].Invoke();
 
             Queue<(string, string)> dQueue = new Queue<(string, string)>();
             Queue<(string, string)> fQueue = new Queue<(string, string)>();
             foreach ((bool isFile, string dir, string item) in configuration.Inputs)
                 (isFile ? fQueue : dQueue).Enqueue((dir, item));
             List<Task> tasks = new List<Task>();
+            List<int> taskIdxes = new List<int>();
+            List<int> taskIds = new List<int>();
             fileSystem.ParallelAccess = true;
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {
@@ -230,20 +241,30 @@ Options";
                     (string inputRoot, string file) = fQueue.Dequeue();
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
-                        int iParallelLcl = tasks.Count;
                         while (tasks.Count >= parallelCount)
                         {
                             Task completed = await Task.WhenAny(tasks);
-                            iParallelLcl = tasks.IndexOf(completed);
-                            tasks.Remove(completed);
+                            int ofs = tasks.IndexOf(completed);
+                            actives[taskIdxes[ofs]] = false;
+                            tasks.RemoveAt(ofs);
+                            taskIdxes.RemoveAt(ofs);
+                            taskIds.RemoveAt(ofs);
                         }
 
-                        int iBaseLcl = iBase;
-
+                        int rIdx = -1;
+                        Processor processor = processors.Where((t, i) =>
+                        {
+                            if (i % baseCount != iBase || actives[i]) return false;
+                            rIdx = i;
+                            return true;
+                        }).First();
+                        actives[rIdx] = true;
+                        int workerId = Enumerable.Range(0, parallelCount).Except(taskIds).First();
                         Task task = Task.Run(() =>
-                            OperateFile(processors[iParallelLcl, iBaseLcl], file, inputRoot, configuration, fileSystem,
-                                iParallelLcl));
-                        tasks.Insert(iParallelLcl, task);
+                            OperateFile(processor, file, inputRoot, configuration, fileSystem, workerId));
+                        tasks.Add(task);
+                        taskIdxes.Add(rIdx);
+                        taskIds.Add(workerId);
                     }
                 }
                 else
@@ -266,7 +287,6 @@ Options";
         /// <param name="configuration"></param>
         /// <param name="fileSystem">Filesystem to read from</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
-        /// <returns>Task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
         public static void Operate(ProcessorConfiguration configuration, FileSystemSource fileSystem,
             params Func<Processor>[] processorFactories)
@@ -274,7 +294,7 @@ Options";
             if (processorFactories.Length == 0)
                 throw new ArgumentException(
                     "Cannot start operation with 0 provided processors");
-            if (configuration.Parallel < 0)
+            if (configuration.Parallel != 0 && configuration.Parallel != 1)
                 throw new ArgumentException(
                     $"Cannot start synchronous operation with {nameof(configuration.Parallel)} value of {configuration.Parallel}, use {nameof(Coordinator)}.{nameof(OperateAsync)} instead");
             int baseCount = processorFactories.Length;
@@ -314,6 +334,7 @@ Options";
         {
             try
             {
+                processor.Debug = configuration.Debug;
                 processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
                 processor.Preload = configuration.Preload;
                 processor.Logger = configuration.Logger;

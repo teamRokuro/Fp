@@ -33,7 +33,7 @@ namespace Fp
             try
             {
                 long length = stream.Length;
-                ms = length > int.MaxValue ? new MemoryStream() : new MemoryStream((int)length);
+                ms = length > int.MaxValue ? new MemoryStream() : new MemoryStream(new byte[length]);
             }
             catch
             {
@@ -68,14 +68,16 @@ namespace Fp
             }
 
             Stream stream = FileSystem.OpenRead(file);
-            if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _) ||
-                            alreadyMs.Capacity != alreadyMs.Length))
+            if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _)))
             {
                 MemoryStream ms = new MemoryStream(new byte[stream.Length]);
                 stream.CopyTo(ms);
                 stream.Dispose();
                 stream = ms;
             }
+
+            if(stream is FileStream)
+                stream = new MultiBufferStream(stream, true);
 
             if (!asMain)
             {
