@@ -57,7 +57,7 @@ namespace Fp
         /// <param name="space">Space between bytes</param>
         /// <param name="pow2Modulus">Only display power of 2 per line</param>
         /// <exception cref="ApplicationException"></exception>
-        public static void Print(Span<byte> data,
+        public static void Print(ReadOnlySpan<byte> data,
             (int offset, int length, string label, Color color)[] annotations,
             bool space = true, bool pow2Modulus = false)
         {
