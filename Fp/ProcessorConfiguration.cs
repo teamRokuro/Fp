@@ -17,16 +17,17 @@ namespace Fp
         /// <param name="outputRootDirectory">Output source</param>
         /// <param name="parallel">Thread count</param>
         /// <param name="preload">Whether to read all streams to memory</param>
+        /// <param name="debug">Whether to enable <see cref="Processor.Debug"/></param>
         /// <param name="logger">Log writer</param>
         /// <param name="args">Arguments</param>
         public ProcessorConfiguration(IReadOnlyList<(bool, string, string)> inputs, string outputRootDirectory,
-            int parallel, bool preload,
-            Action<string> logger, IReadOnlyList<string> args)
+            int parallel, bool preload, bool debug, Action<string> logger, IReadOnlyList<string> args)
         {
             Inputs = inputs ?? throw new ArgumentNullException(nameof(inputs));
             OutputRootDirectory = outputRootDirectory ?? throw new ArgumentException(nameof(outputRootDirectory));
             Parallel = parallel;
             Preload = preload;
+            Debug = debug;
             Logger = logger;
             Args = args;
         }
@@ -50,6 +51,11 @@ namespace Fp
         /// Whether to read all streams to memory
         /// </summary>
         public bool Preload { get; }
+
+        /// <summary>
+        /// Whether to enable <see cref="Processor.Debug"/>
+        /// </summary>
+        public bool Debug { get; }
 
         /// <summary>
         /// Log writer

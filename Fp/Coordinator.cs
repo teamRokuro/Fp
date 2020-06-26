@@ -34,6 +34,7 @@ namespace Fp
             string? outputRootDirectory = null;
             int parallel = 0;
             bool preload = false;
+            bool debug = false;
             bool argTime = false;
             for (int i = 0; i < args.Count; i++)
             {
@@ -56,6 +57,9 @@ namespace Fp
                 {
                     case "-":
                         argTime = true;
+                        break;
+                    case "d":
+                        debug = true;
                         break;
                     case "m" when enableParallel:
                     case "-multithread" when enableParallel:
@@ -110,7 +114,8 @@ Parameters
     inputs           : Input files/directories.
     args             : Arguments for processor. (Optional)
 
-Options";
+Options
+    -d|--debug       : Enable debug";
                 if (enableParallel)
                     usageStr += @"
     -m|--multithread : Use specified # of workers";
@@ -133,7 +138,8 @@ Options";
                         DefaultOutputFolderName);
             }
 
-            configuration = new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, logger, exArgs);
+            configuration =
+                new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, debug, logger, exArgs);
             return true;
         }
 
