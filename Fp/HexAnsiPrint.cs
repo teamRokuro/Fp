@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.InteropServices;
+using Esper.Accelerator;
 
 namespace Fp
 {
@@ -9,6 +11,57 @@ namespace Fp
     /// </summary>
     public static class HexAnsiPrint
     {
+        private const int STD_OUTPUT_HANDLE = -11;
+        private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
+        private const uint DISABLE_NEWLINE_AUTO_RETURN = 0x0008;
+
+        private delegate bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
+
+        private delegate bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
+
+        private delegate IntPtr GetStdHandle(int nStdHandle);
+
+        private delegate uint GetLastError();
+
+        static HexAnsiPrint()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // https://gist.github.com/tomzorz/6142d69852f831fb5393654c90a1f22e
+                // TODO Accelerate add standard library path
+                IntPtr lib = Accelerate.This("kernel32", null, AcceleratePlatform.Default, "C:\\Windows\\System32");
+                try
+                {
+                    GetStdHandle GetStdHandle = Accelerate.This<GetStdHandle>(lib, "GetStdHandle");
+                    GetConsoleMode GetConsoleMode = Accelerate.This<GetConsoleMode>(lib, "GetConsoleMode");
+                    SetConsoleMode SetConsoleMode = Accelerate.This<SetConsoleMode>(lib, "SetConsoleMode");
+                    GetLastError GetLastError = Accelerate.This<GetLastError>(lib, "GetLastError");
+                    var iStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+                    if (!GetConsoleMode(iStdOut, out uint outConsoleMode))
+                    {
+                        Console.WriteLine("failed to get output console mode");
+                    }
+
+                    outConsoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+                    if (!SetConsoleMode(iStdOut, outConsoleMode))
+                    {
+                        Console.WriteLine($"failed to set output console mode, error code: {GetLastError()}");
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        Decelerate.This(lib);
+                    }
+                    catch
+                    {
+                        // Ignored
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Maximum width of offset label
         /// </summary>
@@ -116,24 +169,38 @@ namespace Fp
 
                 while (annotationQueue.Count > 0)
                 {
-                    (int offset, int length, string label, Color color) result = annotationQueue.Peek();
-                    if (result.offset + result.length <= cur) annotationQueue.Dequeue();
+                    (int offset, int length, _, _) = annotationQueue.Peek();
+                    if (offset + length <= cur) annotationQueue.Dequeue();
                     else break;
                 }
 
+                if (curLine != w)
+                    Console.Write($"{{0,{(w - curLine) * (space ? 3 : 2)}}}", ' ');
+
                 if (annotationPrintQueue.Count > 0)
                 {
-                    (int offset, int length, string label, Color color) result = annotationPrintQueue.Dequeue();
-                    Console.Write($"{(space ? "" : " ")}{Sequences[result.color]}");
-                    Console.Write(result.label.Length > TextWidth
-                        ? result.label.Substring(0, TextWidth)
-                        : result.label);
+                    (_, _, string label, Color color) = annotationPrintQueue.Dequeue();
+                    Console.Write($"{(space ? "" : " ")}{Sequences[color]}");
+                    Console.Write(label.Length > TextWidth
+                        ? label.Substring(0, TextWidth)
+                        : label);
                 }
 
                 Console.WriteLine();
 
                 left -= curLine;
             }
+
+            while (annotationPrintQueue.Count > 0)
+            {
+                (_, _, string label, Color color) = annotationPrintQueue.Dequeue();
+                Console.Write($"{{0,{2 + PosWidth + 1 + w * (space ? 3 : 2) + (space ? 0 : 1)}}}{Sequences[color]}", ' ');
+                Console.WriteLine(label.Length > TextWidth
+                    ? label.Substring(0, TextWidth)
+                    : label);
+            }
+
+            Console.Write("\u001b[0m");
         }
     }
 }
