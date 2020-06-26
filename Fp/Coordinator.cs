@@ -59,6 +59,7 @@ namespace Fp
                         argTime = true;
                         break;
                     case "d":
+                    case "-debug":
                         debug = true;
                         break;
                     case "m" when enableParallel:
@@ -333,6 +334,7 @@ Options
         {
             try
             {
+                processor.Debug = configuration.Debug;
                 processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
                 processor.Preload = configuration.Preload;
                 processor.Logger = configuration.Logger;
