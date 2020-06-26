@@ -28,7 +28,7 @@ namespace Fp
         /// <remarks>No-op if <see cref="Debug"/> is false.</remarks>
         public void MemClear()
         {
-            if (Debug) return;
+            if (!Debug) return;
             MemAnnotations.Clear();
         }
 
@@ -43,7 +43,7 @@ namespace Fp
         /// <remarks>No-op if <see cref="Debug"/> is false.<br/>Users should not slice memory struct between label and print, uses <see cref="MemAnnotations"/> which uses the memory as a key.</remarks>
         public void MemLabel(ReadOnlyMemory<byte> memory, int offset, int length, string label, Color? color = null)
         {
-            if (Debug) return;
+            if (!Debug) return;
             if (!MemAnnotations.TryGetValue(memory,
                 out List<(int offset, int length, string label, Color color)> list))
                 list = MemAnnotations[memory] = new List<(int offset, int length, string label, Color color)>();
@@ -65,7 +65,7 @@ namespace Fp
         /// <remarks>No-op if <see cref="Debug"/> is false.<br/>Users should not slice memory struct between label and print, uses <see cref="MemAnnotations"/> which uses the memory as a key.</remarks>
         public void MemPrint(ReadOnlyMemory<byte> memory, bool space = true, bool pow2Modulus = true)
         {
-            if (Debug) return;
+            if (!Debug) return;
             HexAnsiPrint.Print(memory.Span,
                 MemAnnotations.TryGetValue(memory, out List<(int offset, int length, string label, Color color)> list)
                     ? list.ToArray()
