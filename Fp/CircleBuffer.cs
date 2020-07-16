@@ -55,7 +55,7 @@ namespace Fp
             {
                 // Better to move elements below
                 for (int j = i; j > 0; j--) _entries[Index(j)] = _entries[Index(j - 1)];
-                _entries[Index(_first)] = default!;
+                _entries[_first] = default!;
                 // Move bottom up
                 _first = (_first + 1) % _capacity;
             }
