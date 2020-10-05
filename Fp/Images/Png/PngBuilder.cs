@@ -160,19 +160,20 @@ namespace Fp.Images.Png
         }
 
         // Compress plain rgba
-        internal static byte[] Compress2(ReadOnlySpan<byte> data, int width, int height, CompressionLevel compressionLevel)
+        internal static byte[] Compress2(ReadOnlySpan<byte> data, int width, int height,
+            CompressionLevel compressionLevel)
         {
             const int headerLength = 2;
             const int checksumLength = 4;
             using MemoryStream compressStream = new MemoryStream(data.Length);
-            using DeflateStream compressor = new DeflateStream(compressStream, compressionLevel, true);
-            for (int y = 0; y < height; y++)
+            using (DeflateStream compressor = new DeflateStream(compressStream, compressionLevel, true))
             {
-                compressor.WriteByte(0);
-                Processor.WriteBaseSpan(compressor, data.Slice(4 * width * y, 4 * width));
+                for (int y = 0; y < height; y++)
+                {
+                    compressor.WriteByte(0);
+                    Processor.WriteBaseSpan(compressor, data.Slice(4 * width * y, 4 * width));
+                }
             }
-
-            compressor.Close();
 
             byte[] result = new byte[headerLength + compressStream.Length + checksumLength];
 
