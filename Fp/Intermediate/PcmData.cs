@@ -62,7 +62,7 @@ namespace Fp.Intermediate
 
         /// <inheritdoc />
         public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
-            Dictionary<string, string>? formatOptions = null)
+            Dictionary<object, object>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
             if (Buffer.IsEmpty)

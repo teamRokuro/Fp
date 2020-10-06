@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Fp.Intermediate;
 using NUnit.Framework;
 
 namespace Fp.Tests
@@ -60,6 +61,16 @@ namespace Fp.Tests
             mbs.CopyTo(ms2);
             ms2.TryGetBuffer(out ArraySegment<byte> ms2b);
             Assert.AreEqual(new ArraySegment<byte>(a), ms2b);
+        }
+
+        [Test]
+        public void TestNumberCast()
+        {
+            object number1 = 1;
+            Assert.AreEqual(1, Data.CastNumber<object, byte>(number1));
+            Assert.AreEqual(3841, Data.CastNumber<uint, short>(3841));
+            Assert.AreEqual(17, Data.CastNumber<object, uint>("17"));
+            Assert.AreEqual(1.0f, Data.CastNumber<object, float>("1.0"), 0.001f);
         }
     }
 }

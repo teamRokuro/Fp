@@ -11,9 +11,14 @@ namespace Fp.Intermediate
         Generic,
 
         /// <summary>
-        /// Deflate-compressed PNG
+        /// Deflate-compressed PNG image
         /// </summary>
         PngDeflate,
+
+        /// <summary>
+        /// JPEG image
+        /// </summary>
+        Jpeg,
 
         /// <summary>
         /// PCM WAV file

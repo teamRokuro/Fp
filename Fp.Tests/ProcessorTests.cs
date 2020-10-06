@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
-using Fp.Images.Png;
 using NUnit.Framework;
 
 namespace Fp.Tests
@@ -106,38 +104,6 @@ namespace Fp.Tests
             Assert.AreEqual(@"C:\A\B\C\D\E", Processor.Join(true, @"C:\A", @"\B", @"C\", @"\D\", "E"));
             Assert.AreEqual(@"C:\A\B", Processor.Join(true, @"C:\A", "B"));
             Assert.AreEqual(@"C:\A/B", Processor.Join(true, @"C:\A", "/B"));
-        }
-
-        [Test]
-        public void TestPng()
-        {
-            var processor = new Processor();
-            Png png;
-            using (var fs = File.OpenRead("Watch_Dogs2020-4-3-0-57-53.png"))
-                png = Processor.ReadPng(fs);
-            var data = png.Data.Data;
-            var buf2 = new uint[png.Width * png.Height];
-            var buf2S = buf2.AsSpan();
-            unsafe
-            {
-                for (int x = 0; x < png.Width; x++)
-                for (int y = 0; y < png.Height; y++)
-                {
-                    var pixel = png.GetPixel(x, y);
-                    buf2S[y * png.Width + x] = *(uint*)&pixel;
-                }
-            }
-
-            byte[] data3;
-            using (var ms = new MemoryStream())
-            {
-                ms.SetLength(0);
-                processor.WritePngRgba32<uint>(buf2S, png.Width, png.Height, CompressionLevel.Optimal, ms);
-                ms.Position = 0;
-                data3 = Processor.ReadPng(ms).Data.Data;
-            }
-
-            Assert.IsTrue(data.AsSpan().SequenceEqual(data3));
         }
 
         [Test]

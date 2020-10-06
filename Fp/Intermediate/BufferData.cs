@@ -27,7 +27,7 @@ namespace Fp.Intermediate
     /// <inheritdoc />
     public class BufferData<T> : BufferData where T : unmanaged
     {
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.Generic;
@@ -67,7 +67,7 @@ namespace Fp.Intermediate
         {
             _memoryOwner = memoryOwner;
             Buffer = _memoryOwner.Memory;
-            Dry = Buffer.IsEmpty;
+            Dry = false;
             Count = count ?? Buffer.Length;
         }
 
@@ -79,7 +79,7 @@ namespace Fp.Intermediate
         public BufferData(string basePath, ReadOnlyMemory<T> buffer) : base(basePath)
         {
             Buffer = buffer;
-            Dry = Buffer.IsEmpty;
+            Dry = false;
             _memoryOwner = null;
             Count = buffer.Length;
         }
@@ -87,17 +87,17 @@ namespace Fp.Intermediate
         /// <inheritdoc />
         public override ReadOnlySpan<TWant> AsSpan<TWant>()
         {
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             return MemoryMarshal.Cast<T, TWant>(Buffer.Span);
         }
 
         /// <inheritdoc />
         public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
-            Dictionary<string, string>? formatOptions = null)
+            Dictionary<object, object>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             switch (format)
             {
@@ -115,7 +115,7 @@ namespace Fp.Intermediate
         {
             if (Dry)
                 return new BufferData<T>(BasePath, Count);
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             return new BufferData<T>(BasePath, IntermediateUtil.CloneBuffer(Buffer));
         }
@@ -126,10 +126,8 @@ namespace Fp.Intermediate
         /// <param name="disposing">False if called from finalizer</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
-            {
-                return;
-            }
+            if (_disposed) return;
+            _disposed = true;
 
             if (disposing)
             {
