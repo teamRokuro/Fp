@@ -1598,6 +1598,19 @@ references:
   isSpec: "True"
   fullName: Fp.Intermediate.PcmData.DefaultFormat
   nameWithType: PcmData.DefaultFormat
+- uid: Fp.Intermediate.PcmData.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData_Dispose_System_Boolean_
+  commentId: M:Fp.Intermediate.PcmData.Dispose(System.Boolean)
+  fullName: Fp.Intermediate.PcmData.Dispose(System.Boolean)
+  nameWithType: PcmData.Dispose(Boolean)
+- uid: Fp.Intermediate.PcmData.Dispose*
+  name: Dispose
+  href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData_Dispose_
+  commentId: Overload:Fp.Intermediate.PcmData.Dispose
+  isSpec: "True"
+  fullName: Fp.Intermediate.PcmData.Dispose
+  nameWithType: PcmData.Dispose
 - uid: Fp.Intermediate.PcmData.PcmInfo
   name: PcmInfo
   href: api/Fp.Intermediate.PcmData.html#Fp_Intermediate_PcmData_PcmInfo
