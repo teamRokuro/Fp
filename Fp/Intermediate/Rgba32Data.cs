@@ -134,7 +134,7 @@ namespace Fp.Intermediate
         {
             if (Dry)
                 return new Rgba32Data(BasePath, Width, Height);
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(Rgba32Data));
             return new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CloneBuffer(Buffer));
         }

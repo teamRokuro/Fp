@@ -22,6 +22,8 @@ namespace Fp.Intermediate
         /// </summary>
         public readonly PcmInfo PcmInfo;
 
+        private bool _disposed;
+
         /// <summary>
         /// Create new instance of <see cref="PcmData"/>
         /// </summary>
@@ -65,7 +67,7 @@ namespace Fp.Intermediate
             Dictionary<object, object>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(PcmData));
             switch (format)
             {
@@ -85,7 +87,7 @@ namespace Fp.Intermediate
                 info.ExtraParams = IntermediateUtil.CopySegment(info.ExtraParams.Value);
             if (Dry)
                 return new PcmData(BasePath, info);
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(PcmData));
             return new PcmData(BasePath, info, IntermediateUtil.CloneBuffer(Buffer));
         }
@@ -139,6 +141,14 @@ namespace Fp.Intermediate
             {
                 Shared.Return(buffer);
             }
+        }
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            base.Dispose(disposing);
         }
     }
 }
