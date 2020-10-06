@@ -49,7 +49,7 @@ namespace Fp
                 if (str[0] != '-')
                 {
                     inputs.Add((File.Exists(str),
-                        Path.GetDirectoryName(Path.GetFullPath(str)), str));
+                        Path.GetDirectoryName(Path.GetFullPath(str)) ?? Path.GetFullPath("/"), str));
                     continue;
                 }
 

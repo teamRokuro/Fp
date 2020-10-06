@@ -48,7 +48,7 @@ namespace Fp
         {
             if (!Debug) return;
             if (!MemAnnotations.TryGetValue(memory,
-                out SortedList<int, (int offset, int length, string label, Color color)> list))
+                out SortedList<int, (int offset, int length, string label, Color color)>? list))
                 list = MemAnnotations[memory] =
                     new SortedList<int, (int offset, int length, string label, Color color)>();
             if (color == null)
@@ -72,7 +72,7 @@ namespace Fp
         {
             if (!Debug) return;
             HexAnsiPrint.Print(memory.Span,
-                MemAnnotations.TryGetValue(memory, out SortedList<int, (int offset, int length, string label, Color color)> list)
+                MemAnnotations.TryGetValue(memory, out SortedList<int, (int offset, int length, string label, Color color)>? list)
                     ? list.Values.ToArray()
                     : new (int offset, int length, string label, Color color)[0], space, pow2Modulus);
         }

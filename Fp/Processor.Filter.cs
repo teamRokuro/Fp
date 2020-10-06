@@ -19,7 +19,7 @@ namespace Fp
         /// <returns>True if file with provided name exists next to current file</returns>
         public bool HasSibling(string sibling) =>
             (FileSystem ?? throw new InvalidOperationException())
-            .FileExists(Path.Combine(InputDirectory, sibling));
+            .FileExists(Path.Combine(InputDirectory ?? "/", sibling));
 
         /// <summary>
         /// Check if a file exists in the same folder as specified path
@@ -29,7 +29,7 @@ namespace Fp
         /// <returns>True if file with provided name exists next to current file</returns>
         public bool PathHasSibling(string path, string sibling) =>
             (FileSystem ?? throw new InvalidOperationException())
-            .FileExists(Path.Combine(Path.GetDirectoryName(path), sibling));
+            .FileExists(Path.Combine(Path.GetDirectoryName(path) ?? "/", sibling));
 
         /// <summary>
         /// Check if current file has any one of the given extensions
@@ -45,7 +45,7 @@ namespace Fp
         /// <param name="extensions">File extensions to check</param>
         /// <param name="file">File to check</param>
         /// <returns>True if any extension matches</returns>
-        public static bool PathHasExtension(string file, params string[] extensions) =>
+        public static bool PathHasExtension(string file, params string?[] extensions) =>
             extensions.Any(extension =>
                 extension == null || file.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase));
 

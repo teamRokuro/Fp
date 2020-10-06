@@ -147,7 +147,7 @@ namespace Fp
             {
                 MemoryStream stream = new MemoryStream();
                 _outputEntries.Add((path, stream));
-                _dirs.Add(Path.GetDirectoryName(path));
+                _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
                 return stream;
             }
 

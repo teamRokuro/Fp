@@ -110,7 +110,7 @@ namespace Fp.Intermediate
                     {
                         var jpegEncoder = new JpegEncoder();
                         if (formatOptions != null &&
-                            formatOptions.TryGetValue(Options.JpegQuality, out object jpegQuality))
+                            formatOptions.TryGetValue(Options.JpegQuality, out object? jpegQuality))
                             jpegEncoder.Quality = Math.Min(100, Math.Max(0, CastNumber<object, int>(jpegQuality)));
                         image.SaveAsJpeg(outputStream, jpegEncoder);
                     }

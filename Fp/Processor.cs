@@ -138,8 +138,8 @@ namespace Fp
 
         private Encoder Utf8Encoder => _utf8Encoder ??= Encoding.UTF8.GetEncoder();
         private Encoder? _utf8Encoder;
-        private Encoder[] Utf16Encoders => _utf16Encoders ??= new Encoder[GUtf16Encodings.Length];
-        private Encoder[]? _utf16Encoders;
+        private Encoder?[] Utf16Encoders => _utf16Encoders ??= new Encoder?[GUtf16Encodings.Length];
+        private Encoder?[]? _utf16Encoders;
 
         private Encoder GetUtf16Encoder(bool bigEndian, bool bom)
         {
@@ -245,7 +245,7 @@ namespace Fp
                 yield break;
             }
 
-            FileSystemSource? prevFs = FileSystem ?? throw new InvalidOperationException();
+            FileSystemSource prevFs = FileSystem ?? throw new InvalidOperationException();
             FileSystemSource.SegmentedFileSystemSource fs = new FileSystemSource.SegmentedFileSystemSource(prevFs);
             FileSystem = fs;
             try
