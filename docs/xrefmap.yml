@@ -4778,15 +4778,15 @@ references:
   commentId: F:Fp.Processor.PaddingMode.Zero
   fullName: Fp.Processor.PaddingMode.Zero
   nameWithType: Processor.PaddingMode.Zero
-- uid: Fp.Processor.PathHasExtension(System.String,System.String[])
-  name: PathHasExtension(String, String[])
-  href: api/Fp.Processor.html#Fp_Processor_PathHasExtension_System_String_System_String___
-  commentId: M:Fp.Processor.PathHasExtension(System.String,System.String[])
-  name.vb: PathHasExtension(String, String())
-  fullName: Fp.Processor.PathHasExtension(System.String, System.String[])
-  fullName.vb: Fp.Processor.PathHasExtension(System.String, System.String())
-  nameWithType: Processor.PathHasExtension(String, String[])
-  nameWithType.vb: Processor.PathHasExtension(String, String())
+- uid: Fp.Processor.PathHasExtension(System.String,System.Nullable{System.String}[])
+  name: PathHasExtension(String, Nullable<String>[])
+  href: api/Fp.Processor.html#Fp_Processor_PathHasExtension_System_String_System_Nullable_System_String____
+  commentId: M:Fp.Processor.PathHasExtension(System.String,System.Nullable{System.String}[])
+  name.vb: PathHasExtension(String, Nullable(Of String)())
+  fullName: Fp.Processor.PathHasExtension(System.String, System.Nullable<System.String>[])
+  fullName.vb: Fp.Processor.PathHasExtension(System.String, System.Nullable(Of System.String)())
+  nameWithType: Processor.PathHasExtension(String, Nullable<String>[])
+  nameWithType.vb: Processor.PathHasExtension(String, Nullable(Of String)())
 - uid: Fp.Processor.PathHasExtension*
   name: PathHasExtension
   href: api/Fp.Processor.html#Fp_Processor_PathHasExtension_
