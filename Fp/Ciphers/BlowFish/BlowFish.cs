@@ -148,6 +148,83 @@ namespace Fp.Ciphers.BlowFish
         }
 
         /// <summary>
+        /// Encrypts in CBC mode
+        /// </summary>
+        /// <param name="plainText">Plaintext to encrypt</param>
+        /// <exception cref="Exception">If key or IV are not set.</exception>
+        public void EncryptCbc(Span<byte> plainText)
+        {
+            EnsureNotDisposed();
+            if (!_init)
+                throw new Exception("Key not set.");
+            if (!_ivSet)
+                throw new Exception("IV not set.");
+            EncryptCbc(_stateBuffer, plainText);
+        }
+
+        private static unsafe void EncryptCbc(Span<byte> initState, Span<byte> plainText)
+        {
+            fixed (byte* pt = &plainText.GetPinnableReference(), b = &initState.GetPinnableReference())
+            {
+                int len = plainText.Length;
+                uint* p = (uint*)(b + POff),
+                    s0 = (uint*)(b + S0Off),
+                    s1 = (uint*)(b + S1Off),
+                    s2 = (uint*)(b + S2Off),
+                    s3 = (uint*)(b + S3Off);
+                ulong iv = *(ulong*)(b + IvOff);
+                if (BitConverter.IsLittleEndian)
+                    for (int i = 0; i < len; i += 8)
+                    {
+                        byte* block = pt + i;
+                        *(ulong*)block ^= iv;
+                        BlockEncryptLe(block, p, s0, s1, s2, s3);
+                        iv = *(ulong*)block;
+                    }
+                else
+                    for (int i = 0; i < len; i += 8)
+                    {
+                        byte* block = pt + i;
+                        *(ulong*)block ^= iv;
+                        BlockEncryptBe(block, p, s0, s1, s2, s3);
+                        iv = *(ulong*)block;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Encrypts in ECB mode
+        /// </summary>
+        /// <param name="plainText">Plaintext to encrypt</param>
+        /// <exception cref="Exception">If key is not set.</exception>
+        public void EncryptEcb(Span<byte> plainText)
+        {
+            EnsureNotDisposed();
+            if (!_init)
+                throw new Exception("Key not set.");
+            EncryptEcb(_stateBuffer, plainText);
+        }
+
+        private static unsafe void EncryptEcb(Span<byte> initState, Span<byte> plainText)
+        {
+            fixed (byte* pt = &plainText.GetPinnableReference(), b = &initState.GetPinnableReference())
+            {
+                int len = plainText.Length;
+                uint* p = (uint*)(b + POff),
+                    s0 = (uint*)(b + S0Off),
+                    s1 = (uint*)(b + S1Off),
+                    s2 = (uint*)(b + S2Off),
+                    s3 = (uint*)(b + S3Off);
+                if (BitConverter.IsLittleEndian)
+                    for (int i = 0; i < len; i += 8)
+                        BlockEncryptLe(pt + i, p, s0, s1, s2, s3);
+                else
+                    for (int i = 0; i < len; i += 8)
+                        BlockEncryptBe(pt + i, p, s0, s1, s2, s3);
+            }
+        }
+
+        /// <summary>
         /// Set empty IV for CBC mode
         /// </summary>
         /// <returns>This object (for chaining)</returns>
@@ -303,11 +380,10 @@ namespace Fp.Ciphers.BlowFish
 
         #region Base utility functions
 
-        /*
         private static unsafe void BlockEncryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3) {
             var blL = (uint*) block;
             var blR = (uint*) (block + 4);
-            var nTmp = *block;
+            byte nTmp = *block;
             *block = block[3];
             block[3] = nTmp;
             nTmp = block[1];
@@ -330,7 +406,7 @@ namespace Fp.Ciphers.BlowFish
 
             *blR ^= p[17];
 
-            var swap = *blL;
+            uint swap = *blL;
             *blL = *blR;
             *blR = swap;
 
@@ -362,11 +438,10 @@ namespace Fp.Ciphers.BlowFish
 
             *blR ^= p[17];
 
-            var swap = *blL;
+            uint swap = *blL;
             *blL = *blR;
             *blR = swap;
         }
-        */
 
         private static unsafe void BlockDecryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
@@ -664,6 +739,8 @@ namespace Fp.Ciphers.BlowFish
 
         #endregion
 
+        #region Misc
+
         private void EnsureNotDisposed()
         {
             if (_disposed) throw new ObjectDisposedException(nameof(Blowfish));
@@ -682,6 +759,8 @@ namespace Fp.Ciphers.BlowFish
         {
             Dispose();
         }
+
+        #endregion
     }
 }
 
