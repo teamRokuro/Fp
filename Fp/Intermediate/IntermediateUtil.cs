@@ -21,6 +21,7 @@ namespace Fp.Intermediate
                 CommonFormat.PngDeflate => ".png",
                 CommonFormat.PcmWave => ".wav",
                 CommonFormat.ExportUnsupported => "",
+                CommonFormat.Jpeg => ".jpg",
                 _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
             };
         }

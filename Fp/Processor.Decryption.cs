@@ -48,6 +48,26 @@ namespace Fp
         }
 
         /// <summary>
+        /// Get padded message length using specified padding mode
+        /// </summary>
+        /// <param name="length">Input message length</param>
+        /// <param name="paddingMode">Padding mode to use</param>
+        /// <param name="blockSize">Cipher block size</param>
+        /// <returns>Padded length of message</returns>
+        public static int GetPaddedLength(int length, PaddingMode paddingMode, int blockSize) =>
+            paddingMode switch
+            {
+                PaddingMode.Zero => length + (blockSize - length % blockSize),
+                var p when
+                    p == PaddingMode.Iso_Iec_7816_4 ||
+                    p == PaddingMode.AnsiX9_23 ||
+                    p == PaddingMode.Iso10126 ||
+                    p == PaddingMode.Pkcs7 ||
+                    p == PaddingMode.Pkcs5 => length + 1 + (blockSize - (length + 1) % blockSize),
+                _ => throw new ArgumentOutOfRangeException(nameof(paddingMode), paddingMode, null)
+            };
+
+        /// <summary>
         /// Get depadded message length using specified padding mode
         /// </summary>
         /// <param name="span">Message</param>
@@ -59,11 +79,11 @@ namespace Fp
                 PaddingMode.Zero => GetDepaddedLengthZero(span),
                 PaddingMode.Iso_Iec_7816_4 => GetDepaddedLengthIso_Iec_7816_4(span),
                 var p when
-                p == PaddingMode.AnsiX9_23 ||
-                p == PaddingMode.Iso10126 ||
-                p == PaddingMode.Pkcs7 ||
-                p == PaddingMode.Pkcs5
-                => GetDepaddedLengthLastByteSubtract(span),
+                    p == PaddingMode.AnsiX9_23 ||
+                    p == PaddingMode.Iso10126 ||
+                    p == PaddingMode.Pkcs7 ||
+                    p == PaddingMode.Pkcs5
+                    => GetDepaddedLengthLastByteSubtract(span),
                 _ => throw new ArgumentOutOfRangeException(nameof(paddingMode), paddingMode, null)
             };
 

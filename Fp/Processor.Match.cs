@@ -143,17 +143,7 @@ namespace Fp
             }
             finally
             {
-                if (buffers != null)
-                {
-                    foreach (byte[] t in buffers)
-                    {
-                        if (t != null)
-                        {
-                            Shared.Return(t);
-                        }
-                    }
-                }
-
+                foreach (byte[] t in buffers) Shared.Return(t);
                 stream.Position = initPos;
             }
         }
@@ -288,17 +278,7 @@ namespace Fp
             }
             finally
             {
-                if (buffers != null)
-                {
-                    foreach (byte[] t in buffers)
-                    {
-                        if (t != null)
-                        {
-                            Shared.Return(t);
-                        }
-                    }
-                }
-
+                foreach (byte[] t in buffers) Shared.Return(t);
                 stream.Position = initPos;
             }
         }

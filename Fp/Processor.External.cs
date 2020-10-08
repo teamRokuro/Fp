@@ -32,17 +32,11 @@ namespace Fp
             if (!shellExecute)
             {
                 LogInfo("Stdout>");
-                string line;
-                while ((line = process.StandardOutput.ReadLine()) != null)
-                {
-                    LogInfo(line);
-                }
+                string? line;
+                while ((line = process.StandardOutput.ReadLine()) != null) LogInfo(line);
 
                 LogInfo("Stderr>");
-                while ((line = process.StandardError.ReadLine()) != null)
-                {
-                    LogInfo(line);
-                }
+                while ((line = process.StandardError.ReadLine()) != null) LogInfo(line);
             }
 
             process.WaitForExit();

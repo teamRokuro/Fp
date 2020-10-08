@@ -49,7 +49,7 @@ namespace Fp
                 if (str[0] != '-')
                 {
                     inputs.Add((File.Exists(str),
-                        Path.GetDirectoryName(Path.GetFullPath(str)), str));
+                        Path.GetDirectoryName(Path.GetFullPath(str)) ?? Path.GetFullPath("/"), str));
                     continue;
                 }
 
@@ -334,8 +334,9 @@ Options
         {
             try
             {
-                processor.Debug = configuration.Debug;
+                processor.SrcCleanup();
                 processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
+                processor.Debug = configuration.Debug;
                 processor.Preload = configuration.Preload;
                 processor.Logger = configuration.Logger;
                 processor.WorkerId = workerId;

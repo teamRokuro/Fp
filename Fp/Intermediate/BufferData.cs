@@ -27,12 +27,15 @@ namespace Fp.Intermediate
     /// <inheritdoc />
     public class BufferData<T> : BufferData where T : unmanaged
     {
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.Generic;
 
-        private readonly IMemoryOwner<T>? _memoryOwner;
+        /// <summary>
+        /// Memory owner
+        /// </summary>
+        public IMemoryOwner<T>? MemoryOwner { get; }
 
         /// <summary>
         /// Buffer
@@ -52,7 +55,7 @@ namespace Fp.Intermediate
         public BufferData(string basePath, int count) : base(basePath)
         {
             Dry = true;
-            _memoryOwner = null;
+            MemoryOwner = null;
             Buffer = Memory<T>.Empty;
             Count = count;
         }
@@ -65,9 +68,9 @@ namespace Fp.Intermediate
         /// <param name="count">Length of content</param>
         public BufferData(string basePath, IMemoryOwner<T> memoryOwner, int? count = default) : base(basePath)
         {
-            _memoryOwner = memoryOwner;
-            Buffer = _memoryOwner.Memory;
-            Dry = Buffer.IsEmpty;
+            MemoryOwner = memoryOwner;
+            Buffer = MemoryOwner.Memory;
+            Dry = false;
             Count = count ?? Buffer.Length;
         }
 
@@ -79,25 +82,25 @@ namespace Fp.Intermediate
         public BufferData(string basePath, ReadOnlyMemory<T> buffer) : base(basePath)
         {
             Buffer = buffer;
-            Dry = Buffer.IsEmpty;
-            _memoryOwner = null;
+            Dry = false;
+            MemoryOwner = null;
             Count = buffer.Length;
         }
 
         /// <inheritdoc />
         public override ReadOnlySpan<TWant> AsSpan<TWant>()
         {
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             return MemoryMarshal.Cast<T, TWant>(Buffer.Span);
         }
 
         /// <inheritdoc />
         public override bool WriteConvertedData(Stream outputStream, CommonFormat format,
-            Dictionary<string, string>? formatOptions = null)
+            Dictionary<object, object>? formatOptions = null)
         {
             if (Dry) throw new InvalidOperationException("Cannot convert a dry data container");
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             switch (format)
             {
@@ -115,7 +118,7 @@ namespace Fp.Intermediate
         {
             if (Dry)
                 return new BufferData<T>(BasePath, Count);
-            if (Buffer.IsEmpty)
+            if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
             return new BufferData<T>(BasePath, IntermediateUtil.CloneBuffer(Buffer));
         }
@@ -126,19 +129,21 @@ namespace Fp.Intermediate
         /// <param name="disposing">False if called from finalizer</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_disposed)
-            {
-                return;
-            }
+            if (_disposed) return;
+            _disposed = true;
 
             if (disposing)
             {
                 Buffer = Memory<T>.Empty;
-                _memoryOwner?.Dispose();
+                MemoryOwner?.Dispose();
             }
         }
 
         /// <inheritdoc />
-        public override void Dispose() => Dispose(true);
+        public override void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

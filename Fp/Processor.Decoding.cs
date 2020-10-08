@@ -1837,7 +1837,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0, int maxLength = int.MaxValue)
+        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0,
+            int maxLength = int.MaxValue)
             => ReadUtf8String(memory.Span.Slice(offset), maxLength);
 
         /// <summary>
@@ -1986,8 +1987,90 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0, int maxLength = int.MaxValue)
+        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0,
+            int maxLength = int.MaxValue)
             => ReadUtf16String(memory.Span.Slice(offset), maxLength);
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
+        /// <param name="memory">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static void ApplyAnd(Memory<byte> memory, byte value)
+        {
+            Span<byte> span = memory.Span;
+#if NET5_0
+            // TODO use intrinsics for supported platforms on net5.0
+            for (int i = 0; i < span.Length; i++)
+                span[i] &= value;
+#else
+            for (int i = 0; i < span.Length; i++)
+                span[i] &= value;
+#endif
+        }
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="memory">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static void ApplyOr(Memory<byte> memory, byte value)
+        {
+            Span<byte> span = memory.Span;
+#if NET5_0
+            // TODO use intrinsics for supported platforms on net5.0
+            for (int i = 0; i < span.Length; i++)
+                span[i] |= value;
+#else
+            for (int i = 0; i < span.Length; i++)
+                span[i] |= value;
+#endif
+        }
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="memory">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static void ApplyXor(Memory<byte> memory, byte value)
+        {
+            Span<byte> span = memory.Span;
+#if NET5_0
+            // TODO use intrinsics for supported platforms on net5.0
+            for (int i = 0; i < span.Length; i++)
+                span[i] ^= value;
+#else
+            for (int i = 0; i < span.Length; i++)
+                span[i] ^= value;
+#endif
+        }
+
+#if NET5_0
+        /*private static void ApplyXorAvxX64(Span<byte> source, byte value)
+        {
+            int iValue = (value << 8) | value;
+            iValue |= iValue << 16;
+        }*/
+#endif
+
+        /// <summary>
+        /// Transform delegate
+        /// </summary>
+        /// <param name="input">Input value</param>
+        /// <param name="index">Index</param>
+        public delegate byte TransformDelegate(byte input, int index);
+
+        /// <summary>
+        /// Transform memory region
+        /// </summary>
+        /// <param name="memory">Memory to modify</param>
+        /// <param name="func">Transformation delegate</param>
+        public static void ApplyTransform(Memory<byte> memory, TransformDelegate func)
+        {
+            Span<byte> span = memory.Span;
+            for (int i = 0; i < span.Length; i++)
+                span[i] = func(span[i], i);
+        }
 
         #endregion
     }

@@ -87,8 +87,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IDisposable</span></div>
-    <div><span class="xref">System.ICloneable</span></div>
+    <div><span class="xref">ICloneable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -99,32 +98,14 @@
       <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dry">Data.Dry</a>
     </div>
     <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_CastNumber__2___0_">Data.CastNumber&lt;TIn, TOut&gt;(TIn)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Intermediate.html">Fp.Intermediate</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
   <h5 id="Fp_Intermediate_BufferData_1_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BufferData&lt;T&gt; : BufferData, IDisposable, ICloneable where T : struct</code></pre>
+    <pre><code class="lang-csharp hljs">public class BufferData&lt;T&gt; : BufferData, ICloneable where T : struct</code></pre>
   </div>
   <h5 class="typeParameters">Type Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,19 +126,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_System_Buffers_IMemoryOwner__0__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CSystem.Buffers.IMemoryOwner%7B%600%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_IMemoryOwner__0__System_Nullable_System_Int32__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CIMemoryOwner%7B%600%7D%2CSystem.Nullable%7BSystem.Int32%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L66">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L69">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1__ctor_" data-uid="Fp.Intermediate.BufferData`1.#ctor*"></a>
-  <h4 id="Fp_Intermediate_BufferData_1__ctor_System_String_System_Buffers_IMemoryOwner__0__System_Nullable_System_Int32__" data-uid="Fp.Intermediate.BufferData`1.#ctor(System.String,System.Buffers.IMemoryOwner{`0},System.Nullable{System.Int32})">BufferData(String, IMemoryOwner&lt;T&gt;, Nullable&lt;Int32&gt;)</h4>
+  <h4 id="Fp_Intermediate_BufferData_1__ctor_System_String_IMemoryOwner__0__System_Nullable_System_Int32__" data-uid="Fp.Intermediate.BufferData`1.#ctor(System.String,IMemoryOwner{`0},System.Nullable{System.Int32})">BufferData(String, IMemoryOwner&lt;T&gt;, Nullable&lt;Int32&gt;)</h4>
   <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.BufferData-1.html">BufferData&lt;T&gt;</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BufferData(string basePath, IMemoryOwner&lt;T&gt; memoryOwner, int? count = default(int? ))</code></pre>
+    <pre><code class="lang-csharp hljs">public BufferData(string basePath, IMemoryOwner&lt;T&gt; memoryOwner, int? count = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -176,7 +157,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Buffers.IMemoryOwner</span>&lt;T&gt;</td>
+        <td><span class="xref">IMemoryOwner</span>&lt;T&gt;</td>
         <td><span class="parametername">memoryOwner</span></td>
         <td><p>Owner of data buffer</p>
 </td>
@@ -191,10 +172,50 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_ReadOnlyMemory__0__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CReadOnlyMemory%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L52">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L82">View Source</a>
+  </span>
+  <a id="Fp_Intermediate_BufferData_1__ctor_" data-uid="Fp.Intermediate.BufferData`1.#ctor*"></a>
+  <h4 id="Fp_Intermediate_BufferData_1__ctor_System_String_ReadOnlyMemory__0__" data-uid="Fp.Intermediate.BufferData`1.#ctor(System.String,ReadOnlyMemory{`0})">BufferData(String, ReadOnlyMemory&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.BufferData-1.html">BufferData&lt;T&gt;</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BufferData(string basePath, ReadOnlyMemory&lt;T&gt; buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">basePath</span></td>
+        <td><p>Base path of resource</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;T&gt;</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Data in container</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L55">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1__ctor_" data-uid="Fp.Intermediate.BufferData`1.#ctor*"></a>
   <h4 id="Fp_Intermediate_BufferData_1__ctor_System_String_System_Int32_" data-uid="Fp.Intermediate.BufferData`1.#ctor(System.String,System.Int32)">BufferData(String, Int32)</h4>
@@ -229,54 +250,14 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1__ctor_System_String_System_ReadOnlyMemory__0__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.%23ctor(System.String%2CSystem.ReadOnlyMemory%7B%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L79">View Source</a>
-  </span>
-  <a id="Fp_Intermediate_BufferData_1__ctor_" data-uid="Fp.Intermediate.BufferData`1.#ctor*"></a>
-  <h4 id="Fp_Intermediate_BufferData_1__ctor_System_String_System_ReadOnlyMemory__0__" data-uid="Fp.Intermediate.BufferData`1.#ctor(System.String,System.ReadOnlyMemory{`0})">BufferData(String, ReadOnlyMemory&lt;T&gt;)</h4>
-  <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.Intermediate.BufferData-1.html">BufferData&lt;T&gt;</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BufferData(string basePath, ReadOnlyMemory&lt;T&gt; buffer)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">basePath</span></td>
-        <td><p>Base path of resource</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ReadOnlyMemory</span>&lt;T&gt;</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>Data in container</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="fields">Fields
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Count.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Count.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L45">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L48">View Source</a>
   </span>
   <h4 id="Fp_Intermediate_BufferData_1_Count" data-uid="Fp.Intermediate.BufferData`1.Count">Count</h4>
   <div class="markdown level1 summary"><p>Buffer content length</p>
@@ -305,10 +286,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Buffer.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Buffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Buffer.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Buffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L40">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L43">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_Buffer_" data-uid="Fp.Intermediate.BufferData`1.Buffer*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_Buffer" data-uid="Fp.Intermediate.BufferData`1.Buffer">Buffer</h4>
@@ -329,17 +310,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ReadOnlyMemory</span>&lt;T&gt;</td>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;T&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_DefaultFormat.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.DefaultFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_DefaultFormat.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.DefaultFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L33">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L33">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_DefaultFormat_" data-uid="Fp.Intermediate.BufferData`1.DefaultFormat*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_DefaultFormat" data-uid="Fp.Intermediate.BufferData`1.DefaultFormat">DefaultFormat</h4>
@@ -367,14 +348,45 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_DefaultFormat">Data.DefaultFormat</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_MemoryOwner.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.MemoryOwner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L38">View Source</a>
+  </span>
+  <a id="Fp_Intermediate_BufferData_1_MemoryOwner_" data-uid="Fp.Intermediate.BufferData`1.MemoryOwner*"></a>
+  <h4 id="Fp_Intermediate_BufferData_1_MemoryOwner" data-uid="Fp.Intermediate.BufferData`1.MemoryOwner">MemoryOwner</h4>
+  <div class="markdown level1 summary"><p>Memory owner</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IMemoryOwner&lt;T&gt;? MemoryOwner { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IMemoryOwner</span>&lt;T&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_AsSpan__1.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.AsSpan%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_AsSpan__1.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.AsSpan%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L88">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L91">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_AsSpan_" data-uid="Fp.Intermediate.BufferData`1.AsSpan*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_AsSpan__1" data-uid="Fp.Intermediate.BufferData`1.AsSpan``1">AsSpan&lt;TWant&gt;()</h4>
@@ -396,7 +408,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ReadOnlySpan</span>&lt;TWant&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;TWant&gt;</td>
         <td><p>Span</p>
 </td>
       </tr>
@@ -420,28 +432,12 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Fp.Intermediate.BufferData.html#Fp_Intermediate_BufferData_AsSpan__1">BufferData.AsSpan&lt;TWant&gt;()</a></div>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
-        <td><p>If object was disposed</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Clone.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Clone.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L114">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L117">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_Clone_" data-uid="Fp.Intermediate.BufferData`1.Clone*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_Clone" data-uid="Fp.Intermediate.BufferData`1.Clone">Clone()</h4>
@@ -470,10 +466,10 @@
   <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Clone">Data.Clone()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Dispose.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Dispose.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L142">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L143">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_Dispose_" data-uid="Fp.Intermediate.BufferData`1.Dispose*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_Dispose" data-uid="Fp.Intermediate.BufferData`1.Dispose">Dispose()</h4>
@@ -487,10 +483,10 @@
   <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dispose">Data.Dispose()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L127">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L130">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_Dispose_" data-uid="Fp.Intermediate.BufferData`1.Dispose*"></a>
   <h4 id="Fp_Intermediate_BufferData_1_Dispose_System_Boolean_" data-uid="Fp.Intermediate.BufferData`1.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -521,19 +517,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.WriteConvertedData(System.IO.Stream%2CFp.Intermediate.CommonFormat%2CSystem.Collections.Generic.Dictionary%7BSystem.String%2CSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1_WriteConvertedData_Stream_Fp_Intermediate_CommonFormat_System_Nullable_Dictionary_System_Object_System_Object___.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601.WriteConvertedData(Stream%2CFp.Intermediate.CommonFormat%2CSystem.Nullable%7BDictionary%7BSystem.Object%2CSystem.Object%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L96">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L99">View Source</a>
   </span>
   <a id="Fp_Intermediate_BufferData_1_WriteConvertedData_" data-uid="Fp.Intermediate.BufferData`1.WriteConvertedData*"></a>
-  <h4 id="Fp_Intermediate_BufferData_1_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__" data-uid="Fp.Intermediate.BufferData`1.WriteConvertedData(System.IO.Stream,Fp.Intermediate.CommonFormat,System.Collections.Generic.Dictionary{System.String,System.String})">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</h4>
+  <h4 id="Fp_Intermediate_BufferData_1_WriteConvertedData_Stream_Fp_Intermediate_CommonFormat_System_Nullable_Dictionary_System_Object_System_Object___" data-uid="Fp.Intermediate.BufferData`1.WriteConvertedData(Stream,Fp.Intermediate.CommonFormat,System.Nullable{Dictionary{System.Object,System.Object}})">WriteConvertedData(Stream, CommonFormat, Nullable&lt;Dictionary&lt;Object, Object&gt;&gt;)</h4>
   <div class="markdown level1 summary"><p>Get stream of data converted to common file format</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary&lt;string, string&gt; formatOptions = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary&lt;object, object&gt;? formatOptions = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -546,7 +542,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
         <td><p>Target stream</p>
 </td>
@@ -558,7 +554,7 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">Dictionary</span>&lt;<span class="xref">System.Object</span>, <span class="xref">System.Object</span>&gt;&gt;</td>
         <td><span class="parametername">formatOptions</span></td>
         <td><p>Format-specific options</p>
 </td>
@@ -582,13 +578,10 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_String_System_String__">Data.WriteConvertedData(Stream, CommonFormat, Dictionary&lt;String, String&gt;)</a></div>
+  <div><a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_Stream_Fp_Intermediate_CommonFormat_System_Nullable_Dictionary_System_Object_System_Object___">Data.WriteConvertedData(Stream, CommonFormat, Nullable&lt;Dictionary&lt;Object, Object&gt;&gt;)</a></div>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IDisposable</span>
-  </div>
-  <div>
-      <span class="xref">System.ICloneable</span>
+      <span class="xref">ICloneable</span>
   </div>
 </article>
           </div>
@@ -598,10 +591,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_Intermediate_BufferData_1.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Intermediate_BufferData_1.md&amp;value=---%0Auid%3A%20Fp.Intermediate.BufferData%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/Intermediate/BufferData.cs/#L28" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Intermediate/BufferData.cs/#L28" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

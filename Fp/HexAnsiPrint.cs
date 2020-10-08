@@ -30,8 +30,7 @@ namespace Fp
             try
             {
                 // https://gist.github.com/tomzorz/6142d69852f831fb5393654c90a1f22e
-                // TODO Accelerate add standard library path
-                IntPtr lib = Accelerate.This("kernel32", null, AcceleratePlatform.Default, "C:\\Windows\\System32");
+                IntPtr lib = Accelerate.This("kernel32");
                 try
                 {
                     GetStdHandle GetStdHandle = Accelerate.This<GetStdHandle>(lib, "GetStdHandle");

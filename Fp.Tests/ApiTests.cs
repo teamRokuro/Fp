@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Fp.Ciphers.BlowFish;
+using Fp.Intermediate;
 using NUnit.Framework;
 
 namespace Fp.Tests
@@ -60,6 +62,43 @@ namespace Fp.Tests
             mbs.CopyTo(ms2);
             ms2.TryGetBuffer(out ArraySegment<byte> ms2b);
             Assert.AreEqual(new ArraySegment<byte>(a), ms2b);
+        }
+
+        [Test]
+        public void TestNumberCast()
+        {
+            object number1 = 1;
+            Assert.AreEqual(1, Data.CastNumber<object, byte>(number1));
+            Assert.AreEqual(3841, Data.CastNumber<uint, short>(3841));
+            Assert.AreEqual(17, Data.CastNumber<object, uint>("17"));
+            Assert.AreEqual(1.0f, Data.CastNumber<object, float>("1.0"), 0.001f);
+        }
+
+        [Test]
+        public void TestBlowfish()
+        {
+            byte[] data;
+            using (FileStream fs = File.OpenRead("Watch_Dogs2020-4-3-0-57-53.png"))
+            {
+                data = new byte[Processor.GetPaddedLength((int)fs.Length, Processor.PaddingMode.Zero, 8)];
+            }
+
+            byte[] dataEnc = new byte[data.Length];
+            Buffer.BlockCopy(data, 0, dataEnc, 0, data.Length);
+            Blowfish bf = new Blowfish();
+            var ptkey = Processor.DecodeHex("1010ffff");
+            bf.SetBlankIv();
+            bf.SetKey(ptkey);
+            bf.EncryptCbc(dataEnc);
+            bf.SetBlankIv();
+            bf.SetKey(ptkey);
+            bf.DecryptCbc(dataEnc);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(dataEnc));
+            bf.SetKey(ptkey);
+            bf.EncryptEcb(dataEnc);
+            bf.SetKey(ptkey);
+            bf.DecryptEcb(dataEnc);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(dataEnc));
         }
     }
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
     <LangVersion>8</LangVersion>
     <Authors>riina</Authors>
     <Description>File processing</Description>
@@ -15,21 +15,29 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageVersion>0.3.8</PackageVersion>
+    <PackageVersion>0.3.9</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <NoWarn>NU5105</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="System.Buffers" Version="4.5.1"/>
+    <PackageReference Include="System.Memory" Version="4.5.4"/>
+  </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="System.Buffers" Version="4.5.1" />
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="Esper.Accelerator" Version="0.2.0" />
+    <PackageReference Include="Esper.Accelerator" Version="0.3.3"/>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1"/>
   </ItemGroup>
 
   <ItemGroup>
     <None Include="NOTICE.Fp.txt" Pack="true" PackagePath="lib/netstandard2.0/">
+      <Link>%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NOTICE.Fp.txt" Pack="true" PackagePath="lib/net5.0/">
       <Link>%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

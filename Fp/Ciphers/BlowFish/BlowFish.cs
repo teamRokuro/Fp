@@ -11,7 +11,6 @@ Changes:
  */
 
 using System;
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using Fp.Ciphers.BlowFish;
 
@@ -20,11 +19,13 @@ namespace Fp.Ciphers.BlowFish
     /// <summary>
     /// Blowfish cipher state
     /// </summary>
-    public sealed class Blowfish : IDisposable
+    public struct Blowfish
     {
         #region Fields/properties
 
-        private byte[] _stateBuffer;
+#pragma warning disable 649
+        private unsafe fixed byte _stateBuffer[MLen];
+#pragma warning restore 649
 
         private const int POff = 0;
         private const int PLen = 4 * 18;
@@ -50,18 +51,33 @@ namespace Fp.Ciphers.BlowFish
 
         private bool _init;
 
-        private bool _disposed;
-
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Create new instance of <see cref="Blowfish"/>
+        /// Create a new instance of <see cref="Blowfish"/> with specified key and blank CBC IV
         /// </summary>
-        public Blowfish()
+        /// <param name="key">Cipher key</param>
+        public Blowfish(ReadOnlySpan<byte> key)
         {
-            _stateBuffer = ArrayPool<byte>.Shared.Rent(MLen);
+            _ivSet = false;
+            _init = false;
+            SetKey(key);
+            SetBlankIv();
+        }
+
+        /// <summary>
+        /// Create a new instance of <see cref="Blowfish"/> with specified key and specified CBC IV
+        /// </summary>
+        /// <param name="key">Cipher key</param>
+        /// <param name="iv">CBC IV</param>
+        public Blowfish(ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv)
+        {
+            _ivSet = false;
+            _init = false;
+            SetKey(key);
+            SetIv(iv);
         }
 
         #endregion
@@ -73,19 +89,13 @@ namespace Fp.Ciphers.BlowFish
         /// </summary>
         /// <param name="cipherText">Ciphertext to decrypt</param>
         /// <exception cref="Exception">If key or IV are not set.</exception>
-        public void DecryptCbc(Span<byte> cipherText)
+        public unsafe void DecryptCbc(Span<byte> cipherText)
         {
-            EnsureNotDisposed();
             if (!_init)
                 throw new Exception("Key not set.");
             if (!_ivSet)
                 throw new Exception("IV not set.");
-            DecryptCbc(_stateBuffer, cipherText);
-        }
-
-        private static unsafe void DecryptCbc(Span<byte> initState, Span<byte> cipherText)
-        {
-            fixed (byte* ct = &cipherText.GetPinnableReference(), b = &initState.GetPinnableReference())
+            fixed (byte* ct = &cipherText.GetPinnableReference(), b = _stateBuffer)
             {
                 int len = cipherText.Length;
                 uint* p = (uint*)(b + POff),
@@ -120,17 +130,11 @@ namespace Fp.Ciphers.BlowFish
         /// </summary>
         /// <param name="cipherText">Ciphertext to decrypt</param>
         /// <exception cref="Exception">If key is not set.</exception>
-        public void DecryptEcb(Span<byte> cipherText)
+        public unsafe void DecryptEcb(Span<byte> cipherText)
         {
-            EnsureNotDisposed();
             if (!_init)
                 throw new Exception("Key not set.");
-            DecryptEcb(_stateBuffer, cipherText);
-        }
-
-        private static unsafe void DecryptEcb(Span<byte> initState, Span<byte> cipherText)
-        {
-            fixed (byte* ct = &cipherText.GetPinnableReference(), b = &initState.GetPinnableReference())
+            fixed (byte* ct = &cipherText.GetPinnableReference(), b = _stateBuffer)
             {
                 int len = cipherText.Length;
                 uint* p = (uint*)(b + POff),
@@ -148,15 +152,78 @@ namespace Fp.Ciphers.BlowFish
         }
 
         /// <summary>
+        /// Encrypts in CBC mode
+        /// </summary>
+        /// <param name="plainText">Plaintext to encrypt</param>
+        /// <exception cref="Exception">If key or IV are not set.</exception>
+        public unsafe void EncryptCbc(Span<byte> plainText)
+        {
+            if (!_init)
+                throw new Exception("Key not set.");
+            if (!_ivSet)
+                throw new Exception("IV not set.");
+            fixed (byte* pt = &plainText.GetPinnableReference(), b = _stateBuffer)
+            {
+                int len = plainText.Length;
+                uint* p = (uint*)(b + POff),
+                    s0 = (uint*)(b + S0Off),
+                    s1 = (uint*)(b + S1Off),
+                    s2 = (uint*)(b + S2Off),
+                    s3 = (uint*)(b + S3Off);
+                ulong iv = *(ulong*)(b + IvOff);
+                if (BitConverter.IsLittleEndian)
+                    for (int i = 0; i < len; i += 8)
+                    {
+                        byte* block = pt + i;
+                        *(ulong*)block ^= iv;
+                        BlockEncryptLe(block, p, s0, s1, s2, s3);
+                        iv = *(ulong*)block;
+                    }
+                else
+                    for (int i = 0; i < len; i += 8)
+                    {
+                        byte* block = pt + i;
+                        *(ulong*)block ^= iv;
+                        BlockEncryptBe(block, p, s0, s1, s2, s3);
+                        iv = *(ulong*)block;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Encrypts in ECB mode
+        /// </summary>
+        /// <param name="plainText">Plaintext to encrypt</param>
+        /// <exception cref="Exception">If key is not set.</exception>
+        public unsafe void EncryptEcb(Span<byte> plainText)
+        {
+            if (!_init)
+                throw new Exception("Key not set.");
+            fixed (byte* pt = &plainText.GetPinnableReference(), b = _stateBuffer)
+            {
+                int len = plainText.Length;
+                uint* p = (uint*)(b + POff),
+                    s0 = (uint*)(b + S0Off),
+                    s1 = (uint*)(b + S1Off),
+                    s2 = (uint*)(b + S2Off),
+                    s3 = (uint*)(b + S3Off);
+                if (BitConverter.IsLittleEndian)
+                    for (int i = 0; i < len; i += 8)
+                        BlockEncryptLe(pt + i, p, s0, s1, s2, s3);
+                else
+                    for (int i = 0; i < len; i += 8)
+                        BlockEncryptBe(pt + i, p, s0, s1, s2, s3);
+            }
+        }
+
+        /// <summary>
         /// Set empty IV for CBC mode
         /// </summary>
-        /// <returns>This object (for chaining)</returns>
-        public Blowfish SetBlankIv()
+        public unsafe void SetBlankIv()
         {
-            EnsureNotDisposed();
-            _stateBuffer.AsSpan(IvOff, IvLen).Fill(0);
+            fixed (byte* b = _stateBuffer)
+                new Span<byte>(b + IvOff, IvLen).Fill(0);
             _ivSet = true;
-            return this;
         }
 
         /// <summary>
@@ -164,29 +231,24 @@ namespace Fp.Ciphers.BlowFish
         /// </summary>
         /// <param name="iv"></param>
         /// <exception cref="Exception">If IV size is not 8</exception>
-        /// <returns>This object (for chaining)</returns>
-        public Blowfish SetIv(Span<byte> iv)
+        public unsafe void SetIv(ReadOnlySpan<byte> iv)
         {
-            EnsureNotDisposed();
             if (iv.Length == 8)
             {
-                iv.CopyTo(_stateBuffer.AsSpan(IvOff));
+                fixed (byte* b = _stateBuffer)
+                    iv.CopyTo(new Span<byte>(b + IvOff, IvLen));
                 _ivSet = true;
             }
             else
                 throw new Exception("Invalid IV size.");
-
-            return this;
         }
 
         /// <summary>
         /// Sets up the S-blocks and the key
         /// </summary>
         /// <param name="cipherKey">Block cipher key (1-448 bits)</param>
-        /// <returns>This object (for chaining)</returns>
-        public unsafe Blowfish SetKey(Span<byte> cipherKey)
+        public unsafe void SetKey(ReadOnlySpan<byte> cipherKey)
         {
-            EnsureNotDisposed();
             if (cipherKey.Length > 56)
                 throw new Exception($"Key too long. Key is {cipherKey.Length} bytes long, 56 bytes maximum.");
             int keyLen = cipherKey.Length;
@@ -296,18 +358,17 @@ namespace Fp.Ciphers.BlowFish
             }
 
             _init = true;
-            return this;
         }
 
         #endregion
 
         #region Base utility functions
 
-        /*
-        private static unsafe void BlockEncryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3) {
-            var blL = (uint*) block;
-            var blR = (uint*) (block + 4);
-            var nTmp = *block;
+        private static unsafe void BlockEncryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
+        {
+            var blL = (uint*)block;
+            var blR = (uint*)(block + 4);
+            byte nTmp = *block;
             *block = block[3];
             block[3] = nTmp;
             nTmp = block[1];
@@ -321,7 +382,8 @@ namespace Fp.Ciphers.BlowFish
             block[6] = nTmp;
 
             *blL ^= p[0];
-            for (byte i = 0; i < 16; i += 2) {
+            for (byte i = 0; i < 16; i += 2)
+            {
                 *blR = (((s0[block[3]] + s1[block[2]]) ^ s2[block[1]]) +
                         s3[*block]) ^ p[i + 1] ^ *blR;
                 *blL = (((s0[block[7]] + s1[block[6]]) ^ s2[block[5]]) +
@@ -330,7 +392,7 @@ namespace Fp.Ciphers.BlowFish
 
             *blR ^= p[17];
 
-            var swap = *blL;
+            uint swap = *blL;
             *blL = *blR;
             *blR = swap;
 
@@ -348,12 +410,14 @@ namespace Fp.Ciphers.BlowFish
             block[6] = nTmp;
         }
 
-        private static unsafe void BlockEncryptBe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3) {
-            var blL = (uint*) block;
-            var blR = (uint*) (block + 4);
+        private static unsafe void BlockEncryptBe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
+        {
+            var blL = (uint*)block;
+            var blR = (uint*)(block + 4);
 
             *blL ^= p[0];
-            for (byte i = 0; i < 16; i += 2) {
+            for (byte i = 0; i < 16; i += 2)
+            {
                 *blR = (((s0[block[3]] + s1[block[2]]) ^ s2[block[1]]) +
                         s3[*block]) ^ p[i + 1] ^ *blR;
                 *blL = (((s0[block[7]] + s1[block[6]]) ^ s2[block[5]]) +
@@ -362,11 +426,10 @@ namespace Fp.Ciphers.BlowFish
 
             *blR ^= p[17];
 
-            var swap = *blL;
+            uint swap = *blL;
             *blL = *blR;
             *blR = swap;
         }
-        */
 
         private static unsafe void BlockDecryptLe(byte* block, uint* p, uint* s0, uint* s1, uint* s2, uint* s3)
         {
@@ -663,25 +726,6 @@ namespace Fp.Ciphers.BlowFish
         };
 
         #endregion
-
-        private void EnsureNotDisposed()
-        {
-            if (_disposed) throw new ObjectDisposedException(nameof(Blowfish));
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            if (_disposed) return;
-            _disposed = true;
-            ArrayPool<byte>.Shared.Return(_stateBuffer);
-        }
-
-        /// <summary/>
-        ~Blowfish()
-        {
-            Dispose();
-        }
     }
 }
 
@@ -695,9 +739,9 @@ namespace Fp
         /// </summary>
         /// <param name="src">Source span</param>
         /// <param name="key">Cipher key</param>
-        public static void DecryptBlowfishEcb(Span<byte> src, Span<byte> key)
+        public static void DecryptBlowfishEcb(Span<byte> src, ReadOnlySpan<byte> key)
         {
-            using Blowfish bf = new Blowfish().SetKey(key);
+            Blowfish bf = new Blowfish(key);
             bf.DecryptEcb(src);
         }
 
@@ -707,10 +751,10 @@ namespace Fp
         /// <param name="src">Source span</param>
         /// <param name="key">Cipher key</param>
         /// <param name="iv">IV (CBC/CTR)</param>
-        public static void DecryptBlowfishCbc(Span<byte> src, Span<byte> key, Span<byte> iv = default)
+        public static void DecryptBlowfishCbc(Span<byte> src, ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv = default)
         {
-            using Blowfish bf = new Blowfish().SetKey(key);
-            (iv.Length == 0 ? bf.SetBlankIv() : bf.SetIv(iv)).DecryptCbc(src);
+            Blowfish bf = iv.Length == 0 ? new Blowfish(key) : new Blowfish(key, iv);
+            bf.DecryptCbc(src);
         }
     }
 }
