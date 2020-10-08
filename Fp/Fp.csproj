@@ -22,11 +22,14 @@
     <NoWarn>NU5105</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="System.Buffers" Version="4.5.1"/>
+    <PackageReference Include="System.Memory" Version="4.5.4"/>
+  </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="System.Buffers" Version="4.5.1" />
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="Esper.Accelerator" Version="0.3.3" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
+    <PackageReference Include="Esper.Accelerator" Version="0.3.3"/>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1"/>
   </ItemGroup>
 
   <ItemGroup>
