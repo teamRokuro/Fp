@@ -132,15 +132,7 @@ namespace Fp.Intermediate
                 Shared.Return(buffer);
             }
 
-            buffer = Shared.Rent(4096);
-            try
-            {
-                Processor.WriteBaseSpan(outputStream, data);
-            }
-            finally
-            {
-                Shared.Return(buffer);
-            }
+            Processor.WriteBaseSpan(outputStream, data);
         }
 
         /// <inheritdoc />

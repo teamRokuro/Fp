@@ -291,10 +291,12 @@ namespace Fp
         /// <summary>
         /// Cleanup resources
         /// </summary>
-        public void SrcCleanup()
+        public virtual void SrcCleanup()
         {
             InputStream?.Dispose();
             OutputStream?.Dispose();
+            InputStream = null;
+            OutputStream = null;
         }
 
         #endregion

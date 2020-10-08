@@ -334,8 +334,9 @@ Options
         {
             try
             {
-                processor.Debug = configuration.Debug;
+                processor.SrcCleanup();
                 processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
+                processor.Debug = configuration.Debug;
                 processor.Preload = configuration.Preload;
                 processor.Logger = configuration.Logger;
                 processor.WorkerId = workerId;

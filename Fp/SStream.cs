@@ -53,7 +53,7 @@ namespace Fp
         public override long Position
         {
             get => CanSeek ? _position : throw new NotSupportedException();
-            set => _position = CanSeek ? value : throw new NotSupportedException();
+            set => Seek(value, SeekOrigin.Begin);
         }
 
         /// <inheritdoc />

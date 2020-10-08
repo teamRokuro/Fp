@@ -32,7 +32,10 @@ namespace Fp.Intermediate
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.Generic;
 
-        private readonly IMemoryOwner<T>? _memoryOwner;
+        /// <summary>
+        /// Memory owner
+        /// </summary>
+        public IMemoryOwner<T>? MemoryOwner { get; }
 
         /// <summary>
         /// Buffer
@@ -52,7 +55,7 @@ namespace Fp.Intermediate
         public BufferData(string basePath, int count) : base(basePath)
         {
             Dry = true;
-            _memoryOwner = null;
+            MemoryOwner = null;
             Buffer = Memory<T>.Empty;
             Count = count;
         }
@@ -65,8 +68,8 @@ namespace Fp.Intermediate
         /// <param name="count">Length of content</param>
         public BufferData(string basePath, IMemoryOwner<T> memoryOwner, int? count = default) : base(basePath)
         {
-            _memoryOwner = memoryOwner;
-            Buffer = _memoryOwner.Memory;
+            MemoryOwner = memoryOwner;
+            Buffer = MemoryOwner.Memory;
             Dry = false;
             Count = count ?? Buffer.Length;
         }
@@ -80,7 +83,7 @@ namespace Fp.Intermediate
         {
             Buffer = buffer;
             Dry = false;
-            _memoryOwner = null;
+            MemoryOwner = null;
             Count = buffer.Length;
         }
 
@@ -132,11 +135,15 @@ namespace Fp.Intermediate
             if (disposing)
             {
                 Buffer = Memory<T>.Empty;
-                _memoryOwner?.Dispose();
+                MemoryOwner?.Dispose();
             }
         }
 
         /// <inheritdoc />
-        public override void Dispose() => Dispose(true);
+        public override void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }
