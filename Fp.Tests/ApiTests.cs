@@ -85,7 +85,7 @@ namespace Fp.Tests
 
             byte[] dataEnc = new byte[data.Length];
             Buffer.BlockCopy(data, 0, dataEnc, 0, data.Length);
-            using Blowfish bf = new Blowfish();
+            Blowfish bf = new Blowfish();
             var ptkey = Processor.DecodeHex("1010ffff");
             bf.SetBlankIv();
             bf.SetKey(ptkey);
