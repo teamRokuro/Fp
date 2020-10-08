@@ -80,7 +80,7 @@ namespace Fp.Tests
             byte[] data;
             using (FileStream fs = File.OpenRead("Watch_Dogs2020-4-3-0-57-53.png"))
             {
-                data = new byte[fs.Length + (8 - fs.Length % 8)];
+                data = new byte[Processor.GetPaddedLength((int)fs.Length, Processor.PaddingMode.Zero, 8)];
             }
 
             byte[] dataEnc = new byte[data.Length];
@@ -93,12 +93,12 @@ namespace Fp.Tests
             bf.SetBlankIv();
             bf.SetKey(ptkey);
             bf.DecryptCbc(dataEnc);
-            Assert.AreEqual(data, dataEnc);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(dataEnc));
             bf.SetKey(ptkey);
             bf.EncryptEcb(dataEnc);
             bf.SetKey(ptkey);
             bf.DecryptEcb(dataEnc);
-            Assert.AreEqual(data, dataEnc);
+            Assert.IsTrue(data.AsSpan().SequenceEqual(dataEnc));
         }
     }
 }
