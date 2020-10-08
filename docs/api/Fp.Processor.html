@@ -1675,7 +1675,7 @@ in multithreaded environment)</p>
     <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_DecodeHex_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.Processor.DecodeHex(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.Decryption.cs/#L114">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.Decryption.cs/#L134">View Source</a>
   </span>
   <a id="Fp_Processor_DecodeHex_" data-uid="Fp.Processor.DecodeHex*"></a>
   <h4 id="Fp_Processor_DecodeHex_System_String_System_Boolean_" data-uid="Fp.Processor.DecodeHex(System.String,System.Boolean)">DecodeHex(String, Boolean)</h4>
@@ -1814,19 +1814,19 @@ in multithreaded environment)</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__Span_System_Byte__Span_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Processor.DecryptBlowfishCbc(Span%7BSystem.Byte%7D%2CSpan%7BSystem.Byte%7D%2CSpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Processor.DecryptBlowfishCbc(Span%7BSystem.Byte%7D%2CReadOnlySpan%7BSystem.Byte%7D%2CReadOnlySpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Ciphers/BlowFish/BlowFish.cs/#L710">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Ciphers/BlowFish/BlowFish.cs/#L754">View Source</a>
   </span>
   <a id="Fp_Processor_DecryptBlowfishCbc_" data-uid="Fp.Processor.DecryptBlowfishCbc*"></a>
-  <h4 id="Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__Span_System_Byte__Span_System_Byte__" data-uid="Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},Span{System.Byte},Span{System.Byte})">DecryptBlowfishCbc(Span&lt;Byte&gt;, Span&lt;Byte&gt;, Span&lt;Byte&gt;)</h4>
+  <h4 id="Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__" data-uid="Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})">DecryptBlowfishCbc(Span&lt;Byte&gt;, ReadOnlySpan&lt;Byte&gt;, ReadOnlySpan&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Decrypt with Blowfish using CBC mode and key/IV</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DecryptBlowfishCbc(Span&lt;byte&gt; src, Span&lt;byte&gt; key, Span&lt;byte&gt; iv = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void DecryptBlowfishCbc(Span&lt;byte&gt; src, ReadOnlySpan&lt;byte&gt; key, ReadOnlySpan&lt;byte&gt; iv = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1845,13 +1845,13 @@ in multithreaded environment)</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">key</span></td>
         <td><p>Cipher key</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">iv</span></td>
         <td><p>IV (CBC/CTR)</p>
 </td>
@@ -1860,19 +1860,19 @@ in multithreaded environment)</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__Span_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Processor.DecryptBlowfishEcb(Span%7BSystem.Byte%7D%2CSpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__ReadOnlySpan_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.Processor.DecryptBlowfishEcb(Span%7BSystem.Byte%7D%2CReadOnlySpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Ciphers/BlowFish/BlowFish.cs/#L698">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Ciphers/BlowFish/BlowFish.cs/#L742">View Source</a>
   </span>
   <a id="Fp_Processor_DecryptBlowfishEcb_" data-uid="Fp.Processor.DecryptBlowfishEcb*"></a>
-  <h4 id="Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__Span_System_Byte__" data-uid="Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},Span{System.Byte})">DecryptBlowfishEcb(Span&lt;Byte&gt;, Span&lt;Byte&gt;)</h4>
+  <h4 id="Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__ReadOnlySpan_System_Byte__" data-uid="Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},ReadOnlySpan{System.Byte})">DecryptBlowfishEcb(Span&lt;Byte&gt;, ReadOnlySpan&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Decrypt with Blowfish using ECB mode and key</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void DecryptBlowfishEcb(Span&lt;byte&gt; src, Span&lt;byte&gt; key)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void DecryptBlowfishEcb(Span&lt;byte&gt; src, ReadOnlySpan&lt;byte&gt; key)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1891,7 +1891,7 @@ in multithreaded environment)</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">key</span></td>
         <td><p>Cipher key</p>
 </td>
@@ -1903,7 +1903,7 @@ in multithreaded environment)</p>
     <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_Dispose.md&amp;value=---%0Auid%3A%20Fp.Processor.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.cs/#L315">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.cs/#L317">View Source</a>
   </span>
   <a id="Fp_Processor_Dispose_" data-uid="Fp.Processor.Dispose*"></a>
   <h4 id="Fp_Processor_Dispose" data-uid="Fp.Processor.Dispose">Dispose()</h4>
@@ -1918,7 +1918,7 @@ in multithreaded environment)</p>
     <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.Processor.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.cs/#L310">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.cs/#L312">View Source</a>
   </span>
   <a id="Fp_Processor_Dispose_" data-uid="Fp.Processor.Dispose*"></a>
   <h4 id="Fp_Processor_Dispose_System_Boolean_" data-uid="Fp.Processor.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -4060,7 +4060,7 @@ in multithreaded environment)</p>
     <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_GetDepaddedLength_Span_System_Byte__Fp_Processor_PaddingMode_.md&amp;value=---%0Auid%3A%20Fp.Processor.GetDepaddedLength(Span%7BSystem.Byte%7D%2CFp.Processor.PaddingMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.Decryption.cs/#L56">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.Decryption.cs/#L76">View Source</a>
   </span>
   <a id="Fp_Processor_GetDepaddedLength_" data-uid="Fp.Processor.GetDepaddedLength*"></a>
   <h4 id="Fp_Processor_GetDepaddedLength_Span_System_Byte__Fp_Processor_PaddingMode_" data-uid="Fp.Processor.GetDepaddedLength(Span{System.Byte},Fp.Processor.PaddingMode)">GetDepaddedLength(Span&lt;Byte&gt;, Processor.PaddingMode)</h4>
@@ -4878,6 +4878,68 @@ in multithreaded environment)</p>
       <tr>
         <td><span class="xref">System.Byte</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.3.9/apiSpec/new?filename=Fp_Processor_GetPaddedLength_System_Int32_Fp_Processor_PaddingMode_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.Processor.GetPaddedLength(System.Int32%2CFp.Processor.PaddingMode%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.3.9/Fp/Processor.Decryption.cs/#L57">View Source</a>
+  </span>
+  <a id="Fp_Processor_GetPaddedLength_" data-uid="Fp.Processor.GetPaddedLength*"></a>
+  <h4 id="Fp_Processor_GetPaddedLength_System_Int32_Fp_Processor_PaddingMode_System_Int32_" data-uid="Fp.Processor.GetPaddedLength(System.Int32,Fp.Processor.PaddingMode,System.Int32)">GetPaddedLength(Int32, Processor.PaddingMode, Int32)</h4>
+  <div class="markdown level1 summary"><p>Get padded message length using specified padding mode</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetPaddedLength(int length, Processor.PaddingMode paddingMode, int blockSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>Input message length</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Fp.Processor.PaddingMode.html">Processor.PaddingMode</a></td>
+        <td><span class="parametername">paddingMode</span></td>
+        <td><p>Padding mode to use</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">blockSize</span></td>
+        <td><p>Cipher block size</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Padded length of message</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -20159,7 +20221,7 @@ and stream cannot provide enough data to fill target</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SrcCleanup()</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void SrcCleanup()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>

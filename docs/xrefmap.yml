@@ -19,12 +19,24 @@ references:
   commentId: T:Fp.Ciphers.BlowFish.Blowfish
   fullName: Fp.Ciphers.BlowFish.Blowfish
   nameWithType: Blowfish
-- uid: Fp.Ciphers.BlowFish.Blowfish.#ctor
-  name: Blowfish()
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish__ctor
-  commentId: M:Fp.Ciphers.BlowFish.Blowfish.#ctor
-  fullName: Fp.Ciphers.BlowFish.Blowfish.Blowfish()
-  nameWithType: Blowfish.Blowfish()
+- uid: Fp.Ciphers.BlowFish.Blowfish.#ctor(ReadOnlySpan{System.Byte})
+  name: Blowfish(ReadOnlySpan<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish__ctor_ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.#ctor(ReadOnlySpan{System.Byte})
+  name.vb: Blowfish(ReadOnlySpan(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.Blowfish(ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.Blowfish(ReadOnlySpan(Of System.Byte))
+  nameWithType: Blowfish.Blowfish(ReadOnlySpan<Byte>)
+  nameWithType.vb: Blowfish.Blowfish(ReadOnlySpan(Of Byte))
+- uid: Fp.Ciphers.BlowFish.Blowfish.#ctor(ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})
+  name: Blowfish(ReadOnlySpan<Byte>, ReadOnlySpan<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish__ctor_ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.#ctor(ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})
+  name.vb: Blowfish(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.Blowfish(ReadOnlySpan<System.Byte>, ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.Blowfish(ReadOnlySpan(Of System.Byte), ReadOnlySpan(Of System.Byte))
+  nameWithType: Blowfish.Blowfish(ReadOnlySpan<Byte>, ReadOnlySpan<Byte>)
+  nameWithType.vb: Blowfish.Blowfish(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
 - uid: Fp.Ciphers.BlowFish.Blowfish.#ctor*
   name: Blowfish
   href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish__ctor_
@@ -64,32 +76,38 @@ references:
   isSpec: "True"
   fullName: Fp.Ciphers.BlowFish.Blowfish.DecryptEcb
   nameWithType: Blowfish.DecryptEcb
-- uid: Fp.Ciphers.BlowFish.Blowfish.Dispose
-  name: Dispose()
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_Dispose
-  commentId: M:Fp.Ciphers.BlowFish.Blowfish.Dispose
-  fullName: Fp.Ciphers.BlowFish.Blowfish.Dispose()
-  nameWithType: Blowfish.Dispose()
-- uid: Fp.Ciphers.BlowFish.Blowfish.Dispose*
-  name: Dispose
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_Dispose_
-  commentId: Overload:Fp.Ciphers.BlowFish.Blowfish.Dispose
+- uid: Fp.Ciphers.BlowFish.Blowfish.EncryptCbc(Span{System.Byte})
+  name: EncryptCbc(Span<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_EncryptCbc_Span_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.EncryptCbc(Span{System.Byte})
+  name.vb: EncryptCbc(Span(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.EncryptCbc(Span<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.EncryptCbc(Span(Of System.Byte))
+  nameWithType: Blowfish.EncryptCbc(Span<Byte>)
+  nameWithType.vb: Blowfish.EncryptCbc(Span(Of Byte))
+- uid: Fp.Ciphers.BlowFish.Blowfish.EncryptCbc*
+  name: EncryptCbc
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_EncryptCbc_
+  commentId: Overload:Fp.Ciphers.BlowFish.Blowfish.EncryptCbc
   isSpec: "True"
-  fullName: Fp.Ciphers.BlowFish.Blowfish.Dispose
-  nameWithType: Blowfish.Dispose
-- uid: Fp.Ciphers.BlowFish.Blowfish.Finalize
-  name: Finalize()
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_Finalize
-  commentId: M:Fp.Ciphers.BlowFish.Blowfish.Finalize
-  fullName: Fp.Ciphers.BlowFish.Blowfish.Finalize()
-  nameWithType: Blowfish.Finalize()
-- uid: Fp.Ciphers.BlowFish.Blowfish.Finalize*
-  name: Finalize
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_Finalize_
-  commentId: Overload:Fp.Ciphers.BlowFish.Blowfish.Finalize
+  fullName: Fp.Ciphers.BlowFish.Blowfish.EncryptCbc
+  nameWithType: Blowfish.EncryptCbc
+- uid: Fp.Ciphers.BlowFish.Blowfish.EncryptEcb(Span{System.Byte})
+  name: EncryptEcb(Span<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_EncryptEcb_Span_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.EncryptEcb(Span{System.Byte})
+  name.vb: EncryptEcb(Span(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.EncryptEcb(Span<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.EncryptEcb(Span(Of System.Byte))
+  nameWithType: Blowfish.EncryptEcb(Span<Byte>)
+  nameWithType.vb: Blowfish.EncryptEcb(Span(Of Byte))
+- uid: Fp.Ciphers.BlowFish.Blowfish.EncryptEcb*
+  name: EncryptEcb
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_EncryptEcb_
+  commentId: Overload:Fp.Ciphers.BlowFish.Blowfish.EncryptEcb
   isSpec: "True"
-  fullName: Fp.Ciphers.BlowFish.Blowfish.Finalize
-  nameWithType: Blowfish.Finalize
+  fullName: Fp.Ciphers.BlowFish.Blowfish.EncryptEcb
+  nameWithType: Blowfish.EncryptEcb
 - uid: Fp.Ciphers.BlowFish.Blowfish.SetBlankIv
   name: SetBlankIv()
   href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetBlankIv
@@ -103,15 +121,15 @@ references:
   isSpec: "True"
   fullName: Fp.Ciphers.BlowFish.Blowfish.SetBlankIv
   nameWithType: Blowfish.SetBlankIv
-- uid: Fp.Ciphers.BlowFish.Blowfish.SetIv(Span{System.Byte})
-  name: SetIv(Span<Byte>)
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetIv_Span_System_Byte__
-  commentId: M:Fp.Ciphers.BlowFish.Blowfish.SetIv(Span{System.Byte})
-  name.vb: SetIv(Span(Of Byte))
-  fullName: Fp.Ciphers.BlowFish.Blowfish.SetIv(Span<System.Byte>)
-  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.SetIv(Span(Of System.Byte))
-  nameWithType: Blowfish.SetIv(Span<Byte>)
-  nameWithType.vb: Blowfish.SetIv(Span(Of Byte))
+- uid: Fp.Ciphers.BlowFish.Blowfish.SetIv(ReadOnlySpan{System.Byte})
+  name: SetIv(ReadOnlySpan<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetIv_ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.SetIv(ReadOnlySpan{System.Byte})
+  name.vb: SetIv(ReadOnlySpan(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.SetIv(ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.SetIv(ReadOnlySpan(Of System.Byte))
+  nameWithType: Blowfish.SetIv(ReadOnlySpan<Byte>)
+  nameWithType.vb: Blowfish.SetIv(ReadOnlySpan(Of Byte))
 - uid: Fp.Ciphers.BlowFish.Blowfish.SetIv*
   name: SetIv
   href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetIv_
@@ -119,15 +137,15 @@ references:
   isSpec: "True"
   fullName: Fp.Ciphers.BlowFish.Blowfish.SetIv
   nameWithType: Blowfish.SetIv
-- uid: Fp.Ciphers.BlowFish.Blowfish.SetKey(Span{System.Byte})
-  name: SetKey(Span<Byte>)
-  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetKey_Span_System_Byte__
-  commentId: M:Fp.Ciphers.BlowFish.Blowfish.SetKey(Span{System.Byte})
-  name.vb: SetKey(Span(Of Byte))
-  fullName: Fp.Ciphers.BlowFish.Blowfish.SetKey(Span<System.Byte>)
-  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.SetKey(Span(Of System.Byte))
-  nameWithType: Blowfish.SetKey(Span<Byte>)
-  nameWithType.vb: Blowfish.SetKey(Span(Of Byte))
+- uid: Fp.Ciphers.BlowFish.Blowfish.SetKey(ReadOnlySpan{System.Byte})
+  name: SetKey(ReadOnlySpan<Byte>)
+  href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetKey_ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Ciphers.BlowFish.Blowfish.SetKey(ReadOnlySpan{System.Byte})
+  name.vb: SetKey(ReadOnlySpan(Of Byte))
+  fullName: Fp.Ciphers.BlowFish.Blowfish.SetKey(ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Ciphers.BlowFish.Blowfish.SetKey(ReadOnlySpan(Of System.Byte))
+  nameWithType: Blowfish.SetKey(ReadOnlySpan<Byte>)
+  nameWithType.vb: Blowfish.SetKey(ReadOnlySpan(Of Byte))
 - uid: Fp.Ciphers.BlowFish.Blowfish.SetKey*
   name: SetKey
   href: api/Fp.Ciphers.BlowFish.Blowfish.html#Fp_Ciphers_BlowFish_Blowfish_SetKey_
@@ -1321,6 +1339,23 @@ references:
   fullName.vb: Fp.Intermediate.BufferData(Of T).Dispose
   nameWithType: BufferData<T>.Dispose
   nameWithType.vb: BufferData(Of T).Dispose
+- uid: Fp.Intermediate.BufferData`1.MemoryOwner
+  name: MemoryOwner
+  href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1_MemoryOwner
+  commentId: P:Fp.Intermediate.BufferData`1.MemoryOwner
+  fullName: Fp.Intermediate.BufferData<T>.MemoryOwner
+  fullName.vb: Fp.Intermediate.BufferData(Of T).MemoryOwner
+  nameWithType: BufferData<T>.MemoryOwner
+  nameWithType.vb: BufferData(Of T).MemoryOwner
+- uid: Fp.Intermediate.BufferData`1.MemoryOwner*
+  name: MemoryOwner
+  href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1_MemoryOwner_
+  commentId: Overload:Fp.Intermediate.BufferData`1.MemoryOwner
+  isSpec: "True"
+  fullName: Fp.Intermediate.BufferData<T>.MemoryOwner
+  fullName.vb: Fp.Intermediate.BufferData(Of T).MemoryOwner
+  nameWithType: BufferData<T>.MemoryOwner
+  nameWithType.vb: BufferData(Of T).MemoryOwner
 - uid: Fp.Intermediate.BufferData`1.WriteConvertedData(Stream,Fp.Intermediate.CommonFormat,System.Nullable{Dictionary{System.Object,System.Object}})
   name: WriteConvertedData(Stream, CommonFormat, Nullable<Dictionary<Object, Object>>)
   href: api/Fp.Intermediate.BufferData-1.html#Fp_Intermediate_BufferData_1_WriteConvertedData_Stream_Fp_Intermediate_CommonFormat_System_Nullable_Dictionary_System_Object_System_Object___
@@ -2592,15 +2627,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.DecryptAesEcb
   nameWithType: Processor.DecryptAesEcb
-- uid: Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},Span{System.Byte},Span{System.Byte})
-  name: DecryptBlowfishCbc(Span<Byte>, Span<Byte>, Span<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__Span_System_Byte__Span_System_Byte__
-  commentId: M:Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},Span{System.Byte},Span{System.Byte})
-  name.vb: DecryptBlowfishCbc(Span(Of Byte), Span(Of Byte), Span(Of Byte))
-  fullName: Fp.Processor.DecryptBlowfishCbc(Span<System.Byte>, Span<System.Byte>, Span<System.Byte>)
-  fullName.vb: Fp.Processor.DecryptBlowfishCbc(Span(Of System.Byte), Span(Of System.Byte), Span(Of System.Byte))
-  nameWithType: Processor.DecryptBlowfishCbc(Span<Byte>, Span<Byte>, Span<Byte>)
-  nameWithType.vb: Processor.DecryptBlowfishCbc(Span(Of Byte), Span(Of Byte), Span(Of Byte))
+- uid: Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})
+  name: DecryptBlowfishCbc(Span<Byte>, ReadOnlySpan<Byte>, ReadOnlySpan<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishCbc_Span_System_Byte__ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Processor.DecryptBlowfishCbc(Span{System.Byte},ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})
+  name.vb: DecryptBlowfishCbc(Span(Of Byte), ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Fp.Processor.DecryptBlowfishCbc(Span<System.Byte>, ReadOnlySpan<System.Byte>, ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Processor.DecryptBlowfishCbc(Span(Of System.Byte), ReadOnlySpan(Of System.Byte), ReadOnlySpan(Of System.Byte))
+  nameWithType: Processor.DecryptBlowfishCbc(Span<Byte>, ReadOnlySpan<Byte>, ReadOnlySpan<Byte>)
+  nameWithType.vb: Processor.DecryptBlowfishCbc(Span(Of Byte), ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte))
 - uid: Fp.Processor.DecryptBlowfishCbc*
   name: DecryptBlowfishCbc
   href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishCbc_
@@ -2608,15 +2643,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.DecryptBlowfishCbc
   nameWithType: Processor.DecryptBlowfishCbc
-- uid: Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},Span{System.Byte})
-  name: DecryptBlowfishEcb(Span<Byte>, Span<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__Span_System_Byte__
-  commentId: M:Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},Span{System.Byte})
-  name.vb: DecryptBlowfishEcb(Span(Of Byte), Span(Of Byte))
-  fullName: Fp.Processor.DecryptBlowfishEcb(Span<System.Byte>, Span<System.Byte>)
-  fullName.vb: Fp.Processor.DecryptBlowfishEcb(Span(Of System.Byte), Span(Of System.Byte))
-  nameWithType: Processor.DecryptBlowfishEcb(Span<Byte>, Span<Byte>)
-  nameWithType.vb: Processor.DecryptBlowfishEcb(Span(Of Byte), Span(Of Byte))
+- uid: Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},ReadOnlySpan{System.Byte})
+  name: DecryptBlowfishEcb(Span<Byte>, ReadOnlySpan<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishEcb_Span_System_Byte__ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Processor.DecryptBlowfishEcb(Span{System.Byte},ReadOnlySpan{System.Byte})
+  name.vb: DecryptBlowfishEcb(Span(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Fp.Processor.DecryptBlowfishEcb(Span<System.Byte>, ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Processor.DecryptBlowfishEcb(Span(Of System.Byte), ReadOnlySpan(Of System.Byte))
+  nameWithType: Processor.DecryptBlowfishEcb(Span<Byte>, ReadOnlySpan<Byte>)
+  nameWithType.vb: Processor.DecryptBlowfishEcb(Span(Of Byte), ReadOnlySpan(Of Byte))
 - uid: Fp.Processor.DecryptBlowfishEcb*
   name: DecryptBlowfishEcb
   href: api/Fp.Processor.html#Fp_Processor_DecryptBlowfishEcb_
@@ -3308,6 +3343,19 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GetMU8
   nameWithType: Processor.GetMU8
+- uid: Fp.Processor.GetPaddedLength(System.Int32,Fp.Processor.PaddingMode,System.Int32)
+  name: GetPaddedLength(Int32, Processor.PaddingMode, Int32)
+  href: api/Fp.Processor.html#Fp_Processor_GetPaddedLength_System_Int32_Fp_Processor_PaddingMode_System_Int32_
+  commentId: M:Fp.Processor.GetPaddedLength(System.Int32,Fp.Processor.PaddingMode,System.Int32)
+  fullName: Fp.Processor.GetPaddedLength(System.Int32, Fp.Processor.PaddingMode, System.Int32)
+  nameWithType: Processor.GetPaddedLength(Int32, Processor.PaddingMode, Int32)
+- uid: Fp.Processor.GetPaddedLength*
+  name: GetPaddedLength
+  href: api/Fp.Processor.html#Fp_Processor_GetPaddedLength_
+  commentId: Overload:Fp.Processor.GetPaddedLength
+  isSpec: "True"
+  fullName: Fp.Processor.GetPaddedLength
+  nameWithType: Processor.GetPaddedLength
 - uid: Fp.Processor.GetS16(ReadOnlySpan{System.Byte},System.Int32)
   name: GetS16(ReadOnlySpan<Byte>, Int32)
   href: api/Fp.Processor.html#Fp_Processor_GetS16_ReadOnlySpan_System_Byte__System_Int32_
