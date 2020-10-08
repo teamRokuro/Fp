@@ -8,7 +8,7 @@ namespace Fpt {
     public class FptProcessor : Processor {
         /*
          * NuGet package:
-         * Fp 0.3.9
+         * Fp 0.4.0
          */
 
         // Main function
