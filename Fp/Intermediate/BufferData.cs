@@ -69,9 +69,9 @@ namespace Fp.Intermediate
         public BufferData(string basePath, IMemoryOwner<T> memoryOwner, int? count = default) : base(basePath)
         {
             MemoryOwner = memoryOwner;
-            Buffer = MemoryOwner.Memory;
             Dry = false;
-            Count = count ?? Buffer.Length;
+            Count = count ?? MemoryOwner.Memory.Length;
+            Buffer = MemoryOwner.Memory.Slice(0, Count);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Fp.Intermediate
             {
                 case CommonFormat.Generic:
                     Processor.WriteBaseSpan(outputStream,
-                        MemoryMarshal.Cast<T, byte>(Buffer.Span.Slice(0, Count)));
+                        MemoryMarshal.Cast<T, byte>(Buffer.Span));
                     return true;
                 default:
                     return false;
