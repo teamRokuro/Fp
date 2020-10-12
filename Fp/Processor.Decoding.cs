@@ -2,7 +2,12 @@ using System;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+#if NET5_0
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+#endif
 using System.Text;
 using static System.Buffers.ArrayPool<byte>;
 
@@ -1994,18 +1999,45 @@ namespace Fp
         /// <summary>
         /// Apply AND to memory
         /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static void ApplyAnd(Span<byte> span, byte value)
+        {
+#if NET5_0
+            if (Avx2.IsSupported)
+                ApplyAndAvx2(span, value);
+            else if (Sse2.IsSupported)
+                ApplyAndSse2(span, value);
+            else
+                ApplyAndFallback(span, value);
+#else
+            ApplyAndFallback(span, value);
+#endif
+        }
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
         /// <param name="memory">Memory to modify</param>
         /// <param name="value">AND value</param>
-        public static void ApplyAnd(Memory<byte> memory, byte value)
+        public static void ApplyMAnd(Memory<byte> memory, byte value) => ApplyAnd(memory.Span, value);
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static void ApplyOr(Span<byte> span, byte value)
         {
-            Span<byte> span = memory.Span;
 #if NET5_0
-            // TODO use intrinsics for supported platforms on net5.0
-            for (int i = 0; i < span.Length; i++)
-                span[i] &= value;
+            if (Avx2.IsSupported)
+                ApplyOrAvx2(span, value);
+            else if (Sse2.IsSupported)
+                ApplyOrSse2(span, value);
+            else
+                ApplyOrFallback(span, value);
 #else
-            for (int i = 0; i < span.Length; i++)
-                span[i] &= value;
+            ApplyOrFallback(span, value);
 #endif
         }
 
@@ -2014,16 +2046,24 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to modify</param>
         /// <param name="value">AND value</param>
-        public static void ApplyOr(Memory<byte> memory, byte value)
+        public static void ApplyMOr(Memory<byte> memory, byte value) => ApplyOr(memory.Span, value);
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static void ApplyXor(Span<byte> span, byte value)
         {
-            Span<byte> span = memory.Span;
 #if NET5_0
-            // TODO use intrinsics for supported platforms on net5.0
-            for (int i = 0; i < span.Length; i++)
-                span[i] |= value;
+            if (Avx2.IsSupported)
+                ApplyXorAvx2(span, value);
+            else if (Sse2.IsSupported)
+                ApplyXorSse2(span, value);
+            else
+                ApplyXorFallback(span, value);
 #else
-            for (int i = 0; i < span.Length; i++)
-                span[i] |= value;
+            ApplyXorFallback(span, value);
 #endif
         }
 
@@ -2032,26 +2072,373 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to modify</param>
         /// <param name="value">XOR value</param>
-        public static void ApplyXor(Memory<byte> memory, byte value)
-        {
-            Span<byte> span = memory.Span;
-#if NET5_0
-            // TODO use intrinsics for supported platforms on net5.0
-            for (int i = 0; i < span.Length; i++)
-                span[i] ^= value;
-#else
-            for (int i = 0; i < span.Length; i++)
-                span[i] ^= value;
-#endif
-        }
+        public static void ApplyMXor(Memory<byte> memory, byte value) => ApplyXor(memory.Span, value);
 
 #if NET5_0
-        /*private static void ApplyXorAvxX64(Span<byte> source, byte value)
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe Vector128<byte> FillVector128(byte value)
         {
+            var srcPtr = stackalloc int[128 / 8 / 4];
             int iValue = (value << 8) | value;
             iValue |= iValue << 16;
-        }*/
+            srcPtr[0] = iValue;
+            srcPtr[1] = iValue;
+            srcPtr[2] = iValue;
+            srcPtr[3] = iValue;
+            return Sse2.LoadVector128((byte*)srcPtr);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe Vector256<byte> FillVector256(byte value)
+        {
+            var srcPtr = stackalloc int[256 / 8 / 4];
+            int iValue = (value << 8) | value;
+            iValue |= iValue << 16;
+            srcPtr[0] = iValue;
+            srcPtr[1] = iValue;
+            srcPtr[2] = iValue;
+            srcPtr[3] = iValue;
+            srcPtr[4] = iValue;
+            srcPtr[5] = iValue;
+            srcPtr[6] = iValue;
+            srcPtr[7] = iValue;
+            return Avx.LoadVector256((byte*)srcPtr);
+        }
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static unsafe void ApplyAndSse2(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector128(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Sse2.StoreAligned(pSource + i, Sse2.And(Sse2.LoadAlignedVector128(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static unsafe void ApplyAndAvx2(Span<byte> span, byte value)
+        {
+            const int split = 256 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector256(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Avx.StoreAligned(pSource + i, Avx2.And(Avx.LoadAlignedVector256(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">OR value</param>
+        public static unsafe void ApplyOrSse2(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] |= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector128(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Sse2.StoreAligned(pSource + i, Sse2.Or(Sse2.LoadAlignedVector128(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] |= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">OR value</param>
+        public static unsafe void ApplyOrAvx2(Span<byte> span, byte value)
+        {
+            const int split = 256 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] |= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector256(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Avx.StoreAligned(pSource + i, Avx2.Or(Avx.LoadAlignedVector256(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] |= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static unsafe void ApplyXorSse2(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] ^= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector128(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Sse2.StoreAligned(pSource + i, Sse2.Xor(Sse2.LoadAlignedVector128(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] ^= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static unsafe void ApplyXorAvx2(Span<byte> span, byte value)
+        {
+            const int split = 256 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] ^= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Avx
+
+                var src = FillVector256(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    Avx.StoreAligned(pSource + i, Avx2.Xor(Avx.LoadAlignedVector256(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] ^= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
 #endif
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static void ApplyAndFallback(Span<byte> span, byte value)
+        {
+            for (int i = 0; i < span.Length; i++)
+                span[i] &= value;
+        }
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">OR value</param>
+        public static void ApplyOrFallback(Span<byte> span, byte value)
+        {
+            for (int i = 0; i < span.Length; i++)
+                span[i] |= value;
+        }
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static void ApplyXorFallback(Span<byte> span, byte value)
+        {
+            for (int i = 0; i < span.Length; i++)
+                span[i] ^= value;
+        }
 
         /// <summary>
         /// Transform delegate
@@ -2065,9 +2452,16 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to modify</param>
         /// <param name="func">Transformation delegate</param>
-        public static void ApplyTransform(Memory<byte> memory, TransformDelegate func)
+        public static void ApplyTransform(Memory<byte> memory, TransformDelegate func) =>
+            ApplyTransform(memory.Span, func);
+
+        /// <summary>
+        /// Transform memory region
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="func">Transformation delegate</param>
+        public static void ApplyTransform(Span<byte> span, TransformDelegate func)
         {
-            Span<byte> span = memory.Span;
             for (int i = 0; i < span.Length; i++)
                 span[i] = func(span[i], i);
         }
