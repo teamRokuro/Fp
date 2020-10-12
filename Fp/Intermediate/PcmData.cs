@@ -72,7 +72,7 @@ namespace Fp.Intermediate
             switch (format)
             {
                 case CommonFormat.PcmWave:
-                    WritePcmWave(outputStream, PcmInfo, Buffer.Span.Slice(0, Count));
+                    WritePcmWave(outputStream, PcmInfo, Buffer.Span);
                     return true;
                 default:
                     return false;
