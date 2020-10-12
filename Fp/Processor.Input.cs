@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+#if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
+#endif
 
 namespace Fp
 {
@@ -50,6 +52,23 @@ namespace Fp
 
         private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
         {
+#if NET5_0
+            int left = span.Length, read, tot = 0;
+            do
+            {
+                read = stream.Read(span.Slice(tot));
+                left -= read;
+                tot += read;
+            } while (left > 0 && read != 0);
+
+            if (left > 0 && !lenient)
+            {
+                throw new ProcessorException(
+                    $"Failed to read required number of bytes! 0x{read:X} read, 0x{left:X} left, 0x{stream.Position:X} end position");
+            }
+
+            return tot;
+#else
             var buf = span.Length <= sizeof(long) ? _tempBuffer : Shared.Rent(4096);
             Span<byte> bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
@@ -79,6 +98,7 @@ namespace Fp
                     Shared.Return(buf);
                 }
             }
+#endif
         }
 
         /// <summary>
