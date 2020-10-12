@@ -1,7 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+
+#if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
+#endif
 
 namespace Fp
 {
@@ -423,6 +426,9 @@ namespace Fp
 
         internal static void WriteBaseSpan(Stream stream, ReadOnlySpan<byte> span)
         {
+#if NET5_0
+            stream.Write(span);
+#else
             byte[] buf = Shared.Rent(4096);
             Span<byte> bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
@@ -442,6 +448,7 @@ namespace Fp
             {
                 Shared.Return(buf);
             }
+#endif
         }
 
         /// <summary>
