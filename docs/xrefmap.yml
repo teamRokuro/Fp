@@ -2232,15 +2232,15 @@ references:
   commentId: T:Fp.Processor
   fullName: Fp.Processor
   nameWithType: Processor
-- uid: Fp.Processor.ApplyAnd(Memory{System.Byte},System.Byte)
-  name: ApplyAnd(Memory<Byte>, Byte)
-  href: api/Fp.Processor.html#Fp_Processor_ApplyAnd_Memory_System_Byte__System_Byte_
-  commentId: M:Fp.Processor.ApplyAnd(Memory{System.Byte},System.Byte)
-  name.vb: ApplyAnd(Memory(Of Byte), Byte)
-  fullName: Fp.Processor.ApplyAnd(Memory<System.Byte>, System.Byte)
-  fullName.vb: Fp.Processor.ApplyAnd(Memory(Of System.Byte), System.Byte)
-  nameWithType: Processor.ApplyAnd(Memory<Byte>, Byte)
-  nameWithType.vb: Processor.ApplyAnd(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyAnd(Span{System.Byte},System.Byte)
+  name: ApplyAnd(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyAnd_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyAnd(Span{System.Byte},System.Byte)
+  name.vb: ApplyAnd(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyAnd(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyAnd(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyAnd(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyAnd(Span(Of Byte), Byte)
 - uid: Fp.Processor.ApplyAnd*
   name: ApplyAnd
   href: api/Fp.Processor.html#Fp_Processor_ApplyAnd_
@@ -2248,15 +2248,79 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ApplyAnd
   nameWithType: Processor.ApplyAnd
-- uid: Fp.Processor.ApplyOr(Memory{System.Byte},System.Byte)
-  name: ApplyOr(Memory<Byte>, Byte)
-  href: api/Fp.Processor.html#Fp_Processor_ApplyOr_Memory_System_Byte__System_Byte_
-  commentId: M:Fp.Processor.ApplyOr(Memory{System.Byte},System.Byte)
-  name.vb: ApplyOr(Memory(Of Byte), Byte)
-  fullName: Fp.Processor.ApplyOr(Memory<System.Byte>, System.Byte)
-  fullName.vb: Fp.Processor.ApplyOr(Memory(Of System.Byte), System.Byte)
-  nameWithType: Processor.ApplyOr(Memory<Byte>, Byte)
-  nameWithType.vb: Processor.ApplyOr(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyAndFallback(Span{System.Byte},System.Byte)
+  name: ApplyAndFallback(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyAndFallback_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyAndFallback(Span{System.Byte},System.Byte)
+  name.vb: ApplyAndFallback(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyAndFallback(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyAndFallback(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyAndFallback(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyAndFallback(Span(Of Byte), Byte)
+- uid: Fp.Processor.ApplyAndFallback*
+  name: ApplyAndFallback
+  href: api/Fp.Processor.html#Fp_Processor_ApplyAndFallback_
+  commentId: Overload:Fp.Processor.ApplyAndFallback
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyAndFallback
+  nameWithType: Processor.ApplyAndFallback
+- uid: Fp.Processor.ApplyMAnd(Memory{System.Byte},System.Byte)
+  name: ApplyMAnd(Memory<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMAnd_Memory_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyMAnd(Memory{System.Byte},System.Byte)
+  name.vb: ApplyMAnd(Memory(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyMAnd(Memory<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyMAnd(Memory(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyMAnd(Memory<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyMAnd(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyMAnd*
+  name: ApplyMAnd
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMAnd_
+  commentId: Overload:Fp.Processor.ApplyMAnd
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyMAnd
+  nameWithType: Processor.ApplyMAnd
+- uid: Fp.Processor.ApplyMOr(Memory{System.Byte},System.Byte)
+  name: ApplyMOr(Memory<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMOr_Memory_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyMOr(Memory{System.Byte},System.Byte)
+  name.vb: ApplyMOr(Memory(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyMOr(Memory<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyMOr(Memory(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyMOr(Memory<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyMOr(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyMOr*
+  name: ApplyMOr
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMOr_
+  commentId: Overload:Fp.Processor.ApplyMOr
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyMOr
+  nameWithType: Processor.ApplyMOr
+- uid: Fp.Processor.ApplyMXor(Memory{System.Byte},System.Byte)
+  name: ApplyMXor(Memory<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMXor_Memory_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyMXor(Memory{System.Byte},System.Byte)
+  name.vb: ApplyMXor(Memory(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyMXor(Memory<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyMXor(Memory(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyMXor(Memory<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyMXor(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyMXor*
+  name: ApplyMXor
+  href: api/Fp.Processor.html#Fp_Processor_ApplyMXor_
+  commentId: Overload:Fp.Processor.ApplyMXor
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyMXor
+  nameWithType: Processor.ApplyMXor
+- uid: Fp.Processor.ApplyOr(Span{System.Byte},System.Byte)
+  name: ApplyOr(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyOr_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyOr(Span{System.Byte},System.Byte)
+  name.vb: ApplyOr(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyOr(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyOr(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyOr(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyOr(Span(Of Byte), Byte)
 - uid: Fp.Processor.ApplyOr*
   name: ApplyOr
   href: api/Fp.Processor.html#Fp_Processor_ApplyOr_
@@ -2264,6 +2328,22 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ApplyOr
   nameWithType: Processor.ApplyOr
+- uid: Fp.Processor.ApplyOrFallback(Span{System.Byte},System.Byte)
+  name: ApplyOrFallback(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyOrFallback_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyOrFallback(Span{System.Byte},System.Byte)
+  name.vb: ApplyOrFallback(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyOrFallback(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyOrFallback(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyOrFallback(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyOrFallback(Span(Of Byte), Byte)
+- uid: Fp.Processor.ApplyOrFallback*
+  name: ApplyOrFallback
+  href: api/Fp.Processor.html#Fp_Processor_ApplyOrFallback_
+  commentId: Overload:Fp.Processor.ApplyOrFallback
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyOrFallback
+  nameWithType: Processor.ApplyOrFallback
 - uid: Fp.Processor.ApplyTransform(Memory{System.Byte},Fp.Processor.TransformDelegate)
   name: ApplyTransform(Memory<Byte>, Processor.TransformDelegate)
   href: api/Fp.Processor.html#Fp_Processor_ApplyTransform_Memory_System_Byte__Fp_Processor_TransformDelegate_
@@ -2273,6 +2353,15 @@ references:
   fullName.vb: Fp.Processor.ApplyTransform(Memory(Of System.Byte), Fp.Processor.TransformDelegate)
   nameWithType: Processor.ApplyTransform(Memory<Byte>, Processor.TransformDelegate)
   nameWithType.vb: Processor.ApplyTransform(Memory(Of Byte), Processor.TransformDelegate)
+- uid: Fp.Processor.ApplyTransform(Span{System.Byte},Fp.Processor.TransformDelegate)
+  name: ApplyTransform(Span<Byte>, Processor.TransformDelegate)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyTransform_Span_System_Byte__Fp_Processor_TransformDelegate_
+  commentId: M:Fp.Processor.ApplyTransform(Span{System.Byte},Fp.Processor.TransformDelegate)
+  name.vb: ApplyTransform(Span(Of Byte), Processor.TransformDelegate)
+  fullName: Fp.Processor.ApplyTransform(Span<System.Byte>, Fp.Processor.TransformDelegate)
+  fullName.vb: Fp.Processor.ApplyTransform(Span(Of System.Byte), Fp.Processor.TransformDelegate)
+  nameWithType: Processor.ApplyTransform(Span<Byte>, Processor.TransformDelegate)
+  nameWithType.vb: Processor.ApplyTransform(Span(Of Byte), Processor.TransformDelegate)
 - uid: Fp.Processor.ApplyTransform*
   name: ApplyTransform
   href: api/Fp.Processor.html#Fp_Processor_ApplyTransform_
@@ -2280,15 +2369,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ApplyTransform
   nameWithType: Processor.ApplyTransform
-- uid: Fp.Processor.ApplyXor(Memory{System.Byte},System.Byte)
-  name: ApplyXor(Memory<Byte>, Byte)
-  href: api/Fp.Processor.html#Fp_Processor_ApplyXor_Memory_System_Byte__System_Byte_
-  commentId: M:Fp.Processor.ApplyXor(Memory{System.Byte},System.Byte)
-  name.vb: ApplyXor(Memory(Of Byte), Byte)
-  fullName: Fp.Processor.ApplyXor(Memory<System.Byte>, System.Byte)
-  fullName.vb: Fp.Processor.ApplyXor(Memory(Of System.Byte), System.Byte)
-  nameWithType: Processor.ApplyXor(Memory<Byte>, Byte)
-  nameWithType.vb: Processor.ApplyXor(Memory(Of Byte), Byte)
+- uid: Fp.Processor.ApplyXor(Span{System.Byte},System.Byte)
+  name: ApplyXor(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyXor_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyXor(Span{System.Byte},System.Byte)
+  name.vb: ApplyXor(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyXor(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyXor(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyXor(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyXor(Span(Of Byte), Byte)
 - uid: Fp.Processor.ApplyXor*
   name: ApplyXor
   href: api/Fp.Processor.html#Fp_Processor_ApplyXor_
@@ -2296,6 +2385,22 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ApplyXor
   nameWithType: Processor.ApplyXor
+- uid: Fp.Processor.ApplyXorFallback(Span{System.Byte},System.Byte)
+  name: ApplyXorFallback(Span<Byte>, Byte)
+  href: api/Fp.Processor.html#Fp_Processor_ApplyXorFallback_Span_System_Byte__System_Byte_
+  commentId: M:Fp.Processor.ApplyXorFallback(Span{System.Byte},System.Byte)
+  name.vb: ApplyXorFallback(Span(Of Byte), Byte)
+  fullName: Fp.Processor.ApplyXorFallback(Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.Processor.ApplyXorFallback(Span(Of System.Byte), System.Byte)
+  nameWithType: Processor.ApplyXorFallback(Span<Byte>, Byte)
+  nameWithType.vb: Processor.ApplyXorFallback(Span(Of Byte), Byte)
+- uid: Fp.Processor.ApplyXorFallback*
+  name: ApplyXorFallback
+  href: api/Fp.Processor.html#Fp_Processor_ApplyXorFallback_
+  commentId: Overload:Fp.Processor.ApplyXorFallback
+  isSpec: "True"
+  fullName: Fp.Processor.ApplyXorFallback
+  nameWithType: Processor.ApplyXorFallback
 - uid: Fp.Processor.CloseFile(System.Boolean,System.Nullable{Stream})
   name: CloseFile(Boolean, Nullable<Stream>)
   href: api/Fp.Processor.html#Fp_Processor_CloseFile_System_Boolean_System_Nullable_Stream__
