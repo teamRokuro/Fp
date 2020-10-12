@@ -157,7 +157,7 @@ namespace Fp.Tests
 
             #region Xor
 
-            Span<byte> arr = File.ReadAllBytes("Watch_Dogs2020-4-3-0-57-53.png");
+            Span<byte> arr = new byte[1097];
             Span<byte> arr2 = new byte[arr.Length];
             Processor p = new Processor();
             p.GetU8(arr);
@@ -191,7 +191,7 @@ namespace Fp.Tests
 
             #region Xor
 
-            Span<byte> arr = File.ReadAllBytes("Watch_Dogs2020-4-3-0-57-53.png");
+            Span<byte> arr = new byte[1097];
             Span<byte> arr2 = new byte[arr.Length];
             arr.CopyTo(arr2);
 
