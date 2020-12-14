@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 #if NET5_0
 using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 #endif
 using System.Text;
@@ -2008,6 +2009,8 @@ namespace Fp
                 ApplyAndAvx2(span, value);
             else if (Sse2.IsSupported)
                 ApplyAndSse2(span, value);
+            else if (AdvSimd.IsSupported)
+                ApplyAndArm(span, value);
             else
                 ApplyAndFallback(span, value);
 #else
@@ -2034,6 +2037,8 @@ namespace Fp
                 ApplyOrAvx2(span, value);
             else if (Sse2.IsSupported)
                 ApplyOrSse2(span, value);
+            else if (AdvSimd.IsSupported)
+                ApplyOrArm(span, value);
             else
                 ApplyOrFallback(span, value);
 #else
@@ -2060,6 +2065,8 @@ namespace Fp
                 ApplyXorAvx2(span, value);
             else if (Sse2.IsSupported)
                 ApplyXorSse2(span, value);
+            else if (AdvSimd.IsSupported)
+                ApplyXorArm(span, value);
             else
                 ApplyXorFallback(span, value);
 #else
@@ -2077,7 +2084,7 @@ namespace Fp
 #if NET5_0
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe Vector128<byte> FillVector128(byte value)
+        private static unsafe Vector128<byte> FillVector128Sse2(byte value)
         {
             var srcPtr = stackalloc int[128 / 8 / 4];
             int iValue = (value << 8) | value;
@@ -2090,7 +2097,20 @@ namespace Fp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe Vector256<byte> FillVector256(byte value)
+        private static unsafe Vector128<byte> FillVector128AdvSimd(byte value)
+        {
+            var srcPtr = stackalloc int[128 / 8 / 4];
+            int iValue = (value << 8) | value;
+            iValue |= iValue << 16;
+            srcPtr[0] = iValue;
+            srcPtr[1] = iValue;
+            srcPtr[2] = iValue;
+            srcPtr[3] = iValue;
+            return AdvSimd.LoadVector128((byte*)srcPtr);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static unsafe Vector256<byte> FillVector256Avx(byte value)
         {
             var srcPtr = stackalloc int[256 / 8 / 4];
             int iValue = (value << 8) | value;
@@ -2104,6 +2124,56 @@ namespace Fp
             srcPtr[6] = iValue;
             srcPtr[7] = iValue;
             return Avx.LoadVector256((byte*)srcPtr);
+        }
+
+        /// <summary>
+        /// Apply AND to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">AND value</param>
+        public static unsafe void ApplyAndArm(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Arm
+
+                var src = FillVector128AdvSimd(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    AdvSimd.Store(pSource + i, AdvSimd.And(AdvSimd.LoadVector128(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                #endregion
+            }
         }
 
         /// <summary>
@@ -2132,9 +2202,9 @@ namespace Fp
 
                 #endregion
 
-                #region Avx
+                #region Sse2
 
-                var src = FillVector128(value);
+                var src = FillVector128Sse2(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
@@ -2184,11 +2254,61 @@ namespace Fp
 
                 #region Avx
 
-                var src = FillVector256(value);
+                var src = FillVector256Avx(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
                     Avx.StoreAligned(pSource + i, Avx2.And(Avx.LoadAlignedVector256(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply OR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">OR value</param>
+        public static unsafe void ApplyOrArm(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Arm
+
+                var src = FillVector128AdvSimd(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    AdvSimd.Store(pSource + i, AdvSimd.Or(AdvSimd.LoadVector128(pSource + i), src));
                     i += split;
                 }
 
@@ -2232,9 +2352,9 @@ namespace Fp
 
                 #endregion
 
-                #region Avx
+                #region Sse2
 
-                var src = FillVector128(value);
+                var src = FillVector128Sse2(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
@@ -2284,7 +2404,7 @@ namespace Fp
 
                 #region Avx
 
-                var src = FillVector256(value);
+                var src = FillVector256Avx(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
@@ -2299,6 +2419,56 @@ namespace Fp
                 while (i < span.Length)
                 {
                     pSource[i] |= value;
+                    i++;
+                }
+
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Apply XOR to memory
+        /// </summary>
+        /// <param name="span">Memory to modify</param>
+        /// <param name="value">XOR value</param>
+        public static unsafe void ApplyXorArm(Span<byte> span, byte value)
+        {
+            const int split = 128 / 8;
+            fixed (byte* pSource = span)
+            {
+                int i = 0;
+                int l = span.Length;
+
+                #region First part
+
+                int kill1Idx = Math.Min((int)unchecked((ulong)(split - (long)pSource) % split), l);
+                while (i < kill1Idx)
+                {
+                    pSource[i] &= value;
+                    i++;
+                }
+
+                if (kill1Idx == l) return;
+
+                #endregion
+
+                #region Arm
+
+                var src = FillVector128AdvSimd(value);
+                int kill2Idx = l - l % split;
+                while (i < kill2Idx)
+                {
+                    AdvSimd.Store(pSource + i, AdvSimd.Or(AdvSimd.LoadVector128(pSource + i), src));
+                    i += split;
+                }
+
+                #endregion
+
+                #region Last part
+
+                while (i < span.Length)
+                {
+                    pSource[i] &= value;
                     i++;
                 }
 
@@ -2332,9 +2502,9 @@ namespace Fp
 
                 #endregion
 
-                #region Avx
+                #region Sse2
 
-                var src = FillVector128(value);
+                var src = FillVector128Sse2(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
@@ -2384,7 +2554,7 @@ namespace Fp
 
                 #region Avx
 
-                var src = FillVector256(value);
+                var src = FillVector256Avx(value);
                 int kill2Idx = l - l % split;
                 while (i < kill2Idx)
                 {
