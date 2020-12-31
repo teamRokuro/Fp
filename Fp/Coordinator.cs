@@ -48,8 +48,8 @@ namespace Fp
                 if (str.Length == 0) continue;
                 if (str[0] != '-')
                 {
-                    inputs.Add((File.Exists(str),
-                        Path.GetDirectoryName(Path.GetFullPath(str)) ?? Path.GetFullPath("/"), str));
+                    string full = Path.GetFullPath(str);
+                    inputs.Add((File.Exists(str), Path.GetDirectoryName(full) ?? Path.GetFullPath("/"), full));
                     continue;
                 }
 

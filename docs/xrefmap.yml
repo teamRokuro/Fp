@@ -666,15 +666,15 @@ references:
   commentId: F:Fp.HexAnsiPrint.PosWidth
   fullName: Fp.HexAnsiPrint.PosWidth
   nameWithType: HexAnsiPrint.PosWidth
-- uid: Fp.HexAnsiPrint.Print(ReadOnlySpan{System.Byte},System.ValueTuple{System.Int32,System.Int32,System.String,Color}[],System.Boolean,System.Boolean)
-  name: Print(ReadOnlySpan<Byte>, (Int32 offset, Int32 length, String label, Color color)[], Boolean, Boolean)
-  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Print_ReadOnlySpan_System_Byte__System_ValueTuple_System_Int32_System_Int32_System_String_Color____System_Boolean_System_Boolean_
-  commentId: M:Fp.HexAnsiPrint.Print(ReadOnlySpan{System.Byte},System.ValueTuple{System.Int32,System.Int32,System.String,Color}[],System.Boolean,System.Boolean)
-  name.vb: Print(ReadOnlySpan(Of Byte), (offset As Int32, length As Int32, label As String, color As Color)(), Boolean, Boolean)
-  fullName: Fp.HexAnsiPrint.Print(ReadOnlySpan<System.Byte>, System.ValueTuple<System.Int32, System.Int32, System.String, Color>[], System.Boolean, System.Boolean)
-  fullName.vb: Fp.HexAnsiPrint.Print(ReadOnlySpan(Of System.Byte), System.ValueTuple(Of System.Int32, System.Int32, System.String, Color)(), System.Boolean, System.Boolean)
-  nameWithType: HexAnsiPrint.Print(ReadOnlySpan<Byte>, (Int32 offset, Int32 length, String label, Color color)[], Boolean, Boolean)
-  nameWithType.vb: HexAnsiPrint.Print(ReadOnlySpan(Of Byte), (offset As Int32, length As Int32, label As String, color As Color)(), Boolean, Boolean)
+- uid: Fp.HexAnsiPrint.Print(ReadOnlySpan{System.Byte},IEnumerable{System.ValueTuple{System.Int32,System.Int32,System.Nullable{System.String},Color}},System.Boolean,System.Boolean)
+  name: Print(ReadOnlySpan<Byte>, IEnumerable<(Int32 offset, Int32 length, Nullable<String> label, Color color)>, Boolean, Boolean)
+  href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Print_ReadOnlySpan_System_Byte__IEnumerable_System_ValueTuple_System_Int32_System_Int32_System_Nullable_System_String__Color___System_Boolean_System_Boolean_
+  commentId: M:Fp.HexAnsiPrint.Print(ReadOnlySpan{System.Byte},IEnumerable{System.ValueTuple{System.Int32,System.Int32,System.Nullable{System.String},Color}},System.Boolean,System.Boolean)
+  name.vb: Print(ReadOnlySpan(Of Byte), IEnumerable(Of (offset As Int32, length As Int32, label As Nullable(Of String), color As Color)), Boolean, Boolean)
+  fullName: Fp.HexAnsiPrint.Print(ReadOnlySpan<System.Byte>, IEnumerable<System.ValueTuple<System.Int32, System.Int32, System.Nullable<System.String>, Color>>, System.Boolean, System.Boolean)
+  fullName.vb: Fp.HexAnsiPrint.Print(ReadOnlySpan(Of System.Byte), IEnumerable(Of System.ValueTuple(Of System.Int32, System.Int32, System.Nullable(Of System.String), Color)), System.Boolean, System.Boolean)
+  nameWithType: HexAnsiPrint.Print(ReadOnlySpan<Byte>, IEnumerable<(Int32 offset, Int32 length, Nullable<String> label, Color color)>, Boolean, Boolean)
+  nameWithType.vb: HexAnsiPrint.Print(ReadOnlySpan(Of Byte), IEnumerable(Of (offset As Int32, length As Int32, label As Nullable(Of String), color As Color)), Boolean, Boolean)
 - uid: Fp.HexAnsiPrint.Print*
   name: Print
   href: api/Fp.HexAnsiPrint.html#Fp_HexAnsiPrint_Print_
@@ -4464,15 +4464,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.MemClear
   nameWithType: Processor.MemClear
-- uid: Fp.Processor.MemLabel(ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.String,System.Nullable{Color})
-  name: MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, String, Nullable<Color>)
-  href: api/Fp.Processor.html#Fp_Processor_MemLabel_ReadOnlyMemory_System_Byte__System_Int32_System_Int32_System_String_System_Nullable_Color__
-  commentId: M:Fp.Processor.MemLabel(ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.String,System.Nullable{Color})
-  name.vb: MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, String, Nullable(Of Color))
-  fullName: Fp.Processor.MemLabel(ReadOnlyMemory<System.Byte>, System.Int32, System.Int32, System.String, System.Nullable<Color>)
-  fullName.vb: Fp.Processor.MemLabel(ReadOnlyMemory(Of System.Byte), System.Int32, System.Int32, System.String, System.Nullable(Of Color))
-  nameWithType: Processor.MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, String, Nullable<Color>)
-  nameWithType.vb: Processor.MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, String, Nullable(Of Color))
+- uid: Fp.Processor.MemLabel(ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.Nullable{System.String},System.Nullable{Color})
+  name: MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, Nullable<String>, Nullable<Color>)
+  href: api/Fp.Processor.html#Fp_Processor_MemLabel_ReadOnlyMemory_System_Byte__System_Int32_System_Int32_System_Nullable_System_String__System_Nullable_Color__
+  commentId: M:Fp.Processor.MemLabel(ReadOnlyMemory{System.Byte},System.Int32,System.Int32,System.Nullable{System.String},System.Nullable{Color})
+  name.vb: MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, Nullable(Of String), Nullable(Of Color))
+  fullName: Fp.Processor.MemLabel(ReadOnlyMemory<System.Byte>, System.Int32, System.Int32, System.Nullable<System.String>, System.Nullable<Color>)
+  fullName.vb: Fp.Processor.MemLabel(ReadOnlyMemory(Of System.Byte), System.Int32, System.Int32, System.Nullable(Of System.String), System.Nullable(Of Color))
+  nameWithType: Processor.MemLabel(ReadOnlyMemory<Byte>, Int32, Int32, Nullable<String>, Nullable<Color>)
+  nameWithType.vb: Processor.MemLabel(ReadOnlyMemory(Of Byte), Int32, Int32, Nullable(Of String), Nullable(Of Color))
 - uid: Fp.Processor.MemLabel*
   name: MemLabel
   href: api/Fp.Processor.html#Fp_Processor_MemLabel_

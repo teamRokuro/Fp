@@ -24,6 +24,7 @@ namespace Fp.Intermediate
         /// PCM WAV file
         /// </summary>
         PcmWave,
+
         /// <summary>
         /// Export for data format is not supported
         /// </summary>

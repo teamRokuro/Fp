@@ -178,7 +178,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesM(ushort value, Memory<byte> memory, int offset = 0) => GetBytes(value, memory.Span, offset);
+        public void GetBytesM(ushort value, Memory<byte> memory, int offset = 0) =>
+            GetBytes(value, memory.Span, offset);
 
         /// <summary>
         /// Write signed 16-bit value to array at specified offset
@@ -549,7 +550,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesHalfM(ushort value, Memory<byte> memory, int offset = 0) => GetBytesHalf(value, memory.Span, offset);
+        public void GetBytesHalfM(ushort value, Memory<byte> memory, int offset = 0) =>
+            GetBytesHalf(value, memory.Span, offset);
 
         /// <summary>
         /// Write 32-bit float value as 16-bit to span at specified offset
@@ -566,7 +568,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesHalfM(float value, Memory<byte> memory, int offset = 0) => GetBytesHalf(value, memory.Span, offset);
+        public void GetBytesHalfM(float value, Memory<byte> memory, int offset = 0) =>
+            GetBytesHalf(value, memory.Span, offset);
 
         /// <summary>
         /// Write 32-bit float value to array at specified offset
@@ -729,7 +732,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesM(double value, Memory<byte> memory, int offset = 0) => GetBytes(value, memory.Span, offset);
+        public void GetBytesM(double value, Memory<byte> memory, int offset = 0) =>
+            GetBytes(value, memory.Span, offset);
 
         /// <summary>
         /// Write 64-bit float value to array at specified offset

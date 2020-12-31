@@ -12,7 +12,8 @@ namespace Fp.Intermediate
     public abstract class BufferData : Data
     {
         /// <inheritdoc />
-        protected BufferData(string basePath) : base(basePath) {
+        protected BufferData(string basePath) : base(basePath)
+        {
         }
 
         /// <summary>
