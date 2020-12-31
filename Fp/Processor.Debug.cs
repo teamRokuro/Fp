@@ -18,10 +18,10 @@ namespace Fp
         /// Annotations for memory
         /// </summary>
         public readonly Dictionary<ReadOnlyMemory<byte>,
-                SortedList<int, (int offset, int length, string label, Color color)>>
+                SortedList<int, (int offset, int length, string? label, Color color)>>
             MemAnnotations =
                 new Dictionary<ReadOnlyMemory<byte>,
-                    SortedList<int, (int offset, int length, string label, Color color)>>();
+                    SortedList<int, (int offset, int length, string? label, Color color)>>();
 
         private int _memColorIdx;
 
@@ -44,13 +44,14 @@ namespace Fp
         /// <param name="label">Annotation to add</param>
         /// <param name="color">Color, random default</param>
         /// <remarks>No-op if <see cref="Debug"/> is false.<br/>Users should not slice memory struct between label and print, uses <see cref="MemAnnotations"/> which uses the memory as a key.</remarks>
-        public void MemLabel(ReadOnlyMemory<byte> memory, int offset, int length, string label, Color? color = null)
+        public void MemLabel(ReadOnlyMemory<byte> memory, int offset, int length, string? label = null,
+            Color? color = null)
         {
             if (!Debug) return;
             if (!MemAnnotations.TryGetValue(memory,
-                out SortedList<int, (int offset, int length, string label, Color color)>? list))
+                out SortedList<int, (int offset, int length, string? label, Color color)>? list))
                 list = MemAnnotations[memory] =
-                    new SortedList<int, (int offset, int length, string label, Color color)>();
+                    new SortedList<int, (int offset, int length, string? label, Color color)>();
             if (color == null)
             {
                 color = HexAnsiPrint.Colors[_memColorIdx];
@@ -72,9 +73,10 @@ namespace Fp
         {
             if (!Debug) return;
             HexAnsiPrint.Print(memory.Span,
-                MemAnnotations.TryGetValue(memory, out SortedList<int, (int offset, int length, string label, Color color)>? list)
+                MemAnnotations.TryGetValue(memory,
+                    out SortedList<int, (int offset, int length, string? label, Color color)>? list)
                     ? list.Values.ToArray()
-                    : new (int offset, int length, string label, Color color)[0], space, pow2Modulus);
+                    : new (int offset, int length, string? label, Color color)[0], space, pow2Modulus);
         }
 
         #endregion

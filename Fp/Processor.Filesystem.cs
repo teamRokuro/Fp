@@ -76,7 +76,7 @@ namespace Fp
                 stream = ms;
             }
 
-            if(stream is FileStream)
+            if (stream is FileStream)
                 stream = new MultiBufferStream(stream, true);
 
             if (!asMain)

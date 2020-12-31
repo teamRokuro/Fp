@@ -81,7 +81,7 @@ namespace Fp.Tests
             byte[] tmp = File.ReadAllBytes("Watch_Dogs2020-4-3-0-57-53.png");
             data = new byte[Processor.GetPaddedLength(tmp.Length, Processor.PaddingMode.Zero, 8)];
             tmp.AsSpan().CopyTo(data);
-            
+
             byte[] dataEnc = new byte[data.Length];
             Buffer.BlockCopy(data, 0, dataEnc, 0, data.Length);
             Blowfish bf = new Blowfish();

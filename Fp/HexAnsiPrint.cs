@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Esper.Accelerator;
 
@@ -75,14 +76,14 @@ namespace Fp
         /// </summary>
         public static readonly Dictionary<Color, string> Sequences = new Dictionary<Color, string>
         {
-            {Color.Black, "\u001b[30;1m"},
+            /*{Color.Black, "\u001b[30;1m"},*/
             {Color.Red, "\u001b[31;1m"},
             {Color.Green, "\u001b[32;1m"},
             {Color.Yellow, "\u001b[33;1m"},
             {Color.Blue, "\u001b[34;1m"},
             {Color.Magenta, "\u001b[35;1m"},
             {Color.Cyan, "\u001b[36;1m"},
-            {Color.White, "\u001b[37;1m"},
+            /*{Color.White, "\u001b[37;1m"},*/
         };
 
         /// <summary>
@@ -109,9 +110,11 @@ namespace Fp
         /// <param name="pow2Modulus">Only display power of 2 per line</param>
         /// <exception cref="ApplicationException"></exception>
         public static void Print(ReadOnlySpan<byte> data,
-            (int offset, int length, string label, Color color)[] annotations,
+            IEnumerable<(int offset, int length, string? label, Color color)> annotations,
             bool space = true, bool pow2Modulus = false)
         {
+            var annotationsList =
+                new List<(int offset, int length, string? label, Color color)>(annotations.OrderBy(a => a.offset));
             int width = Console.WindowWidth;
             int availableSpace = width - TextWidth - PosWidth - 2 - 1;
             int charWidth = space ? 3 : 2;
@@ -131,20 +134,25 @@ namespace Fp
             int left = data.Length;
             int cur = 0;
             int annotationOffset = 0;
-            Queue<(int offset, int length, string label, Color color)> annotationQueue =
-                new Queue<(int offset, int length, string label, Color color)>();
+            Queue<(int offset, int length, Color color)> annotationQueue =
+                new Queue<(int offset, int length, Color color)>();
             Queue<(int offset, int length, string label, Color color)> annotationPrintQueue =
                 new Queue<(int offset, int length, string label, Color color)>();
 
             while (left > 0)
             {
                 int curLine = 0;
-                foreach ((int offset, int length, string label, Color color) x in annotations.AsSpan(annotationOffset)
+                foreach ((int offset, int length, string? label, Color color) x in
+                    annotationsList.Skip(annotationOffset)
                 )
                 {
-                    if (x.offset >= cur + w) break;
-                    annotationQueue.Enqueue(x);
-                    annotationPrintQueue.Enqueue(x);
+                    (int xOf, int xLe, string? xLa, Color xCo) = x;
+                    if (xLa == null) continue;
+                    if (xOf >= cur + w) break;
+                    if (!Colors.Contains(xCo))
+                        xCo = Color.Cyan;
+                    annotationQueue.Enqueue((xOf, xLe, xCo));
+                    annotationPrintQueue.Enqueue((xOf, xLe, xLa, xCo));
                     annotationOffset++;
                 }
 
@@ -152,7 +160,7 @@ namespace Fp
                 for (; curLine < w && cur < data.Length; curLine++)
                 {
                     bool consumed = false;
-                    foreach ((int offset, int length, string label, Color color) x in annotationQueue)
+                    foreach ((int offset, int length, Color color) x in annotationQueue)
                         if (x.offset <= cur && x.offset + x.length > cur)
                         {
                             consumed = true;
@@ -167,7 +175,7 @@ namespace Fp
 
                 while (annotationQueue.Count > 0)
                 {
-                    (int offset, int length, _, _) = annotationQueue.Peek();
+                    (int offset, int length, _) = annotationQueue.Peek();
                     if (offset + length <= cur) annotationQueue.Dequeue();
                     else break;
                 }

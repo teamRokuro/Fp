@@ -2082,7 +2082,6 @@ namespace Fp
         public static void ApplyMXor(Memory<byte> memory, byte value) => ApplyXor(memory.Span, value);
 
 #if NET5_0
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe Vector128<byte> FillVector128Sse2(byte value)
         {
