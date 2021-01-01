@@ -147,12 +147,12 @@ namespace Fp
                 )
                 {
                     (int xOf, int xLe, string? xLa, Color xCo) = x;
-                    if (xLa == null) continue;
                     if (xOf >= cur + w) break;
                     if (!Colors.Contains(xCo))
                         xCo = Color.Cyan;
                     annotationQueue.Enqueue((xOf, xLe, xCo));
-                    annotationPrintQueue.Enqueue((xOf, xLe, xLa, xCo));
+                    if (xLa != null)
+                        annotationPrintQueue.Enqueue((xOf, xLe, xLa, xCo));
                     annotationOffset++;
                 }
 
