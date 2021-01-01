@@ -83,7 +83,7 @@ namespace Fp
             {Color.Blue, "\u001b[34;1m"},
             {Color.Magenta, "\u001b[35;1m"},
             {Color.Cyan, "\u001b[36;1m"},
-            /*{Color.White, "\u001b[37;1m"},*/
+            {Color.White, "\u001b[37;1m"},
         };
 
         /// <summary>
