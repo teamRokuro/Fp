@@ -70,7 +70,7 @@ namespace Fp
             Stream stream = FileSystem.OpenRead(file);
             if (Preload && (!(stream is MemoryStream alreadyMs) || !alreadyMs.TryGetBuffer(out _)))
             {
-                MemoryStream ms = new MemoryStream(new byte[stream.Length]);
+                MemoryStream ms = new(new byte[stream.Length]);
                 stream.CopyTo(ms);
                 stream.Dispose();
                 stream = ms;

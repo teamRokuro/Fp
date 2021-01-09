@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Fp.Intermediate;
+using Microsoft.Extensions.Logging;
 
 namespace Fp
 {
@@ -45,9 +46,14 @@ namespace Fp
         public int WorkerId;
 
         /// <summary>
+        /// Arguments.
+        /// </summary>
+        public IReadOnlyList<string> Args = null!;
+
+        /// <summary>
         /// Log output target
         /// </summary>
-        public Action<string>? Logger;
+        public ILogger Logger = null!;
 
         /// <summary>
         /// Whether to preload newly opened file input streams to <see cref="MemoryStream"/>
@@ -67,17 +73,17 @@ namespace Fp
         /// <summary>
         /// Root input directory
         /// </summary>
-        public string? InputRootDirectory;
+        public string InputRootDirectory = null!;
 
         /// <summary>
         /// Current input directory
         /// </summary>
-        public string? InputDirectory;
+        public string InputDirectory = null!;
 
         /// <summary>
         /// Current input file
         /// </summary>
-        public string? InputFile;
+        public string InputFile = null!;
 
         /// <summary>
         /// Output stream for current file if opened
@@ -87,12 +93,12 @@ namespace Fp
         /// <summary>
         /// Root output directory
         /// </summary>
-        public string? OutputRootDirectory;
+        public string OutputRootDirectory = null!;
 
         /// <summary>
         /// Current output directory
         /// </summary>
-        public string? OutputDirectory;
+        public string OutputDirectory = null!;
 
         /// <summary>
         /// Current output file index
@@ -102,7 +108,7 @@ namespace Fp
         /// <summary>
         /// Filesystem provider for this processor
         /// </summary>
-        public FileSystemSource? FileSystem;
+        public FileSystemSource FileSystem = null!;
 
         /// <summary>
         /// Whether to read input as little-endian
@@ -173,7 +179,7 @@ namespace Fp
         {
             InputRootDirectory = inputRoot;
             InputFile = file;
-            InputDirectory = Path.GetDirectoryName(file) ?? throw new Exception();
+            InputDirectory = Path.GetDirectoryName(file) ?? throw new ArgumentException("File is root");
             OutputRootDirectory = outputRoot;
             OutputDirectory = Join(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
             InputStream = null;
@@ -187,18 +193,13 @@ namespace Fp
         /// <summary>
         /// Process current file
         /// </summary>
-        /// <param name="args">Command-line arguments</param>
-        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
-        protected virtual void ProcessImpl(IReadOnlyList<string> args) => _overrideProcess = false;
+        protected virtual void ProcessImpl() => _overrideProcess = false;
 
         /// <summary>
         /// Process current file in parts
         /// </summary>
-        /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
-        protected virtual IEnumerable<Data> ProcessSegmentedImpl(
-            IReadOnlyList<string> args)
+        protected virtual IEnumerable<Data> ProcessSegmentedImpl()
         {
             _overrideProcessSegmented = false;
             yield break;
@@ -207,17 +208,16 @@ namespace Fp
         /// <summary>
         /// Process current file
         /// </summary>
-        /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        public void Process(IReadOnlyList<string> args)
+        public void Process()
         {
-            ProcessImpl(args);
+            ProcessImpl();
             if (_overrideProcess)
             {
                 return;
             }
 
-            foreach (Data d in ProcessSegmentedImpl(args))
+            foreach (Data d in ProcessSegmentedImpl())
             {
                 using Data data = d;
                 using Stream stream =
@@ -230,12 +230,10 @@ namespace Fp
         /// <summary>
         /// Process current file in parts
         /// </summary>
-        /// <param name="args">Command-line arguments</param>
         /// <returns>Generated outputs</returns>
-        public IEnumerable<Data> ProcessSegmented(
-            IReadOnlyList<string> args)
+        public IEnumerable<Data> ProcessSegmented()
         {
-            foreach (Data entry in ProcessSegmentedImpl(args))
+            foreach (Data entry in ProcessSegmentedImpl())
             {
                 yield return entry;
             }
@@ -246,11 +244,11 @@ namespace Fp
             }
 
             FileSystemSource prevFs = FileSystem ?? throw new InvalidOperationException();
-            FileSystemSource.SegmentedFileSystemSource fs = new FileSystemSource.SegmentedFileSystemSource(prevFs);
+            FileSystemSource.SegmentedFileSystemSource fs = new(prevFs);
             FileSystem = fs;
             try
             {
-                ProcessImpl(args);
+                ProcessImpl();
                 foreach ((string path, byte[] buffer, int offset, int length) in fs)
                 {
                     yield return new BufferData<byte>(path, buffer.AsMemory(offset, length));
@@ -270,19 +268,19 @@ namespace Fp
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogInfo(string log) => Logger?.Invoke($"[{WorkerId:X2}][~]<INFO>: {log}");
+        public void LogInfo(string log) => Logger.LogInformation(log);
 
         /// <summary>
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogWarn(string log) => Logger?.Invoke($"[{WorkerId:X2}][!]<WARN>: {log}");
+        public void LogWarn(string log) => Logger.LogWarning(log);
 
         /// <summary>
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogFail(string log) => Logger?.Invoke($"[{WorkerId:X2}][X]<FAIL>: {log}");
+        public void LogFail(string log) => Logger.LogError(log);
 
         #endregion
 
@@ -297,6 +295,7 @@ namespace Fp
             OutputStream?.Dispose();
             InputStream = null;
             OutputStream = null;
+            MemClear();
         }
 
         #endregion

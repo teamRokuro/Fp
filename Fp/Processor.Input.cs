@@ -534,7 +534,7 @@ namespace Fp
                     catch (Exception)
                     {
                         // Fallback to MemoryStream copy
-                        MemoryStream ms2 = new MemoryStream();
+                        MemoryStream ms2 = new();
                         stream.CopyTo(ms2);
                         return ms2.ToArray();
                     }
@@ -569,7 +569,7 @@ namespace Fp
                     catch (Exception)
                     {
                         // Fallback to MemoryStream copy
-                        MemoryStream ms2 = new MemoryStream();
+                        MemoryStream ms2 = new();
                         stream.CopyTo(ms2);
                         return ms2.GetBuffer().AsMemory(0, (int)ms2.Length);
                     }

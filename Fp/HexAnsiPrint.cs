@@ -74,7 +74,7 @@ namespace Fp
         /// <summary>
         /// Supported color sequences
         /// </summary>
-        public static readonly Dictionary<Color, string> Sequences = new Dictionary<Color, string>
+        public static readonly Dictionary<Color, string> Sequences = new()
         {
             /*{Color.Black, "\u001b[30;1m"},*/
             {Color.Red, "\u001b[31;1m"},
@@ -135,9 +135,9 @@ namespace Fp
             int cur = 0;
             int annotationOffset = 0;
             Queue<(int offset, int length, Color color)> annotationQueue =
-                new Queue<(int offset, int length, Color color)>();
+                new();
             Queue<(int offset, int length, string label, Color color)> annotationPrintQueue =
-                new Queue<(int offset, int length, string label, Color color)>();
+                new();
 
             while (left > 0)
             {

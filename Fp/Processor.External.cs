@@ -18,7 +18,7 @@ namespace Fp
         /// <returns>Exit code</returns>
         public int Execute(bool shellExecute, string program, string args)
         {
-            Process process = new Process
+            Process process = new()
             {
                 StartInfo = new ProcessStartInfo(program, args)
                 {

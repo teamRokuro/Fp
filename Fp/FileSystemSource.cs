@@ -34,7 +34,7 @@ namespace Fp
         {
             Stream src = Processor.GetSeekableStream(OpenReadImpl(path, fileMode, fileShare));
             if (!ParallelAccess || src is MemoryStream) return src;
-            MemoryStream ms = new MemoryStream(new byte[src.Length]);
+            MemoryStream ms = new(new byte[src.Length]);
             src.CopyTo(ms);
             ms.Position = 0;
             return ms;
@@ -145,7 +145,7 @@ namespace Fp
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
                                       FileShare.Write)
             {
-                MemoryStream stream = new MemoryStream();
+                MemoryStream stream = new();
                 _outputEntries.Add((path, stream));
                 _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
                 return stream;

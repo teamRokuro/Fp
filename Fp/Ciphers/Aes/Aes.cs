@@ -20,9 +20,9 @@ namespace Fp
             ICryptoTransform decryptor = aes.CreateDecryptor();
             fixed (byte* p = &src.GetPinnableReference())
             {
-                using PStream ps = new PStream(new IntPtr(p), src.Length);
-                using PStream ps2 = new PStream(new IntPtr(p), src.Length);
-                using CryptoStream cs = new CryptoStream(ps, decryptor, CryptoStreamMode.Read);
+                using PStream ps = new(new IntPtr(p), src.Length);
+                using PStream ps2 = new(new IntPtr(p), src.Length);
+                using CryptoStream cs = new(ps, decryptor, CryptoStreamMode.Read);
                 cs.CopyTo(ps2);
             }
         }
@@ -43,9 +43,9 @@ namespace Fp
             ICryptoTransform decryptor = aes.CreateDecryptor();
             fixed (byte* p = &src.GetPinnableReference())
             {
-                using PStream ps = new PStream(new IntPtr(p), src.Length);
-                using PStream ps2 = new PStream(new IntPtr(p), src.Length);
-                using CryptoStream cs = new CryptoStream(ps, decryptor, CryptoStreamMode.Read);
+                using PStream ps = new(new IntPtr(p), src.Length);
+                using PStream ps2 = new(new IntPtr(p), src.Length);
+                using CryptoStream cs = new(ps, decryptor, CryptoStreamMode.Read);
                 cs.CopyTo(ps2);
             }
         }

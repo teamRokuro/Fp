@@ -167,7 +167,7 @@ namespace Fp
             }
 
             int count = 0;
-            List<long> res = new List<long>();
+            List<long> res = new();
             long initPos = stream.Position;
             int matchLength = match.Length;
             byte[][] buffers = new byte[2][];

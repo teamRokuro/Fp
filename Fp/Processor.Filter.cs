@@ -19,7 +19,7 @@ namespace Fp
         /// <returns>True if file with provided name exists next to current file</returns>
         public bool HasSibling(string sibling) =>
             (FileSystem ?? throw new InvalidOperationException())
-            .FileExists(Path.Combine(InputDirectory ?? "/", sibling));
+            .FileExists(Path.Combine(InputDirectory, sibling));
 
         /// <summary>
         /// Check if a file exists in the same folder as specified path

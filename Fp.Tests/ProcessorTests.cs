@@ -192,7 +192,7 @@ namespace Fp.Tests
 
             Span<byte> arr = new byte[1097];
             Span<byte> arr2 = new byte[arr.Length];
-            Processor p = new Processor();
+            Processor p = new();
             p.GetU8(arr);
             arr.CopyTo(arr2);
 

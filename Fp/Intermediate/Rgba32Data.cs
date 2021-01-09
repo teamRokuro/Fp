@@ -16,7 +16,7 @@ namespace Fp.Intermediate
     public class Rgba32Data : BufferData<uint>
     {
         private static readonly PngEncoder _pngEncoder =
-            new PngEncoder {CompressionLevel = PngCompressionLevel.BestCompression};
+            new() {CompressionLevel = PngCompressionLevel.BestCompression};
 
         /// <inheritdoc />
         public override CommonFormat DefaultFormat => CommonFormat.PngDeflate;
@@ -96,7 +96,7 @@ namespace Fp.Intermediate
             {
                 case CommonFormat.PngDeflate:
                 case CommonFormat.Jpeg:
-                    Image<Rgba32> image = new Image<Rgba32>(Width, Height);
+                    Image<Rgba32> image = new(Width, Height);
                     if (image.TryGetSinglePixelSpan(out Span<Rgba32> span))
                         Buffer.Span.Slice(0, Width * Height).CopyTo(MemoryMarshal.Cast<Rgba32, uint>(span));
                     else

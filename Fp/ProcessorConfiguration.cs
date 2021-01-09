@@ -1,15 +1,13 @@
-using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace Fp
 {
     /// <summary>
     /// Configuration for batch-processing fs with processors
     /// </summary>
-    public struct ProcessorConfiguration
+    public record ProcessorConfiguration
     {
-        internal static readonly ProcessorConfiguration Default = new ProcessorConfiguration();
-
         /// <summary>
         /// Create configuration
         /// </summary>
@@ -21,10 +19,10 @@ namespace Fp
         /// <param name="logger">Log writer</param>
         /// <param name="args">Arguments</param>
         public ProcessorConfiguration(IReadOnlyList<(bool, string, string)> inputs, string outputRootDirectory,
-            int parallel, bool preload, bool debug, Action<string> logger, IReadOnlyList<string> args)
+            int parallel, bool preload, bool debug, ILogger logger, IReadOnlyList<string> args)
         {
-            Inputs = inputs ?? throw new ArgumentNullException(nameof(inputs));
-            OutputRootDirectory = outputRootDirectory ?? throw new ArgumentException(nameof(outputRootDirectory));
+            Inputs = inputs;
+            OutputRootDirectory = outputRootDirectory;
             Parallel = parallel;
             Preload = preload;
             Debug = debug;
@@ -35,36 +33,43 @@ namespace Fp
         /// <summary>
         /// Input sources
         /// </summary>
-        public IReadOnlyList<(bool, string, string)> Inputs { get; }
+        public IReadOnlyList<(bool, string, string)> Inputs { get; init; }
 
         /// <summary>
         /// Output source
         /// </summary>
-        public string OutputRootDirectory { get; }
+        public string OutputRootDirectory { get; init; }
 
         /// <summary>
         /// Thread count
         /// </summary>
-        public int Parallel { get; }
+        public int Parallel { get; init; }
 
         /// <summary>
         /// Whether to read all streams to memory
         /// </summary>
-        public bool Preload { get; }
+        public bool Preload { get; init; }
 
         /// <summary>
         /// Whether to enable <see cref="Processor.Debug"/>
         /// </summary>
-        public bool Debug { get; }
+        public bool Debug { get; init; }
 
         /// <summary>
         /// Log writer
         /// </summary>
-        public Action<string> Logger { get; }
+        public ILogger Logger { get; init; }
 
         /// <summary>
         /// Arguments
         /// </summary>
-        public IReadOnlyList<string> Args { get; }
+        public IReadOnlyList<string> Args { get; init; }
+    }
+}
+
+namespace System.Runtime.CompilerServices
+{
+    internal static class IsExternalInit
+    {
     }
 }

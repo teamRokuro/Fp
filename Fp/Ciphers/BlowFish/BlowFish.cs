@@ -741,7 +741,7 @@ namespace Fp
         /// <param name="key">Cipher key</param>
         public static void DecryptBlowfishEcb(Span<byte> src, ReadOnlySpan<byte> key)
         {
-            Blowfish bf = new Blowfish(key);
+            Blowfish bf = new(key);
             bf.DecryptEcb(src);
         }
 

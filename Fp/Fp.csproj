@@ -2,45 +2,45 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>8</LangVersion>
-    <Authors>riina</Authors>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+    <PackageVersion>0.6.0</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Authors>Lucina,riina</Authors>
     <Description>File processing</Description>
     <Copyright>Copyright ©2020 teamRokuro</Copyright>
     <PackageProjectUrl>https://github.com/teamRokuro/Fp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/teamRokuro/Fp</RepositoryUrl>
     <Company>teamRokuro</Company>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
     <PackOnBuild>true</PackOnBuild>
-    <Owners>riina</Owners>
+    <Owners>riina,Lucina</Owners>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageVersion>0.5.0</PackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Nullable>enable</Nullable>
     <NoWarn>NU5105</NoWarn>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="System.Buffers" Version="4.5.1"/>
-    <PackageReference Include="System.Memory" Version="4.5.4"/>
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Esper.Accelerator" Version="0.3.3"/>
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2"/>
+    <PackageReference Include="Esper.Accelerator" Version="0.4.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="NOTICE.Fp.txt" Pack="true" PackagePath="lib/netstandard2.0/">
+    <Content Include="NOTICE.Fp.txt">
       <Link>%(FileName)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="NOTICE.Fp.txt" Pack="true" PackagePath="lib/net5.0/">
-      <Link>%(FileName)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+      <PackagePath>contentFiles/any/any/</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
   </ItemGroup>
 
 </Project>

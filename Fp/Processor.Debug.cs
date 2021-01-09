@@ -20,8 +20,7 @@ namespace Fp
         public readonly Dictionary<ReadOnlyMemory<byte>,
                 SortedList<int, (int offset, int length, string? label, Color color)>>
             MemAnnotations =
-                new Dictionary<ReadOnlyMemory<byte>,
-                    SortedList<int, (int offset, int length, string? label, Color color)>>();
+                new();
 
         private int _memColorIdx;
 

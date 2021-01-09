@@ -14,13 +14,13 @@ namespace Fp.Tests
         public void TestCircleBuffer()
         {
             // Test some operations with circlebuffer
-            CircleBuffer<byte> cb = new CircleBuffer<byte>(100);
-            Random r = new Random();
+            CircleBuffer<byte> cb = new(100);
+            Random r = new();
             byte[] a = new byte[60];
             r.NextBytes(a);
             foreach (byte b in a)
                 cb.Add(b);
-            List<byte> list = new List<byte>(a);
+            List<byte> list = new(a);
             Assert.IsTrue(cb.SequenceEqual(list));
             cb.RemoveAt(40);
             list.RemoveAt(40);
@@ -40,11 +40,11 @@ namespace Fp.Tests
         public void TestMultiBufferStream()
         {
             // Test a bunch of random location reads
-            Random r = new Random();
+            Random r = new();
             byte[] a = new byte[4096];
             r.NextBytes(a);
-            MemoryStream ms = new MemoryStream(a);
-            MultiBufferStream mbs = new MultiBufferStream(ms, true, 8, 128);
+            MemoryStream ms = new(a);
+            MultiBufferStream mbs = new(ms, true, 8, 128);
             mbs.LargeReadOverride = false;
             byte[] temp = new byte[256];
             for (int i = 0; i < 128; i++)
@@ -58,7 +58,7 @@ namespace Fp.Tests
 
             // Test full read
             mbs.Position = 0;
-            MemoryStream ms2 = new MemoryStream();
+            MemoryStream ms2 = new();
             mbs.CopyTo(ms2);
             ms2.TryGetBuffer(out ArraySegment<byte> ms2b);
             Assert.AreEqual(new ArraySegment<byte>(a), ms2b);
@@ -84,7 +84,7 @@ namespace Fp.Tests
 
             byte[] dataEnc = new byte[data.Length];
             Buffer.BlockCopy(data, 0, dataEnc, 0, data.Length);
-            Blowfish bf = new Blowfish();
+            Blowfish bf = new();
             var ptkey = Processor.DecodeHex("1010ffff");
             bf.SetBlankIv();
             bf.SetKey(ptkey);
