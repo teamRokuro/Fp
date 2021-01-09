@@ -162,7 +162,7 @@ Options
         {
             exeName ??= "<program>";
             fileSystem ??= FileSystemSource.Default;
-            loggerFactory ??= LoggerFactory.Create(b => b.AddSimpleConsole());
+            loggerFactory ??= new LoggerFactory(new[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())});
             CliRunFilesystem(exeName, args, loggerFactory, fileSystem, () => new T());
         }
 
@@ -205,7 +205,7 @@ Options
         {
             exeName ??= "<program>";
             fileSystem ??= FileSystemSource.Default;
-            loggerFactory ??= LoggerFactory.Create(b => b.AddSimpleConsole());
+            loggerFactory ??= new LoggerFactory(new[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())});
             await CliRunFilesystemAsync(exeName, args, loggerFactory, fileSystem, () => new T());
         }
 

@@ -73,31 +73,167 @@
   
   <h1 id="Fp_MStream" data-uid="Fp.MStream" class="text-break">Class MStream
   </h1>
-  <div class="markdown level0 summary"><p>Stream from <see cref="!:Memory&lt;T>"></see> of bytes</p>
+  <div class="markdown level0 summary"><p>Stream from <span class="xref">System.Memory&lt;T&gt;</span> of bytes</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">MStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">MStream</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IAsyncDisposable</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.DisposeAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Read(System.Span&lt;System.Byte&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Memory&lt;System.Byte&gt;, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Write(System.ReadOnlySpan&lt;System.Byte&gt;)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.ReadOnlyMemory&lt;System.Byte&gt;, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteByte(System.Byte)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CanTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.html">Fp</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
   <h5 id="Fp_MStream_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MStream : Stream</code></pre>
+    <pre><code class="lang-csharp hljs">public class MStream : Stream, IAsyncDisposable, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream__ctor_Memory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.MStream.%23ctor(Memory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream__ctor_System_Memory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.MStream.%23ctor(System.Memory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L101">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L101">View Source</a>
   </span>
   <a id="Fp_MStream__ctor_" data-uid="Fp.MStream.#ctor*"></a>
-  <h4 id="Fp_MStream__ctor_Memory_System_Byte__" data-uid="Fp.MStream.#ctor(Memory{System.Byte})">MStream(Memory&lt;Byte&gt;)</h4>
+  <h4 id="Fp_MStream__ctor_System_Memory_System_Byte__" data-uid="Fp.MStream.#ctor(System.Memory{System.Byte})">MStream(Memory&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.MStream.html">MStream</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -116,7 +252,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">memory</span></td>
         <td><p>Writeable memory instance</p>
 </td>
@@ -125,13 +261,13 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream__ctor_ReadOnlyMemory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.MStream.%23ctor(ReadOnlyMemory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream__ctor_System_ReadOnlyMemory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.MStream.%23ctor(System.ReadOnlyMemory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L113">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L113">View Source</a>
   </span>
   <a id="Fp_MStream__ctor_" data-uid="Fp.MStream.#ctor*"></a>
-  <h4 id="Fp_MStream__ctor_ReadOnlyMemory_System_Byte__" data-uid="Fp.MStream.#ctor(ReadOnlyMemory{System.Byte})">MStream(ReadOnlyMemory&lt;Byte&gt;)</h4>
+  <h4 id="Fp_MStream__ctor_System_ReadOnlyMemory_System_Byte__" data-uid="Fp.MStream.#ctor(System.ReadOnlyMemory{System.Byte})">MStream(ReadOnlyMemory&lt;Byte&gt;)</h4>
   <div class="markdown level1 summary"><p>Create new instance of <a class="xref" href="Fp.MStream.html">MStream</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -150,7 +286,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td><span class="parametername">memory</span></td>
         <td><p>Memory instance</p>
 </td>
@@ -161,10 +297,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_CanRead.md&amp;value=---%0Auid%3A%20Fp.MStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_CanRead.md&amp;value=---%0Auid%3A%20Fp.MStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L18">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L18">View Source</a>
   </span>
   <a id="Fp_MStream_CanRead_" data-uid="Fp.MStream.CanRead*"></a>
   <h4 id="Fp_MStream_CanRead" data-uid="Fp.MStream.CanRead">CanRead</h4>
@@ -189,12 +325,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanRead</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_CanSeek.md&amp;value=---%0Auid%3A%20Fp.MStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_CanSeek.md&amp;value=---%0Auid%3A%20Fp.MStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L21">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L21">View Source</a>
   </span>
   <a id="Fp_MStream_CanSeek_" data-uid="Fp.MStream.CanSeek*"></a>
   <h4 id="Fp_MStream_CanSeek" data-uid="Fp.MStream.CanSeek">CanSeek</h4>
@@ -219,12 +357,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanSeek</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_CanWrite.md&amp;value=---%0Auid%3A%20Fp.MStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_CanWrite.md&amp;value=---%0Auid%3A%20Fp.MStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L24">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L24">View Source</a>
   </span>
   <a id="Fp_MStream_CanWrite_" data-uid="Fp.MStream.CanWrite*"></a>
   <h4 id="Fp_MStream_CanWrite" data-uid="Fp.MStream.CanWrite">CanWrite</h4>
@@ -249,12 +389,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanWrite</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Length.md&amp;value=---%0Auid%3A%20Fp.MStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Length.md&amp;value=---%0Auid%3A%20Fp.MStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L27">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L27">View Source</a>
   </span>
   <a id="Fp_MStream_Length_" data-uid="Fp.MStream.Length*"></a>
   <h4 id="Fp_MStream_Length" data-uid="Fp.MStream.Length">Length</h4>
@@ -279,12 +421,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Length</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Position.md&amp;value=---%0Auid%3A%20Fp.MStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Position.md&amp;value=---%0Auid%3A%20Fp.MStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L30">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L30">View Source</a>
   </span>
   <a id="Fp_MStream_Position_" data-uid="Fp.MStream.Position*"></a>
   <h4 id="Fp_MStream_Position" data-uid="Fp.MStream.Position">Position</h4>
@@ -309,14 +453,16 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Position</span></div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Flush.md&amp;value=---%0Auid%3A%20Fp.MStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Flush.md&amp;value=---%0Auid%3A%20Fp.MStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L37">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L37">View Source</a>
   </span>
   <a id="Fp_MStream_Flush_" data-uid="Fp.MStream.Flush*"></a>
   <h4 id="Fp_MStream_Flush" data-uid="Fp.MStream.Flush">Flush()</h4>
@@ -326,12 +472,14 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Flush()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Flush()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.MStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.MStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L45">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L45">View Source</a>
   </span>
   <a id="Fp_MStream_Read_" data-uid="Fp.MStream.Read*"></a>
   <h4 id="Fp_MStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="Fp.MStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
@@ -383,12 +531,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Read(System.Byte[], System.Int32, System.Int32)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_ReadByte.md&amp;value=---%0Auid%3A%20Fp.MStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_ReadByte.md&amp;value=---%0Auid%3A%20Fp.MStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L42">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L42">View Source</a>
   </span>
   <a id="Fp_MStream_ReadByte_" data-uid="Fp.MStream.ReadByte*"></a>
   <h4 id="Fp_MStream_ReadByte" data-uid="Fp.MStream.ReadByte">ReadByte()</h4>
@@ -413,15 +563,17 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.ReadByte()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Seek_System_Int64_SeekOrigin_.md&amp;value=---%0Auid%3A%20Fp.MStream.Seek(System.Int64%2CSeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20Fp.MStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L57">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L57">View Source</a>
   </span>
   <a id="Fp_MStream_Seek_" data-uid="Fp.MStream.Seek*"></a>
-  <h4 id="Fp_MStream_Seek_System_Int64_SeekOrigin_" data-uid="Fp.MStream.Seek(System.Int64,SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
+  <h4 id="Fp_MStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="Fp.MStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -444,7 +596,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">SeekOrigin</span></td>
+        <td><span class="xref">System.IO.SeekOrigin</span></td>
         <td><span class="parametername">origin</span></td>
         <td></td>
       </tr>
@@ -465,12 +617,14 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Seek(System.Int64, System.IO.SeekOrigin)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Fp.MStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20Fp.MStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L80">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L80">View Source</a>
   </span>
   <a id="Fp_MStream_SetLength_" data-uid="Fp.MStream.SetLength*"></a>
   <h4 id="Fp_MStream_SetLength_System_Int64_" data-uid="Fp.MStream.SetLength(System.Int64)">SetLength(Int64)</h4>
@@ -498,12 +652,29 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.SetLength(System.Int64)</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.MStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.MStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L86">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L86">View Source</a>
   </span>
   <a id="Fp_MStream_Write_" data-uid="Fp.MStream.Write*"></a>
   <h4 id="Fp_MStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="Fp.MStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
@@ -540,6 +711,15 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Write(System.Byte[], System.Int32, System.Int32)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IAsyncDisposable</span>
+  </div>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -548,10 +728,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.4.2/apiSpec/new?filename=Fp_MStream.md&amp;value=---%0Auid%3A%20Fp.MStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_MStream.md&amp;value=---%0Auid%3A%20Fp.MStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.4.2/Fp/MStream.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/MStream.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

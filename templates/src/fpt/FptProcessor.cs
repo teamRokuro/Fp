@@ -10,7 +10,7 @@ namespace Fpt
     {
         /*
          * NuGet package:
-         * Fp 0.6.0
+         * Fp 0.7.0
          */
 
         // Main function
