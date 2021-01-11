@@ -32,7 +32,7 @@ namespace Fp
                 string? str = arguments[i];
                 if (argTime)
                 {
-                    flags.Add(str);
+                    args.Add(str);
                     continue;
                 }
 
