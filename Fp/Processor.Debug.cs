@@ -15,6 +15,11 @@ namespace Fp
         public bool Debug = false;
 
         /// <summary>
+        /// If true, disable outputs
+        /// </summary>
+        public bool Nop = false;
+
+        /// <summary>
         /// Annotations for memory
         /// </summary>
         public readonly Dictionary<ReadOnlyMemory<byte>,

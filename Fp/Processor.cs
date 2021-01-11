@@ -219,6 +219,7 @@ namespace Fp
 
             foreach (Data d in ProcessSegmentedImpl())
             {
+                if (Nop) continue;
                 using Data data = d;
                 using Stream stream =
                     (FileSystem ?? throw new InvalidOperationException()).OpenWrite(

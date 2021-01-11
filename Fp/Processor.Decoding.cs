@@ -76,7 +76,8 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetS8(Span<byte> span, sbyte value, int offset = 0) => span[offset] = (byte)value;
+        /// <returns>Value</returns>
+        public sbyte SetS8(Span<byte> span, sbyte value, int offset = 0) => (sbyte)(span[offset] = (byte)value);
 
         /// <summary>
         /// Write signed 8-bit value to memory at the specified offset
@@ -84,7 +85,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMS8(Memory<byte> memory, sbyte value, int offset = 0) => SetS8(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public sbyte SetMS8(Memory<byte> memory, sbyte value, int offset = 0) => SetS8(memory.Span, value, offset);
 
         /// <summary>
         /// Read unsigned 8-bit value from stream
@@ -142,7 +144,8 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetU8(Span<byte> span, byte value, int offset = 0) => span[offset] = value;
+        /// <returns>Value</returns>
+        public byte SetU8(Span<byte> span, byte value, int offset = 0) => span[offset] = value;
 
         /// <summary>
         /// Write unsigned 8-bit value to memory at the specified offset
@@ -150,7 +153,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMU8(Memory<byte> memory, byte value, int offset = 0) => SetU8(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public byte SetMU8(Memory<byte> memory, byte value, int offset = 0) => SetU8(memory.Span, value, offset);
 
         /// <summary>
         /// Read signed 16-bit value from stream
@@ -218,12 +222,14 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetS16(Span<byte> span, short value, int offset = 0)
+        /// <returns>Value</returns>
+        public short SetS16(Span<byte> span, short value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[2];
             MemoryMarshal.Cast<byte, short>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 2));
+            return value;
         }
 
         /// <summary>
@@ -232,7 +238,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMS16(Memory<byte> memory, short value, int offset = 0) => SetS16(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public short SetMS16(Memory<byte> memory, short value, int offset = 0) => SetS16(memory.Span, value, offset);
 
         /// <summary>
         /// Read unsigned 16-bit value from stream
@@ -300,12 +307,14 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetU16(Span<byte> span, ushort value, int offset = 0)
+        /// <returns>Value</returns>
+        public ushort SetU16(Span<byte> span, ushort value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[2];
             MemoryMarshal.Cast<byte, ushort>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 2));
+            return value;
         }
 
         /// <summary>
@@ -314,7 +323,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMU16(Memory<byte> memory, ushort value, int offset = 0) => SetU16(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public ushort SetMU16(Memory<byte> memory, ushort value, int offset = 0) => SetU16(memory.Span, value, offset);
 
         /// <summary>
         /// Read signed 32-bit value from stream
@@ -374,6 +384,7 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
         public int GetMS32(ReadOnlyMemory<byte> memory, int offset = 0) => GetS32(memory.Span, offset);
 
         /// <summary>
@@ -382,12 +393,14 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetS32(Span<byte> span, int value, int offset = 0)
+        /// <returns>Value</returns>
+        public int SetS32(Span<byte> span, int value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[4];
             MemoryMarshal.Cast<byte, int>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 4));
+            return value;
         }
 
         /// <summary>
@@ -396,7 +409,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMS32(Memory<byte> memory, int value, int offset = 0) => SetS32(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public int SetMS32(Memory<byte> memory, int value, int offset = 0) => SetS32(memory.Span, value, offset);
 
         /// <summary>
         /// Read unsigned 32-bit value from stream
@@ -464,12 +478,14 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetU32(Span<byte> span, uint value, int offset = 0)
+        /// <returns>Value</returns>
+        public uint SetU32(Span<byte> span, uint value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[4];
             MemoryMarshal.Cast<byte, uint>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 4));
+            return value;
         }
 
         /// <summary>
@@ -478,7 +494,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMU32(Memory<byte> memory, uint value, int offset = 0) => SetU32(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public uint SetMU32(Memory<byte> memory, uint value, int offset = 0) => SetU32(memory.Span, value, offset);
 
         /// <summary>
         /// Read signed 64-bit value from stream
@@ -546,12 +563,13 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetS64(Span<byte> span, long value, int offset = 0)
+        public long SetS64(Span<byte> span, long value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[8];
             MemoryMarshal.Cast<byte, long>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 8));
+            return value;
         }
 
         /// <summary>
@@ -560,12 +578,14 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMS64(Memory<byte> memory, long value, int offset = 0) => SetS64(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public long SetMS64(Memory<byte> memory, long value, int offset = 0) => SetS64(memory.Span, value, offset);
 
         /// <summary>
         /// Read unsigned 64-bit value from stream
         /// </summary>
         /// <param name="stream">Stream to read from, uses current file if null</param>
+        /// <returns>Value</returns>
         /// <returns>Value</returns>
         public ulong ReadU64(Stream? stream = null)
         {
@@ -628,12 +648,14 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetU64(Span<byte> span, ulong value, int offset = 0)
+        /// <returns>Value</returns>
+        public ulong SetU64(Span<byte> span, ulong value, int offset = 0)
         {
             if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
             Span<byte> span2 = stackalloc byte[8];
             MemoryMarshal.Cast<byte, ulong>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 8));
+            return value;
         }
 
         /// <summary>
@@ -642,7 +664,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMU64(Memory<byte> memory, ulong value, int offset = 0) => SetU64(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public ulong SetMU64(Memory<byte> memory, ulong value, int offset = 0) => SetU64(memory.Span, value, offset);
 
         /// <summary>
         /// Read unsigned 64-bit value from span at the specified offset, reversing span in-place if necessary
@@ -726,11 +749,13 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetHalf(Span<byte> span, float value, int offset = 0)
+        /// <returns>Value</returns>
+        public float SetHalf(Span<byte> span, float value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[2];
             MemoryMarshal.Cast<byte, ushort>(span2)[0] = HalfHelper.SingleToHalf(value);
             span2.CopyTo(span.Slice(offset, 2));
+            return value;
         }
 
         /// <summary>
@@ -739,7 +764,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMHalf(Memory<byte> memory, float value, int offset = 0) => SetHalf(memory.Span, value, offset);
+        /// <returns>Value</returns>
+        public float SetMHalf(Memory<byte> memory, float value, int offset = 0) => SetHalf(memory.Span, value, offset);
 
         /// <summary>
         /// Read 32-bit float value from stream
@@ -806,11 +832,13 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetSingle(Span<byte> span, float value, int offset = 0)
+        /// <returns>Value</returns>
+        public float SetSingle(Span<byte> span, float value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[4];
             MemoryMarshal.Cast<byte, float>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 4));
+            return value;
         }
 
         /// <summary>
@@ -819,7 +847,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMSingle(Memory<byte> memory, float value, int offset = 0) =>
+        /// <returns>Value</returns>
+        public float SetMSingle(Memory<byte> memory, float value, int offset = 0) =>
             SetSingle(memory.Span, value, offset);
 
         /// <summary>
@@ -881,11 +910,13 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetDouble(Span<byte> span, double value, int offset = 0)
+        /// <returns>Value</returns>
+        public double SetDouble(Span<byte> span, double value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[8];
             MemoryMarshal.Cast<byte, double>(span2)[0] = value;
             span2.CopyTo(span.Slice(offset, 8));
+            return value;
         }
 
         /// <summary>
@@ -894,7 +925,8 @@ namespace Fp
         /// <param name="memory">Memory to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public void SetMDouble(Memory<byte> memory, double value, int offset = 0) =>
+        /// <returns>Value</returns>
+        public double SetMDouble(Memory<byte> memory, double value, int offset = 0) =>
             SetDouble(memory.Span, value, offset);
 
         /// <summary>

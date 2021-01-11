@@ -39,6 +39,7 @@ namespace Fp
             int parallel = 0;
             bool preload = false;
             bool debug = false;
+            bool nop = false;
             bool argTime = false;
             for (int i = 0; i < args.Count; i++)
             {
@@ -90,6 +91,10 @@ namespace Fp
                         parallel = maxParallelRes;
                         i++;
                         break;
+                    case "n":
+                    case "-nop":
+                        nop = true;
+                        break;
                     case "o":
                     case "-outdir":
                         outputRootDirectory = GetArgValue(args, i);
@@ -125,6 +130,7 @@ Options
                     usageStr += @"
     -m|--multithread : Use specified # of workers";
                 usageStr += @"
+    -n|--nop         : No outputs
     -o|--outdir      : Output directory
     -p|--preload     : Load all streams to memory
                        before working";
@@ -144,7 +150,7 @@ Options
             }
 
             configuration =
-                new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, debug, logger, exArgs);
+                new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, debug, nop, logger, exArgs);
             return true;
         }
 
@@ -375,6 +381,7 @@ Options
                 processor.SrcCleanup();
                 processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
                 processor.Debug = configuration.Debug;
+                processor.Nop = configuration.Nop;
                 processor.Preload = configuration.Preload;
                 processor.Logger = configuration.Logger;
                 processor.Args = configuration.Args;
