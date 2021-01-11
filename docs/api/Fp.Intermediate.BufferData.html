@@ -85,8 +85,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.IDisposable</span></div>
-    <div><span class="xref">System.ICloneable</span></div>
+    <div><span class="xref">ICloneable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -100,7 +99,7 @@
       <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dry">Data.Dry</a>
     </div>
     <div>
-      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_System_IO_Stream_Fp_Intermediate_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__">Data.WriteConvertedData(Stream, CommonFormat, Dictionary&lt;Object, Object&gt;)</a>
+      <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_WriteConvertedData_Stream_Fp_Intermediate_CommonFormat_System_Nullable_Dictionary_System_Object_System_Object___">Data.WriteConvertedData(Stream, CommonFormat, Nullable&lt;Dictionary&lt;Object, Object&gt;&gt;)</a>
     </div>
     <div>
       <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_Dispose">Data.Dispose()</a>
@@ -111,33 +110,12 @@
     <div>
       <a class="xref" href="Fp.Intermediate.Data.html#Fp_Intermediate_Data_CastNumber__2___0_">Data.CastNumber&lt;TIn, TOut&gt;(TIn)</a>
     </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.Intermediate.html">Fp.Intermediate</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
   <h5 id="Fp_Intermediate_BufferData_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class BufferData : Data, IDisposable, ICloneable</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BufferData : Data, ICloneable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -204,7 +182,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ReadOnlySpan</span>&lt;TWant&gt;</td>
+        <td><span class="xref">ReadOnlySpan</span>&lt;TWant&gt;</td>
         <td><p>Span</p>
 </td>
       </tr>
@@ -226,28 +204,9 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ObjectDisposedException</span></td>
-        <td><p>If object was disposed</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.IDisposable</span>
-  </div>
-  <div>
-      <span class="xref">System.ICloneable</span>
+      <span class="xref">ICloneable</span>
   </div>
 </article>
           </div>
