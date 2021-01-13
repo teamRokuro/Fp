@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-
 #if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
 
@@ -535,11 +534,68 @@ namespace Fp
                     catch (Exception)
                     {
                         // Fallback to MemoryStream copy
+                        stream.Position = 0;
                         MemoryStream ms2 = new();
                         stream.CopyTo(ms2);
                         return ms2.ToArray();
                     }
             }
+        }
+
+        /// <summary>
+        /// Get byte array from input
+        /// </summary>
+        /// <param name="offset">Offset in stream</param>
+        /// <param name="length">Length of segment</param>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="forceNew">Force use newly allocated buffer</param>
+        /// <returns>Array with file contents</returns>
+        public byte[] GetArray(int offset, int length, Stream? stream = null, bool forceNew = false)
+        {
+            stream ??= InputStream ?? throw new InvalidOperationException();
+            if (!stream.CanSeek)
+                throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
+            switch (stream)
+            {
+                case MStream mes:
+                    return mes.GetMemory().Slice(offset, length).ToArray();
+                case MemoryStream ms when !forceNew:
+                    return offset == 0 && ms.Length == length && ms.Capacity == ms.Length && ms.TryGetBuffer(out _)
+                        ? ms.GetBuffer()
+                        : ms.ToArray();
+                default:
+                    if (offset + length > stream.Length)
+                        throw new IOException("Target range exceeds stream bounds");
+                    stream.Position = offset;
+                    try
+                    {
+                        byte[] arr = new byte[length];
+                        Read(stream, arr, false);
+                        return arr;
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback to MemoryStream copy
+                        stream.Position = offset;
+                        MemoryStream ms2 = new();
+                        new SStream(stream, length).CopyTo(ms2);
+                        return ms2.ToArray();
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Dump remaining content from stream to byte array
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="maxLength">Maximum length.</param>
+        /// <returns>Array with file contents</returns>
+        public byte[] DumpArray(Stream? stream = null, int maxLength = int.MaxValue)
+        {
+            stream ??= InputStream ?? throw new InvalidOperationException();
+            MemoryStream ms2 = new();
+            new SStream(stream, maxLength).CopyTo(ms2);
+            return ms2.ToArray();
         }
 
         /// <summary>
@@ -570,9 +626,51 @@ namespace Fp
                     catch (Exception)
                     {
                         // Fallback to MemoryStream copy
+                        stream.Position = 0;
                         MemoryStream ms2 = new();
                         stream.CopyTo(ms2);
                         return ms2.GetBuffer().AsMemory(0, (int)ms2.Length);
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Get read-only memory from input
+        /// </summary>
+        /// <param name="offset">Offset in stream</param>
+        /// <param name="length">Length of segment</param>
+        /// <param name="stream">Stream to read from</param>
+        /// <returns>Array with file contents</returns>
+        /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
+        public ReadOnlyMemory<byte> GetMemory(int offset, int length, Stream? stream = null)
+        {
+            stream ??= InputStream ?? throw new InvalidOperationException();
+            if (!stream.CanSeek)
+                throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
+            switch (stream)
+            {
+                case MStream mes:
+                    return mes.GetMemory().Slice(offset, length);
+                case MemoryStream ms when ms.TryGetBuffer(out ArraySegment<byte> buffer):
+                    return buffer.AsMemory(offset, length);
+                default:
+
+                    if (offset + length > stream.Length)
+                        throw new IOException("Target range exceeds stream bounds");
+                    stream.Position = offset;
+                    try
+                    {
+                        byte[] arr = new byte[length];
+                        Read(stream, arr, false);
+                        return arr;
+                    }
+                    catch (Exception)
+                    {
+                        // Fallback to MemoryStream copy
+                        stream.Position = offset;
+                        MemoryStream ms2 = new();
+                        new SStream(stream, length).CopyTo(ms2);
+                        return ms2.GetBuffer().AsMemory(0, length);
                     }
             }
         }

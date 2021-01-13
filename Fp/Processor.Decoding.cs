@@ -1883,34 +1883,30 @@ namespace Fp
         /// Read UTF-8 encoded string from stream
         /// </summary>
         /// <param name="stream">Stream to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8String(Stream stream, int maxLength = int.MaxValue, bool strict = false)
+        public string ReadUtf8String(Stream stream, out int read, int maxLength = int.MaxValue, bool strict = false)
         {
             try
             {
-                int c = 0;
+                TempMs.SetLength(0);
+                read = 0;
                 do
                 {
                     int v = stream.ReadByte();
-                    if (v == -1 || v == 0)
-                    {
-                        break;
-                    }
-
+                    read += v == -1 ? 0 : 1;
+                    if (v == -1 || v == 0) break;
                     TempMs.WriteByte((byte)v);
-                    c++;
-                } while (c < maxLength);
-
-                string str = ReadUtf8String(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length));
+                } while (read < maxLength);
 
                 if (strict)
                 {
-                    Skip(maxLength - c, stream);
+                    Skip(maxLength - read, stream);
                 }
 
-                return str;
+                return DecodeSpan(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length), Encoding.UTF8);
             }
             finally
             {
@@ -1926,17 +1922,18 @@ namespace Fp
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <param name="offset">Offset to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
+        public string ReadUtf8StringFromOffset(Stream stream, long offset, out int read, int maxLength = int.MaxValue,
             bool strict = false)
         {
             long position = stream.Position;
             try
             {
                 stream.Position = offset;
-                string str = ReadUtf8String(stream, maxLength, strict);
+                string str = ReadUtf8String(stream, out read, maxLength, strict);
                 return str;
             }
             finally
@@ -1948,30 +1945,34 @@ namespace Fp
         /// <summary>
         /// Read UTF-8 encoded string from current file's input stream
         /// </summary>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8String(int maxLength = int.MaxValue, bool strict = false)
-            => ReadUtf8String(InputStream ?? throw new InvalidOperationException(), maxLength, strict);
+        public string ReadUtf8String(out int read, int maxLength = int.MaxValue, bool strict = false)
+            => ReadUtf8String(InputStream ?? throw new InvalidOperationException(), out read, maxLength, strict);
 
         /// <summary>
         /// Read UTF-8 encoded string from current file's input stream at the specified offset
         /// </summary>
         /// <param name="offset">Offset to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false) =>
-            ReadUtf8StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, maxLength,
+        public string ReadUtf8StringFromOffset(long offset, out int read, int maxLength = int.MaxValue,
+            bool strict = false) =>
+            ReadUtf8StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, out read, maxLength,
                 strict);
 
         /// <summary>
         /// Read UTF-8 encoded string from span
         /// </summary>
         /// <param name="span">Span to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf8String(ReadOnlySpan<byte> span, int maxLength = int.MaxValue)
+        public static string ReadUtf8String(ReadOnlySpan<byte> span, out int read, int maxLength = int.MaxValue)
         {
             int lim = Math.Min(span.Length, maxLength);
             int end = span.Slice(0, lim).IndexOf((byte)0);
@@ -1980,6 +1981,7 @@ namespace Fp
                 end = lim;
             }
 
+            read = Math.Min(lim, end + 1);
             return DecodeSpan(span.Slice(0, end), Encoding.UTF8);
         }
 
@@ -1987,54 +1989,54 @@ namespace Fp
         /// Read UTF-8 encoded string from memory
         /// </summary>
         /// <param name="memory">Memory to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf8String(ReadOnlyMemory<byte> memory, int maxLength = int.MaxValue)
-            => ReadUtf8String(memory.Span, maxLength);
+        public static string ReadMUtf8String(ReadOnlyMemory<byte> memory, out int read, int maxLength = int.MaxValue)
+            => ReadUtf8String(memory.Span, out read, maxLength);
 
         /// <summary>
         /// Read UTF-8 encoded string from memory
         /// </summary>
         /// <param name="memory">Memory to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="offset">Offset to read from</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0,
+        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, out int read, int offset = 0,
             int maxLength = int.MaxValue)
-            => ReadUtf8String(memory.Span.Slice(offset), maxLength);
+            => ReadUtf8String(memory.Span.Slice(offset), out read, maxLength);
 
         /// <summary>
         /// Read UTF-16 encoded string from stream
         /// </summary>
         /// <param name="stream">Stream to read from</param>
-        /// <param name="maxLength">Maximum string length</param>
+        /// <param name="maxLength">Maximum string length (in bytes)</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16String(Stream stream, int maxLength = int.MaxValue, bool strict = false)
+        public string ReadUtf16String(Stream stream, out int read, int maxLength = int.MaxValue, bool strict = false)
         {
             try
             {
-                int c = 0;
+                TempMs.SetLength(0);
+                read = 0;
                 do
                 {
                     int cc = Read(stream, _tempBuffer, 0, 2);
-                    c += cc;
-                    if (cc != 2 || _tempBuffer[0] == 0 && _tempBuffer[1] == 0)
-                    {
-                        break;
-                    }
-
+                    read += cc;
+                    if (cc != 2 || _tempBuffer[0] == 0 && _tempBuffer[1] == 0) break;
                     TempMs.Write(_tempBuffer, 0, 2);
-                } while (c < maxLength);
+                } while (read < maxLength);
 
                 if (strict)
                 {
-                    Skip(maxLength - c, stream);
+                    Skip(maxLength - read, stream);
                 }
 
-                return ReadUtf16String(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length));
+                return ReadUtf16String(TempMs.GetBuffer().AsSpan(0, (int)TempMs.Length), out _);
             }
             finally
             {
@@ -2050,17 +2052,18 @@ namespace Fp
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <param name="offset">Offset to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16StringFromOffset(Stream stream, long offset, int maxLength = int.MaxValue,
+        public string ReadUtf16StringFromOffset(Stream stream, long offset, out int read, int maxLength = int.MaxValue,
             bool strict = false)
         {
             long position = stream.Position;
             try
             {
                 stream.Position = offset;
-                string str = ReadUtf16String(stream, maxLength, strict);
+                string str = ReadUtf16String(stream, out read, maxLength, strict);
                 return str;
             }
             finally
@@ -2072,21 +2075,24 @@ namespace Fp
         /// <summary>
         /// Read UTF-16 encoded string from current file's input stream
         /// </summary>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16String(int maxLength = int.MaxValue, bool strict = false)
-            => ReadUtf16String(InputStream ?? throw new InvalidOperationException(), maxLength, strict);
+        public string ReadUtf16String(out int read, int maxLength = int.MaxValue, bool strict = false)
+            => ReadUtf16String(InputStream ?? throw new InvalidOperationException(), out read, maxLength, strict);
 
         /// <summary>
         /// Read UTF-16 encoded string from current file's input stream at the specified offset
         /// </summary>
         /// <param name="offset">Offset to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16StringFromOffset(long offset, int maxLength = int.MaxValue, bool strict = false) =>
-            ReadUtf16StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, maxLength,
+        public string ReadUtf16StringFromOffset(long offset, out int read, int maxLength = int.MaxValue,
+            bool strict = false) =>
+            ReadUtf16StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, out read, maxLength,
                 strict);
 
 
@@ -2094,19 +2100,24 @@ namespace Fp
         /// Read UTF-16 encoded string from span
         /// </summary>
         /// <param name="span">Span to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf16String(ReadOnlySpan<byte> span, int maxLength = int.MaxValue)
+        public static string ReadUtf16String(ReadOnlySpan<byte> span, out int read, int maxLength = int.MaxValue)
         {
             int lim = Math.Min(span.Length, maxLength);
-            int end = MemoryMarshal.Cast<byte, char>(span.Slice(0, lim)).IndexOf('\0');
+            int end = -1;
+            while (end + 2 < lim && (span[end + 1] != 0 || span[end + 2] != 0))
+                end += 2;
             if (end == -1)
             {
                 end = lim;
+                read = lim;
             }
             else
             {
-                end *= sizeof(char);
+                end++;
+                read = Math.Min(lim, end + 2);
             }
 
             bool big = span.Length >= 2 && span[0] == 0xFE && span[1] == 0xFF;
@@ -2137,23 +2148,25 @@ namespace Fp
         /// Read UTF-16 encoded string from memory
         /// </summary>
         /// <param name="memory">Memory to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf16String(ReadOnlyMemory<byte> memory, int maxLength = int.MaxValue)
-            => ReadUtf16String(memory.Span, maxLength);
+        public static string ReadMUtf16String(ReadOnlyMemory<byte> memory, out int read, int maxLength = int.MaxValue)
+            => ReadUtf16String(memory.Span, out read, maxLength);
 
         /// <summary>
         /// Read UTF-16 encoded string from memory
         /// </summary>
         /// <param name="memory">Memory to read from</param>
+        /// <param name="read">Number of bytes consumed by string (including null terminator)</param>
         /// <param name="offset">Offset to read from</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, int offset = 0,
+        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, out int read, int offset = 0,
             int maxLength = int.MaxValue)
-            => ReadUtf16String(memory.Span.Slice(offset), maxLength);
+            => ReadUtf16String(memory.Span.Slice(offset), out read, maxLength);
 
         /// <summary>
         /// Apply AND to memory

@@ -19,7 +19,7 @@ namespace Fp.Tests
         [Test]
         public void TestSearch()
         {
-            var arr = Encoding.UTF8.GetBytes("word");
+            byte[] arr = Encoding.UTF8.GetBytes("word");
             const int count = 10;
             var ms = new MemoryStream();
             for (int i = 0; i < count; i++)
@@ -45,56 +45,64 @@ namespace Fp.Tests
             // Check basic UTF-8
             const string pontoonString = "pontoon";
             processor.WriteUtf8String(pontoonString, true, ms);
-            var pontoonArr = ms.ToArray();
+            byte[] pontoonArr = ms.ToArray();
             ms.SetLength(0);
-            string pontoonRes = Processor.ReadUtf8String(pontoonArr.AsSpan());
+            string pontoonRes = Processor.ReadUtf8String(pontoonArr.AsSpan(), out int pontoonResL);
             Assert.AreEqual(pontoonString, pontoonRes);
+            Assert.AreEqual(7 + 1, pontoonResL);
 
             // Check basic UTF-8 with null
             const string floaterinoString = "floaterino";
             const string floaterinoString2 = "floaterino\0planerino";
             processor.WriteUtf8String(floaterinoString2, true, ms);
-            var floaterinoArr = ms.ToArray();
+            byte[] floaterinoArr = ms.ToArray();
             ms.SetLength(0);
-            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr.AsSpan());
+            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr.AsSpan(), out int floaterinoResL);
             Assert.AreEqual(floaterinoString, floaterinoRes);
+            Assert.AreEqual(10 + 1, floaterinoResL);
 
             // Check basic UTF-16
             const string hailHydraString = "hail hydra";
-            var hailHydraArr = Encoding.Unicode.GetBytes(hailHydraString);
-            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr.AsSpan());
+            byte[] hailHydraArr = Encoding.Unicode.GetBytes(hailHydraString);
+            Assert.AreEqual(10 * 2, hailHydraArr.Length);
+            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr.AsSpan(), out int hailHydraResL);
             Assert.AreEqual(hailHydraString, hailHydraRes);
+            Assert.AreEqual(10 * 2, hailHydraResL);
 
             // Check basic UTF-16 with null
             const string hydraString = "hydra";
             const string hydraString2 = "hydra\0hemert";
-            var hydraArr = Encoding.Unicode.GetBytes(hydraString2);
-            string hydraRes = Processor.ReadUtf16String(hydraArr.AsSpan());
+            byte[] hydraArr = Encoding.Unicode.GetBytes(hydraString2);
+            string hydraRes = Processor.ReadUtf16String(hydraArr.AsSpan(), out int hydraResL);
             Assert.AreEqual(hydraString, hydraRes);
+            Assert.AreEqual(6 * 2, hydraResL);
 
             // Check UTF-16LE + bom
             const string hailHydraString2 = "hail hydra";
             processor.WriteUtf16String(hailHydraString2, true, false, true, ms);
-            var hailHydra2Arr = ms.ToArray();
+            byte[] hailHydra2Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr.AsSpan());
+            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr.AsSpan(), out int hailHydra2ResL);
             Assert.AreEqual(hailHydraString2, hailHydra2Res);
+            Assert.AreEqual(10 * 2 + 2, hailHydra2ResL);
 
             // Check UTF-16BE + bom
             const string hailHydraString3 = "hail hydra";
             processor.WriteUtf16String(hailHydraString3, true, true, true, ms);
-            var hailHydra3Arr = ms.ToArray();
+            byte[] hailHydra3Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr.AsSpan());
+            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr.AsSpan(), out int hailHydra3ResL);
             Assert.AreEqual(hailHydraString3, hailHydra3Res);
+            Assert.AreEqual(10 * 2 + 2, hailHydra3ResL);
 
             // Check UTF-16LE + bom from stream
             const string hailHydraString4 = "hail hydra";
             processor.WriteUtf16String(hailHydraString4, true, false, true, ms);
             ms.Position = 0;
-            string hailHydra4Res = processor.ReadUtf16String(ms);
+            string hailHydra4Res = processor.ReadUtf16String(ms, out int hailHydra4ResL);
             Assert.AreEqual(hailHydraString4, hailHydra4Res);
             Assert.AreEqual(hailHydraString4, hailHydra4Res);
+            Assert.AreEqual(10 * 2 + 2, hailHydra4ResL);
         }
 
         [Test]
@@ -112,7 +120,7 @@ namespace Fp.Tests
         [Test]
         public void TestAesEcb()
         {
-            var data = new byte[128 / 8 * 5];
+            byte[] data = new byte[128 / 8 * 5];
             var ms1 = new MemoryStream();
 
             using var aesAlg = Aes.Create() ?? throw new ApplicationException();
@@ -123,7 +131,7 @@ namespace Fp.Tests
             csEncrypt.Write(data);
             csEncrypt.Flush();
 
-            var encData = ms1.ToArray();
+            byte[] encData = ms1.ToArray();
             Processor.DecryptAesEcb(encData, aesAlg.Key);
             int pos = Processor.GetDepaddedLength(encData, Processor.PaddingMode.Pkcs7);
             Assert.AreEqual(data.Length, pos);
@@ -133,7 +141,7 @@ namespace Fp.Tests
         [Test]
         public void TestAesCbc()
         {
-            var data = new byte[128 / 8 * 5];
+            byte[] data = new byte[128 / 8 * 5];
             var ms1 = new MemoryStream();
 
             using var aesAlg = Aes.Create() ?? throw new ApplicationException();
@@ -144,7 +152,7 @@ namespace Fp.Tests
             csEncrypt.Write(data);
             csEncrypt.Flush();
 
-            var encData = ms1.ToArray();
+            byte[] encData = ms1.ToArray();
             Processor.DecryptAesCbc(encData, aesAlg.Key, aesAlg.IV);
             int pos = Processor.GetDepaddedLength(encData, Processor.PaddingMode.Pkcs7);
             Assert.AreEqual(data.Length, pos);

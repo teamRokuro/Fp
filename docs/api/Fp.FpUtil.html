@@ -81,29 +81,53 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">FpUtil</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.html">Fp</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
   <h5 id="Fp_FpUtil_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class FpUtil : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class FpUtil</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_FpUtil_IsolateFlags_IReadOnlyList_System_String__System_Nullable_IReadOnlyCollection_System_String___.md&amp;value=---%0Auid%3A%20Fp.FpUtil.IsolateFlags(IReadOnlyList%7BSystem.String%7D%2CSystem.Nullable%7BIReadOnlyCollection%7BSystem.String%7D%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.Collections.Generic.IReadOnlyCollection%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/FpUtil.cs/#L22">View Source</a>
   </span>
   <a id="Fp_FpUtil_IsolateFlags_" data-uid="Fp.FpUtil.IsolateFlags*"></a>
-  <h4 id="Fp_FpUtil_IsolateFlags_IReadOnlyList_System_String__System_Nullable_IReadOnlyCollection_System_String___" data-uid="Fp.FpUtil.IsolateFlags(IReadOnlyList{System.String},System.Nullable{IReadOnlyCollection{System.String}})">IsolateFlags(IReadOnlyList&lt;String&gt;, Nullable&lt;IReadOnlyCollection&lt;String&gt;&gt;)</h4>
+  <h4 id="Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__" data-uid="Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyCollection{System.String})">IsolateFlags(IReadOnlyList&lt;String&gt;, IReadOnlyCollection&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Isolate flags from argument list.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static (HashSet&lt;string&gt; flags, Dictionary&lt;string, string&gt; opts, List&lt;string&gt; args) IsolateFlags(this IReadOnlyList&lt;string&gt; arguments, IReadOnlyCollection&lt;string&gt;? optKeys = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static (HashSet&lt;string&gt; flags, Dictionary&lt;string, string&gt; opts, List&lt;string&gt; args) IsolateFlags(this IReadOnlyList&lt;string&gt; arguments, IReadOnlyCollection&lt;string&gt; optKeys = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -116,13 +140,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">System.String</span>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyList</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">arguments</span></td>
         <td><p>Argument lines to sort.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">IReadOnlyCollection</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;<span class="xref">System.String</span>&gt;</td>
         <td><span class="parametername">optKeys</span></td>
         <td><p>Option keys.</p>
 </td>
@@ -139,24 +163,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">HashSet</span>&lt;<span class="xref">System.String</span>&gt;, <span class="xref">Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;, <span class="xref">List</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td><span class="xref">System.ValueTuple</span>&lt;<span class="xref">System.Collections.Generic.HashSet</span>&lt;<span class="xref">System.String</span>&gt;, <span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.String</span>, <span class="xref">System.String</span>&gt;, <span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
         <td><p>Flags, options, and arguments.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h5 id="Fp_FpUtil_IsolateFlags_IReadOnlyList_System_String__System_Nullable_IReadOnlyCollection_System_String____remarks">Remarks</h5>
+  <h5 id="Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p><a href="https://github.com/The-Council-of-Wills/HacknetSharp/blob/58d5ccdf09203a38092b01aba3fea5df3e06d483/src/HacknetSharp.Server/ServerUtil.cs#L436">https://github.com/The-Council-of-Wills/HacknetSharp/blob/58d5ccdf09203a38092b01aba3fea5df3e06d483/src/HacknetSharp.Server/ServerUtil.cs#L436</a></p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_FpUtil_SkipBits_BitArray_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SkipBits(BitArray%2CSystem.Int32%40%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/master/apiSpec/new?filename=Fp_FpUtil_SkipBits_System_Collections_BitArray_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SkipBits(System.Collections.BitArray%2CSystem.Int32%40%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/teamRokuro/Fp/blob/master/Fp/FpUtil.cs/#L135">View Source</a>
   </span>
   <a id="Fp_FpUtil_SkipBits_" data-uid="Fp.FpUtil.SkipBits*"></a>
-  <h4 id="Fp_FpUtil_SkipBits_BitArray_System_Int32__System_Boolean_" data-uid="Fp.FpUtil.SkipBits(BitArray,System.Int32@,System.Boolean)">SkipBits(BitArray, ref Int32, Boolean)</h4>
+  <h4 id="Fp_FpUtil_SkipBits_System_Collections_BitArray_System_Int32__System_Boolean_" data-uid="Fp.FpUtil.SkipBits(System.Collections.BitArray,System.Int32@,System.Boolean)">SkipBits(BitArray, ref Int32, Boolean)</h4>
   <div class="markdown level1 summary"><p>Skip over bits matching specified value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -175,7 +199,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">BitArray</span></td>
+        <td><span class="xref">System.Collections.BitArray</span></td>
         <td><span class="parametername">array</span></td>
         <td><p>Bit array to use.</p>
 </td>
