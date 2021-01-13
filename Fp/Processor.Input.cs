@@ -594,7 +594,7 @@ namespace Fp
         {
             stream ??= InputStream ?? throw new InvalidOperationException();
             MemoryStream ms2 = new();
-            new SStream(stream, maxLength).CopyTo(ms2);
+            new SStream(stream, maxLength, false).CopyTo(ms2);
             return ms2.ToArray();
         }
 
