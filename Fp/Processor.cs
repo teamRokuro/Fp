@@ -21,6 +21,13 @@ namespace Fp
     {
         #region Properties and fields
 
+        /// <summary>
+        /// Per-thread instance.
+        /// </summary>
+        public static Processor Instance => _instance ??= new Processor();
+
+        [ThreadStatic] private static Processor? _instance;
+
         private const int StringDefaultCapacity = 4 * 1024;
         private const int StringExcessiveCapacity = 128 * 1024;
 

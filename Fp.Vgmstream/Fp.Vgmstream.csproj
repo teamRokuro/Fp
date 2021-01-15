@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x86</PlatformTarget>
+    <PackageVersion>0.8.2</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Authors>Lucina,riina</Authors>
+    <Owners>Lucina,riina</Owners>
+    <Company>teamRokuro</Company>
+    <Description>Vgmstream utilities</Description>
+    <Copyright>Copyright ©2020 teamRokuro</Copyright>
+    <PackageProjectUrl>https://github.com/teamRokuro/Fp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/teamRokuro/Fp</RepositoryUrl>
+    <PackOnBuild>true</PackOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>NU5105,NU5100</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fp\Fp.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="vgmstream" Version="0.0.7" />
+  </ItemGroup>
+
+</Project>

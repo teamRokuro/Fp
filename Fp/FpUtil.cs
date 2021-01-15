@@ -136,5 +136,65 @@ namespace Fp
         {
             while (i < array.Length && array[i] == skipValue) i++;
         }
+
+        /// <summary>
+        /// Create tuple sequence from enumerable.
+        /// </summary>
+        /// <param name="enumerable">Enumerable.</param>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <returns>Tuples joining contiguous elements (packed, mutually exclusive).</returns>
+        public static IEnumerable<ValueTuple<T, T>> Tuplify2<T>(this IEnumerable<T> enumerable)
+        {
+            using var enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var v0 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v1 = enumerator.Current;
+                yield return (v0, v1);
+            }
+        }
+
+        /// <summary>
+        /// Create tuple sequence from enumerable.
+        /// </summary>
+        /// <param name="enumerable">Enumerable.</param>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <returns>Tuples joining contiguous elements (packed, mutually exclusive).</returns>
+        public static IEnumerable<ValueTuple<T, T, T>> Tuplify3<T>(this IEnumerable<T> enumerable)
+        {
+            using var enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var v0 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v1 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v2 = enumerator.Current;
+                yield return (v0, v1, v2);
+            }
+        }
+
+        /// <summary>
+        /// Create tuple sequence from enumerable.
+        /// </summary>
+        /// <param name="enumerable">Enumerable.</param>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <returns>Tuples joining contiguous elements (packed, mutually exclusive).</returns>
+        public static IEnumerable<ValueTuple<T, T, T, T>> Tuplify4<T>(this IEnumerable<T> enumerable)
+        {
+            using var enumerator = enumerable.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                var v0 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v1 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v2 = enumerator.Current;
+                if (!enumerator.MoveNext()) yield break;
+                var v3 = enumerator.Current;
+                yield return (v0, v1, v2, v3);
+            }
+        }
     }
 }

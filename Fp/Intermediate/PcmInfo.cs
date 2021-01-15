@@ -26,6 +26,11 @@ namespace Fp.Intermediate
         public readonly short NumChannels;
 
         /// <summary>
+        /// Number of samples.
+        /// </summary>
+        public readonly int NumSamples;
+
+        /// <summary>
         /// 8000, 44100, etc.
         /// </summary>
         public readonly int SampleRate;
@@ -95,6 +100,7 @@ namespace Fp.Intermediate
             SubChunk1Size = subChunk1Size;
             AudioFormat = audioFormat;
             NumChannels = numChannels;
+            NumSamples = subChunk2Size * 8 / numChannels / bitsPerSample;
             SampleRate = sampleRate;
             ByteRate = byteRate;
             BlockAlign = blockAlign;
@@ -116,6 +122,7 @@ namespace Fp.Intermediate
             SubChunk1Size = 0x10;
             AudioFormat = 1;
             NumChannels = numChannels;
+            NumSamples = numSamples;
             SampleRate = sampleRate;
             ByteRate = sampleRate * numChannels * bitsPerSample / 8;
             BlockAlign = (short)(numChannels * bitsPerSample / 8);
