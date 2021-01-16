@@ -17,11 +17,11 @@ namespace Fp
         /// </summary>
         /// <param name="vgm">VGMStream object to use.</param>
         /// <param name="onlyStereo">If not -1, 0-based stereo channels to export.</param>
-        /// <returns></returns>
+        /// <returns>Exported PCM data.</returns>
         public static PcmData ToPcmData(this VGMStream vgm, int onlyStereo = -1)
         {
-            return new(Path.ChangeExtension(vgm.Name, ".wav"), vgm.GetPcmInfo(onlyStereo).AsPcmInfo(),
-                vgm.Export(false, true, onlyStereo));
+            return new(Path.ChangeExtension(vgm.Name, $"_{vgm.Data.stream_index:D6}.wav"),
+                vgm.GetPcmInfo(onlyStereo).AsPcmInfo(), vgm.Export(false, true, onlyStereo));
         }
 
         /// <summary>
