@@ -69,7 +69,7 @@ namespace Fp
                 return false;
             }
 
-            int count = vgm.Data.num_streams;
+            int count = Math.Max(vgm.Data.num_streams, 1);
             streams = new List<VGMStream>();
             for (int i = 0; i < count; i++)
             {
