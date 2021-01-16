@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using Fp.Intermediate;
 using vgmstream;
 
@@ -53,7 +56,7 @@ namespace Fp
         /// <param name="streams">Generated streams.</param>
         /// <param name="txth">TXTH configuration.</param>
         /// <returns>True if successful.</returns>
-        public static bool TryGetVgmstreams(string path, ReadOnlyMemory<byte> memory, out List<VGMStream>? streams,
+        private static bool TryGetVgmstreams(string path, ReadOnlyMemory<byte> memory, out List<VGMStream>? streams,
             TxthHeader? txth = null)
         {
             if (!VGMStreamAPI.IsSupported)
@@ -78,6 +81,54 @@ namespace Fp
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Gets vgmstream content or input stream as generic buffer.
+        /// </summary>
+        /// <param name="path">Data path.</param>
+        /// <param name="memory">Memory to use.</param>
+        /// <returns>Generated inputs.</returns>
+        public static IEnumerable<Data> GetVgmstreamsOrDefault(string path, ReadOnlyMemory<byte> memory)
+        {
+            if (!TryGetVgmstreams(path, memory, out var streams))
+                return new[] {new BufferData<byte>(path, memory)};
+            return streams!.Select(s =>
+            {
+                var mm = new XMemoryManager(VGMStreamAPI.wrap_get_pcm_length(s.VgmstreamPtr, -1));
+                VGMStreamAPI.wrap_basic_export_pcm(s.VgmstreamPtr, -1, mm.Ptr, mm.Length);
+                var data = s.Data;
+                var res = new PcmData(Path.ChangeExtension(s.Name, $"_{data.stream_index:D6}.wav"),
+                    s.GetPcmInfo().AsPcmInfo(), mm.Memory);
+                s.Dispose();
+                return res;
+            });
+        }
+
+        private class XMemoryManager : MemoryManager<byte>
+        {
+            public nint Ptr { get; private set; }
+            public int Length { get; }
+
+            public XMemoryManager(int length)
+            {
+                Ptr = Marshal.AllocHGlobal(length);
+                Length = length;
+            }
+
+            public override unsafe Span<byte> GetSpan() => new((void*)Ptr, Length);
+
+            public override unsafe MemoryHandle Pin(int elementIndex = 0) => new((void*)Ptr);
+
+            public override void Unpin()
+            {
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                if (Ptr != 0) Marshal.FreeHGlobal(Ptr);
+                Ptr = (nint)0;
+            }
         }
     }
 }
