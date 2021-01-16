@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Fp.Intermediate;
 using vgmstream;
@@ -24,19 +25,19 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert to <see cref="PcmInfo"/>.
+        /// Convert to <see cref="Intermediate.PcmInfo"/>.
         /// </summary>
         /// <param name="b">Value to convert.</param>
         /// <returns>Converted value.</returns>
-        public static PcmInfo AsPcmInfo(this PCMInfo b) =>
+        public static Intermediate.PcmInfo AsPcmInfo(this vgmstream.PcmInfo b) =>
             new(b.numChannels, b.sampleRate, b.bitsPerSample, b.numSamples);
 
         /// <summary>
-        /// Convert to <see cref="PCMInfo"/>.
+        /// Convert to <see cref="vgmstream.PcmInfo"/>.
         /// </summary>
         /// <param name="b">Value to convert.</param>
         /// <returns>Converted value.</returns>
-        public static PCMInfo AsPCMInfo(this PcmInfo b) => new()
+        public static vgmstream.PcmInfo AsPCMInfo(this Intermediate.PcmInfo b) => new()
         {
             numChannels = b.NumChannels,
             sampleRate = b.SampleRate,
@@ -45,21 +46,38 @@ namespace Fp
         };
 
         /// <summary>
-        /// Attempts to load PCM audio from VGMStream conversion.
+        /// Attempts to load streams from vgmstream.
         /// </summary>
         /// <param name="path">Data path.</param>
         /// <param name="memory">Memory to use.</param>
-        /// <param name="data">Converted data or null.</param>
-        /// <param name="streamIndex">Stream index (1-based).</param>
-        /// <param name="onlyStereo">If not -1, 0-based stereo channels to export.</param>
+        /// <param name="streams">Generated streams.</param>
         /// <param name="txth">TXTH configuration.</param>
         /// <returns>True if successful.</returns>
-        public static bool TryVgmstream(string path, ReadOnlyMemory<byte> memory, out PcmData? data,
-            int streamIndex = 0, int onlyStereo = -1, TXTHHeader? txth = null)
+        public static bool TryGetVgmstreams(string path, ReadOnlyMemory<byte> memory, out List<VGMStream>? streams,
+            TxthHeader? txth = null)
         {
-            using var vgm = VGMStream.Load(path, memory, streamIndex, txth);
-            return (data = vgm?.ToPcmData(onlyStereo)) != null;
-        }
+            if (!VGMStreamAPI.IsSupported)
+            {
+                streams = null;
+                return false;
+            }
 
+            using var vgm = VGMStream.Load(path, memory, 0, txth);
+            if (vgm == null)
+            {
+                streams = null;
+                return false;
+            }
+
+            int count = vgm.Data.num_streams;
+            streams = new List<VGMStream>();
+            for (int i = 0; i < count; i++)
+            {
+                var entry = VGMStream.Load(path, memory, i + 1, txth);
+                if (entry != null) streams.Add(entry);
+            }
+
+            return true;
+        }
     }
 }

@@ -4,7 +4,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
-    <PlatformTarget>x86</PlatformTarget>
     <PackageVersion>0.8.2</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <Authors>Lucina,riina</Authors>
@@ -26,9 +25,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Fp\Fp.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="vgmstream" Version="0.0.7" />
+    <PackageReference Include="vgmstream" Version="0.0.8" ExcludeAssets="contentFiles"/>
   </ItemGroup>
 
 </Project>

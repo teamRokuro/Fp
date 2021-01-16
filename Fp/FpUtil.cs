@@ -138,6 +138,21 @@ namespace Fp
         }
 
         /// <summary>
+        /// Dispose of an enumerable's elements after they have been yielded.
+        /// </summary>
+        /// <param name="enumerable">Enumerable.</param>
+        /// <typeparam name="T">Element type.</typeparam>
+        /// <returns>Input elements.</returns>
+        public static IEnumerable<T?> PostDispose<T>(this IEnumerable<T?> enumerable) where T : IDisposable
+        {
+            foreach (var x in enumerable)
+            {
+                yield return x;
+                x?.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Create tuple sequence from enumerable.
         /// </summary>
         /// <param name="enumerable">Enumerable.</param>
