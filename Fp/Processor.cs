@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Fp.Intermediate;
 using Microsoft.Extensions.Logging;
@@ -182,19 +183,73 @@ namespace Fp
         /// <param name="inputRoot">Input root directory</param>
         /// <param name="outputRoot">Output root directory</param>
         /// <param name="file">Input file</param>
-        public void Prepare(FileSystemSource fileSystem, string inputRoot, string outputRoot, string file)
+        /// <param name="configuration">Additional configuration object.</param>
+        /// <param name="workerId">Worker ID.</param>
+        public void Prepare(FileSystemSource fileSystem, string inputRoot, string outputRoot, string file,
+            ProcessorConfiguration? configuration = null, int workerId = 0)
         {
-            InputRootDirectory = inputRoot;
-            InputFile = file;
-            InputDirectory = Path.GetDirectoryName(file) ?? throw new ArgumentException("File is root");
-            OutputRootDirectory = outputRoot;
-            OutputDirectory = Join(false, outputRoot, InputDirectory.Substring(inputRoot.Length));
+            InputRootDirectory = inputRoot.NormalizePath();
+            InputFile = Path.Combine(InputRootDirectory, file).NormalizePath();
+            InputDirectory = Path.GetDirectoryName(InputFile) ?? throw new ArgumentException("File is root");
+            OutputRootDirectory = outputRoot.NormalizePath();
+            OutputDirectory = Join(false,
+                OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)).NormalizePath();
             InputStream = null;
             OutputStream = null;
             LittleEndian = true;
             OutputCounter = 0;
             FileSystem = fileSystem;
             SupportBackSlash = false;
+            WorkerId = workerId;
+            if (configuration == null) return;
+            Debug = configuration.Debug;
+            Nop = configuration.Nop;
+            Preload = configuration.Preload;
+            Logger = configuration.Logger;
+            Args = configuration.Args;
+        }
+
+        /// <summary>
+        /// Process layered content using additional processor.
+        /// </summary>
+        /// <param name="main">Main file.</param>
+        /// <param name="args">Arguments.</param>
+        /// <param name="additionalFiles">Additional files to pass to processor.</param>
+        /// <typeparam name="T">Processor type.</typeparam>
+        public void SubProcess<T>(BufferData<byte> main, string[]? args = null,
+            IEnumerable<BufferData<byte>>? additionalFiles = null)
+            where T : Processor, new()
+        {
+            IEnumerable<BufferData<byte>> seq = new[] {main};
+            if (additionalFiles != null) seq = seq.Concat(additionalFiles);
+            var child = new T();
+            var layer1 = new FileSystemSource.SegmentedFileSystemSource(FileSystem, true, seq);
+            child.Prepare(layer1, InputRootDirectory, OutputRootDirectory, main.BasePath);
+            child.Debug = Debug;
+            child.Nop = Nop;
+            child.Preload = Preload;
+            child.Logger = Logger;
+            child.Args = args ?? new string[0];
+            try
+            {
+                if (Debug)
+                    child.Process();
+                else
+                {
+                    try
+                    {
+                        child.Process();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError(e, $"Exception occurred during processing:\n{e}");
+                    }
+                }
+            }
+            finally
+            {
+                child.Cleanup();
+            }
         }
 
         /// <summary>
@@ -219,11 +274,7 @@ namespace Fp
         public void Process()
         {
             ProcessImpl();
-            if (_overrideProcess)
-            {
-                return;
-            }
-
+            if (_overrideProcess) return;
             foreach (Data d in ProcessSegmentedImpl())
             {
                 if (Nop) continue;
@@ -241,26 +292,16 @@ namespace Fp
         /// <returns>Generated outputs</returns>
         public IEnumerable<Data> ProcessSegmented()
         {
-            foreach (Data entry in ProcessSegmentedImpl())
-            {
-                yield return entry;
-            }
-
-            if (_overrideProcessSegmented)
-            {
-                yield break;
-            }
-
+            foreach (Data entry in ProcessSegmentedImpl()) yield return entry;
+            if (_overrideProcessSegmented) yield break;
             FileSystemSource prevFs = FileSystem ?? throw new InvalidOperationException();
-            FileSystemSource.SegmentedFileSystemSource fs = new(prevFs);
+            FileSystemSource.SegmentedFileSystemSource fs = new(prevFs, false);
             FileSystem = fs;
             try
             {
                 ProcessImpl();
-                foreach ((string path, byte[] buffer, int offset, int length) in fs)
-                {
-                    yield return new BufferData<byte>(path, buffer.AsMemory(offset, length));
-                }
+                foreach ((string path, Stream stream) in fs)
+                    yield return new BufferData<byte>(path, GetMemory(stream));
             }
             finally
             {
@@ -297,7 +338,7 @@ namespace Fp
         /// <summary>
         /// Cleanup resources
         /// </summary>
-        public virtual void SrcCleanup()
+        public virtual void Cleanup()
         {
             InputStream?.Dispose();
             OutputStream?.Dispose();
@@ -323,7 +364,7 @@ namespace Fp
         /// <inheritdoc />
         public void Dispose()
         {
-            SrcCleanup();
+            Cleanup();
             Dispose(true);
             GC.SuppressFinalize(this);
         }

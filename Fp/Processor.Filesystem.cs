@@ -241,7 +241,7 @@ namespace Fp
         /// </summary>
         /// <param name="path">Path to change</param>
         /// <returns>Native OS compatible path</returns>
-        public string MakeNative(string path)
+        public static string MakeNative(string path)
             => path.Replace('\\', Path.AltDirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
         // Change to Normalize, kill ./.. traversal
 

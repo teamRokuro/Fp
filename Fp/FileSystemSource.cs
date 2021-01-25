@@ -1,8 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Fp.Intermediate;
 
 namespace Fp
 {
@@ -123,58 +123,80 @@ namespace Fp
         }
 
         internal class SegmentedFileSystemSource : FileSystemSource,
-            IEnumerable<(string path, byte[] buffer, int offset, int length)>
+            IEnumerable<(string path, Stream stream)>
         {
             private readonly FileSystemSource _source;
-            private readonly List<(string, MemoryStream)> _outputEntries;
+            private readonly Dictionary<string, Stream> _outputEntries;
             private readonly HashSet<string> _dirs;
+            private readonly bool _proxyWrites;
 
-            internal SegmentedFileSystemSource(FileSystemSource source)
+            internal SegmentedFileSystemSource(FileSystemSource source, bool proxyWrites,
+                IEnumerable<BufferData<byte>>? existingEntries = null)
             {
                 _source = source;
-                _outputEntries = new List<(string, MemoryStream)>();
+                _proxyWrites = proxyWrites;
+                _outputEntries = new Dictionary<string, Stream>();
                 _dirs = new HashSet<string>();
+                if (existingEntries == null) return;
+                foreach (var existingEntry in existingEntries)
+                {
+                    string path = existingEntry.BasePath.NormalizePath();
+                    _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
+                    _outputEntries.Add(path, new MStream(existingEntry.Buffer));
+                }
             }
 
             protected override Stream OpenReadImpl(string path, FileMode fileMode = FileMode.Open,
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
                                       FileShare.Write)
-                => _source.OpenRead(path, fileMode, fileShare);
+            {
+                path = path.NormalizePath();
+                if (_source.FileExists(path))
+                    return _source.OpenRead(path, fileMode, fileShare);
+                if (_outputEntries.TryGetValue(path, out var stream))
+                    return stream;
+                throw new FileNotFoundException();
+            }
 
             public override Stream OpenWrite(string path, FileMode fileMode = FileMode.Create,
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
                                       FileShare.Write)
             {
+                if (_proxyWrites) return _source.OpenWrite(path, fileMode, fileShare);
+                path = path.NormalizePath();
                 MemoryStream stream = new();
-                _outputEntries.Add((path, stream));
+                _outputEntries.Add(path, stream);
                 _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
                 return stream;
             }
 
             public override IEnumerable<string> EnumerateFiles(string path)
-                => _source.EnumerateFiles(path);
+                => _source.EnumerateFiles(path.NormalizePath());
 
             public override IEnumerable<string> EnumerateDirectories(string path)
-                => _source.EnumerateDirectories(path);
+                => _source.EnumerateDirectories(path.NormalizePath());
 
             public override bool CreateDirectory(string path)
             {
-                _dirs.Add(path);
+                _dirs.Add(path.NormalizePath());
                 return true;
             }
 
             public override bool FileExists(string path)
-                => _source.FileExists(path) || _outputEntries.Any(x =>
-                    string.Equals(x.Item1, path, StringComparison.InvariantCultureIgnoreCase));
+            {
+                path = path.NormalizePath();
+                return _source.FileExists(path) || _outputEntries.ContainsKey(path);
+            }
 
             public override bool DirectoryExists(string path)
-                => _source.DirectoryExists(path) || _dirs.Any(x =>
-                    string.Equals(x, path, StringComparison.InvariantCultureIgnoreCase));
-
-            public IEnumerator<(string path, byte[] buffer, int offset, int length)> GetEnumerator()
             {
-                foreach ((string path, MemoryStream stream) in _outputEntries)
-                    yield return (path, stream.GetBuffer(), 0, (int)stream.Length);
+                path = path.NormalizePath();
+                return _source.DirectoryExists(path) || _dirs.Contains(path);
+            }
+
+            public IEnumerator<(string path, Stream stream)> GetEnumerator()
+            {
+                return _outputEntries.Select(kvp => (kvp.Key, kvp.Value)).GetEnumerator();
             }
 
             IEnumerator IEnumerable.GetEnumerator()

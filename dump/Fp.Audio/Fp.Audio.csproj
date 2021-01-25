@@ -4,12 +4,12 @@
     <TargetFrameworks>netstandard2.0;net472;net5.0</TargetFrameworks>
     <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageVersion>0.8.8</PackageVersion>
+    <PackageVersion>0.9.0</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <Authors>Lucina,riina</Authors>
     <Owners>Lucina,riina</Owners>
     <Company>teamRokuro</Company>
-    <Description>Vgmstream utilities</Description>
+    <Description>Audio utilities</Description>
     <Copyright>Copyright ©2020 teamRokuro</Copyright>
     <PackageProjectUrl>https://github.com/teamRokuro/Fp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/teamRokuro/Fp</RepositoryUrl>
@@ -23,11 +23,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fp\Fp.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="vgmstream" Version="0.0.10" PrivateAssets="analyzers;build"/>
+    <ProjectReference Include="..\Fp\Fp.csproj" />
   </ItemGroup>
 
 </Project>

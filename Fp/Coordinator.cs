@@ -378,14 +378,8 @@ Options
         {
             try
             {
-                processor.SrcCleanup();
-                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file);
-                processor.Debug = configuration.Debug;
-                processor.Nop = configuration.Nop;
-                processor.Preload = configuration.Preload;
-                processor.Logger = configuration.Logger;
-                processor.Args = configuration.Args;
-                processor.WorkerId = workerId;
+                processor.Cleanup();
+                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration, workerId);
                 if (processor.Debug)
                     processor.Process();
                 else
@@ -400,7 +394,7 @@ Options
             }
             finally
             {
-                processor.SrcCleanup();
+                processor.Cleanup();
             }
         }
     }

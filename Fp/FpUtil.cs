@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Fp
@@ -211,5 +212,12 @@ namespace Fp
                 yield return (v0, v1, v2, v3);
             }
         }
+
+        /// <summary>
+        /// Normalize the specified path.
+        /// </summary>
+        /// <param name="path">Path to normalize.</param>
+        /// <returns>Normalized path.</returns>
+        public static string NormalizePath(this string path) => Path.GetFullPath(path);
     }
 }
