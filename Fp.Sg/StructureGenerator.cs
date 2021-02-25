@@ -16,7 +16,6 @@ namespace Fp.Sg
         public void Execute(GeneratorExecutionContext context)
         {
             if (context.SyntaxReceiver is not SyntaxReceiver recv) return;
-            // TODO
             foreach (var cds in recv.Decls)
             {
                 var sem = context.Compilation.GetSemanticModel(cds.SyntaxTree);
@@ -35,14 +34,15 @@ namespace Fp.Sg
                 : null;
             var sbInitBuilder = new StringBuilder();
             var sbFieldsBuilder = new StringBuilder();
+            var sbFieldsMeta = new StringBuilder();
             foreach (var member in nts.GetMembers())
             {
-                if (member is not IFieldSymbol {IsStatic: true, IsReadOnly: true} fs) continue;
+                if (member is not IFieldSymbol {IsStatic: true} fs) continue;
                 var genFieldInfo = GetFieldType((fs.Type as INamedTypeSymbol)!);
                 if (genFieldInfo == null) continue;
                 string fieldName = fs.Name;
                 sbInitBuilder.Append(@$"
-                ({name}.{fieldName},");
+                ({name}.{fieldName}, ");
                 sbInitBuilder.Append(genFieldInfo.CanRead
                     ? $"(i, ctx) => i.{fieldName} = {name}.{fieldName}.Read<{genFieldInfo.Type}>(ctx), "
                     : "null, ");
@@ -51,8 +51,14 @@ namespace Fp.Sg
                     : "null");
                 sbInitBuilder.Append("),");
                 if (genFieldInfo.CanRead || genFieldInfo.CanWrite)
+                {
                     sbFieldsBuilder.Append($@"
         public {genFieldInfo.Type} {fieldName};");
+                    sbFieldsMeta.Append(@$"
+                {{{name}.{fieldName}, new RefExpression<{genFieldInfo.Type}>(() => {fieldName})}},");
+                }
+                // TODO use Expression.GetMetaExpression to replace
+                // TODO lambdas should get expressions passed for instance expressions
             }
 
             context.AddSource($"{name}Instance.cs", @$"
@@ -70,6 +76,14 @@ using Fp.Structures;
         private static List<(Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)>? _base;
         private static List<(Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)>? _rev;
 
+        private readonly Dictionary<Element, Expression> _exprMap;
+        public {name}Instance()
+        {{
+            if(_base == null) Init();
+            _exprMap = new Dictionary<Element, Expression> {{{sbFieldsMeta}
+            }};
+        }}
+
         private static void Init()
         {{
             _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)[]
@@ -81,14 +95,12 @@ using Fp.Structures;
 
         public override void Read(StructureContext context)
         {{
-            if(_base == null) Init();
             foreach(var (_, a, _) in _base)
                 a?.Invoke(this, context);
         }}
 
         public override void Write(StructureContext context)
         {{
-            if(_rev == null) Init();
             foreach(var (_, _, a) in _rev)
                 a?.Invoke(this, context);
         }}

@@ -83,10 +83,31 @@ namespace Fp.Structures
         }
     }
 
-    public abstract record ValuePrimitiveExpression<TPrimitive>
-        (TPrimitive Value) : PrimitiveExpression<TPrimitive>
+    public abstract record NoRefPrimitiveExpression<TPrimitive> : PrimitiveExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
         public sealed override IEnumerable<Element> GetDependencies() => Enumerable.Empty<Expression>();
+    }
+
+    public abstract record ValuePrimitiveExpression<TPrimitive>
+        (TPrimitive Value) : NoRefPrimitiveExpression<TPrimitive>
+        where TPrimitive : unmanaged
+    {
+    }
+
+    public record RefExpression<T>(Func<T> ValueFunc) : Expression
+    {
+        public override IEnumerable<Element> GetDependencies() => Enumerable.Empty<Element>();
+
+        public override T1? Read<T1>(StructureContext context) where T1 : default
+        {
+            var res = ValueFunc();
+            return res switch
+            {
+                T1 r2 => r2,
+                object r3 => (T1)r3,
+                _ => default
+            };
+        }
     }
 }
