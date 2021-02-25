@@ -44,10 +44,10 @@ namespace Fp.Sg
                 sbInitBuilder.Append(@$"
                 ({name}.{fieldName}, ");
                 sbInitBuilder.Append(genFieldInfo.CanRead
-                    ? $"(i, ctx) => i.{fieldName} = {name}.{fieldName}.Read<{genFieldInfo.Type}>(ctx), "
+                    ? $"(i, e, ctx) => i.{fieldName} = e.Read<{genFieldInfo.Type}>(ctx), "
                     : "null, ");
                 sbInitBuilder.Append(genFieldInfo.CanWrite
-                    ? $"(i, ctx) => {name}.{fieldName}.Write<{genFieldInfo.Type}>(ctx, i.{fieldName})"
+                    ? $"(i, e, ctx) => e.Write<{genFieldInfo.Type}>(ctx, i.{fieldName})"
                     : "null");
                 sbInitBuilder.Append("),");
                 if (genFieldInfo.CanRead || genFieldInfo.CanWrite)
@@ -58,7 +58,6 @@ namespace Fp.Sg
                 {{{name}.{fieldName}, new RefExpression<{genFieldInfo.Type}>(() => {fieldName})}},");
                 }
                 // TODO use Expression.GetMetaExpression to replace
-                // TODO lambdas should get expressions passed for instance expressions
             }
 
             context.AddSource($"{name}Instance.cs", @$"
@@ -73,20 +72,34 @@ using Fp.Structures;
 {{" : "")}
     public class {name}Instance : StructureInstance
     {{{sbFieldsBuilder}
-        private static List<(Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)>? _base;
-        private static List<(Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)>? _rev;
+        private static List<(Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)>? _base;
+        private static List<(Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)>? _rev;
 
         private readonly Dictionary<Element, Expression> _exprMap;
+        private readonly List<Expression?> _baseInst;
+        private readonly List<WritableExpression?> _revInst;
         public {name}Instance()
         {{
             if(_base == null) Init();
             _exprMap = new Dictionary<Element, Expression> {{{sbFieldsMeta}
             }};
+            _baseInst = new();
+            _revInst = new();
+            for (int i = 0; i < _base!.Count; i++)
+            {{
+                var x = _base[i];
+                _baseInst.Add(x.Item2 != null ? ((Expression)x.Item1).GetMetaExpression(_exprMap) : null);
+            }}
+            for (int i = 0; i < _rev!.Count; i++)
+            {{
+                var x = _rev[i];
+                _revInst.Add(x.Item3 != null ? (WritableExpression)((Expression)x.Item1).GetMetaExpression(_exprMap) : null);
+            }}
         }}
 
         private static void Init()
         {{
-            _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, StructureContext>?, Action<{name}Instance, StructureContext>?)[]
+            _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)[]
             {{{sbInitBuilder}
             }});
             _rev = new(_base);
@@ -95,14 +108,14 @@ using Fp.Structures;
 
         public override void Read(StructureContext context)
         {{
-            foreach(var (_, a, _) in _base)
-                a?.Invoke(this, context);
+            for(int i = 0; i < _base!.Count; i++)
+                _base[i].Item2?.Invoke(this, _baseInst[i]!, context);
         }}
 
         public override void Write(StructureContext context)
         {{
-            foreach(var (_, _, a) in _rev)
-                a?.Invoke(this, context);
+            for(int i = 0; i < _rev!.Count; i++)
+                _rev[i].Item3?.Invoke(this, _revInst[i]!, context);
         }}
 
         public static {name}Instance Read(Stream stream) => Structure.Read<{name}Instance>(stream);

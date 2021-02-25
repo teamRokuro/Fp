@@ -12,12 +12,18 @@ namespace Fp.Structures
 
         public void Write(Stream stream) => Write(new StructureContext(stream, stream.Position));
 
-        protected static List<(Element, Action<T, StructureContext>?, Action<T, StructureContext>?)> BuildLayout<T>(
-            IEnumerable<(Element, Action<T, StructureContext>?, Action<T, StructureContext>?)> elements)
+        protected static
+            List<(Element, Action<T, Expression, StructureContext>?, Action<T, WritableExpression, StructureContext>?)>
+            BuildLayout<T>(
+                IEnumerable<(Element, Action<T, Expression, StructureContext>?,
+                    Action<T, WritableExpression, StructureContext>?)> elements)
             where T : StructureInstance
         {
-            List<(Element, Action<T, StructureContext>?, Action<T, StructureContext>?)> members = new();
-            var sub = new List<(Element, Action<T, StructureContext>?, Action<T, StructureContext>?)>(elements);
+            List<(Element, Action<T, Expression, StructureContext>?, Action<T, WritableExpression, StructureContext>?)>
+                members = new();
+            var sub =
+                new List<(Element, Action<T, Expression, StructureContext>?,
+                    Action<T, WritableExpression, StructureContext>?)>(elements);
             // Build members after organizing by dependencies
             while (sub.Count > 0)
             {
