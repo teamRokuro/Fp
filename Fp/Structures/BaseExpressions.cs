@@ -17,12 +17,12 @@ namespace Fp.Structures
     public abstract record PrimitiveExpression<TPrimitive> : Expression where TPrimitive : unmanaged
     {
         public sealed override T Read<T>(StructureContext context) =>
-            Data.CastNumberWithBoxing<TPrimitive, T>(ReadBase(context));
+            Data.CastNumberWithBoxing<TPrimitive, T>(Read2(context));
 
         public sealed override T ReadUnmanaged<T>(StructureContext context) =>
-            Data.CastNumber<TPrimitive, T>(ReadBase(context));
+            Data.CastNumber<TPrimitive, T>(Read2(context));
 
-        public abstract TPrimitive ReadBase(StructureContext context);
+        public abstract TPrimitive Read2(StructureContext context);
     }
 
     public abstract record PrimitiveWritableExpression<TPrimitive> : WritableExpression where TPrimitive : unmanaged
@@ -71,13 +71,13 @@ namespace Fp.Structures
         }
     }
 
-    public abstract record MultibyteOffsetPrimitiveWritableExpression<TPrimitive>
+    public abstract record EndiannessDependentOffsetPrimitiveWritableExpression<TPrimitive>
         : OffsetPrimitiveWritableExpression<TPrimitive> where TPrimitive : unmanaged
     {
         public bool Little { get; init; }
         public bool Reverse => Little ^ BitConverter.IsLittleEndian;
 
-        protected MultibyteOffsetPrimitiveWritableExpression(Expression source, bool little) : base(source)
+        protected EndiannessDependentOffsetPrimitiveWritableExpression(Expression source, bool little) : base(source)
         {
             Little = little;
         }

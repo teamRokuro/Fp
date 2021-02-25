@@ -4,7 +4,7 @@ using Fp.Structures.Elements.Primitives;
 
 namespace Fp.Structures.Elements.Primitives
 {
-    public record S32 : MultibyteOffsetPrimitiveWritableExpression<int>
+    public record S32 : EndiannessDependentOffsetPrimitiveWritableExpression<int>
     {
         public S32(Expression source, bool little) : base(source, little)
         {
@@ -28,7 +28,7 @@ namespace Fp.Structures.Elements.Primitives
         {
         }
 
-        public override int ReadBase(StructureContext context) => Value;
+        public override int Read2(StructureContext context) => Value;
         public static implicit operator S32V(int value) => new(value);
     }
 }
