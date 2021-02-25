@@ -66,6 +66,98 @@ namespace Fp.Intermediate
         /// <typeparam name="TOut">Output type</typeparam>
         /// <returns>Converted value</returns>
         /// <exception cref="ApplicationException"></exception>
+        public static unsafe TOut CastNumberWithBoxing<TIn, TOut>(TIn value)
+        {
+            if (value?.GetType() == typeof(string))
+            {
+                if (typeof(TOut) == typeof(float) || typeof(TOut) == typeof(double))
+                    return CastNumberWithBoxing<double, TOut>(double.Parse(value.ToString()!));
+                if (typeof(TOut) == typeof(ulong))
+                    return CastNumberWithBoxing<ulong, TOut>(ulong.Parse(value.ToString()!));
+                return CastNumberWithBoxing<long, TOut>(long.Parse(value.ToString()!));
+            }
+
+            if (typeof(TOut) == typeof(byte))
+            {
+                byte target;
+                *&target = CastByte(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(sbyte))
+            {
+                sbyte target;
+                *&target = CastSByte(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(ushort))
+            {
+                ushort target;
+                *&target = CastUShort(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(short))
+            {
+                short target;
+                *&target = CastShort(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(uint))
+            {
+                uint target;
+                *&target = CastUInt(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(int))
+            {
+                int target;
+                *&target = CastInt(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(ulong))
+            {
+                ulong target;
+                *&target = CastULong(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(long))
+            {
+                long target;
+                *&target = CastLong(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(float))
+            {
+                float target;
+                *&target = CastFloat(value);
+                return (TOut)(object)target;
+            }
+
+            if (typeof(TOut) == typeof(double))
+            {
+                double target;
+                *&target = CastDouble(value);
+                return (TOut)(object)target;
+            }
+
+            throw new ApplicationException($"Unsupported output type {typeof(TOut)}");
+        }
+
+        /// <summary>
+        /// Cast number
+        /// </summary>
+        /// <param name="value">Input value</param>
+        /// <typeparam name="TIn">Input type</typeparam>
+        /// <typeparam name="TOut">Output type</typeparam>
+        /// <returns>Converted value</returns>
+        /// <exception cref="ApplicationException"></exception>
         public static unsafe TOut CastNumber<TIn, TOut>(TIn value)
             where TOut : unmanaged
         {

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fp.Sg.TestBase\Fp.Sg.TestBase.csproj" />
     <ProjectReference Include="..\Fp\Fp.csproj" />
   </ItemGroup>
 
