@@ -78,7 +78,6 @@ using Fp.Structures;
         private readonly List<WritableExpression> _revInst;
         public {name}Instance()
         {{
-            if(_base == null) Init();
             _exprMap = new Dictionary<Element, Expression> {{{sbFieldsMeta}
             }};
             _baseInst = new();
@@ -95,7 +94,7 @@ using Fp.Structures;
             }}
         }}
 
-        private static void Init()
+        static {name}Instance()
         {{
             _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, Expression, StructureContext>, Action<{name}Instance, WritableExpression, StructureContext>)[]
             {{{sbInitBuilder}
