@@ -68,6 +68,7 @@ namespace Fp.Intermediate
         /// <exception cref="ApplicationException"></exception>
         public static unsafe TOut CastNumberWithBoxing<TIn, TOut>(TIn value)
         {
+            if (typeof(TOut) == typeof(object)) return (TOut)(object)(value ?? throw new NullReferenceException());
             if (value?.GetType() == typeof(string))
             {
                 if (typeof(TOut) == typeof(float) || typeof(TOut) == typeof(double))

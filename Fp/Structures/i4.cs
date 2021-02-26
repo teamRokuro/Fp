@@ -7,6 +7,13 @@ namespace Fp.Structures
         }
     }
 
+    public record ci4 : CastPrimitiveExpression<int>
+    {
+        public ci4(Expression Value) : base(Value)
+        {
+        }
+    }
+
     public record vi4 : ValuePrimitiveExpression<int>
     {
         public vi4(int Value) : base(Value)
@@ -26,5 +33,6 @@ namespace Fp.Structures
         public static i4 li4(Expression source) => new(source, true);
         public static i4 bi4(Expression source) => new(source, false);
         public static vi4 vi4(int value) => new(value);
+        public static ci4 ci4(Expression value) => new(value);
     }
 }

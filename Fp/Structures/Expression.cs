@@ -13,6 +13,6 @@ namespace Fp.Structures
             this;
 
         public Expression GetSelfMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
-            mapping.TryGetValue(this, out var res) ? res : this;
+            mapping.TryGetValue(this, out var res) ? res : GetMetaExpression(mapping);
     }
 }
