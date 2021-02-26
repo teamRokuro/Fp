@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -110,7 +111,21 @@ namespace Fp.Structures
             WritePrimitive(context.Stream, value);
         }
 
-        public abstract TPrimitive ReverseEndianness(TPrimitive value);
+        public virtual TPrimitive ReverseEndianness(TPrimitive value)
+            => value switch
+            {
+                byte b => Data.CastNumber<byte, TPrimitive>(b),
+                sbyte b => Data.CastNumber<sbyte, TPrimitive>(b),
+                ushort b => Data.CastNumber<ushort, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                short b => Data.CastNumber<short, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                uint b => Data.CastNumber<uint, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                int b => Data.CastNumber<int, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                ulong b => Data.CastNumber<ulong, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                long b => Data.CastNumber<long, TPrimitive>(BinaryPrimitives.ReverseEndianness(b)),
+                float b => Data.CastNumber<float, TPrimitive>(b),
+                double b => Data.CastNumber<double, TPrimitive>(b),
+                _ => throw new NotSupportedException()
+            };
     }
 
     public abstract record NoRefPrimitiveExpression<TPrimitive> : PrimitiveExpression<TPrimitive>

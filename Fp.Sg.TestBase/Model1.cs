@@ -1,5 +1,4 @@
 ﻿using Fp.Structures;
-using Fp.Structures.Elements.Primitives;
 
 namespace Fp.Sg.TestBase
 {
