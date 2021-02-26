@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fp.Intermediate;
 
@@ -15,6 +16,7 @@ namespace Fp.Structures
         /// <typeparam name="T">Type to evaluate as.</typeparam>
         /// <returns>Evaluated expression.</returns>
         public abstract T? Read<T>(StructureContext context);
+
         /// <summary>
         /// Read the expression as the specified type.
         /// </summary>
@@ -39,5 +41,19 @@ namespace Fp.Structures
         /// <returns>Expression with replacements.</returns>
         public Expression GetSelfMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
             mapping.TryGetValue(this, out var res) ? res : GetMetaExpression(mapping);
+
+        /// <summary>
+        /// Get value or default.
+        /// </summary>
+        /// <param name="value">Value.</param>
+        /// <typeparam name="TIn">Input type.</typeparam>
+        /// <typeparam name="TOut">Output type.</typeparam>
+        /// <returns>Value or null.</returns>
+        public static TOut? GetValueOrDefault<TIn, TOut>(TIn? value) => value switch
+        {
+            TOut v => v,
+            null => default,
+            _ => throw new InvalidCastException()
+        };
     }
 }

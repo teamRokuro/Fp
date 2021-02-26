@@ -127,10 +127,6 @@ using Fp.Structures;
         private static GenFieldInfo? GetFieldType(INamedTypeSymbol elementType)
         {
             string? gp;
-            if (IsDerived(elementType, "Fp.Structures.PrimitiveExpression<>", out gp))
-                return new GenFieldInfo(true, false, gp);
-            if (IsDerived(elementType, "Fp.Structures.PrimitiveWritableExpression<>", out gp))
-                return new GenFieldInfo(true, true, gp);
             if (IsDerived(elementType, "Fp.Structures.Expression<>", out gp))
                 return new GenFieldInfo(true, false, gp);
             if (IsDerived(elementType, "Fp.Structures.WritableExpression<>", out gp))

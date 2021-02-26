@@ -26,6 +26,22 @@ namespace Fp.Structures
     }
 
     /// <summary>
+    /// Represents an expression without dependencies.
+    /// </summary>
+    /// <typeparam name="T">Target type.</typeparam>
+    public abstract record NoDepExpression<T> : Expression<T>
+    {
+    }
+
+    /// <summary>
+    /// Represents a direct value expression.
+    /// </summary>
+    /// <typeparam name="T">Target type.</typeparam>
+    public abstract record ValueExpression<T>(T? Value) : NoDepExpression<T>
+    {
+    }
+
+    /// <summary>
     /// Represents an expression targeting a primitive.
     /// </summary>
     /// <typeparam name="TPrimitive">Target type.</typeparam>
@@ -169,10 +185,12 @@ namespace Fp.Structures
         }
 
         /// <inheritdoc />
-        protected sealed override TPrimitive Read3(StructureContext context) => MemoryMarshal.Read<TPrimitive>(ReadPrimitive<TPrimitive>(context.Stream));
+        protected sealed override TPrimitive Read3(StructureContext context) =>
+            MemoryMarshal.Read<TPrimitive>(ReadPrimitive<TPrimitive>(context.Stream));
 
         /// <inheritdoc />
-        protected sealed override void Write3(StructureContext context, TPrimitive value) => WritePrimitive(context.Stream, value);
+        protected sealed override void Write3(StructureContext context, TPrimitive value) =>
+            WritePrimitive(context.Stream, value);
     }
 
     /// <summary>
