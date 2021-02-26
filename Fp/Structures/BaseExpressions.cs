@@ -148,12 +148,31 @@ namespace Fp.Structures
         {
             byte[] lcl = sizeof(T) <= 16 ? SerializationInternals.IoBuffer : new byte[sizeof(T)];
             MemoryMarshal.Write(lcl, ref value);
-            stream.Write(lcl, 0, sizeof(int));
+            stream.Write(lcl, 0, sizeof(T));
         }
 
         /// <inheritdoc />
         public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
             this with {Source = Source.GetSelfMetaExpression(mapping)};
+    }
+
+    /// <summary>
+    /// Represents an expression targeting a primitive read at a specified offset.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
+    public abstract record DirectOffsetPrimitiveWritableExpression<TPrimitive>
+        : OffsetPrimitiveWritableExpression<TPrimitive> where TPrimitive : unmanaged
+    {
+        /// <inheritdoc />
+        protected DirectOffsetPrimitiveWritableExpression(Expression source) : base(source)
+        {
+        }
+
+        /// <inheritdoc />
+        protected sealed override TPrimitive Read3(StructureContext context) => MemoryMarshal.Read<TPrimitive>(ReadPrimitive<TPrimitive>(context.Stream));
+
+        /// <inheritdoc />
+        protected sealed override void Write3(StructureContext context, TPrimitive value) => WritePrimitive(context.Stream, value);
     }
 
     /// <summary>

@@ -8,5 +8,7 @@ namespace Fp.Sg.TestBase
         public static i4 Ref1 = li4(8);
         public static i4 Ref2 = li4(Ref0);
         public static i4 Ref2_2 = li4(Ref0 + 8);
+        public static i2 Ref3 = li2(16);
+        public static i2 Ref4 = li2(18);
     }
 }
