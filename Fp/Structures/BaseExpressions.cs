@@ -7,62 +7,125 @@ using Fp.Intermediate;
 
 namespace Fp.Structures
 {
+    /// <summary>
+    /// Represents a typed expression for the purposes of source generation.
+    /// </summary>
+    /// <typeparam name="TValue">Target expression type.</typeparam>
+    // ReSharper disable once UnusedTypeParameter
     public abstract record Expression<TValue> : Expression
     {
     }
 
+    /// <summary>
+    /// Represents a typed expression for the purposes of source generation.
+    /// </summary>
+    /// <typeparam name="TValue">Target expression type.</typeparam>
+    // ReSharper disable once UnusedTypeParameter
     public abstract record WritableExpression<TValue> : WritableExpression
     {
     }
 
-    public abstract record PrimitiveExpression<TPrimitive> : Expression where TPrimitive : unmanaged
+    /// <summary>
+    /// Represents an expression targeting a primitive.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
+    public abstract record PrimitiveExpression<TPrimitive> : Expression<TPrimitive> where TPrimitive : unmanaged
     {
+        /// <inheritdoc />
         public sealed override T Read<T>(StructureContext context) =>
             Data.CastNumberWithBoxing<TPrimitive, T>(Read2(context));
 
+        /// <inheritdoc />
         public sealed override T ReadUnmanaged<T>(StructureContext context) =>
             Data.CastNumber<TPrimitive, T>(Read2(context));
 
-        public abstract TPrimitive Read2(StructureContext context);
+        /// <summary>
+        /// Read primitive value.
+        /// </summary>
+        /// <param name="context">Context to use.</param>
+        /// <returns>Read value.</returns>
+        protected abstract TPrimitive Read2(StructureContext context);
     }
 
-    public abstract record PrimitiveWritableExpression<TPrimitive> : WritableExpression where TPrimitive : unmanaged
+    /// <summary>
+    /// Represents an expression targeting a primitive that can be written back.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
+    public abstract record PrimitiveWritableExpression<TPrimitive> : WritableExpression<TPrimitive>
+        where TPrimitive : unmanaged
     {
+        /// <inheritdoc />
         public sealed override T Read<T>(StructureContext context) =>
             Data.CastNumberWithBoxing<TPrimitive, T>(Read2(context));
 
+        /// <inheritdoc />
         public sealed override T ReadUnmanaged<T>(StructureContext context) =>
             Data.CastNumber<TPrimitive, T>(Read2(context));
 
-
+        /// <inheritdoc />
         public sealed override void Write<T>(StructureContext context, T value) =>
             Write2(context, Data.CastNumber<T, TPrimitive>(value));
 
-        public abstract TPrimitive Read2(StructureContext context);
-        public abstract void Write2(StructureContext context, TPrimitive value);
+        /// <summary>
+        /// Read primitive value.
+        /// </summary>
+        /// <param name="context">Context to use.</param>
+        /// <returns>Read value.</returns>
+        protected abstract TPrimitive Read2(StructureContext context);
+
+        /// <summary>
+        /// Write primitive value.
+        /// </summary>
+        /// <param name="context">Context to use.</param>
+        /// <param name="value">Value to write.</param>
+        protected abstract void Write2(StructureContext context, TPrimitive value);
     }
 
+    /// <summary>
+    /// Represents an expression targeting a primitive read at a specified offset.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
     public abstract record OffsetPrimitiveWritableExpression<TPrimitive>
         (Expression Source) : PrimitiveWritableExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
+        /// <inheritdoc />
         public override IEnumerable<Element> Dependencies => new[] {Source};
 
-        public sealed override TPrimitive Read2(StructureContext context)
+        /// <inheritdoc />
+        protected sealed override TPrimitive Read2(StructureContext context)
         {
             context.Seek(Source.ReadUnmanaged<long>(context));
             return Read3(context);
         }
 
-        public sealed override void Write2(StructureContext context, TPrimitive value)
+        /// <inheritdoc />
+        protected sealed override void Write2(StructureContext context, TPrimitive value)
         {
             context.Seek(Source.ReadUnmanaged<long>(context));
             Write3(context, value);
         }
 
-        public abstract TPrimitive Read3(StructureContext context);
-        public abstract void Write3(StructureContext context, TPrimitive value);
+        /// <summary>
+        /// Read primitive value.
+        /// </summary>
+        /// <param name="context">Context to use.</param>
+        /// <returns>Read value.</returns>
+        protected abstract TPrimitive Read3(StructureContext context);
 
+        /// <summary>
+        /// Write primitive value.
+        /// </summary>
+        /// <param name="context">Context to use.</param>
+        /// <param name="value">Value to write.</param>
+        protected abstract void Write3(StructureContext context, TPrimitive value);
+
+        /// <summary>
+        /// Read primitive value.
+        /// </summary>
+        /// <param name="stream">Stream to read from.</param>
+        /// <typeparam name="T">Target type.</typeparam>
+        /// <returns>Span containing read data.</returns>
         protected static unsafe Span<byte> ReadPrimitive<T>(Stream stream) where T : unmanaged =>
             sizeof(T) switch
             {
@@ -75,6 +138,12 @@ namespace Fp.Structures
                 _ => stream.ReadBaseX(sizeof(T), new byte[sizeof(T)])
             };
 
+        /// <summary>
+        /// Write primitive value.
+        /// </summary>
+        /// <param name="stream">Stream to write to.</param>
+        /// <param name="value">Value to write.</param>
+        /// <typeparam name="T">Source type.</typeparam>
         protected static unsafe void WritePrimitive<T>(Stream stream, T value) where T : unmanaged
         {
             byte[] lcl = sizeof(T) <= 16 ? SerializationInternals.IoBuffer : new byte[sizeof(T)];
@@ -82,33 +151,53 @@ namespace Fp.Structures
             stream.Write(lcl, 0, sizeof(int));
         }
 
+        /// <inheritdoc />
         public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
             this with {Source = Source.GetSelfMetaExpression(mapping)};
     }
 
+    /// <summary>
+    /// Represents an expression targeting an endianness-dependent primitive read at a specified offset.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
     public abstract record EndiannessDependentOffsetPrimitiveWritableExpression<TPrimitive>
         : OffsetPrimitiveWritableExpression<TPrimitive> where TPrimitive : unmanaged
     {
+        /// <summary>
+        /// True if little-endian.
+        /// </summary>
         public bool Little { get; init; }
+
+        /// <summary>
+        /// True if reversing is necessary on the current platform.
+        /// </summary>
         public bool Reverse => Little ^ BitConverter.IsLittleEndian;
 
+        /// <inheritdoc />
         protected EndiannessDependentOffsetPrimitiveWritableExpression(Expression source, bool little) : base(source)
         {
             Little = little;
         }
 
-        public sealed override TPrimitive Read3(StructureContext context)
+        /// <inheritdoc />
+        protected sealed override TPrimitive Read3(StructureContext context)
         {
             var res = MemoryMarshal.Read<TPrimitive>(ReadPrimitive<TPrimitive>(context.Stream));
             return Reverse ? ReverseEndianness(res) : res;
         }
 
-        public sealed override void Write3(StructureContext context, TPrimitive value)
+        /// <inheritdoc />
+        protected sealed override void Write3(StructureContext context, TPrimitive value)
         {
             if (Reverse) value = ReverseEndianness(value);
             WritePrimitive(context.Stream, value);
         }
 
+        /// <summary>
+        /// Reverse the endianness of a value.
+        /// </summary>
+        /// <param name="value">Value to reverse.</param>
+        /// <returns>Endianness-reversed value.</returns>
         public virtual TPrimitive ReverseEndianness(TPrimitive value)
             => value switch
             {
@@ -126,27 +215,49 @@ namespace Fp.Structures
             };
     }
 
-    public abstract record NoRefPrimitiveExpression<TPrimitive> : PrimitiveExpression<TPrimitive>
+    /// <summary>
+    /// Represents a primitive expression without dependencies.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
+    public abstract record NoDepPrimitiveExpression<TPrimitive> : PrimitiveExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
     }
 
+    /// <summary>
+    /// Represents a direct value expression.
+    /// </summary>
+    /// <typeparam name="TPrimitive">Target type.</typeparam>
     public abstract record ValuePrimitiveExpression<TPrimitive>
-        (TPrimitive Value) : NoRefPrimitiveExpression<TPrimitive>
+        (TPrimitive Value) : NoDepPrimitiveExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
-        public override TPrimitive Read2(StructureContext context) => Value;
+        /// <inheritdoc />
+        protected override TPrimitive Read2(StructureContext context) => Value;
     }
 
+    /// <summary>
+    /// Represents a wrapper expression for casting a primitive expression.
+    /// </summary>
+    /// <typeparam name="TPrimitive"></typeparam>
     public abstract record CastPrimitiveExpression<TPrimitive>
-        (Expression Value) : NoRefPrimitiveExpression<TPrimitive>
+        (Expression Value) : PrimitiveExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
-        public override TPrimitive Read2(StructureContext context) => Value.ReadUnmanaged<TPrimitive>(context);
+        /// <inheritdoc />
+        public override IEnumerable<Element> Dependencies => new[] {Value};
+
+        /// <inheritdoc />
+        protected override TPrimitive Read2(StructureContext context) => Value.ReadUnmanaged<TPrimitive>(context);
     }
 
+    /// <summary>
+    /// Represents an expression backed by a delegate.
+    /// </summary>
+    /// <typeparam name="T">Taret type.</typeparam>
     public record RefExpression<T>(Func<T> ValueFunc) : Expression
     {
+        /// <inheritdoc />
         public override T1? Read<T1>(StructureContext context) where T1 : default
         {
             var res = ValueFunc();
@@ -159,12 +270,21 @@ namespace Fp.Structures
         }
     }
 
+    /// <summary>
+    /// Represents a unary math operation.
+    /// </summary>
     public abstract record UnaryExpression(Expression Value) : Expression
     {
+        /// <inheritdoc />
         public override IEnumerable<Element> Dependencies => new[] {Value};
+
+        /// <inheritdoc />
         public override T Read<T>(StructureContext context) => Data.CastNumberWithBoxing<object, T>(GetResult(context));
+
+        /// <inheritdoc />
         public override T ReadUnmanaged<T>(StructureContext context) => Data.CastNumber<object, T>(GetResult(context));
 
+        /// <inheritdoc />
         public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
             this with {Value = Value.GetSelfMetaExpression(mapping)};
 
@@ -174,7 +294,7 @@ namespace Fp.Structures
             return Apply(value);
         }
 
-        public object Apply(object value)
+        private object Apply(object value)
         {
             return value switch
             {
@@ -192,6 +312,7 @@ namespace Fp.Structures
             };
         }
 
+#pragma warning disable 1591
         public abstract object u1(byte r);
         public abstract object u2(ushort r);
         public abstract object u4(uint r);
@@ -202,14 +323,24 @@ namespace Fp.Structures
         public abstract object s8(long r);
         public abstract object f(float r);
         public abstract object d(double r);
+#pragma warning restore 1591
     }
 
+    /// <summary>
+    /// Represents a binary math operation.
+    /// </summary>
     public abstract record BinaryExpression(Expression Lhs, Expression Rhs) : Expression
     {
+        /// <inheritdoc />
         public override IEnumerable<Element> Dependencies => new[] {Lhs, Rhs};
+
+        /// <inheritdoc />
         public override T Read<T>(StructureContext context) => Data.CastNumberWithBoxing<object, T>(GetResult(context));
+
+        /// <inheritdoc />
         public override T ReadUnmanaged<T>(StructureContext context) => Data.CastNumber<object, T>(GetResult(context));
 
+        /// <inheritdoc />
         public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
             this with {Lhs = Lhs.GetSelfMetaExpression(mapping), Rhs = Rhs.GetSelfMetaExpression(mapping)};
 
@@ -220,7 +351,7 @@ namespace Fp.Structures
             return Apply(lhs, rhs);
         }
 
-        public object Apply(object left, object right)
+        private object Apply(object left, object right)
         {
             return left switch
             {
@@ -368,6 +499,8 @@ namespace Fp.Structures
                 _ => throw new NotSupportedException()
             };
         }
+
+#pragma warning disable 1591
 
         #region u1
 
@@ -518,5 +651,7 @@ namespace Fp.Structures
         public abstract object dd(double l, double r);
 
         #endregion
+
+#pragma warning restore 1591
     }
 }

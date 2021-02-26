@@ -17,7 +17,6 @@ namespace Fp.Tests
         {
             byte[] data = {4, 0, 0, 0, 8, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0};
             var ms = new MStream(new ReadOnlyMemory<byte>(data));
-            ms.Position = 0;
             var instance = Model1Instance.Read(ms);
             Assert.AreEqual(4, instance.Ref0);
             Assert.AreEqual(1, instance.Ref1);

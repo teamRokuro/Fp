@@ -1,3 +1,4 @@
+#pragma warning disable 1591
 namespace Fp.Structures
 {
     public record i4 : EndiannessDependentOffsetPrimitiveWritableExpression<int>

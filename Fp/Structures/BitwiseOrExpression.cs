@@ -1,13 +1,23 @@
+#pragma warning disable CS0675
 using System;
 
 namespace Fp.Structures
 {
+    /// <summary>
+    /// Represents a bitwise OR expression.
+    /// </summary>
     public record BitwiseOrExpression : BinaryExpression
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="BitwiseOrExpression"/>.
+        /// </summary>
+        /// <param name="lhs">Left expression.</param>
+        /// <param name="rhs">Right expression.</param>
         public BitwiseOrExpression(Expression lhs, Expression rhs) : base(lhs, rhs)
         {
         }
 
+#pragma warning disable 1591
         public override object u1u1(byte l, byte r) => l|r;
 
         public override object u1u2(byte l, ushort r) => l|r;
@@ -207,10 +217,13 @@ namespace Fp.Structures
         public override object df(double l, float r) => throw new NotSupportedException();
 
         public override object dd(double l, double r) => throw new NotSupportedException();
+#pragma warning restore 1591
     }
 
+#pragma warning disable 1591
     public partial record Expression
     {
         public static Expression operator |(Expression lhs, Expression rhs) => new BitwiseOrExpression(lhs, rhs);
     }
+#pragma warning restore 1591
 }

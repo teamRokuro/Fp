@@ -123,7 +123,7 @@ namespace Fp.Tests
             byte[] data = new byte[128 / 8 * 5];
             var ms1 = new MemoryStream();
 
-            using var aesAlg = Aes.Create() ?? throw new ApplicationException();
+            using var aesAlg = Aes.Create();
             aesAlg.Mode = CipherMode.ECB;
             aesAlg.Padding = PaddingMode.PKCS7;
             var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
@@ -144,7 +144,7 @@ namespace Fp.Tests
             byte[] data = new byte[128 / 8 * 5];
             var ms1 = new MemoryStream();
 
-            using var aesAlg = Aes.Create() ?? throw new ApplicationException();
+            using var aesAlg = Aes.Create();
             aesAlg.Mode = CipherMode.CBC;
             aesAlg.Padding = PaddingMode.PKCS7;
             var encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);

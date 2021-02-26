@@ -2,12 +2,21 @@ using System;
 
 namespace Fp.Structures
 {
+    /// <summary>
+    /// Represents a multiplication expression.
+    /// </summary>
     public record SubtractionExpression : BinaryExpression
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="SubtractionExpression"/>.
+        /// </summary>
+        /// <param name="lhs">Left expression.</param>
+        /// <param name="rhs">Right expression.</param>
         public SubtractionExpression(Expression lhs, Expression rhs) : base(lhs, rhs)
         {
         }
 
+#pragma warning disable 1591
         public override object u1u1(byte l, byte r) => l - r;
 
         public override object u1u2(byte l, ushort r) => l - r;
@@ -207,10 +216,13 @@ namespace Fp.Structures
         public override object df(double l, float r) => l - r;
 
         public override object dd(double l, double r) => l - r;
+#pragma warning disable 1591
     }
 
+#pragma warning disable 1591
     public partial record Expression
     {
         public static Expression operator -(Expression lhs, Expression rhs) => new SubtractionExpression(lhs, rhs);
     }
+#pragma warning disable 1591
 }
