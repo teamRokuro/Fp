@@ -31,8 +31,7 @@ namespace Fp.Structures
 
     public partial class Structure
     {
-        public static i1 li1(Expression source) => new(source);
-        public static i1 bi1(Expression source) => new(source);
+        public static i1 i1(Expression source) => new(source);
         public static vi1 vi1(sbyte value) => new(value);
         public static ci1 ci1(Expression value) => new(value);
     }

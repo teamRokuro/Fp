@@ -1,9 +1,9 @@
 #pragma warning disable 1591
 namespace Fp.Structures
 {
-    public record u8 : DirectOffsetPrimitiveWritableExpression<ulong>
+    public record u8 : EndiannessDependentOffsetPrimitiveWritableExpression<ulong>
     {
-        public u8(Expression source) : base(source)
+        public u8(Expression source, bool little) : base(source, little)
         {
         }
     }
@@ -31,8 +31,8 @@ namespace Fp.Structures
 
     public partial class Structure
     {
-        public static u8 lu8(Expression source) => new(source);
-        public static u8 bu8(Expression source) => new(source);
+        public static u8 lu8(Expression source) => new(source, true);
+        public static u8 bu8(Expression source) => new(source, false);
         public static vu8 vu8(ulong value) => new(value);
         public static cu8 cu8(Expression value) => new(value);
     }

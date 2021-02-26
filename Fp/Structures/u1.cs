@@ -1,9 +1,9 @@
 #pragma warning disable 1591
 namespace Fp.Structures
 {
-    public record u1 : EndiannessDependentOffsetPrimitiveWritableExpression<byte>
+    public record u1 : DirectOffsetPrimitiveWritableExpression<byte>
     {
-        public u1(Expression source, bool little) : base(source, little)
+        public u1(Expression source) : base(source)
         {
         }
     }
@@ -31,8 +31,7 @@ namespace Fp.Structures
 
     public partial class Structure
     {
-        public static u1 lu1(Expression source) => new(source, true);
-        public static u1 bu1(Expression source) => new(source, false);
+        public static u1 u1(Expression source) => new(source);
         public static vu1 vu1(byte value) => new(value);
         public static cu1 cu1(Expression value) => new(value);
     }
