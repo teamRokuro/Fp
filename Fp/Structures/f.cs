@@ -24,6 +24,12 @@ namespace Fp.Structures
         public static implicit operator vf(float value) => new(value);
     }
 
+    public record af : DirectOffsetPrimitiveArrayWritableExpression<float>
+    {
+        public af(Expression offset, Expression length) : base(offset, length) {
+        }
+    }
+
     public partial record Expression
     {
         public static implicit operator Expression(float value) => new vd(value);
@@ -34,5 +40,6 @@ namespace Fp.Structures
         public static f f(Expression source) => new(source);
         public static vf vf(float value) => new(value);
         public static cf cf(Expression value) => new(value);
+        public static af af(Expression offset, Expression length) => new(offset, length);
     }
 }

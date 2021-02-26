@@ -24,6 +24,12 @@ namespace Fp.Structures
         public static implicit operator vi1(sbyte value) => new(value);
     }
 
+    public record ai1 : DirectOffsetPrimitiveArrayWritableExpression<sbyte>
+    {
+        public ai1(Expression offset, Expression length) : base(offset, length) {
+        }
+    }
+
     public partial record Expression
     {
         public static implicit operator Expression(sbyte value) => new vi1(value);
@@ -34,5 +40,6 @@ namespace Fp.Structures
         public static i1 i1(Expression source) => new(source);
         public static vi1 vi1(sbyte value) => new(value);
         public static ci1 ci1(Expression value) => new(value);
+        public static ai1 ai1(Expression offset, Expression length) => new(offset, length);
     }
 }

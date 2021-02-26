@@ -47,5 +47,24 @@ namespace Fp.Tests
             instance.Write(ms2);
             Assert.AreEqual(data, data2);
         }
+
+
+        [Test]
+        public void TestModel3()
+        {
+            byte[] data = Encoding.UTF8.GetBytes("Tactical Satellite");
+            var ms = new MStream(data);
+            var instance = Model3Instance.Read(ms);
+            byte[] data2 = data[1..(1+6)];
+            Assert.AreEqual(data2, instance.Ref0);
+            byte[] data3 = new byte[data.Length];
+            var ms2 = new MemoryStream(data3);
+            ms2.Position = 1;
+            ms2.Write(data2);
+            byte[] data4 = new byte[data.Length];
+            var ms3 = new MemoryStream(data4);
+            instance.Write(ms3);
+            Assert.AreEqual(data3, data4);
+        }
     }
 }

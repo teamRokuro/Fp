@@ -24,6 +24,12 @@ namespace Fp.Structures
         public static implicit operator vi4(int value) => new(value);
     }
 
+    public record ai4 : EndiannessDependentOffsetPrimitiveArrayWritableExpression<int>
+    {
+        public ai4(Expression offset, Expression length, bool little) : base(offset, length, little) {
+        }
+    }
+
     public partial record Expression
     {
         public static implicit operator Expression(int value) => new vi4(value);
@@ -35,5 +41,7 @@ namespace Fp.Structures
         public static i4 bi4(Expression source) => new(source, false);
         public static vi4 vi4(int value) => new(value);
         public static ci4 ci4(Expression value) => new(value);
+        public static ai4 ali4(Expression offset, Expression length) => new(offset, length, true);
+        public static ai4 abi4(Expression offset, Expression length) => new(offset, length, false);
     }
 }

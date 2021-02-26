@@ -252,6 +252,103 @@ namespace Fp.Structures
             };
     }
 
+
+    /// <summary>
+    /// Represents an offset primitive array.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract record OffsetPrimitiveArrayWritableExpression<T>
+        (Expression Offset, Expression Length) : WritableExpression<T[]> where T : unmanaged
+    {
+        /// <summary>
+        /// Enable endianness swapping.
+        /// </summary>
+        protected abstract bool EnableSwap { get; }
+
+        /// <summary>
+        /// Little-endian.
+        /// </summary>
+        protected abstract bool Little { get; }
+
+        /// <inheritdoc />
+        public override IEnumerable<Element> Dependencies => new[] {Offset, Length};
+
+        /// <inheritdoc />
+        public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) => this with
+        {
+            Offset = Offset.GetSelfMetaExpression(mapping), Length = Length.GetSelfMetaExpression(mapping)
+        };
+
+        /// <inheritdoc />
+        public sealed override TValue? Read<TValue>(StructureContext context) where TValue : default
+        {
+            context.Seek(Offset.ReadUnmanaged<long>(context));
+            T[] buffer = new T[Length.ReadUnmanaged<int>(context)];
+            context.Stream.ReadSpan<T>(buffer, buffer.Length, EnableSwap, Little);
+            return GetValueOrDefault<T[], TValue>(buffer);
+        }
+
+        /// <inheritdoc />
+        public sealed override void Write<TValue>(StructureContext context, TValue value)
+        {
+            context.Seek(Offset.ReadUnmanaged<long>(context));
+            T[] buffer = GetValueOrDefault<TValue, T[]>(value) ?? throw new NullReferenceException();
+            context.Stream.WriteSpan<T>(buffer, buffer.Length, EnableSwap, Little);
+        }
+    }
+
+    /// <summary>
+    /// Represents an offset primitive array without endianness swapping.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract record
+        EndiannessDependentOffsetPrimitiveArrayWritableExpression<T> : OffsetPrimitiveArrayWritableExpression<T>
+        where T : unmanaged
+    {
+        /// <summary>
+        /// Creates a new instance of <see cref="EndiannessDependentOffsetPrimitiveArrayWritableExpression{T}"/>
+        /// </summary>
+        /// <param name="offset">Offset expression.</param>
+        /// <param name="length">Length expression.</param>
+        /// <param name="little">Little-endian.</param>
+        protected EndiannessDependentOffsetPrimitiveArrayWritableExpression(Expression offset, Expression length,
+            bool little) : base(offset,
+            length)
+        {
+            Little = little;
+        }
+
+        /// <inheritdoc />
+        protected override bool EnableSwap => true;
+
+        /// <inheritdoc />
+        protected override bool Little { get; }
+    }
+
+    /// <summary>
+    /// Represents an offset primitive array without endianness swapping.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract record DirectOffsetPrimitiveArrayWritableExpression<T> : OffsetPrimitiveArrayWritableExpression<T>
+        where T : unmanaged
+    {
+        /// <summary>
+        /// Creates a new instance of <see cref="DirectOffsetPrimitiveArrayWritableExpression{T}"/>
+        /// </summary>
+        /// <param name="offset">Offset expression.</param>
+        /// <param name="length">Length expression.</param>
+        protected DirectOffsetPrimitiveArrayWritableExpression(Expression offset, Expression length) : base(offset,
+            length)
+        {
+        }
+
+        /// <inheritdoc />
+        protected override bool EnableSwap => false;
+
+        /// <inheritdoc />
+        protected override bool Little => false;
+    }
+
     /// <summary>
     /// Represents a primitive expression without dependencies.
     /// </summary>

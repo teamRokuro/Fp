@@ -60,7 +60,6 @@ namespace Fp.Sg
             }
 
             context.AddSource($"{name}Instance.cs", @$"
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -71,12 +70,12 @@ using Fp.Structures;
 {{" : "")}
     public class {name}Instance : StructureInstance
     {{{sbFieldsBuilder}
-        private static List<(Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)>? _base;
-        private static List<(Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)>? _rev;
+        private static List<(Element, Action<{name}Instance, Expression, StructureContext>, Action<{name}Instance, WritableExpression, StructureContext>)> _base;
+        private static List<(Element, Action<{name}Instance, Expression, StructureContext>, Action<{name}Instance, WritableExpression, StructureContext>)> _rev;
 
         private readonly Dictionary<Element, Expression> _exprMap;
-        private readonly List<Expression?> _baseInst;
-        private readonly List<WritableExpression?> _revInst;
+        private readonly List<Expression> _baseInst;
+        private readonly List<WritableExpression> _revInst;
         public {name}Instance()
         {{
             if(_base == null) Init();
@@ -98,7 +97,7 @@ using Fp.Structures;
 
         private static void Init()
         {{
-            _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, Expression, StructureContext>?, Action<{name}Instance, WritableExpression, StructureContext>?)[]
+            _base = BuildLayout<{name}Instance>(new (Element, Action<{name}Instance, Expression, StructureContext>, Action<{name}Instance, WritableExpression, StructureContext>)[]
             {{{sbInitBuilder}
             }});
             _rev = new(_base);

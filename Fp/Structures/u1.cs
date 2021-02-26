@@ -24,6 +24,18 @@ namespace Fp.Structures
         public static implicit operator vu1(byte value) => new(value);
     }
 
+    public record au1 : DirectOffsetPrimitiveArrayWritableExpression<byte>
+    {
+        public au1(Expression offset, Expression length) : base(offset, length) {
+        }
+    }
+
+    public record buf : DirectOffsetPrimitiveArrayWritableExpression<byte>
+    {
+        public buf(Expression offset, Expression length) : base(offset, length) {
+        }
+    }
+
     public partial record Expression
     {
         public static implicit operator Expression(byte value) => new vu1(value);
@@ -34,5 +46,7 @@ namespace Fp.Structures
         public static u1 u1(Expression source) => new(source);
         public static vu1 vu1(byte value) => new(value);
         public static cu1 cu1(Expression value) => new(value);
+        public static au1 au1(Expression offset, Expression length) => new(offset, length);
+        public static buf buf(Expression offset, Expression length) => new(offset, length);
     }
 }
