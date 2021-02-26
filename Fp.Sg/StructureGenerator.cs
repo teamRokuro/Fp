@@ -57,7 +57,6 @@ namespace Fp.Sg
                     sbFieldsMeta.Append(@$"
                 {{{name}.{fieldName}, new RefExpression<{genFieldInfo.Type}>(() => {fieldName})}},");
                 }
-                // TODO use Expression.GetMetaExpression to replace
             }
 
             context.AddSource($"{name}Instance.cs", @$"

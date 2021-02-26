@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Fp.Intermediate;
@@ -63,12 +64,27 @@ namespace Fp.Structures
         public abstract TPrimitive Read3(StructureContext context);
         public abstract void Write3(StructureContext context, TPrimitive value);
 
-        protected static void WritePrimitive<T>(StructureContext context, T value) where T : unmanaged
+        protected static unsafe Span<byte> ReadPrimitive<T>(Stream stream) where T : unmanaged =>
+            sizeof(T) switch
+            {
+                1 => stream.ReadBase8(),
+                2 => stream.ReadBase16(),
+                4 => stream.ReadBase32(),
+                8 => stream.ReadBase64(),
+                16 => stream.ReadBase128(),
+                <= 16 => stream.ReadBaseX(sizeof(T), SerializationInternals.IoBuffer),
+                _ => stream.ReadBaseX(sizeof(T), new byte[sizeof(T)])
+            };
+
+        protected static unsafe void WritePrimitive<T>(Stream stream, T value) where T : unmanaged
         {
-            byte[] lcl = SerializationInternals.IoBuffer;
+            byte[] lcl = sizeof(T) <= 16 ? SerializationInternals.IoBuffer : new byte[sizeof(T)];
             MemoryMarshal.Write(lcl, ref value);
-            context.Stream.Write(lcl, 0, sizeof(int));
+            stream.Write(lcl, 0, sizeof(int));
         }
+
+        public override Expression GetMetaExpression(IReadOnlyDictionary<Element, Expression> mapping) =>
+            this with {Source = Source.GetSelfMetaExpression(mapping)};
     }
 
     public abstract record EndiannessDependentOffsetPrimitiveWritableExpression<TPrimitive>
@@ -81,6 +97,20 @@ namespace Fp.Structures
         {
             Little = little;
         }
+
+        public sealed override TPrimitive Read3(StructureContext context)
+        {
+            var res = MemoryMarshal.Read<TPrimitive>(ReadPrimitive<TPrimitive>(context.Stream));
+            return Reverse ? ReverseEndianness(res) : res;
+        }
+
+        public sealed override void Write3(StructureContext context, TPrimitive value)
+        {
+            if (Reverse) value = ReverseEndianness(value);
+            WritePrimitive(context.Stream, value);
+        }
+
+        public abstract TPrimitive ReverseEndianness(TPrimitive value);
     }
 
     public abstract record NoRefPrimitiveExpression<TPrimitive> : PrimitiveExpression<TPrimitive>
@@ -93,6 +123,7 @@ namespace Fp.Structures
         (TPrimitive Value) : NoRefPrimitiveExpression<TPrimitive>
         where TPrimitive : unmanaged
     {
+        public override TPrimitive Read2(StructureContext context) => Value;
     }
 
     public record RefExpression<T>(Func<T> ValueFunc) : Expression

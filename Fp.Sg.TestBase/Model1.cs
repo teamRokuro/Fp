@@ -5,8 +5,8 @@ namespace Fp.Sg.TestBase
 {
     public class Model1 : Structure
     {
-        public static S32 Ref0 = S32L(0);
-        public static S32 Ref1 = S32L(8);
-        public static S32 Ref2 = S32L(Ref0);
+        public static i4 Ref0 = li4(0);
+        public static i4 Ref1 = li4(8);
+        public static i4 Ref2 = li4(Ref0);
     }
 }

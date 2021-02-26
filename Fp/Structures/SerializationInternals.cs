@@ -92,6 +92,22 @@ namespace Fp.Structures
             return IoBuffer;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static Span<byte> ReadBaseX(this Stream stream, int c, byte[] buffer)
+        {
+            int tot = 0;
+            do
+            {
+                int read = stream.Read(buffer, tot, c - tot);
+                if (read == 0)
+                    throw new EndOfStreamException(
+                        $"Failed to read required number of bytes! 0x{tot:X} read, 0x{c - tot:X} left");
+                tot += read;
+            } while (tot < c);
+
+            return buffer;
+        }
+
         /// <summary>
         /// Read array.
         /// </summary>
