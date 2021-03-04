@@ -2,7 +2,9 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Fp.Intermediate;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
@@ -137,6 +139,96 @@ namespace Fp.Intermediate
             if (_disposed)
                 throw new ObjectDisposedException(nameof(Rgba32Data));
             return new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CloneBuffer(Buffer));
+        }
+    }
+}
+
+namespace Fp
+{
+    public partial class Processor
+    {
+        /// <summary>
+        /// Creates 32bpp RGBA image data object.
+        /// </summary>
+        /// <param name="path">Base path (without extension).</param>
+        /// <param name="width">Image width.</param>
+        /// <param name="height">Image height.</param>
+        /// <param name="buffer">32bpp RGBA buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Rgba32Data Image(FpPath path, int width, int height, ReadOnlyMemory<uint> buffer) =>
+            new(path.AsCombined(), width, height, buffer);
+
+        /// <summary>
+        /// Creates 32bpp RGBA image data object.
+        /// </summary>
+        /// <param name="name">Base path (without extension).</param>
+        /// <param name="width">Image width.</param>
+        /// <param name="height">Image height.</param>
+        /// <param name="buffer">32bpp RGBA buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Rgba32Data Image(string name, int width, int height, ReadOnlyMemory<uint> buffer) =>
+            new(name, width, height, buffer);
+
+        /// <summary>
+        /// Convert 24bpp RGB data to 32bpp RGBA.
+        /// </summary>
+        /// <param name="data">Source.</param>
+        /// <param name="target">Target.</param>
+        /// <param name="a">Alpha value.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromRgb(ReadOnlySpan<byte> data, Span<byte> target, byte a = 255)
+        {
+            data.Slice(0, 3).CopyTo(target);
+            target[3] = a;
+        }
+
+        /// <summary>
+        /// Convert 24bpp RGB data to 32bpp RGBA.
+        /// </summary>
+        /// <param name="data">Source.</param>
+        /// <param name="a">Alpha value.</param>
+        /// <returns>32-bit value with color.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe uint FromRgb(ReadOnlySpan<byte> data, byte a = 255)
+        {
+            uint result;
+            byte* target = (byte*)&result;
+            target[0] = data[0];
+            target[1] = data[1];
+            target[2] = data[2];
+            target[3] = a;
+            return result;
+        }
+
+        /// <summary>
+        /// Convert 32bpp BGRA data to 32bpp RGBA.
+        /// </summary>
+        /// <param name="data">Source.</param>
+        /// <param name="target">Target.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void FromBgra(ReadOnlySpan<byte> data, Span<byte> target)
+        {
+            target[2] = data[0];
+            target[1] = data[1];
+            target[0] = data[2];
+            target[3] = data[3];
+        }
+
+        /// <summary>
+        /// Convert 32bpp BGRA data to 32bpp RGBA.
+        /// </summary>
+        /// <param name="data">Source.</param>
+        /// <returns>32-bit value with color.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe uint FromBgra(ReadOnlySpan<byte> data)
+        {
+            uint result;
+            byte* target = (byte*)&result;
+            target[2] = data[0];
+            target[1] = data[1];
+            target[0] = data[2];
+            target[3] = data[3];
+            return result;
         }
     }
 }

@@ -174,6 +174,19 @@ namespace Fp
 
         #endregion
 
+        #region Constructor
+
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Processor"/>.
+        /// </summary>
+        public Processor()
+        {
+            InitEncodingDecodingHelpers();
+        }
+
+        #endregion
+
         #region Main operation functions
 
         /// <summary>

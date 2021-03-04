@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Fp.Intermediate;
 
 namespace Fp.Intermediate
 {
@@ -146,5 +147,29 @@ namespace Fp.Intermediate
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+    }
+}
+
+namespace Fp
+{
+    public partial class Processor
+    {
+        /// <summary>
+        /// Creates byte data object.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <param name="memory">Data.</param>
+        /// <returns>Data object.</returns>
+        public static BufferData<byte> Buffer(FpPath path, ReadOnlyMemory<byte> memory) =>
+            new(path.AsCombined(), memory);
+
+        /// <summary>
+        /// Creates byte data object.
+        /// </summary>
+        /// <param name="name">Path.</param>
+        /// <param name="memory">Data.</param>
+        /// <returns>Data object.</returns>
+        public static BufferData<byte> Buffer(string name, ReadOnlyMemory<byte> memory) =>
+            new(name, memory);
     }
 }

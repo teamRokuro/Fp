@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
+using Fp.Intermediate;
 using static System.Buffers.ArrayPool<byte>;
 
 namespace Fp.Intermediate
@@ -142,5 +143,31 @@ namespace Fp.Intermediate
             _disposed = true;
             base.Dispose(disposing);
         }
+    }
+}
+
+namespace Fp
+{
+    public partial class Processor
+    {
+        /// <summary>
+        /// Creates PCM audio data object.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <param name="info">PCM information.</param>
+        /// <param name="memory">Audio buffer.</param>
+        /// <returns>Data object.</returns>
+        public static PcmData Audio(FpPath path, PcmInfo info, ReadOnlyMemory<byte> memory) =>
+            new(path.AsCombined(), info, memory);
+
+        /// <summary>
+        /// Creates PCM audio data object.
+        /// </summary>
+        /// <param name="name">Path.</param>
+        /// <param name="info">PCM information.</param>
+        /// <param name="memory">Audio buffer.</param>
+        /// <returns>Data object.</returns>
+        public static PcmData Audio(string name, PcmInfo info, ReadOnlyMemory<byte> memory) =>
+            new(name, info, memory);
     }
 }
