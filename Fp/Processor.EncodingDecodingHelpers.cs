@@ -302,10 +302,10 @@ namespace Fp
                 get
                 {
                     stream ??= InputStream;
-                    Span<byte> span = new byte[count * sizeof(T)];
-                    if (offset != -1) Read(stream, offset, span, false);
-                    else Read(stream, span, false);
-                    return this[span, count];
+                    byte[] arr = new byte[count * sizeof(T)];
+                    if (offset != -1) Read(stream, offset, arr, 0, arr.Length, false);
+                    else Read(stream, arr, 0, arr.Length, false);
+                    return this[arr, 0, count];
                 }
             }
 
@@ -319,9 +319,10 @@ namespace Fp
                 set
                 {
                     stream ??= OutputStream;
-                    Span<byte> span = MemoryMarshal.Cast<T, byte>(value);
-                    if (offset != -1) Write(stream, offset, span);
-                    else Write(stream, span);
+                    byte[] arr = new byte[value.Length * sizeof(T)];
+                    this[arr, 0] = value;
+                    if (offset != -1) Write(stream, offset, arr);
+                    else Write(stream, arr);
                 }
             }
         }
