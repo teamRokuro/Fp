@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Fp
@@ -8,116 +9,347 @@ namespace Fp
         /// <summary>
         /// Helper for signed 8-bit integers.
         /// </summary>
-        public THelper<sbyte> S8;
+        public THelper<sbyte> S8 = null!;
+
+        /// <summary>
+        /// Helper for signed 8-bit integer arrays.
+        /// </summary>
+        public TArrayHelper<sbyte> S8A = null!;
 
         /// <summary>
         /// Helper for signed 16-bit integers.
         /// </summary>
-        public S16Helper S16;
+        public S16Helper S16 = null!;
+
+        /// <summary>
+        /// Helper for signed 16-bit integer arrays.
+        /// </summary>
+        public S16ArrayHelper S16A = null!;
 
         /// <summary>
         /// Helper for signed 32-bit integers.
         /// </summary>
-        public S32Helper S32;
+        public S32Helper S32 = null!;
+
+        /// <summary>
+        /// Helper for signed 32-bit integer arrays.
+        /// </summary>
+        public S32ArrayHelper S32A = null!;
 
         /// <summary>
         /// Helper for signed 64-bit integers.
         /// </summary>
-        public S64Helper S64;
+        public S64Helper S64 = null!;
+
+        /// <summary>
+        /// Helper for signed 64-bit integer arrays.
+        /// </summary>
+        public S64ArrayHelper S64A = null!;
 
         /// <summary>
         /// Helper for unsigned 8-bit integers.
         /// </summary>
-        public THelper<byte> U8;
+        public THelper<byte> U8 = null!;
+
+        /// <summary>
+        /// Helper for unsigned 8-bit integer arrays.
+        /// </summary>
+        public TArrayHelper<byte> U8A = null!;
 
         /// <summary>
         /// Helper for unsigned 16-bit integers.
         /// </summary>
-        public U16Helper U16;
+        public U16Helper U16 = null!;
+
+        /// <summary>
+        /// Helper for unsigned 16-bit integer arrays.
+        /// </summary>
+        public U16ArrayHelper U16A = null!;
 
         /// <summary>
         /// Helper for unsigned 32-bit integers.
         /// </summary>
-        public U32Helper U32;
+        public U32Helper U32 = null!;
+
+        /// <summary>
+        /// Helper for unsigned 32-bit integer arrays.
+        /// </summary>
+        public U32ArrayHelper U32A = null!;
 
         /// <summary>
         /// Helper for unsigned 64-bit integers.
         /// </summary>
-        public U64Helper U64;
+        public U64Helper U64 = null!;
+
+        /// <summary>
+        /// Helper for unsigned 64-bit integer arrays.
+        /// </summary>
+        public U64ArrayHelper U64A = null!;
 
         /// <summary>
         /// Helper for 32-bit floating point numbers.
         /// </summary>
-        public THelper<float> F32;
+        public THelper<float> F32 = null!;
+
+        /// <summary>
+        /// Helper for 32-bit floating point number arrays.
+        /// </summary>
+        public TArrayHelper<float> F32A = null!;
 
         /// <summary>
         /// Helper for 64-bit floating point numbers.
         /// </summary>
-        public THelper<double> F64;
+        public THelper<double> F64 = null!;
+
+        /// <summary>
+        /// Helper for 64-bit floating point number arrays.
+        /// </summary>
+        public TArrayHelper<double> F64A = null!;
 
         private void InitEncodingDecodingHelpers()
         {
             S8 = new THelper<sbyte>(this);
+            S8A = new TArrayHelper<sbyte>(this);
             S16 = new S16Helper(this);
+            S16A = new S16ArrayHelper(this);
             S32 = new S32Helper(this);
+            S32A = new S32ArrayHelper(this);
             S64 = new S64Helper(this);
+            S64A = new S64ArrayHelper(this);
             U8 = new THelper<byte>(this);
+            U8A = new TArrayHelper<byte>(this);
             U16 = new U16Helper(this);
+            U16A = new U16ArrayHelper(this);
             U32 = new U32Helper(this);
+            U32A = new U32ArrayHelper(this);
             U64 = new U64Helper(this);
+            U64A = new U64ArrayHelper(this);
             F32 = new THelper<float>(this);
+            F32A = new TArrayHelper<float>(this);
             F64 = new THelper<double>(this);
+            F64A = new TArrayHelper<double>(this);
+        }
+
+        /// <summary>
+        /// Base data helper.
+        /// </summary>
+        public abstract record Helper
+        {
+            /// <summary>
+            /// Current input stream.
+            /// </summary>
+            public abstract Stream InputStream { get; }
+
+            /// <summary>
+            /// Current output stream.
+            /// </summary>
+            public abstract Stream OutputStream { get; }
+        }
+
+        /// <summary>
+        /// Base single-unit data helper.
+        /// </summary>
+        /// <typeparam name="T">Element type.</typeparam>
+        public abstract unsafe record BaseHelper<T> : Helper where T : unmanaged
+        {
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T this[byte[] source, int offset = 0]
+            {
+                get => this[source.AsSpan(), offset];
+                set => this[source.AsSpan(), offset] = value;
+            }
+
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T this[Memory<byte> source, int offset = 0]
+            {
+                get => this[source.Span, offset];
+                set => this[source.Span, offset] = value;
+            }
+
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public abstract T this[Span<byte> source, int offset = 0] { get; set; }
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T this[ReadOnlyMemory<byte> source, int offset = 0] => this[source.Span, offset];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public abstract T this[ReadOnlySpan<byte> source, int offset = 0] { get; }
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T this[long offset = -1, Stream? stream = null]
+            {
+                get
+                {
+                    stream ??= InputStream;
+                    T result;
+                    Span<byte> span = new(&result, sizeof(T));
+                    if (offset != -1) Read(stream, offset, span, false);
+                    else Read(stream, span, false);
+                    return result;
+                }
+                set
+                {
+                    stream ??= OutputStream;
+                    Span<byte> span = new(&value, sizeof(T));
+                    if (offset != -1) Write(stream, offset, span);
+                    else Write(stream, span);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Base array data helper.
+        /// </summary>
+        /// <typeparam name="T">Element type.</typeparam>
+        public abstract record BaseArrayHelper<T> : Helper where T : unmanaged
+        {
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            /// <param name="count">Element count.</param>
+            public virtual T[] this[byte[] source, int offset, int count] => this[source.AsSpan(), offset, count];
+
+            /// <summary>
+            /// Write array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T[] this[byte[] source, int offset]
+            {
+                set => this[source.AsSpan(), offset] = value;
+            }
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            /// <param name="count">Element count.</param>
+            public virtual T[] this[Memory<byte> source, int offset, int count] => this[source.Span, offset, count];
+
+
+            /// <summary>
+            /// Write array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T[] this[Memory<byte> source, int offset]
+            {
+                set => this[source.Span, offset] = value;
+            }
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            /// <param name="count">Element count.</param>
+            public abstract T[] this[Span<byte> source, int offset, int count] { get; }
+
+            /// <summary>
+            /// Write array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public abstract T[] this[Span<byte> source, int offset] { set; }
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            /// <param name="count">Element count.</param>
+            public virtual T[] this[ReadOnlyMemory<byte> source, int offset, int count] => this[source.Span, offset, count];
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            /// <param name="count">Element count.</param>
+            public abstract T[] this[ReadOnlySpan<byte> source, int offset, int count] { get; }
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="count">Element count.</param>
+            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
+            public virtual T[] this[long offset, int count, Stream? stream = null]
+            {
+                get
+                {
+                    stream ??= InputStream;
+                    T[] result = new T[count];
+                    Span<byte> span = MemoryMarshal.Cast<T, byte>(result);
+                    if (offset != -1) Read(stream, offset, span, false);
+                    else Read(stream, span, false);
+                    return result;
+                }
+            }
+
+            /// <summary>
+            /// Write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
+            public virtual T[] this[long offset, Stream? stream = null]
+            {
+                set
+                {
+                    stream ??= OutputStream;
+                    Span<byte> span = MemoryMarshal.Cast<T, byte>(value);
+                    if (offset != -1) Write(stream, offset, span);
+                    else Write(stream, span);
+                }
+            }
         }
 
         /// <summary>
         /// Signed 8-bit helper.
         /// </summary>
-        public readonly struct S8Helper
+        public record S8Helper(Processor Parent) : BaseHelper<sbyte>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S8Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public S8Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <summary>
             /// Read/write value.
             /// </summary>
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
-            public sbyte this[byte[] source, int offset = 0]
-            {
-                get => Parent.GetS8(source, offset);
-                set => Parent.SetS8(source, value, offset);
-            }
-
-
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public sbyte this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMS8(source, offset);
-                set => Parent.SetMS8(source, value, offset);
-            }
-
-
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public sbyte this[Span<byte> source, int offset = 0]
+            public override sbyte this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetS8(source, offset);
                 set => Parent.SetS8(source, value, offset);
@@ -128,1157 +360,427 @@ namespace Fp
             /// </summary>
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
-            public sbyte this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMS8(source, offset);
+            public override sbyte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS8(source, offset);
+        }
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public sbyte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS8(source, offset);
+        /// <summary>
+        /// Signed 8-bit array helper.
+        /// </summary>
+        public record S8ArrayHelper(Processor Parent) : BaseArrayHelper<sbyte>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public sbyte[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetS8Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(sbyte)));
-                set => Parent.SetS8Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(sbyte)), value);
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public sbyte[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetS8Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(sbyte)));
-                set => Parent.SetS8Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(sbyte)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public sbyte[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetS8Array(
+            /// <inheritdoc />
+            public override sbyte[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetS8Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(sbyte)));
-                set
-                {
-                    Parent.SetS8Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(sbyte)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override sbyte[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetS8Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public sbyte[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetS8Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(sbyte)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public sbyte[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override sbyte[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetS8Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(sbyte)));
         }
 
         /// <summary>
         /// Signed 16-bit helper.
         /// </summary>
-        public readonly struct S16Helper
+        public record S16Helper(Processor Parent) : BaseHelper<short>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S16Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public S16Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public short this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override short this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetS16(source, offset);
                 set => Parent.SetS16(source, value, offset);
             }
 
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public short this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMS16(source, offset);
-                set => Parent.SetMS16(source, value, offset);
-            }
+            /// <inheritdoc />
+            public override short this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS16(source, offset);
+        }
 
+        /// <summary>
+        /// Signed 16-bit array helper.
+        /// </summary>
+        public record S16ArrayHelper(Processor Parent) : BaseArrayHelper<short>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public short this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetS16(source, offset);
-                set => Parent.SetS16(source, value, offset);
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public short this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMS16(source, offset);
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public short this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS16(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public short[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetS16Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(short)));
-                set => Parent.SetS16Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(short)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public short[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetS16Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(short)));
-                set => Parent.SetS16Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(short)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public short[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetS16Array(
+            /// <inheritdoc />
+            public override short[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetS16Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(short)));
-                set
-                {
-                    Parent.SetS16Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(short)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override short[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetS16Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public short[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetS16Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(short)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public short[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override short[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetS16Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(short)));
         }
 
         /// <summary>
         /// Signed 32-bit helper.
         /// </summary>
-        public readonly struct S32Helper
+        public record S32Helper(Processor Parent) : BaseHelper<int>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S32Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public S32Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public int this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override int this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetS32(source, offset);
                 set => Parent.SetS32(source, value, offset);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public int this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMS32(source, offset);
-                set => Parent.SetMS32(source, value, offset);
-            }
+            /// <inheritdoc />
+            public override int this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS32(source, offset);
+        }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public int this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetS32(source, offset);
-                set => Parent.SetS32(source, value, offset);
-            }
+        /// <summary>
+        /// Signed 32-bit helper.
+        /// </summary>
+        public record S32ArrayHelper(Processor Parent) : BaseArrayHelper<int>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public int this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMS32(source, offset);
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public int this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS32(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetS32Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(int)));
-                set => Parent.SetS32Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(int)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetS32Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(int)));
-                set => Parent.SetS32Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(int)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetS32Array(
+            /// <inheritdoc />
+            public override int[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetS32Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)));
-                set
-                {
-                    Parent.SetS32Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override int[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetS32Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetS32Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(int)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override int[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetS32Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)));
         }
 
         /// <summary>
         /// Signed 64-bit helper.
         /// </summary>
-        public readonly struct S64Helper
+        public record S64Helper(Processor Parent) : BaseHelper<long>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S32Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public S64Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public long this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override long this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetS64(source, offset);
                 set => Parent.SetS64(source, value, offset);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public long this[Memory<byte> source, int offset = 0]
+            /// <inheritdoc />
+            public override long this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS64(source, offset);
+        }
+
+        /// <summary>
+        /// Signed 64-bit helper.
+        /// </summary>
+        public record S64ArrayHelper(Processor Parent) : BaseArrayHelper<long>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+
+            /// <inheritdoc />
+            public override long[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetS64Array(
+                    count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(long)));
+
+            /// <inheritdoc />
+            public override long[] this[Span<byte> source, int offset]
             {
-                get => Parent.GetMS64(source, offset);
-                set => Parent.SetMS64(source, value, offset);
+                set => Parent.SetS64Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public long this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetS64(source, offset);
-                set => Parent.SetS64(source, value, offset);
-            }
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public long this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMS64(source, offset);
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public long this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS64(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetS32Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(int)));
-                set => Parent.SetS32Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(int)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetS32Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(int)));
-                set => Parent.SetS32Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(int)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetS32Array(
-                    count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)));
-                set
-                {
-                    Parent.SetS32Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)),
-                        value);
-                }
-            }
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetS32Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(int)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public int[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
-                Parent.GetS32Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(int)));
+            /// <inheritdoc />
+            public override long[] this[ReadOnlySpan<byte> source, int offset, int count] =>
+                Parent.GetS64Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(long)));
         }
 
         /// <summary>
         /// Unsigned 8-bit helper.
         /// </summary>
-        public readonly struct U8Helper
+        public record U8Helper(Processor Parent) : BaseHelper<byte>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="U8Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public U8Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public byte this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override byte this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetU8(source, offset);
                 set => Parent.SetU8(source, value, offset);
             }
 
+            /// <inheritdoc />
+            public override byte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU8(source, offset);
+        }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public byte this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMU8(source, offset);
-                set => Parent.SetMU8(source, value, offset);
-            }
+        /// <summary>
+        /// Unsigned 8-bit helper.
+        /// </summary>
+        public record U8ArrayHelper(Processor Parent) : BaseArrayHelper<byte>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public byte this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetU8(source, offset);
-                set => Parent.SetU8(source, value, offset);
-            }
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public byte this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMU8(source, offset);
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public byte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU8(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public byte[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetU8Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(byte)));
-                set => Parent.SetU8Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(byte)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public byte[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetU8Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(byte)));
-                set => Parent.SetU8Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(byte)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public byte[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetU8Array(
+            /// <inheritdoc />
+            public override byte[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetU8Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(byte)));
-                set
-                {
-                    Parent.SetU8Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(byte)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override byte[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetU8Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public byte[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetU8Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(byte)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public byte[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override byte[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetU8Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(byte)));
         }
 
         /// <summary>
         /// Unsigned 16-bit helper.
         /// </summary>
-        public readonly struct U16Helper
+        public record U16Helper(Processor Parent) : BaseHelper<ushort>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S32Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public U16Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ushort this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override ushort this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetU16(source, offset);
                 set => Parent.SetU16(source, value, offset);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ushort this[Memory<byte> source, int offset = 0]
+            /// <inheritdoc />
+            public override ushort this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU16(source, offset);
+        }
+
+        /// <summary>
+        /// Unsigned 16-bit helper.
+        /// </summary>
+        public record U16ArrayHelper(Processor Parent) : BaseArrayHelper<ushort>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+
+            /// <inheritdoc />
+            public override ushort[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetU16Array(
+                    count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)));
+
+            /// <inheritdoc />
+            public override ushort[] this[Span<byte> source, int offset]
             {
-                get => Parent.GetMU16(source, offset);
-                set => Parent.SetMU16(source, value, offset);
+                set => Parent.SetU16Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ushort this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetU16(source, offset);
-                set => Parent.SetU16(source, value, offset);
-            }
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ushort this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMU16(source, offset);
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ushort this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU16(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public long[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetS64Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(long)));
-                set => Parent.SetS64Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(long)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public long[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetS64Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(long)));
-                set => Parent.SetS64Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(long)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public long[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetS64Array(
-                    count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(long)));
-                set
-                {
-                    Parent.SetS64Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(long)),
-                        value);
-                }
-            }
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public long[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetS64Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(long)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public long[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
-                Parent.GetS64Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(long)));
+            /// <inheritdoc />
+            public override ushort[] this[ReadOnlySpan<byte> source, int offset, int count] =>
+                Parent.GetU16Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)));
         }
 
         /// <summary>
         /// Unsigned 32-bit helper.
         /// </summary>
-        public readonly struct U32Helper
+        public record U32Helper(Processor Parent) : BaseHelper<uint>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S32Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public U32Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public uint this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override uint this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetU32(source, offset);
                 set => Parent.SetU32(source, value, offset);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public uint this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMU32(source, offset);
-                set => Parent.SetMU32(source, value, offset);
-            }
+            /// <inheritdoc />
+            public override uint this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU32(source, offset);
+        }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public uint this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetU32(source, offset);
-                set => Parent.SetU32(source, value, offset);
-            }
+        /// <summary>
+        /// Unsigned 32-bit helper.
+        /// </summary>
+        public record U32ArrayHelper(Processor Parent) : BaseArrayHelper<uint>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public uint this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMU32(source, offset);
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public uint this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU32(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public ushort[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetU16Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(ushort)));
-                set => Parent.SetU16Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(ushort)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ushort[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetU16Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(ushort)));
-                set => Parent.SetU16Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(ushort)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ushort[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetU16Array(
+            /// <inheritdoc />
+            public override uint[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetU32Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)));
-                set
-                {
-                    Parent.SetU16Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override uint[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetU32Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ushort[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetU16Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(ushort)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ushort[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
-                Parent.GetU16Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)));
+            /// <inheritdoc />
+            public override uint[] this[ReadOnlySpan<byte> source, int offset, int count] =>
+                Parent.GetU32Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ushort)));
         }
 
         /// <summary>
         /// Unsigned 64-bit helper.
         /// </summary>
-        public readonly struct U64Helper
+        public record U64Helper(Processor Parent) : BaseHelper<ulong>
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="S32Helper"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public U64Helper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ulong this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override ulong this[Span<byte> source, int offset = 0]
             {
                 get => Parent.GetU64(source, offset);
                 set => Parent.SetU64(source, value, offset);
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ulong this[Memory<byte> source, int offset = 0]
-            {
-                get => Parent.GetMU64(source, offset);
-                set => Parent.SetMU64(source, value, offset);
-            }
+            /// <inheritdoc />
+            public override ulong this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU64(source, offset);
+        }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ulong this[Span<byte> source, int offset = 0]
-            {
-                get => Parent.GetU64(source, offset);
-                set => Parent.SetU64(source, value, offset);
-            }
+        /// <summary>
+        /// Unsigned 64-bit helper.
+        /// </summary>
+        public record U64ArrayHelper(Processor Parent) : BaseArrayHelper<ulong>
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ulong this[ReadOnlyMemory<byte> source, int offset = 0] => Parent.GetMU64(source, offset);
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public ulong this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU64(source, offset);
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public ulong[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetU64Array(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(ulong)));
-                set => Parent.SetU64Array(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(ulong)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ulong[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetU64Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(ulong)));
-                set => Parent.SetU64Array(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(ulong)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ulong[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetU64Array(
+            /// <inheritdoc />
+            public override ulong[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetU64Array(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ulong)));
-                set
-                {
-                    Parent.SetU64Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ulong)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override ulong[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetU64Array(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ulong[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetU64Array(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(ulong)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public ulong[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override ulong[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetU64Array(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(ulong)));
         }
 
         /// <summary>
         /// Generic helper.
         /// </summary>
-        public unsafe readonly struct THelper<T> where T : unmanaged
+        public record THelper<T>(Processor Parent) : BaseHelper<T> where T : unmanaged
         {
-            /// <summary>
-            /// Parent instance.
-            /// </summary>
-            public readonly Processor Parent;
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Creates new instance of <see cref="THelper{T}"/>.
-            /// </summary>
-            /// <param name="parent">Parent instance.</param>
-            public THelper(Processor parent)
-            {
-                Parent = parent;
-            }
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public T this[byte[] source, int offset = 0]
+            /// <inheritdoc />
+            public override T this[Span<byte> source, int offset = 0]
             {
                 get => MemoryMarshal.Cast<byte, T>(source)[offset];
                 set => MemoryMarshal.Cast<byte, T>(source)[offset] = value;
             }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public T this[Memory<byte> source, int offset = 0]
-            {
-                get => MemoryMarshal.Cast<byte, T>(source.Span)[offset];
-                set => MemoryMarshal.Cast<byte, T>(source.Span)[offset] = value;
-            }
+            /// <inheritdoc />
+            public override T this[ReadOnlySpan<byte> source, int offset = 0] =>
+                MemoryMarshal.Cast<byte, T>(source)[offset];
+        }
 
-            /// <summary>
-            /// Read/write value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public T this[Span<byte> source, int offset = 0]
-            {
-                get => MemoryMarshal.Cast<byte, T>(source)[offset];
-                set => MemoryMarshal.Cast<byte, T>(source)[offset] = value;
-            }
+        /// <summary>
+        /// Generic helper.
+        /// </summary>
+        public unsafe record TArrayHelper<T>(Processor Parent) : BaseArrayHelper<T> where T : unmanaged
+        {
+            /// <inheritdoc />
+            public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public T this[ReadOnlyMemory<byte> source, int offset = 0] =>
-                MemoryMarshal.Cast<byte, T>(source.Span)[offset];
+            /// <inheritdoc />
+            public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public T this[ReadOnlySpan<byte> source, int offset = 0] => MemoryMarshal.Cast<byte, T>(source)[offset];
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            /// <param name="count">Element count.</param>
-            public T[] this[int offset, byte[] source, int count = -1]
-            {
-                get => Parent.GetTArray<T>(count == -1
-                    ? source.AsSpan(offset)
-                    : source.AsSpan(offset, count * sizeof(T)));
-                set => Parent.SetTArray(
-                    count == -1 ? source.AsSpan(offset) : source.AsSpan(offset, count * sizeof(T)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public T[] this[int offset, Memory<byte> source, int count = -1]
-            {
-                get => Parent.GetTArray<T>(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(T)));
-                set => Parent.SetTArray(
-                    count == -1 ? source.Span.Slice(offset) : source.Span.Slice(offset, count * sizeof(T)), value);
-            }
-
-            /// <summary>
-            /// Read/write array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public T[] this[int offset, Span<byte> source, int count = -1]
-            {
-                get => Parent.GetTArray<T>(
+            /// <inheritdoc />
+            public override T[] this[Span<byte> source, int offset, int count] =>
+                Parent.GetTArray<T>(
                     count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(T)));
-                set
-                {
-                    Parent.SetTArray(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(T)),
-                        value);
-                }
+
+            /// <inheritdoc />
+            public override T[] this[Span<byte> source, int offset]
+            {
+                set => Parent.SetTArray(source.Slice(offset), value);
             }
 
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public T[] this[int offset, ReadOnlyMemory<byte> source, int count = -1] =>
-                Parent.GetTArray<T>(count == -1
-                    ? source.Span.Slice(offset)
-                    : source.Span.Slice(offset, count * sizeof(T)));
-
-            /// <summary>
-            /// Read array.
-            /// </summary>
-            /// <param name="offset">Offset.</param>
-            /// <param name="source">Data source.</param>
-            /// <param name="count">Element count.</param>
-            public T[] this[int offset, ReadOnlySpan<byte> source, int count = -1] =>
+            /// <inheritdoc />
+            public override T[] this[ReadOnlySpan<byte> source, int offset, int count] =>
                 Parent.GetTArray<T>(count == -1 ? source.Slice(offset) : source.Slice(offset, count * sizeof(T)));
         }
 

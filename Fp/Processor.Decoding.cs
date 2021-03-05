@@ -33,8 +33,8 @@ namespace Fp
                 return (sbyte)buf.AsSpan((int)ms.Position)[0];
             }
 
-            Read(stream, _tempBuffer, 0, 1, false);
-            return (sbyte)_tempBuffer[0];
+            Read(stream, TempBuffer, 0, 1, false);
+            return (sbyte)TempBuffer[0];
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Fp
                 return (sbyte)buf.AsSpan((int)offset)[0];
             }
 
-            Read(stream, offset, _tempBuffer, 0, 1, false);
-            return (sbyte)_tempBuffer[0];
+            Read(stream, offset, TempBuffer, 0, 1, false);
+            return (sbyte)TempBuffer[0];
         }
 
         /// <summary>
@@ -101,8 +101,8 @@ namespace Fp
                 return buf.AsSpan((int)ms.Position)[0];
             }
 
-            Read(stream, _tempBuffer, 0, 1, false);
-            return _tempBuffer[0];
+            Read(stream, TempBuffer, 0, 1, false);
+            return TempBuffer[0];
         }
 
         /// <summary>
@@ -119,8 +119,8 @@ namespace Fp
                 return buf.AsSpan((int)offset)[0];
             }
 
-            Read(stream, offset, _tempBuffer, 0, 1, false);
-            return _tempBuffer[0];
+            Read(stream, offset, TempBuffer, 0, 1, false);
+            return TempBuffer[0];
         }
 
         /// <summary>
@@ -2025,10 +2025,10 @@ namespace Fp
                 read = 0;
                 do
                 {
-                    int cc = Read(stream, _tempBuffer, 0, 2);
+                    int cc = Read(stream, TempBuffer, 0, 2);
                     read += cc;
-                    if (cc != 2 || _tempBuffer[0] == 0 && _tempBuffer[1] == 0) break;
-                    TempMs.Write(_tempBuffer, 0, 2);
+                    if (cc != 2 || TempBuffer[0] == 0 && TempBuffer[1] == 0) break;
+                    TempMs.Write(TempBuffer, 0, 2);
                 } while (read < maxLength);
 
                 if (strict)

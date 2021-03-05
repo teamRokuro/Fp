@@ -19,9 +19,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>NU5105</NoWarn>
   </PropertyGroup>
-  
+
   <PropertyGroup>
-    <PackageVersion>0.8.8</PackageVersion>
+    <PackageVersion>0.8.9</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
 

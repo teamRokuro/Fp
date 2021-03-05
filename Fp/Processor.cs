@@ -148,7 +148,8 @@ namespace Fp
 
         private MemoryStream TempMs => _tempMs ??= new MemoryStream();
         private MemoryStream? _tempMs;
-        private readonly byte[] _tempBuffer = new byte[sizeof(long)];
+        private static byte[] TempBuffer => _tempBuffer ??= new byte[sizeof(long)];
+        [ThreadStatic] private static byte[]? _tempBuffer;
 
         private Encoder Utf8Encoder => _utf8Encoder ??= Encoding.UTF8.GetEncoder();
         private Encoder? _utf8Encoder;
@@ -175,7 +176,6 @@ namespace Fp
         #endregion
 
         #region Constructor
-
 
         /// <summary>
         /// Creates a new instance of <see cref="Processor"/>.

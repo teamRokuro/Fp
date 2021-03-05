@@ -83,7 +83,7 @@ namespace Fp
         public void WriteS8(sbyte value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -92,7 +92,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(sbyte));
+                stream.Write(TempBuffer, 0, sizeof(sbyte));
             }
             finally
             {
@@ -112,7 +112,7 @@ namespace Fp
         public void WriteU8(byte value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -121,7 +121,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(byte));
+                stream.Write(TempBuffer, 0, sizeof(byte));
             }
             finally
             {
@@ -218,7 +218,7 @@ namespace Fp
         public void WriteS16(short value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -227,7 +227,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(short));
+                stream.Write(TempBuffer, 0, sizeof(short));
             }
             finally
             {
@@ -247,7 +247,7 @@ namespace Fp
         public void WriteU16(ushort value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -256,7 +256,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(ushort));
+                stream.Write(TempBuffer, 0, sizeof(ushort));
             }
             finally
             {
@@ -352,7 +352,7 @@ namespace Fp
         public void WriteS32(int value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -361,7 +361,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(int));
+                stream.Write(TempBuffer, 0, sizeof(int));
             }
             finally
             {
@@ -381,7 +381,7 @@ namespace Fp
         public void WriteU32(uint value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -390,7 +390,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(uint));
+                stream.Write(TempBuffer, 0, sizeof(uint));
             }
             finally
             {
@@ -486,7 +486,7 @@ namespace Fp
         public void WriteS64(long value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -495,7 +495,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(long));
+                stream.Write(TempBuffer, 0, sizeof(long));
             }
             finally
             {
@@ -515,7 +515,7 @@ namespace Fp
         public void WriteU64(ulong value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -524,7 +524,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(ulong));
+                stream.Write(TempBuffer, 0, sizeof(ulong));
             }
             finally
             {
@@ -608,7 +608,7 @@ namespace Fp
         public void WriteHalf(ushort value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytesHalf(value, _tempBuffer);
+            GetBytesHalf(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -617,7 +617,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(ushort));
+                stream.Write(TempBuffer, 0, sizeof(ushort));
             }
             finally
             {
@@ -637,7 +637,7 @@ namespace Fp
         public void WriteHalf(float value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytesHalf(value, _tempBuffer);
+            GetBytesHalf(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -646,7 +646,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(ushort));
+                stream.Write(TempBuffer, 0, sizeof(ushort));
             }
             finally
             {
@@ -697,7 +697,7 @@ namespace Fp
         public void WriteSingle(float value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -706,7 +706,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(float));
+                stream.Write(TempBuffer, 0, sizeof(float));
             }
             finally
             {
@@ -758,7 +758,7 @@ namespace Fp
         public void WriteDouble(double value, Stream? stream = null, int? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
-            GetBytes(value, _tempBuffer);
+            GetBytes(value, TempBuffer);
             long origPos = offset.HasValue ? stream.Position : -1;
             try
             {
@@ -767,7 +767,7 @@ namespace Fp
                     stream.Position = offset.Value;
                 }
 
-                stream.Write(_tempBuffer, 0, sizeof(double));
+                stream.Write(TempBuffer, 0, sizeof(double));
             }
             finally
             {
@@ -835,8 +835,8 @@ namespace Fp
                     return;
                 }
 
-                _tempBuffer[0] = 0;
-                stream.Write(_tempBuffer, 0, 1);
+                TempBuffer[0] = 0;
+                stream.Write(TempBuffer, 0, 1);
             }
             finally
             {
@@ -910,9 +910,9 @@ namespace Fp
                     return;
                 }
 
-                _tempBuffer[0] = 0;
-                _tempBuffer[1] = 0;
-                stream.Write(_tempBuffer, 0, 2);
+                TempBuffer[0] = 0;
+                TempBuffer[1] = 0;
+                stream.Write(TempBuffer, 0, 2);
             }
             finally
             {

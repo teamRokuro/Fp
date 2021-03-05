@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-
 #if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
 
@@ -342,6 +341,50 @@ namespace Fp
             stream.Write(array, offset, length);
 
         /// <summary>
+        /// Output data from array to stream from specified offset
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <param name="array">Span to read from</param>
+        public static void Write(Stream stream, long offset, byte[] array)
+        {
+            stream.Position = offset;
+            stream.Write(array, 0, array.Length);
+        }
+
+        /// <summary>
+        /// Output data from array to stream from specified offset
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <param name="array">Span to read from</param>
+        /// <param name="arrayOffset">Array offset</param>
+        /// <param name="arrayLength">Array length</param>
+        public static void Write(Stream stream, long offset, byte[] array, int arrayOffset, int arrayLength)
+        {
+            stream.Position = offset;
+            stream.Write(array, arrayOffset, arrayLength);
+        }
+
+        /// <summary>
+        /// Output data from array to stream
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="array">Span to read from</param>
+        public static void Write(Stream stream, byte[] array) =>
+            WriteBaseArray(stream, array, 0, array.Length);
+
+        /// <summary>
+        /// Output data from array to stream
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="array">Span to read from</param>
+        /// <param name="arrayOffset">Array offset</param>
+        /// <param name="arrayLength">Array length</param>
+        public static void Write(Stream stream, byte[] array, int arrayOffset, int arrayLength) =>
+            WriteBaseArray(stream, array, arrayOffset, arrayLength);
+
+        /// <summary>
         /// Output data from array to stream
         /// </summary>
         /// <param name="array">Array to read from</param>
@@ -430,7 +473,7 @@ namespace Fp
 #if NET5_0
             stream.Write(span);
 #else
-            byte[] buf = Shared.Rent(4096);
+            byte[] buf = span.Length <= sizeof(long) ? TempBuffer : Shared.Rent(4096);
             Span<byte> bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
             try
@@ -447,17 +490,37 @@ namespace Fp
             }
             finally
             {
-                Shared.Return(buf);
+                if (buf != TempBuffer) Shared.Return(buf);
             }
 #endif
         }
+
+        /// <summary>
+        /// Output data from span to stream from specified offset
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <param name="span">Span to read from</param>
+        public static void Write(Stream stream, long offset, ReadOnlySpan<byte> span)
+        {
+            stream.Position = offset;
+            WriteBaseSpan(stream, span);
+        }
+
+        /// <summary>
+        /// Output data from span to stream
+        /// </summary>
+        /// <param name="stream">Stream to write to</param>
+        /// <param name="span">Span to read from</param>
+        public static void Write(Stream stream, ReadOnlySpan<byte> span) =>
+            WriteBaseSpan(stream, span);
 
         /// <summary>
         /// Output data from span to stream
         /// </summary>
         /// <param name="span">Span to read from</param>
         /// <param name="outputStream">Stream to write to</param>
-        public void OutputAll(Span<byte> span, Stream? outputStream = null) =>
+        public void OutputAll(ReadOnlySpan<byte> span, Stream? outputStream = null) =>
             WriteBaseSpan(outputStream ?? OutputStream ?? throw new InvalidOperationException(), span);
 
         /// <summary>
@@ -466,7 +529,7 @@ namespace Fp
         /// <param name="span">Span to read from</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
-        public void OutputAll(Span<byte> span, string? extension = null, string? filename = null)
+        public void OutputAll(ReadOnlySpan<byte> span, string? extension = null, string? filename = null)
         {
             using Stream fileStream = OpenOutputFile(false, extension, filename);
             OutputAll(span, fileStream);
@@ -478,7 +541,7 @@ namespace Fp
         /// <param name="span">Span to read from</param>
         /// <param name="extension">File extension</param>
         /// <param name="filename">File name or relative path</param>
-        public void OutputAllSub(Span<byte> span, string? extension = null, string? filename = null)
+        public void OutputAllSub(ReadOnlySpan<byte> span, string? extension = null, string? filename = null)
             => OutputAll(span, extension, filename == null
                 ? null
                 : Join(SupportBackSlash,

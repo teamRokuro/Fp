@@ -32,7 +32,7 @@ namespace Fp
         public long Skip(long bytes)
             => (InputStream ?? throw new InvalidOperationException()).Seek(bytes, SeekOrigin.Current);
 
-        private static int ReadBaseArray(Stream stream, byte[] array, int offset, int length, bool lenient)
+        internal static int ReadBaseArray(Stream stream, byte[] array, int offset, int length, bool lenient)
         {
             int left = length, read, tot = 0;
             do
@@ -51,7 +51,7 @@ namespace Fp
             return tot;
         }
 
-        private int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
+        internal static int ReadBaseSpan(Stream stream, Span<byte> span, bool lenient)
         {
 #if NET5_0
             int left = span.Length, read, tot = 0;
@@ -70,7 +70,7 @@ namespace Fp
 
             return tot;
 #else
-            var buf = span.Length <= sizeof(long) ? _tempBuffer : Shared.Rent(4096);
+            byte[] buf = span.Length <= sizeof(long) ? TempBuffer : Shared.Rent(4096);
             Span<byte> bufSpan = buf.AsSpan();
             int bufLen = buf.Length;
             try
@@ -94,10 +94,7 @@ namespace Fp
             }
             finally
             {
-                if (buf != _tempBuffer)
-                {
-                    Shared.Return(buf);
-                }
+                if (buf != TempBuffer) Shared.Return(buf);
             }
 #endif
         }
@@ -112,7 +109,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false)
+        public static int Read(Stream stream, ref Span<byte> span, bool lenient = true, bool forceNew = false)
         {
             if (forceNew || !(stream is MemoryStream ms) || !ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
@@ -140,7 +137,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, int length, out Span<byte> span, bool lenient = true,
+        public static int Read(Stream stream, int length, out Span<byte> span, bool lenient = true,
             bool forceNew = false)
         {
             if (!forceNew && stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
@@ -168,7 +165,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, Span<byte> span, bool lenient = true)
+        public static int Read(Stream stream, Span<byte> span, bool lenient = true)
         {
             if (!(stream is MemoryStream ms) || !ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
@@ -232,7 +229,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, long offset, Span<byte> span, bool lenient = true)
+        public static int Read(Stream stream, long offset, Span<byte> span, bool lenient = true)
         {
             long position = stream.Position;
             try
