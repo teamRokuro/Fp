@@ -207,16 +207,16 @@ namespace Fp
                 get
                 {
                     stream ??= InputStream;
-                    T result;
-                    Span<byte> span = new(&result, sizeof(T));
+                    Span<byte> span = stackalloc byte[ sizeof(T)];
                     if (offset != -1) Read(stream, offset, span, false);
                     else Read(stream, span, false);
-                    return result;
+                    return this[span];
                 }
                 set
                 {
                     stream ??= OutputStream;
-                    Span<byte> span = new(&value, sizeof(T));
+                    Span<byte> span = stackalloc byte[sizeof(T)];
+                    this[span] = value;
                     if (offset != -1) Write(stream, offset, span);
                     else Write(stream, span);
                 }

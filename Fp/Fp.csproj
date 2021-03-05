@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageVersion>0.8.9</PackageVersion>
+    <PackageVersion>0.8.10</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
   </PropertyGroup>
 
