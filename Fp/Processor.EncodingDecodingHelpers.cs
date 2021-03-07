@@ -157,56 +157,95 @@ namespace Fp
             /// </summary>
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
-            public virtual T this[byte[] source, int offset = 0]
+            public virtual T this[byte[] source, int offset]
             {
                 get => this[source.AsSpan(), offset];
                 set => this[source.AsSpan(), offset] = value;
             }
 
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public virtual T this[byte[] source]
+            {
+                get => this[source.AsSpan(), 0];
+                set => this[source.AsSpan(), 0] = value;
+            }
 
             /// <summary>
             /// Read/write value.
             /// </summary>
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
-            public virtual T this[Memory<byte> source, int offset = 0]
+            public virtual T this[Memory<byte> source, int offset]
             {
                 get => this[source.Span, offset];
                 set => this[source.Span, offset] = value;
             }
 
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public virtual T this[Memory<byte> source]
+            {
+                get => this[source.Span, 0];
+                set => this[source.Span, 0] = value;
+            }
 
             /// <summary>
             /// Read/write value.
             /// </summary>
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
-            public abstract T this[Span<byte> source, int offset = 0] { get; set; }
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public virtual T this[ReadOnlyMemory<byte> source, int offset = 0] => this[source.Span, offset];
-
-            /// <summary>
-            /// Read value.
-            /// </summary>
-            /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public abstract T this[ReadOnlySpan<byte> source, int offset = 0] { get; }
+            public virtual T this[Span<byte> source, int offset]
+            {
+                get => this[source.Slice(offset)];
+                set => this[source.Slice(offset)] = value;
+            }
 
             /// <summary>
             /// Read/write value.
             /// </summary>
-            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
+            /// <param name="source">Data source.</param>
+            public abstract T this[Span<byte> source] { get; set; }
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T this[ReadOnlyMemory<byte> source, int offset] => this[source.Span, offset];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public virtual T this[ReadOnlyMemory<byte> source] => this[source.Span, 0];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
+            public virtual T this[ReadOnlySpan<byte> source, int offset] => this[source.Slice(offset)];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public abstract T this[ReadOnlySpan<byte> source] { get; }
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="stream">Data source.</param>
             /// <param name="offset">Offset (no seeking if -1).</param>
-            public virtual T this[long offset = -1, Stream? stream = null]
+            public virtual T this[long offset, Stream stream]
             {
                 get
                 {
-                    stream ??= InputStream;
                     Span<byte> span = stackalloc byte[sizeof(T)];
                     if (offset != -1) Read(stream, offset, span, false);
                     else Read(stream, span, false);
@@ -214,12 +253,42 @@ namespace Fp
                 }
                 set
                 {
-                    stream ??= OutputStream;
                     Span<byte> span = stackalloc byte[sizeof(T)];
                     this[span] = value;
                     if (offset != -1) Write(stream, offset, span);
                     else Write(stream, span);
                 }
+            }
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="stream">Data source.</param>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T this[int offset, Stream stream]
+            {
+                get => this[(long)offset, stream];
+                set => this[(long)offset, stream] = value;
+            }
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T this[long offset]
+            {
+                get => this[offset, InputStream];
+                set => this[offset, OutputStream] = value;
+            }
+
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T this[int offset]
+            {
+                get => this[offset, InputStream];
+                set => this[offset, OutputStream] = value;
             }
         }
 
@@ -235,7 +304,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             /// <param name="offset">Offset.</param>
             /// <param name="count">Element count.</param>
-            public virtual T[] this[byte[] source, int offset, int count] => this[source.AsSpan(offset), count];
+            public virtual T[] this[byte[] source, int offset, int count] =>
+                this[source.AsSpan(offset, count * sizeof(T))];
 
             /// <summary>
             /// Write array.
@@ -248,12 +318,33 @@ namespace Fp
             }
 
             /// <summary>
+            /// Write array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public virtual T[] this[byte[] source]
+            {
+                get => this[source.AsSpan()];
+                set => this[source.AsSpan()] = value;
+            }
+
+            /// <summary>
             /// Read array.
             /// </summary>
             /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
             /// <param name="count">Element count.</param>
-            public virtual T[] this[Memory<byte> source, int count] => this[source.Span, count];
+            public virtual T[] this[Memory<byte> source, int offset, int count] =>
+                this[source.Span.Slice(offset, count * sizeof(T))];
 
+            /// <summary>
+            /// Write array.
+            /// </summary>
+            /// <param name="offset">Offset.</param>
+            /// <param name="source">Data source.</param>
+            public virtual T[] this[Memory<byte> source, int offset]
+            {
+                set => this[source.Span.Slice(offset)] = value;
+            }
 
             /// <summary>
             /// Write array.
@@ -261,6 +352,7 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public virtual T[] this[Memory<byte> source]
             {
+                get => this[source.Span];
                 set => this[source.Span] = value;
             }
 
@@ -268,40 +360,68 @@ namespace Fp
             /// Read array.
             /// </summary>
             /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
             /// <param name="count">Element count.</param>
-            public abstract T[] this[Span<byte> source, int count] { get; }
+            public virtual T[] this[Span<byte> source, int offset, int count] =>
+                this[source.Slice(offset, count * sizeof(T))];
 
             /// <summary>
             /// Write array.
             /// </summary>
             /// <param name="source">Data source.</param>
-            public abstract T[] this[Span<byte> source] { set; }
+            /// <param name="offset">Offset.</param>
+            public virtual T[] this[Span<byte> source, int offset]
+            {
+                set => this[source.Slice(offset)] = value;
+            }
+
+            /// <summary>
+            /// Read/write array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public abstract T[] this[Span<byte> source] { get; set; }
 
             /// <summary>
             /// Read array.
             /// </summary>
             /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
             /// <param name="count">Element count.</param>
-            public virtual T[] this[ReadOnlyMemory<byte> source, int count] => this[source.Span, count];
+            public virtual T[] this[ReadOnlyMemory<byte> source, int offset, int count] =>
+                this[source.Span, offset, count];
 
             /// <summary>
             /// Read array.
             /// </summary>
             /// <param name="source">Data source.</param>
+            public virtual T[] this[ReadOnlyMemory<byte> source] =>
+                this[source.Span];
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            /// <param name="offset">Offset.</param>
             /// <param name="count">Element count.</param>
-            public abstract T[] this[ReadOnlySpan<byte> source, int count] { get; }
+            public virtual T[] this[ReadOnlySpan<byte> source, int offset, int count] =>
+                this[source.Slice(offset, count * sizeof(T))];
+
+            /// <summary>
+            /// Read array.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public abstract T[] this[ReadOnlySpan<byte> source] { get; }
 
             /// <summary>
             /// Read value.
             /// </summary>
             /// <param name="offset">Offset (no seeking if -1).</param>
             /// <param name="count">Element count.</param>
-            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
-            public virtual T[] this[long offset, int count, Stream? stream = null]
+            /// <param name="stream">Data source.</param>
+            public virtual T[] this[long offset, int count, Stream stream]
             {
                 get
                 {
-                    stream ??= InputStream;
                     byte[] arr = new byte[count * sizeof(T)];
                     if (offset != -1) Read(stream, offset, arr, 0, arr.Length, false);
                     else Read(stream, arr, 0, arr.Length, false);
@@ -310,20 +430,69 @@ namespace Fp
             }
 
             /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="count">Element count.</param>
+            /// <param name="stream">Data source.</param>
+            public virtual T[] this[int offset, int count, Stream stream] => this[(long)offset, count, stream];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="count">Element count.</param>
+            public virtual T[] this[long offset, int count] => this[offset, count, InputStream];
+
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="count">Element count.</param>
+            public virtual T[] this[int offset, int count] => this[(long)offset, count];
+
+            /// <summary>
             /// Write value.
             /// </summary>
             /// <param name="offset">Offset (no seeking if -1).</param>
-            /// <param name="stream">Data source (<see cref="InputStream"/> / <see cref="OutputStream"/> when null).</param>
-            public virtual T[] this[long offset, Stream? stream = null]
+            /// <param name="stream">Data source.</param>
+            public virtual T[] this[long offset, Stream stream]
             {
                 set
                 {
-                    stream ??= OutputStream;
                     byte[] arr = new byte[value.Length * sizeof(T)];
                     this[arr, 0] = value;
                     if (offset != -1) Write(stream, offset, arr);
                     else Write(stream, arr);
                 }
+            }
+
+            /// <summary>
+            /// Write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            /// <param name="stream">Data source.</param>
+            public virtual T[] this[int offset, Stream stream]
+            {
+                set => this[(long)offset, stream] = value;
+            }
+
+            /// <summary>
+            /// Write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T[] this[long offset]
+            {
+                set => this[offset, OutputStream] = value;
+            }
+
+            /// <summary>
+            /// Write value.
+            /// </summary>
+            /// <param name="offset">Offset (no seeking if -1).</param>
+            public virtual T[] this[int offset]
+            {
+                set => this[(long)offset, OutputStream] = value;
             }
         }
 
@@ -342,19 +511,17 @@ namespace Fp
             /// Read/write value.
             /// </summary>
             /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public override sbyte this[Span<byte> source, int offset = 0]
+            public override sbyte this[Span<byte> source]
             {
-                get => Parent.GetS8(source, offset);
-                set => Parent.SetS8(source, value, offset);
+                get => Parent.GetS8(source);
+                set => Parent.SetS8(source, value);
             }
 
             /// <summary>
             /// Read value.
             /// </summary>
             /// <param name="source">Data source.</param>
-            /// <param name="offset">Offset.</param>
-            public override sbyte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS8(source, offset);
+            public override sbyte this[ReadOnlySpan<byte> source] => Parent.GetS8(source);
         }
 
         /// <summary>
@@ -369,19 +536,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override sbyte[] this[Span<byte> source, int count] =>
-                Parent.GetS8Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(sbyte)));
-
-            /// <inheritdoc />
             public override sbyte[] this[Span<byte> source]
             {
+                get => Parent.GetS8Array(source);
                 set => Parent.SetS8Array(source, value);
             }
 
             /// <inheritdoc />
-            public override sbyte[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetS8Array(count == -1 ? source : source.Slice(0, count * sizeof(sbyte)));
+            public override sbyte[] this[ReadOnlySpan<byte> source] => Parent.GetS8Array(source);
         }
 
         /// <summary>
@@ -395,16 +557,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override short this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override short this[Span<byte> source]
             {
-                get => Parent.GetS16(source, offset);
-                set => Parent.SetS16(source, value, offset);
+                get => Parent.GetS16(source);
+                set => Parent.SetS16(source, value);
             }
 
-
-            /// <inheritdoc />
-            public override short this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS16(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override short this[ReadOnlySpan<byte> source] => Parent.GetS16(source);
         }
 
         /// <summary>
@@ -419,19 +586,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override short[] this[Span<byte> source, int count] =>
-                Parent.GetS16Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(short)));
-
-            /// <inheritdoc />
             public override short[] this[Span<byte> source]
             {
+                get => Parent.GetS16Array(source);
                 set => Parent.SetS16Array(source, value);
             }
 
             /// <inheritdoc />
-            public override short[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetS16Array(count == -1 ? source : source.Slice(0, count * sizeof(short)));
+            public override short[] this[ReadOnlySpan<byte> source] => Parent.GetS16Array(source);
         }
 
         /// <summary>
@@ -445,15 +607,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override int this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override int this[Span<byte> source]
             {
-                get => Parent.GetS32(source, offset);
-                set => Parent.SetS32(source, value, offset);
+                get => Parent.GetS32(source);
+                set => Parent.SetS32(source, value);
             }
 
-            /// <inheritdoc />
-            public override int this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS32(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override int this[ReadOnlySpan<byte> source] => Parent.GetS32(source);
         }
 
         /// <summary>
@@ -468,19 +636,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override int[] this[Span<byte> source, int count] =>
-                Parent.GetS32Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(int)));
-
-            /// <inheritdoc />
             public override int[] this[Span<byte> source]
             {
+                get => Parent.GetS32Array(source);
                 set => Parent.SetS32Array(source, value);
             }
 
             /// <inheritdoc />
-            public override int[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetS32Array(count == -1 ? source : source.Slice(0, count * sizeof(int)));
+            public override int[] this[ReadOnlySpan<byte> source] => Parent.GetS32Array(source);
         }
 
         /// <summary>
@@ -494,15 +657,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override long this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override long this[Span<byte> source]
             {
-                get => Parent.GetS64(source, offset);
-                set => Parent.SetS64(source, value, offset);
+                get => Parent.GetS64(source);
+                set => Parent.SetS64(source, value);
             }
 
-            /// <inheritdoc />
-            public override long this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetS64(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override long this[ReadOnlySpan<byte> source] => Parent.GetS64(source);
         }
 
         /// <summary>
@@ -517,19 +686,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override long[] this[Span<byte> source, int count] =>
-                Parent.GetS64Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(long)));
-
-            /// <inheritdoc />
             public override long[] this[Span<byte> source]
             {
+                get => Parent.GetS64Array(source);
                 set => Parent.SetS64Array(source, value);
             }
 
             /// <inheritdoc />
-            public override long[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetS64Array(count == -1 ? source : source.Slice(0, count * sizeof(long)));
+            public override long[] this[ReadOnlySpan<byte> source] => Parent.GetS64Array(source);
         }
 
         /// <summary>
@@ -543,15 +707,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override byte this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override byte this[Span<byte> source]
             {
-                get => Parent.GetU8(source, offset);
-                set => Parent.SetU8(source, value, offset);
+                get => Parent.GetU8(source);
+                set => Parent.SetU8(source, value);
             }
 
-            /// <inheritdoc />
-            public override byte this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU8(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override byte this[ReadOnlySpan<byte> source] => Parent.GetU8(source);
         }
 
         /// <summary>
@@ -566,19 +736,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override byte[] this[Span<byte> source, int count] =>
-                Parent.GetU8Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(byte)));
-
-            /// <inheritdoc />
             public override byte[] this[Span<byte> source]
             {
+                get => Parent.GetU8Array(source);
                 set => Parent.SetU8Array(source, value);
             }
 
             /// <inheritdoc />
-            public override byte[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetU8Array(count == -1 ? source : source.Slice(0, count * sizeof(byte)));
+            public override byte[] this[ReadOnlySpan<byte> source] => Parent.GetU8Array(source);
         }
 
         /// <summary>
@@ -592,15 +757,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override ushort this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override ushort this[Span<byte> source]
             {
-                get => Parent.GetU16(source, offset);
-                set => Parent.SetU16(source, value, offset);
+                get => Parent.GetU16(source);
+                set => Parent.SetU16(source, value);
             }
 
-            /// <inheritdoc />
-            public override ushort this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU16(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override ushort this[ReadOnlySpan<byte> source] => Parent.GetU16(source);
         }
 
         /// <summary>
@@ -615,19 +786,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override ushort[] this[Span<byte> source, int count] =>
-                Parent.GetU16Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(ushort)));
-
-            /// <inheritdoc />
             public override ushort[] this[Span<byte> source]
             {
+                get => Parent.GetU16Array(source);
                 set => Parent.SetU16Array(source, value);
             }
 
             /// <inheritdoc />
-            public override ushort[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetU16Array(count == -1 ? source : source.Slice(0, count * sizeof(ushort)));
+            public override ushort[] this[ReadOnlySpan<byte> source] => Parent.GetU16Array(source);
         }
 
         /// <summary>
@@ -641,15 +807,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override uint this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override uint this[Span<byte> source]
             {
-                get => Parent.GetU32(source, offset);
-                set => Parent.SetU32(source, value, offset);
+                get => Parent.GetU32(source);
+                set => Parent.SetU32(source, value);
             }
 
-            /// <inheritdoc />
-            public override uint this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU32(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override uint this[ReadOnlySpan<byte> source] => Parent.GetU32(source);
         }
 
         /// <summary>
@@ -664,19 +836,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override uint[] this[Span<byte> source, int count] =>
-                Parent.GetU32Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(ushort)));
-
-            /// <inheritdoc />
             public override uint[] this[Span<byte> source]
             {
+                get => Parent.GetU32Array(source);
                 set => Parent.SetU32Array(source, value);
             }
 
             /// <inheritdoc />
-            public override uint[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetU32Array(count == -1 ? source : source.Slice(0, count * sizeof(ushort)));
+            public override uint[] this[ReadOnlySpan<byte> source] => Parent.GetU32Array(source);
         }
 
         /// <summary>
@@ -690,15 +857,21 @@ namespace Fp
             /// <inheritdoc />
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
-            /// <inheritdoc />
-            public override ulong this[Span<byte> source, int offset = 0]
+            /// <summary>
+            /// Read/write value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override ulong this[Span<byte> source]
             {
-                get => Parent.GetU64(source, offset);
-                set => Parent.SetU64(source, value, offset);
+                get => Parent.GetU64(source);
+                set => Parent.SetU64(source, value);
             }
 
-            /// <inheritdoc />
-            public override ulong this[ReadOnlySpan<byte> source, int offset = 0] => Parent.GetU64(source, offset);
+            /// <summary>
+            /// Read value.
+            /// </summary>
+            /// <param name="source">Data source.</param>
+            public override ulong this[ReadOnlySpan<byte> source] => Parent.GetU64(source);
         }
 
         /// <summary>
@@ -713,19 +886,14 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override ulong[] this[Span<byte> source, int count] =>
-                Parent.GetU64Array(
-                    count == -1 ? source : source.Slice(0, count * sizeof(ulong)));
-
-            /// <inheritdoc />
             public override ulong[] this[Span<byte> source]
             {
+                get => Parent.GetU64Array(source);
                 set => Parent.SetU64Array(source, value);
             }
 
             /// <inheritdoc />
-            public override ulong[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetU64Array(count == -1 ? source : source.Slice(0, count * sizeof(ulong)));
+            public override ulong[] this[ReadOnlySpan<byte> source] => Parent.GetU64Array(source);
         }
 
         /// <summary>
@@ -740,21 +908,21 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override T this[Span<byte> source, int offset = 0]
+            public override T this[Span<byte> source]
             {
-                get => MemoryMarshal.Cast<byte, T>(source)[offset];
-                set => MemoryMarshal.Cast<byte, T>(source)[offset] = value;
+                get => MemoryMarshal.Cast<byte, T>(source)[0];
+                set => MemoryMarshal.Cast<byte, T>(source)[0] = value;
             }
 
             /// <inheritdoc />
-            public override T this[ReadOnlySpan<byte> source, int offset = 0] =>
-                MemoryMarshal.Cast<byte, T>(source)[offset];
+            public override T this[ReadOnlySpan<byte> source] =>
+                MemoryMarshal.Cast<byte, T>(source)[0];
         }
 
         /// <summary>
         /// Generic helper.
         /// </summary>
-        public unsafe record TArrayHelper<T>(Processor Parent) : BaseArrayHelper<T> where T : unmanaged
+        public record TArrayHelper<T>(Processor Parent) : BaseArrayHelper<T> where T : unmanaged
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -763,19 +931,15 @@ namespace Fp
             public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
 
             /// <inheritdoc />
-            public override T[] this[Span<byte> source, int count] =>
-                Parent.GetTArray<T>(
-                    count == -1 ? source : source.Slice(0, count * sizeof(T)));
-
-            /// <inheritdoc />
             public override T[] this[Span<byte> source]
             {
+                get => Parent.GetTArray<T>(source);
                 set => Parent.SetTArray(source, value);
             }
 
             /// <inheritdoc />
-            public override T[] this[ReadOnlySpan<byte> source, int count] =>
-                Parent.GetTArray<T>(count == -1 ? source : source.Slice(0, count * sizeof(T)));
+            public override T[] this[ReadOnlySpan<byte> source] =>
+                Parent.GetTArray<T>(source);
         }
 
         /// <summary>
