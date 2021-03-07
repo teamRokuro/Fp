@@ -156,6 +156,456 @@ namespace Fp
         /// <returns>Value</returns>
         public byte SetMU8(Memory<byte> memory, byte value, int offset = 0) => SetU8(memory.Span, value, offset);
 
+        #region Static endian
+
+        /// <summary>
+        /// Read signed 16-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static short GetS16(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[2];
+            span.Slice(offset, 2).CopyTo(span2);
+            short value = MemoryMarshal.Cast<byte, short>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read signed 16-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        public static short GetMS16(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetS16(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write signed 16-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static short SetS16(Span<byte> span, short value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[2];
+            MemoryMarshal.Cast<byte, short>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 2));
+            return value;
+        }
+
+        /// <summary>
+        /// Write signed 16-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static short SetMS16(Memory<byte> memory, short value, bool littleEndian, int offset = 0) =>
+            SetS16(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Read unsigned 16-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static ushort GetU16(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[2];
+            span.Slice(offset, 2).CopyTo(span2);
+            ushort value = MemoryMarshal.Cast<byte, ushort>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read unsigned 16-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        public static ushort GetMU16(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetU16(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write unsigned 16-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static ushort SetU16(Span<byte> span, ushort value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[2];
+            MemoryMarshal.Cast<byte, ushort>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 2));
+            return value;
+        }
+
+        /// <summary>
+        /// Write unsigned 16-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static ushort SetMU16(Memory<byte> memory, ushort value, bool littleEndian, int offset = 0) =>
+            SetU16(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Read signed 32-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static int GetS32(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[4];
+            span.Slice(offset, 4).CopyTo(span2);
+            int value = MemoryMarshal.Cast<byte, int>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read unsigned 32-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static int GetMS32(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetS32(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write signed 32-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static int SetS32(Span<byte> span, int value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[4];
+            MemoryMarshal.Cast<byte, int>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 4));
+            return value;
+        }
+
+        /// <summary>
+        /// Write signed 32-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static int SetMS32(Memory<byte> memory, int value, bool littleEndian, int offset = 0) =>
+            SetS32(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Read unsigned 32-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static uint GetU32(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[4];
+            span.Slice(offset, 4).CopyTo(span2);
+            uint value = MemoryMarshal.Cast<byte, uint>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read unsigned 32-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        public static uint GetMU32(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetU32(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write unsigned 32-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static uint SetU32(Span<byte> span, uint value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[4];
+            MemoryMarshal.Cast<byte, uint>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 4));
+            return value;
+        }
+
+        /// <summary>
+        /// Write unsigned 32-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static uint SetMU32(Memory<byte> memory, uint value, bool littleEndian, int offset = 0) =>
+            SetU32(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Read signed 64-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static long GetS64(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[8];
+            span.Slice(offset, 8).CopyTo(span2);
+            long value = MemoryMarshal.Cast<byte, long>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read signed 64-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        public static long GetMS64(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetS64(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write signed 64-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        public static long SetS64(Span<byte> span, long value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[8];
+            MemoryMarshal.Cast<byte, long>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 8));
+            return value;
+        }
+
+        /// <summary>
+        /// Write signed 64-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static long SetMS64(Memory<byte> memory, long value, bool littleEndian, int offset = 0) =>
+            SetS64(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Read unsigned 64-bit value from span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        /// <returns>Value</returns>
+        public static ulong GetU64(ReadOnlySpan<byte> span, bool littleEndian, int offset = 0)
+        {
+            Span<byte> span2 = stackalloc byte[8];
+            span.Slice(offset, 8).CopyTo(span2);
+            ulong value = MemoryMarshal.Cast<byte, ulong>(span2)[0];
+            return littleEndian ^ BitConverter.IsLittleEndian ? BinaryPrimitives.ReverseEndianness(value) : value;
+        }
+
+        /// <summary>
+        /// Read unsigned 64-bit value from memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to read from</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to read from</param>
+        public static ulong GetMU64(ReadOnlyMemory<byte> memory, bool littleEndian, int offset = 0) =>
+            GetU64(memory.Span, littleEndian, offset);
+
+        /// <summary>
+        /// Write unsigned 64-bit value to span at the specified offset
+        /// </summary>
+        /// <param name="span">Span to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static ulong SetU64(Span<byte> span, ulong value, bool littleEndian, int offset = 0)
+        {
+            if (littleEndian ^ BitConverter.IsLittleEndian) value = BinaryPrimitives.ReverseEndianness(value);
+            Span<byte> span2 = stackalloc byte[8];
+            MemoryMarshal.Cast<byte, ulong>(span2)[0] = value;
+            span2.CopyTo(span.Slice(offset, 8));
+            return value;
+        }
+
+        /// <summary>
+        /// Write unsigned 64-bit value to memory at the specified offset
+        /// </summary>
+        /// <param name="memory">Memory to write to</param>
+        /// <param name="value">Value</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <param name="offset">Offset to write to</param>
+        /// <returns>Value</returns>
+        public static ulong SetMU64(Memory<byte> memory, ulong value, bool littleEndian, int offset = 0) =>
+            SetU64(memory.Span, value, littleEndian, offset);
+
+        /// <summary>
+        /// Convert endianness of signed 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS16Array(Span<short> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of signed 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS16Array(Span<byte> span, bool littleEndian) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), littleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU16Array(Span<ushort> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU16Array(Span<byte> span, bool littleEndian) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), littleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS32Array(Span<int> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of signed 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS32Array(Span<byte> span, bool littleEndian) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), littleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU32Array(Span<uint> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU32Array(Span<byte> span, bool littleEndian) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), littleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS64Array(Span<long> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of signed 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertS64Array(Span<byte> span, bool littleEndian) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), littleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU64Array(Span<ulong> span, bool littleEndian)
+        {
+            if (littleEndian == BitConverter.IsLittleEndian) return;
+
+            for (int i = 0; i < span.Length; i++)
+            {
+                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
+            }
+        }
+
+        /// <summary>
+        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        public static void ConvertU64Array(Span<byte> span, bool littleEndian) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), littleEndian);
+
+        #endregion
+
+        #region Instance endian
+
         /// <summary>
         /// Read signed 16-bit value from stream
         /// </summary>
@@ -201,20 +651,14 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public short GetS16(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[2];
-            span.Slice(offset, 2).CopyTo(span2);
-            short value = MemoryMarshal.Cast<byte, short>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public short GetS16(ReadOnlySpan<byte> span, int offset = 0) => GetS16(span, LittleEndian, offset);
 
         /// <summary>
         /// Read signed 16-bit value from memory at the specified offset
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public short GetMS16(ReadOnlyMemory<byte> memory, int offset = 0) => GetS16(memory.Span, offset);
+        public short GetMS16(ReadOnlyMemory<byte> memory, int offset = 0) => GetS16(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 16-bit value to span at the specified offset
@@ -223,14 +667,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public short SetS16(Span<byte> span, short value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[2];
-            MemoryMarshal.Cast<byte, short>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 2));
-            return value;
-        }
+        public short SetS16(Span<byte> span, short value, int offset = 0) => SetS16(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 16-bit value to memory at the specified offset
@@ -239,7 +676,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public short SetMS16(Memory<byte> memory, short value, int offset = 0) => SetS16(memory.Span, value, offset);
+        public short SetMS16(Memory<byte> memory, short value, int offset = 0) =>
+            SetS16(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 16-bit value from stream
@@ -286,20 +724,14 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ushort GetU16(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[2];
-            span.Slice(offset, 2).CopyTo(span2);
-            ushort value = MemoryMarshal.Cast<byte, ushort>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public ushort GetU16(ReadOnlySpan<byte> span, int offset = 0) => GetU16(span, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 16-bit value from memory at the specified offset
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public ushort GetMU16(ReadOnlyMemory<byte> memory, int offset = 0) => GetU16(memory.Span, offset);
+        public ushort GetMU16(ReadOnlyMemory<byte> memory, int offset = 0) => GetU16(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 16-bit value to span at the specified offset
@@ -308,14 +740,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public ushort SetU16(Span<byte> span, ushort value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[2];
-            MemoryMarshal.Cast<byte, ushort>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 2));
-            return value;
-        }
+        public ushort SetU16(Span<byte> span, ushort value, int offset = 0) =>
+            SetU16(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 16-bit value to memory at the specified offset
@@ -324,7 +750,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public ushort SetMU16(Memory<byte> memory, ushort value, int offset = 0) => SetU16(memory.Span, value, offset);
+        public ushort SetMU16(Memory<byte> memory, ushort value, int offset = 0) =>
+            SetU16(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
         /// Read signed 32-bit value from stream
@@ -371,13 +798,7 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public int GetS32(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[4];
-            span.Slice(offset, 4).CopyTo(span2);
-            int value = MemoryMarshal.Cast<byte, int>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public int GetS32(ReadOnlySpan<byte> span, int offset = 0) => GetS32(span, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 32-bit value from memory at the specified offset
@@ -385,7 +806,7 @@ namespace Fp
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
         /// <returns>Value</returns>
-        public int GetMS32(ReadOnlyMemory<byte> memory, int offset = 0) => GetS32(memory.Span, offset);
+        public int GetMS32(ReadOnlyMemory<byte> memory, int offset = 0) => GetS32(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 32-bit value to span at the specified offset
@@ -394,14 +815,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public int SetS32(Span<byte> span, int value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[4];
-            MemoryMarshal.Cast<byte, int>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 4));
-            return value;
-        }
+        public int SetS32(Span<byte> span, int value, int offset = 0) => SetS32(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 32-bit value to memory at the specified offset
@@ -410,7 +824,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public int SetMS32(Memory<byte> memory, int value, int offset = 0) => SetS32(memory.Span, value, offset);
+        public int SetMS32(Memory<byte> memory, int value, int offset = 0) =>
+            SetS32(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 32-bit value from stream
@@ -457,20 +872,14 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public uint GetU32(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[4];
-            span.Slice(offset, 4).CopyTo(span2);
-            uint value = MemoryMarshal.Cast<byte, uint>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public uint GetU32(ReadOnlySpan<byte> span, int offset = 0) => GetU32(span, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 32-bit value from memory at the specified offset
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public uint GetMU32(ReadOnlyMemory<byte> memory, int offset = 0) => GetU32(memory.Span, offset);
+        public uint GetMU32(ReadOnlyMemory<byte> memory, int offset = 0) => GetU32(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 32-bit value to span at the specified offset
@@ -479,14 +888,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public uint SetU32(Span<byte> span, uint value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[4];
-            MemoryMarshal.Cast<byte, uint>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 4));
-            return value;
-        }
+        public uint SetU32(Span<byte> span, uint value, int offset = 0) => SetU32(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 32-bit value to memory at the specified offset
@@ -495,7 +897,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public uint SetMU32(Memory<byte> memory, uint value, int offset = 0) => SetU32(memory.Span, value, offset);
+        public uint SetMU32(Memory<byte> memory, uint value, int offset = 0) =>
+            SetU32(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
         /// Read signed 64-bit value from stream
@@ -542,20 +945,14 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public long GetS64(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[8];
-            span.Slice(offset, 8).CopyTo(span2);
-            long value = MemoryMarshal.Cast<byte, long>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public long GetS64(ReadOnlySpan<byte> span, int offset = 0) => GetS64(span, LittleEndian, offset);
 
         /// <summary>
         /// Read signed 64-bit value from memory at the specified offset
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public long GetMS64(ReadOnlyMemory<byte> memory, int offset = 0) => GetS64(memory.Span, offset);
+        public long GetMS64(ReadOnlyMemory<byte> memory, int offset = 0) => GetS64(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 64-bit value to span at the specified offset
@@ -563,14 +960,7 @@ namespace Fp
         /// <param name="span">Span to write to</param>
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
-        public long SetS64(Span<byte> span, long value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[8];
-            MemoryMarshal.Cast<byte, long>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 8));
-            return value;
-        }
+        public long SetS64(Span<byte> span, long value, int offset = 0) => SetS64(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write signed 64-bit value to memory at the specified offset
@@ -579,7 +969,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public long SetMS64(Memory<byte> memory, long value, int offset = 0) => SetS64(memory.Span, value, offset);
+        public long SetMS64(Memory<byte> memory, long value, int offset = 0) =>
+            SetS64(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 64-bit value from stream
@@ -598,7 +989,7 @@ namespace Fp
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
-            return GetU64NoCopy(span);
+            return GetU64(span);
         }
 
         /// <summary>
@@ -618,7 +1009,7 @@ namespace Fp
 
             Span<byte> span = stackalloc byte[8];
             Read(stream, offset, span, false);
-            return GetU64NoCopy(span);
+            return GetU64(span);
         }
 
         /// <summary>
@@ -627,20 +1018,14 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public ulong GetU64(ReadOnlySpan<byte> span, int offset = 0)
-        {
-            Span<byte> span2 = stackalloc byte[8];
-            span.Slice(offset, 8).CopyTo(span2);
-            ulong value = MemoryMarshal.Cast<byte, ulong>(span2)[0];
-            return _swap ? BinaryPrimitives.ReverseEndianness(value) : value;
-        }
+        public ulong GetU64(ReadOnlySpan<byte> span, int offset = 0) => GetU64(span, LittleEndian, offset);
 
         /// <summary>
         /// Read unsigned 64-bit value from memory at the specified offset
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public ulong GetMU64(ReadOnlyMemory<byte> memory, int offset = 0) => GetU64(memory.Span, offset);
+        public ulong GetMU64(ReadOnlyMemory<byte> memory, int offset = 0) => GetU64(memory.Span, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 64-bit value to span at the specified offset
@@ -649,14 +1034,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public ulong SetU64(Span<byte> span, ulong value, int offset = 0)
-        {
-            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
-            Span<byte> span2 = stackalloc byte[8];
-            MemoryMarshal.Cast<byte, ulong>(span2)[0] = value;
-            span2.CopyTo(span.Slice(offset, 8));
-            return value;
-        }
+        public ulong SetU64(Span<byte> span, ulong value, int offset = 0) => SetU64(span, value, LittleEndian, offset);
 
         /// <summary>
         /// Write unsigned 64-bit value to memory at the specified offset
@@ -665,24 +1043,83 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public ulong SetMU64(Memory<byte> memory, ulong value, int offset = 0) => SetU64(memory.Span, value, offset);
+        public ulong SetMU64(Memory<byte> memory, ulong value, int offset = 0) =>
+            SetU64(memory.Span, value, LittleEndian, offset);
 
         /// <summary>
-        /// Read unsigned 64-bit value from span at the specified offset, reversing span in-place if necessary
+        /// Convert endianness of signed 16-bit array between source and platform's endianness
         /// </summary>
-        /// <param name="offset">Offset to read from</param>
-        /// <param name="span">Span to read from</param>
-        /// <returns>Value</returns>
-        public ulong GetU64NoCopy(Span<byte> span, int offset = 0)
-        {
-            Span<byte> sub = span.Slice(offset, 8);
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+        /// <param name="span">Span to convert</param>
+        public void ConvertS16Array(Span<short> span) => ConvertS16Array(span, LittleEndian);
 
-            return MemoryMarshal.Cast<byte, ulong>(sub)[0];
-        }
+        /// <summary>
+        /// Convert endianness of signed 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertS16Array(Span<byte> span) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU16Array(Span<ushort> span) => ConvertU16Array(span, LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU16Array(Span<byte> span) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertS32Array(Span<int> span) => ConvertS32Array(span, LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertS32Array(Span<byte> span) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU32Array(Span<uint> span) => ConvertU32Array(span, LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU32Array(Span<byte> span) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertS64Array(Span<long> span) => ConvertS64Array(span, LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of signed 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertS64Array(Span<byte> span) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU64Array(Span<ulong> span) => ConvertU64Array(span, LittleEndian);
+
+        /// <summary>
+        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
+        /// </summary>
+        /// <param name="span">Span to convert</param>
+        public void ConvertU64Array(Span<byte> span) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), LittleEndian);
+
+        #endregion
+
 
         /// <summary>
         /// Read 16-bit float value from stream
@@ -1082,23 +1519,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of signed 16-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS16Array(Span<short> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of signed 16-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1122,12 +1542,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertS16Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of signed 16-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS16Array(Span<byte> span) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span));
 
         /// <summary>
         /// Read array of signed 16-bit values from stream
@@ -1184,23 +1598,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU16Array(Span<ushort> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of unsigned 16-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1224,12 +1621,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertU16Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of unsigned 16-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU16Array(Span<byte> span) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span));
 
         /// <summary>
         /// Read array of unsigned 16-bit values from stream
@@ -1286,23 +1677,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of signed 32-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS32Array(Span<int> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of signed 32-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1326,12 +1700,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertS32Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of signed 32-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS32Array(Span<byte> span) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span));
 
         /// <summary>
         /// Read array of signed 32-bit values from stream
@@ -1388,23 +1756,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU32Array(Span<uint> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of unsigned 32-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1428,12 +1779,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertU32Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of unsigned 32-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU32Array(Span<byte> span) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span));
 
         /// <summary>
         /// Read array of unsigned 32-bit values from stream
@@ -1490,23 +1835,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of signed 64-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS64Array(Span<long> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of signed 64-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1530,12 +1858,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertS64Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of signed 64-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertS64Array(Span<byte> span) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span));
 
         /// <summary>
         /// Read array of signed 64-bit values from stream
@@ -1592,23 +1914,6 @@ namespace Fp
         }
 
         /// <summary>
-        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU64Array(Span<ulong> span)
-        {
-            if (!_swap)
-            {
-                return;
-            }
-
-            for (int i = 0; i < span.Length; i++)
-            {
-                span[i] = BinaryPrimitives.ReverseEndianness(span[i]);
-            }
-        }
-
-        /// <summary>
         /// Read array of unsigned 64-bit values from stream
         /// </summary>
         /// <param name="span">Span to write to</param>
@@ -1632,12 +1937,6 @@ namespace Fp
             Read(stream, offset, span, false);
             ConvertU64Array(span);
         }
-
-        /// <summary>
-        /// Convert endianness of unsigned 64-bit array between source and platform's endianness
-        /// </summary>
-        /// <param name="span">Span to convert</param>
-        public void ConvertU64Array(Span<byte> span) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span));
 
         /// <summary>
         /// Read array of unsigned 64-bit values from stream

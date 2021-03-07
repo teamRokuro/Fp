@@ -17,36 +17,6 @@ namespace Fp
         public TArrayHelper<sbyte> S8A = null!;
 
         /// <summary>
-        /// Helper for signed 16-bit integers.
-        /// </summary>
-        public S16Helper S16 = null!;
-
-        /// <summary>
-        /// Helper for signed 16-bit integer arrays.
-        /// </summary>
-        public S16ArrayHelper S16A = null!;
-
-        /// <summary>
-        /// Helper for signed 32-bit integers.
-        /// </summary>
-        public S32Helper S32 = null!;
-
-        /// <summary>
-        /// Helper for signed 32-bit integer arrays.
-        /// </summary>
-        public S32ArrayHelper S32A = null!;
-
-        /// <summary>
-        /// Helper for signed 64-bit integers.
-        /// </summary>
-        public S64Helper S64 = null!;
-
-        /// <summary>
-        /// Helper for signed 64-bit integer arrays.
-        /// </summary>
-        public S64ArrayHelper S64A = null!;
-
-        /// <summary>
         /// Helper for unsigned 8-bit integers.
         /// </summary>
         public THelper<byte> U8 = null!;
@@ -56,35 +26,126 @@ namespace Fp
         /// </summary>
         public TArrayHelper<byte> U8A = null!;
 
+
+        /// <summary>
+        /// Helper for signed 16-bit integers.
+        /// </summary>
+        public S16Helper S16L = null!;
+
+        /// <summary>
+        /// Helper for signed 16-bit integer arrays.
+        /// </summary>
+        public S16ArrayHelper S16LA = null!;
+
+        /// <summary>
+        /// Helper for signed 32-bit integers.
+        /// </summary>
+        public S32Helper S32L = null!;
+
+        /// <summary>
+        /// Helper for signed 32-bit integer arrays.
+        /// </summary>
+        public S32ArrayHelper S32LA = null!;
+
+        /// <summary>
+        /// Helper for signed 64-bit integers.
+        /// </summary>
+        public S64Helper S64L = null!;
+
+        /// <summary>
+        /// Helper for signed 64-bit integer arrays.
+        /// </summary>
+        public S64ArrayHelper S64LA = null!;
+
         /// <summary>
         /// Helper for unsigned 16-bit integers.
         /// </summary>
-        public U16Helper U16 = null!;
+        public U16Helper U16L = null!;
 
         /// <summary>
         /// Helper for unsigned 16-bit integer arrays.
         /// </summary>
-        public U16ArrayHelper U16A = null!;
+        public U16ArrayHelper U16LA = null!;
 
         /// <summary>
         /// Helper for unsigned 32-bit integers.
         /// </summary>
-        public U32Helper U32 = null!;
+        public U32Helper U32L = null!;
 
         /// <summary>
         /// Helper for unsigned 32-bit integer arrays.
         /// </summary>
-        public U32ArrayHelper U32A = null!;
+        public U32ArrayHelper U32LA = null!;
 
         /// <summary>
         /// Helper for unsigned 64-bit integers.
         /// </summary>
-        public U64Helper U64 = null!;
+        public U64Helper U64L = null!;
 
         /// <summary>
         /// Helper for unsigned 64-bit integer arrays.
         /// </summary>
-        public U64ArrayHelper U64A = null!;
+        public U64ArrayHelper U64LA = null!;
+
+        /// <summary>
+        /// Helper for signed 16-bit integers.
+        /// </summary>
+        public S16Helper S16B = null!;
+
+        /// <summary>
+        /// Helper for signed 16-bit integer arrays.
+        /// </summary>
+        public S16ArrayHelper S16BA = null!;
+
+        /// <summary>
+        /// Helper for signed 32-bit integers.
+        /// </summary>
+        public S32Helper S32B = null!;
+
+        /// <summary>
+        /// Helper for signed 32-bit integer arrays.
+        /// </summary>
+        public S32ArrayHelper S32BA = null!;
+
+        /// <summary>
+        /// Helper for signed 64-bit integers.
+        /// </summary>
+        public S64Helper S64B = null!;
+
+        /// <summary>
+        /// Helper for signed 64-bit integer arrays.
+        /// </summary>
+        public S64ArrayHelper S64BA = null!;
+
+        /// <summary>
+        /// Helper for unsigned 16-bit integers.
+        /// </summary>
+        public U16Helper U16B = null!;
+
+        /// <summary>
+        /// Helper for unsigned 16-bit integer arrays.
+        /// </summary>
+        public U16ArrayHelper U16BA = null!;
+
+        /// <summary>
+        /// Helper for unsigned 32-bit integers.
+        /// </summary>
+        public U32Helper U32B = null!;
+
+        /// <summary>
+        /// Helper for unsigned 32-bit integer arrays.
+        /// </summary>
+        public U32ArrayHelper U32BA = null!;
+
+        /// <summary>
+        /// Helper for unsigned 64-bit integers.
+        /// </summary>
+        public U64Helper U64B = null!;
+
+        /// <summary>
+        /// Helper for unsigned 64-bit integer arrays.
+        /// </summary>
+        public U64ArrayHelper U64BA = null!;
 
         /// <summary>
         /// Helper for 32-bit floating point numbers.
@@ -110,20 +171,32 @@ namespace Fp
         {
             S8 = new THelper<sbyte>(this);
             S8A = new TArrayHelper<sbyte>(this);
-            S16 = new S16Helper(this);
-            S16A = new S16ArrayHelper(this);
-            S32 = new S32Helper(this);
-            S32A = new S32ArrayHelper(this);
-            S64 = new S64Helper(this);
-            S64A = new S64ArrayHelper(this);
             U8 = new THelper<byte>(this);
             U8A = new TArrayHelper<byte>(this);
-            U16 = new U16Helper(this);
-            U16A = new U16ArrayHelper(this);
-            U32 = new U32Helper(this);
-            U32A = new U32ArrayHelper(this);
-            U64 = new U64Helper(this);
-            U64A = new U64ArrayHelper(this);
+            S16L = new S16Helper(this, true);
+            S16LA = new S16ArrayHelper(this, true);
+            S32L = new S32Helper(this, true);
+            S32LA = new S32ArrayHelper(this, true);
+            S64L = new S64Helper(this, true);
+            S64LA = new S64ArrayHelper(this, true);
+            U16L = new U16Helper(this, true);
+            U16LA = new U16ArrayHelper(this, true);
+            U32L = new U32Helper(this, true);
+            U32LA = new U32ArrayHelper(this, true);
+            U64L = new U64Helper(this, true);
+            U64LA = new U64ArrayHelper(this, true);
+            S16B = new S16Helper(this, false);
+            S16BA = new S16ArrayHelper(this, false);
+            S32B = new S32Helper(this, false);
+            S32BA = new S32ArrayHelper(this, false);
+            S64B = new S64Helper(this, false);
+            S64BA = new S64ArrayHelper(this, false);
+            U16B = new U16Helper(this, false);
+            U16BA = new U16ArrayHelper(this, false);
+            U32B = new U32Helper(this, false);
+            U32BA = new U32ArrayHelper(this, false);
+            U64B = new U64Helper(this, false);
+            U64BA = new U64ArrayHelper(this, false);
             F32 = new THelper<float>(this);
             F32A = new TArrayHelper<float>(this);
             F64 = new THelper<double>(this);
@@ -538,18 +611,18 @@ namespace Fp
             /// <inheritdoc />
             public override sbyte[] this[Span<byte> source]
             {
-                get => Parent.GetS8Array(source);
-                set => Parent.SetS8Array(source, value);
+                get => GetS8Array(source);
+                set => SetS8Array(source, value);
             }
 
             /// <inheritdoc />
-            public override sbyte[] this[ReadOnlySpan<byte> source] => Parent.GetS8Array(source);
+            public override sbyte[] this[ReadOnlySpan<byte> source] => GetS8Array(source);
         }
 
         /// <summary>
         /// Signed 16-bit helper.
         /// </summary>
-        public record S16Helper(Processor Parent) : BaseHelper<short>
+        public record S16Helper(Processor Parent, bool LittleEndian) : BaseHelper<short>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -563,8 +636,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override short this[Span<byte> source]
             {
-                get => Parent.GetS16(source);
-                set => Parent.SetS16(source, value);
+                get => GetS16(source, LittleEndian);
+                set => SetS16(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -577,7 +650,7 @@ namespace Fp
         /// <summary>
         /// Signed 16-bit array helper.
         /// </summary>
-        public record S16ArrayHelper(Processor Parent) : BaseArrayHelper<short>
+        public record S16ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<short>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -588,18 +661,18 @@ namespace Fp
             /// <inheritdoc />
             public override short[] this[Span<byte> source]
             {
-                get => Parent.GetS16Array(source);
-                set => Parent.SetS16Array(source, value);
+                get => GetS16Array(source, LittleEndian);
+                set => SetS16Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override short[] this[ReadOnlySpan<byte> source] => Parent.GetS16Array(source);
+            public override short[] this[ReadOnlySpan<byte> source] => GetS16Array(source, LittleEndian);
         }
 
         /// <summary>
         /// Signed 32-bit helper.
         /// </summary>
-        public record S32Helper(Processor Parent) : BaseHelper<int>
+        public record S32Helper(Processor Parent, bool LittleEndian) : BaseHelper<int>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -613,8 +686,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override int this[Span<byte> source]
             {
-                get => Parent.GetS32(source);
-                set => Parent.SetS32(source, value);
+                get => GetS32(source, LittleEndian);
+                set => SetS32(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -627,7 +700,7 @@ namespace Fp
         /// <summary>
         /// Signed 32-bit helper.
         /// </summary>
-        public record S32ArrayHelper(Processor Parent) : BaseArrayHelper<int>
+        public record S32ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<int>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -638,18 +711,18 @@ namespace Fp
             /// <inheritdoc />
             public override int[] this[Span<byte> source]
             {
-                get => Parent.GetS32Array(source);
-                set => Parent.SetS32Array(source, value);
+                get => GetS32Array(source, LittleEndian);
+                set => SetS32Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override int[] this[ReadOnlySpan<byte> source] => Parent.GetS32Array(source);
+            public override int[] this[ReadOnlySpan<byte> source] => GetS32Array(source, LittleEndian);
         }
 
         /// <summary>
         /// Signed 64-bit helper.
         /// </summary>
-        public record S64Helper(Processor Parent) : BaseHelper<long>
+        public record S64Helper(Processor Parent, bool LittleEndian) : BaseHelper<long>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -663,8 +736,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override long this[Span<byte> source]
             {
-                get => Parent.GetS64(source);
-                set => Parent.SetS64(source, value);
+                get => GetS64(source, LittleEndian);
+                set => SetS64(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -677,7 +750,7 @@ namespace Fp
         /// <summary>
         /// Signed 64-bit helper.
         /// </summary>
-        public record S64ArrayHelper(Processor Parent) : BaseArrayHelper<long>
+        public record S64ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<long>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -688,18 +761,18 @@ namespace Fp
             /// <inheritdoc />
             public override long[] this[Span<byte> source]
             {
-                get => Parent.GetS64Array(source);
-                set => Parent.SetS64Array(source, value);
+                get => GetS64Array(source, LittleEndian);
+                set => SetS64Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override long[] this[ReadOnlySpan<byte> source] => Parent.GetS64Array(source);
+            public override long[] this[ReadOnlySpan<byte> source] => GetS64Array(source, LittleEndian);
         }
 
         /// <summary>
         /// Unsigned 8-bit helper.
         /// </summary>
-        public record U8Helper(Processor Parent) : BaseHelper<byte>
+        public record U8Helper(Processor Parent, bool LittleEndian) : BaseHelper<byte>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -727,7 +800,7 @@ namespace Fp
         /// <summary>
         /// Unsigned 8-bit helper.
         /// </summary>
-        public record U8ArrayHelper(Processor Parent) : BaseArrayHelper<byte>
+        public record U8ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<byte>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -738,18 +811,18 @@ namespace Fp
             /// <inheritdoc />
             public override byte[] this[Span<byte> source]
             {
-                get => Parent.GetU8Array(source);
-                set => Parent.SetU8Array(source, value);
+                get => GetU8Array(source);
+                set => SetU8Array(source, value);
             }
 
             /// <inheritdoc />
-            public override byte[] this[ReadOnlySpan<byte> source] => Parent.GetU8Array(source);
+            public override byte[] this[ReadOnlySpan<byte> source] => GetU8Array(source);
         }
 
         /// <summary>
         /// Unsigned 16-bit helper.
         /// </summary>
-        public record U16Helper(Processor Parent) : BaseHelper<ushort>
+        public record U16Helper(Processor Parent, bool LittleEndian) : BaseHelper<ushort>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -763,8 +836,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override ushort this[Span<byte> source]
             {
-                get => Parent.GetU16(source);
-                set => Parent.SetU16(source, value);
+                get => GetU16(source, LittleEndian);
+                set => SetU16(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -777,7 +850,7 @@ namespace Fp
         /// <summary>
         /// Unsigned 16-bit helper.
         /// </summary>
-        public record U16ArrayHelper(Processor Parent) : BaseArrayHelper<ushort>
+        public record U16ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<ushort>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -788,18 +861,18 @@ namespace Fp
             /// <inheritdoc />
             public override ushort[] this[Span<byte> source]
             {
-                get => Parent.GetU16Array(source);
-                set => Parent.SetU16Array(source, value);
+                get => GetU16Array(source, LittleEndian);
+                set => SetU16Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override ushort[] this[ReadOnlySpan<byte> source] => Parent.GetU16Array(source);
+            public override ushort[] this[ReadOnlySpan<byte> source] => GetU16Array(source, LittleEndian);
         }
 
         /// <summary>
         /// Unsigned 32-bit helper.
         /// </summary>
-        public record U32Helper(Processor Parent) : BaseHelper<uint>
+        public record U32Helper(Processor Parent, bool LittleEndian) : BaseHelper<uint>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -813,8 +886,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override uint this[Span<byte> source]
             {
-                get => Parent.GetU32(source);
-                set => Parent.SetU32(source, value);
+                get => GetU32(source, LittleEndian);
+                set => SetU32(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -827,7 +900,7 @@ namespace Fp
         /// <summary>
         /// Unsigned 32-bit helper.
         /// </summary>
-        public record U32ArrayHelper(Processor Parent) : BaseArrayHelper<uint>
+        public record U32ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<uint>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -838,18 +911,18 @@ namespace Fp
             /// <inheritdoc />
             public override uint[] this[Span<byte> source]
             {
-                get => Parent.GetU32Array(source);
-                set => Parent.SetU32Array(source, value);
+                get => GetU32Array(source, LittleEndian);
+                set => SetU32Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override uint[] this[ReadOnlySpan<byte> source] => Parent.GetU32Array(source);
+            public override uint[] this[ReadOnlySpan<byte> source] => GetU32Array(source, LittleEndian);
         }
 
         /// <summary>
         /// Unsigned 64-bit helper.
         /// </summary>
-        public record U64Helper(Processor Parent) : BaseHelper<ulong>
+        public record U64Helper(Processor Parent, bool LittleEndian) : BaseHelper<ulong>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -863,8 +936,8 @@ namespace Fp
             /// <param name="source">Data source.</param>
             public override ulong this[Span<byte> source]
             {
-                get => Parent.GetU64(source);
-                set => Parent.SetU64(source, value);
+                get => GetU64(source, LittleEndian);
+                set => SetU64(source, value, LittleEndian);
             }
 
             /// <summary>
@@ -877,7 +950,7 @@ namespace Fp
         /// <summary>
         /// Unsigned 64-bit helper.
         /// </summary>
-        public record U64ArrayHelper(Processor Parent) : BaseArrayHelper<ulong>
+        public record U64ArrayHelper(Processor Parent, bool LittleEndian) : BaseArrayHelper<ulong>
         {
             /// <inheritdoc />
             public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
@@ -888,12 +961,12 @@ namespace Fp
             /// <inheritdoc />
             public override ulong[] this[Span<byte> source]
             {
-                get => Parent.GetU64Array(source);
-                set => Parent.SetU64Array(source, value);
+                get => GetU64Array(source, LittleEndian);
+                set => SetU64Array(source, value, LittleEndian);
             }
 
             /// <inheritdoc />
-            public override ulong[] this[ReadOnlySpan<byte> source] => Parent.GetU64Array(source);
+            public override ulong[] this[ReadOnlySpan<byte> source] => GetU64Array(source, LittleEndian);
         }
 
         /// <summary>
@@ -933,13 +1006,13 @@ namespace Fp
             /// <inheritdoc />
             public override T[] this[Span<byte> source]
             {
-                get => Parent.GetTArray<T>(source);
-                set => Parent.SetTArray(source, value);
+                get => GetTArray<T>(source);
+                set => SetTArray(source, value);
             }
 
             /// <inheritdoc />
             public override T[] this[ReadOnlySpan<byte> source] =>
-                Parent.GetTArray<T>(source);
+                GetTArray<T>(source);
         }
 
         /// <summary>
@@ -947,7 +1020,7 @@ namespace Fp
         /// </summary>
         /// <param name="span">Source span.</param>
         /// <returns>Converted array.</returns>
-        public sbyte[] GetS8Array(ReadOnlySpan<byte> span)
+        public static sbyte[] GetS8Array(ReadOnlySpan<byte> span)
         {
             return MemoryMarshal.Cast<byte, sbyte>(span).ToArray();
         }
@@ -958,7 +1031,7 @@ namespace Fp
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
         /// <returns>Converted array.</returns>
-        public void SetS8Array(Span<byte> span, sbyte[] array)
+        public static void SetS8Array(Span<byte> span, sbyte[] array)
         {
             MemoryMarshal.Cast<sbyte, byte>(array).CopyTo(span);
         }
@@ -968,79 +1041,7 @@ namespace Fp
         /// </summary>
         /// <param name="span">Source span.</param>
         /// <returns>Converted array.</returns>
-        public short[] GetS16Array(ReadOnlySpan<byte> span)
-        {
-            short[] result = MemoryMarshal.Cast<byte, short>(span).ToArray();
-            ConvertS16Array(result);
-            return result;
-        }
-
-        /// <summary>
-        /// Write array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Target span.</param>
-        /// <param name="array">Source array.</param>
-        /// <returns>Converted array.</returns>
-        public void SetS16Array(Span<byte> span, short[] array)
-        {
-            MemoryMarshal.Cast<short, byte>(array).CopyTo(span);
-            ConvertS16Array(span);
-        }
-
-        /// <summary>
-        /// Read converted array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Source span.</param>
-        /// <returns>Converted array.</returns>
-        public int[] GetS32Array(ReadOnlySpan<byte> span)
-        {
-            int[] result = MemoryMarshal.Cast<byte, int>(span).ToArray();
-            ConvertS32Array(result);
-            return result;
-        }
-
-        /// <summary>
-        /// Write array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Target span.</param>
-        /// <param name="array">Source array.</param>
-        /// <returns>Converted array.</returns>
-        public void SetS32Array(Span<byte> span, int[] array)
-        {
-            MemoryMarshal.Cast<int, byte>(array).CopyTo(span);
-            ConvertS32Array(span);
-        }
-
-        /// <summary>
-        /// Read converted array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Source span.</param>
-        /// <returns>Converted array.</returns>
-        public long[] GetS64Array(ReadOnlySpan<byte> span)
-        {
-            long[] result = MemoryMarshal.Cast<byte, long>(span).ToArray();
-            ConvertS64Array(result);
-            return result;
-        }
-
-        /// <summary>
-        /// Write array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Target span.</param>
-        /// <param name="array">Source array.</param>
-        /// <returns>Converted array.</returns>
-        public void SetS64Array(Span<byte> span, long[] array)
-        {
-            MemoryMarshal.Cast<long, byte>(array).CopyTo(span);
-            ConvertS64Array(span);
-        }
-
-        /// <summary>
-        /// Read converted array (with endianness switch).
-        /// </summary>
-        /// <param name="span">Source span.</param>
-        /// <returns>Converted array.</returns>
-        public byte[] GetU8Array(ReadOnlySpan<byte> span)
+        public static byte[] GetU8Array(ReadOnlySpan<byte> span)
         {
             return span.ToArray();
         }
@@ -1051,20 +1052,101 @@ namespace Fp
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
         /// <returns>Converted array.</returns>
-        public void SetU8Array(Span<byte> span, byte[] array)
+        public static void SetU8Array(Span<byte> span, byte[] array)
         {
             array.AsSpan().CopyTo(span);
         }
 
+        #region Static endianness
+
         /// <summary>
         /// Read converted array (with endianness switch).
         /// </summary>
         /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public ushort[] GetU16Array(ReadOnlySpan<byte> span)
+        public static short[] GetS16Array(ReadOnlySpan<byte> span, bool littleEndian)
+        {
+            short[] result = MemoryMarshal.Cast<byte, short>(span).ToArray();
+            ConvertS16Array(result, littleEndian);
+            return result;
+        }
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static void SetS16Array(Span<byte> span, short[] array, bool littleEndian)
+        {
+            MemoryMarshal.Cast<short, byte>(array).CopyTo(span);
+            ConvertS16Array(span, littleEndian);
+        }
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static int[] GetS32Array(ReadOnlySpan<byte> span, bool littleEndian)
+        {
+            int[] result = MemoryMarshal.Cast<byte, int>(span).ToArray();
+            ConvertS32Array(result, littleEndian);
+            return result;
+        }
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static void SetS32Array(Span<byte> span, int[] array, bool littleEndian)
+        {
+            MemoryMarshal.Cast<int, byte>(array).CopyTo(span);
+            ConvertS32Array(span, littleEndian);
+        }
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static long[] GetS64Array(ReadOnlySpan<byte> span, bool littleEndian)
+        {
+            long[] result = MemoryMarshal.Cast<byte, long>(span).ToArray();
+            ConvertS64Array(result, littleEndian);
+            return result;
+        }
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static void SetS64Array(Span<byte> span, long[] array, bool littleEndian)
+        {
+            MemoryMarshal.Cast<long, byte>(array).CopyTo(span);
+            ConvertS64Array(span, littleEndian);
+        }
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
+        /// <returns>Converted array.</returns>
+        public static ushort[] GetU16Array(ReadOnlySpan<byte> span, bool littleEndian)
         {
             ushort[] result = MemoryMarshal.Cast<byte, ushort>(span).ToArray();
-            ConvertU16Array(result);
+            ConvertU16Array(result, littleEndian);
             return result;
         }
 
@@ -1073,22 +1155,24 @@ namespace Fp
         /// </summary>
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public void SetU16Array(Span<byte> span, ushort[] array)
+        public static void SetU16Array(Span<byte> span, ushort[] array, bool littleEndian)
         {
             MemoryMarshal.Cast<ushort, byte>(array).CopyTo(span);
-            ConvertS32Array(span);
+            ConvertS32Array(span, littleEndian);
         }
 
         /// <summary>
         /// Read converted array (with endianness switch).
         /// </summary>
         /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public uint[] GetU32Array(ReadOnlySpan<byte> span)
+        public static uint[] GetU32Array(ReadOnlySpan<byte> span, bool littleEndian)
         {
             uint[] result = MemoryMarshal.Cast<byte, uint>(span).ToArray();
-            ConvertU32Array(result);
+            ConvertU32Array(result, littleEndian);
             return result;
         }
 
@@ -1097,22 +1181,24 @@ namespace Fp
         /// </summary>
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public void SetU32Array(Span<byte> span, uint[] array)
+        public static void SetU32Array(Span<byte> span, uint[] array, bool littleEndian)
         {
             MemoryMarshal.Cast<uint, byte>(array).CopyTo(span);
-            ConvertS32Array(span);
+            ConvertS32Array(span, littleEndian);
         }
 
         /// <summary>
         /// Read converted array (with endianness switch).
         /// </summary>
         /// <param name="span">Source span.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public ulong[] GetU64Array(ReadOnlySpan<byte> span)
+        public static ulong[] GetU64Array(ReadOnlySpan<byte> span, bool littleEndian)
         {
             ulong[] result = MemoryMarshal.Cast<byte, ulong>(span).ToArray();
-            ConvertU64Array(result);
+            ConvertU64Array(result, littleEndian);
             return result;
         }
 
@@ -1121,12 +1207,109 @@ namespace Fp
         /// </summary>
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
+        /// <param name="littleEndian">If true, use little-endian encoding</param>
         /// <returns>Converted array.</returns>
-        public void SetU64Array(Span<byte> span, ulong[] array)
+        public static void SetU64Array(Span<byte> span, ulong[] array, bool littleEndian)
         {
             MemoryMarshal.Cast<ulong, byte>(array).CopyTo(span);
-            ConvertS32Array(span);
+            ConvertS32Array(span, littleEndian);
         }
+
+        #endregion
+
+        #region Instance endianness
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public short[] GetS16Array(ReadOnlySpan<byte> span) => GetS16Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetS16Array(Span<byte> span, short[] array) => SetS16Array(span, array, LittleEndian);
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public int[] GetS32Array(ReadOnlySpan<byte> span) => GetS32Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetS32Array(Span<byte> span, int[] array) => SetS32Array(span, array, LittleEndian);
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public long[] GetS64Array(ReadOnlySpan<byte> span) => GetS64Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetS64Array(Span<byte> span, long[] array) => SetS64Array(span, array, LittleEndian);
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public ushort[] GetU16Array(ReadOnlySpan<byte> span) => GetU16Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetU16Array(Span<byte> span, ushort[] array) => SetU16Array(span, array, LittleEndian);
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public uint[] GetU32Array(ReadOnlySpan<byte> span) => GetU32Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetU32Array(Span<byte> span, uint[] array) => SetU32Array(span, array, LittleEndian);
+
+        /// <summary>
+        /// Read converted array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Source span.</param>
+        /// <returns>Converted array.</returns>
+        public ulong[] GetU64Array(ReadOnlySpan<byte> span) => GetU64Array(span, LittleEndian);
+
+        /// <summary>
+        /// Write array (with endianness switch).
+        /// </summary>
+        /// <param name="span">Target span.</param>
+        /// <param name="array">Source array.</param>
+        /// <returns>Converted array.</returns>
+        public void SetU64Array(Span<byte> span, ulong[] array) => SetU64Array(span, array, LittleEndian);
+
+        #endregion
 
         /// <summary>
         /// Get generic array.
@@ -1134,7 +1317,7 @@ namespace Fp
         /// <param name="span">Source span.</param>
         /// <typeparam name="T">Element type.</typeparam>
         /// <returns>Read data.</returns>
-        public T[] GetTArray<T>(ReadOnlySpan<byte> span) where T : unmanaged
+        public static T[] GetTArray<T>(ReadOnlySpan<byte> span) where T : unmanaged
         {
             return MemoryMarshal.Cast<byte, T>(span).ToArray();
         }
@@ -1145,7 +1328,7 @@ namespace Fp
         /// <param name="span">Target span.</param>
         /// <param name="array">Source array.</param>
         /// <typeparam name="T">Element type.</typeparam>
-        public void SetTArray<T>(Span<byte> span, T[] array) where T : unmanaged
+        public static void SetTArray<T>(Span<byte> span, T[] array) where T : unmanaged
         {
             MemoryMarshal.Cast<T, byte>(array).CopyTo(span);
         }
