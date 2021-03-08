@@ -22,7 +22,7 @@ namespace Fp
         #region Properties and fields
 
         /// <summary>
-        /// Currently running <see cref="CurrentSegmentedProcessor"/> on this thread.
+        /// Currently running <see cref="ScriptingSegmentedProcessor"/> on this thread.
         /// </summary>
         public static Processor Current => _current ?? throw new InvalidOperationException();
 

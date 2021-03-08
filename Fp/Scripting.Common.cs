@@ -37,7 +37,7 @@ namespace Fp
         /// <param name="name">Program name (for help text).</param>
         public static void process(Action func, IList<string> args, FileSystemSource? fileSystemSource = null,
             string? name = null) =>
-            process(() => new CurrentDirectProcessor(func), args, fileSystemSource,
+            process(() => new ScriptingDirectProcessor(func), args, fileSystemSource,
                 name ?? func.Method.Module.Assembly.GetName().Name);
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Fp
         /// <param name="name">Program name (for help text).</param>
         public static void process(Func<IEnumerable<Data>> func, IList<string> args,
             FileSystemSource? fileSystemSource = null, string? name = null) =>
-            process(() => new CurrentSegmentedProcessor(func), args, fileSystemSource,
+            process(() => new ScriptingSegmentedProcessor(func), args, fileSystemSource,
                 name ?? func.Method.Module.Assembly.GetName().Name);
     }
     // ReSharper restore InconsistentNaming
