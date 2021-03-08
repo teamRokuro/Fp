@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace Fp
@@ -37,7 +38,7 @@ namespace Fp
         public static void process(Action func, IList<string> args, FileSystemSource? fileSystemSource = null,
             string? name = null) =>
             process(() => new CurrentDirectProcessor(func), args, fileSystemSource,
-                name ?? func.GetType().Assembly.GetName().Name);
+                name ?? func.Method.Module.Assembly.GetName().Name);
 
         /// <summary>
         /// Process using segmented function.
@@ -49,7 +50,7 @@ namespace Fp
         public static void process(Func<IEnumerable<Data>> func, IList<string> args,
             FileSystemSource? fileSystemSource = null, string? name = null) =>
             process(() => new CurrentSegmentedProcessor(func), args, fileSystemSource,
-                name ?? func.GetType().Assembly.GetName().Name);
+                name ?? func.Method.Module.Assembly.GetName().Name);
     }
     // ReSharper restore InconsistentNaming
 }
