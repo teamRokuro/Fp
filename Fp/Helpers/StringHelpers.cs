@@ -23,7 +23,8 @@ namespace Fp.Helpers
         }
 
         /// <inheritdoc />
-        public override (string text, int byteCount) this[ReadOnlySpan<byte> source, int offset, int maxBytes] =>
+        public override (string text, int byteCount) this[ReadOnlySpan<byte> source, int offset,
+            int maxBytes = int.MaxValue] =>
             (ReadUtf8String(source, out int byteCount, maxBytes), byteCount);
 
         /// <inheritdoc />
@@ -31,10 +32,12 @@ namespace Fp.Helpers
             (ReadUtf8String(source, out int byteCount), byteCount);
 
         /// <inheritdoc />
-        public override (string text, int byteCount) this[long offset, int maxBytes, Stream stream] =>
+        public override (string text, int byteCount) this[long offset, int maxBytes = int.MaxValue,
+            Stream? stream = null] =>
             offset != -1
-                ? (Instance.ReadUtf8StringFromOffset(stream, offset, out int byteCount1, maxBytes), byteCount1)
-                : (Instance.ReadUtf8String(stream, out int byteCount2), byteCount2);
+                ? (Instance.ReadUtf8StringFromOffset(stream ?? InputStream, offset, out int byteCount1, maxBytes),
+                    byteCount1)
+                : (Instance.ReadUtf8String(stream ?? InputStream, out int byteCount2), byteCount2);
 
         /// <inheritdoc />
         public override string this[long offset, Stream stream]
@@ -61,7 +64,8 @@ namespace Fp.Helpers
         }
 
         /// <inheritdoc />
-        public override (string text, int byteCount) this[ReadOnlySpan<byte> source, int offset, int maxBytes] =>
+        public override (string text, int byteCount) this[ReadOnlySpan<byte> source, int offset,
+            int maxBytes = int.MaxValue] =>
             (ReadUtf16String(source, out int byteCount, maxBytes), byteCount);
 
         /// <inheritdoc />
@@ -69,10 +73,12 @@ namespace Fp.Helpers
             (ReadUtf16String(source, out int byteCount), byteCount);
 
         /// <inheritdoc />
-        public override (string text, int byteCount) this[long offset, int maxBytes, Stream stream] =>
+        public override (string text, int byteCount) this[long offset, int maxBytes = int.MaxValue,
+            Stream? stream = null] =>
             offset != -1
-                ? (Instance.ReadUtf16StringFromOffset(stream, offset, out int byteCount1, maxBytes), byteCount1)
-                : (Instance.ReadUtf16String(stream, out int byteCount2), byteCount2);
+                ? (Instance.ReadUtf16StringFromOffset(stream ?? InputStream, offset, out int byteCount1, maxBytes),
+                    byteCount1)
+                : (Instance.ReadUtf16String(stream ?? InputStream, out int byteCount2), byteCount2);
 
         /// <inheritdoc />
         public override string this[long offset, Stream stream]
