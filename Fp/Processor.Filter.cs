@@ -56,7 +56,7 @@ namespace Fp
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public static bool HasMagic(Span<byte> source, Span<byte> span, int offset = 0) =>
+        public static bool HasMagic(ReadOnlySpan<byte> source, ReadOnlySpan<byte> span, int offset = 0) =>
             source.Length - offset >= span.Length && span.SequenceEqual(source.Slice(offset, span.Length));
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Fp
         /// <param name="array">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public static bool HasMagic(Span<byte> source, byte[] array, int offset = 0)
+        public static bool HasMagic(ReadOnlySpan<byte> source, byte[] array, int offset = 0)
             => HasMagic(source, array.AsSpan(), offset);
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Fp
         /// <param name="str">Value to check against</param>
         /// <param name="offset">Position in span to check</param>
         /// <returns>True if span region matches value</returns>
-        public static bool HasMagic(Span<byte> source, string str, int offset = 0)
+        public static bool HasMagic(ReadOnlySpan<byte> source, string str, int offset = 0)
             => HasMagic(source, Encoding.UTF8.GetBytes(str).AsSpan(), offset);
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Fp
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
-        public bool HasMagic(Stream stream, Span<byte> span, long offset = 0)
+        public bool HasMagic(Stream stream, ReadOnlySpan<byte> span, long offset = 0)
         {
             Span<byte> span2 = stackalloc byte[span.Length];
             int read = Read(stream, offset, span2);
@@ -97,21 +97,11 @@ namespace Fp
         /// Check if a stream has a specific value at a certain offset
         /// </summary>
         /// <param name="stream">Stream to read</param>
-        /// <param name="array">Value to check against</param>
-        /// <param name="offset">Position in stream to check</param>
-        /// <returns>True if stream region matches value</returns>
-        public bool HasMagic(Stream stream, byte[] array, long offset = 0)
-            => HasMagic(stream, array.AsSpan(), offset);
-
-        /// <summary>
-        /// Check if a stream has a specific value at a certain offset
-        /// </summary>
-        /// <param name="stream">Stream to read</param>
         /// <param name="str">Value to check against</param>
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
         public bool HasMagic(Stream stream, string str, long offset = 0)
-            => HasMagic(stream, Encoding.UTF8.GetBytes(str).AsSpan(), offset);
+            => HasMagic(stream, Encoding.UTF8.GetBytes(str), offset);
 
         /// <summary>
         /// Check if current file's input stream has a specific value at a certain offset
@@ -119,7 +109,7 @@ namespace Fp
         /// <param name="span">Value to check against</param>
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
-        public bool HasMagic(Span<byte> span, long offset = 0)
+        public bool HasMagic(ReadOnlySpan<byte> span, long offset = 0)
             => HasMagic(InputStream ?? throw new InvalidOperationException(), span, offset);
 
         /// <summary>

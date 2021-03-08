@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Fp.Intermediate
+namespace Fp
 {
     /// <summary>
     /// Intermediate-format data container

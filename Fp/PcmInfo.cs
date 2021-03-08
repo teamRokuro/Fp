@@ -1,6 +1,6 @@
 using System;
 
-namespace Fp.Intermediate
+namespace Fp
 {
     /// <summary>
     /// PCM metadata

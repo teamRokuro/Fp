@@ -12,9 +12,9 @@ Changes:
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Fp.Ciphers.BlowFish;
+using Fp.Ciphers;
 
-namespace Fp.Ciphers.BlowFish
+namespace Fp.Ciphers
 {
     /// <summary>
     /// Blowfish cipher state
@@ -756,5 +756,67 @@ namespace Fp
             Blowfish bf = iv.Length == 0 ? new Blowfish(key) : new Blowfish(key, iv);
             bf.DecryptCbc(src);
         }
+
+        /// <summary>
+        /// Encrypt with Blowfish using ECB mode and key
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        public static void EncryptBlowfishEcb(Span<byte> src, ReadOnlySpan<byte> key)
+        {
+            Blowfish bf = new(key);
+            bf.EncryptEcb(src);
+        }
+
+        /// <summary>
+        /// Encrypt with Blowfish using CBC mode and key/IV
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        /// <param name="iv">IV (CBC/CTR)</param>
+        public static void EncryptBlowfishCbc(Span<byte> src, ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv = default)
+        {
+            Blowfish bf = iv.Length == 0 ? new Blowfish(key) : new Blowfish(key, iv);
+            bf.EncryptCbc(src);
+        }
+    }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Decrypt with Blowfish using ECB mode and key
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        public static void decryptBlowfishEcb(Memory<byte> src, ReadOnlyMemory<byte> key) =>
+            Processor.DecryptBlowfishEcb(src.Span, key.Span);
+
+        /// <summary>
+        /// Decrypt with Blowfish using CBC mode and key/IV
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        /// <param name="iv">IV (CBC/CTR)</param>
+        public static void decryptBlowfishCbc(Memory<byte> src, ReadOnlyMemory<byte> key,
+            ReadOnlyMemory<byte> iv = default) =>
+            Processor.DecryptBlowfishCbc(src.Span, key.Span, iv.Length == 0 ? default : iv.Span);
+
+        /// <summary>
+        /// Encrypt with Blowfish using ECB mode and key
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        public static void encryptBlowfishEcb(Memory<byte> src, ReadOnlyMemory<byte> key) =>
+            Processor.EncryptBlowfishEcb(src.Span, key.Span);
+
+        /// <summary>
+        /// Encrypt with Blowfish using CBC mode and key/IV
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        /// <param name="iv">IV (CBC/CTR)</param>
+        public static void encryptBlowfishCbc(Memory<byte> src, ReadOnlyMemory<byte> key,
+            ReadOnlyMemory<byte> iv = default) =>
+            Processor.EncryptBlowfishCbc(src.Span, key.Span, iv.Length == 0 ? default : iv.Span);
     }
 }

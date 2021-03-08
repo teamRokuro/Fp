@@ -1120,7 +1120,6 @@ namespace Fp
 
         #endregion
 
-
         /// <summary>
         /// Read 16-bit float value from stream
         /// </summary>
@@ -1166,7 +1165,7 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public float GetHalf(ReadOnlySpan<byte> span, int offset = 0)
+        public static float GetHalf(ReadOnlySpan<byte> span, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[2];
             span.Slice(offset, 2).CopyTo(span2);
@@ -1178,7 +1177,7 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public float GetMHalf(ReadOnlyMemory<byte> memory, int offset = 0) => GetHalf(memory.Span, offset);
+        public static float GetMHalf(ReadOnlyMemory<byte> memory, int offset = 0) => GetHalf(memory.Span, offset);
 
         /// <summary>
         /// Write 16-bit float value to span at the specified offset
@@ -1187,7 +1186,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public float SetHalf(Span<byte> span, float value, int offset = 0)
+        public static float SetHalf(Span<byte> span, float value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[2];
             MemoryMarshal.Cast<byte, ushort>(span2)[0] = HalfHelper.SingleToHalf(value);
@@ -1202,7 +1201,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public float SetMHalf(Memory<byte> memory, float value, int offset = 0) => SetHalf(memory.Span, value, offset);
+        public static float SetMHalf(Memory<byte> memory, float value, int offset = 0) => SetHalf(memory.Span, value, offset);
 
         /// <summary>
         /// Read 32-bit float value from stream
@@ -1249,7 +1248,7 @@ namespace Fp
         /// <param name="offset">Offset to read from</param>
         /// <param name="span">Span to read from</param>
         /// <returns>Value</returns>
-        public float GetSingle(ReadOnlySpan<byte> span, int offset = 0)
+        public static float GetSingle(ReadOnlySpan<byte> span, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[4];
             span.Slice(offset, 4).CopyTo(span2);
@@ -1261,7 +1260,7 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public float GetMSingle(ReadOnlyMemory<byte> memory, int offset = 0) => GetSingle(memory.Span, offset);
+        public static float GetMSingle(ReadOnlyMemory<byte> memory, int offset = 0) => GetSingle(memory.Span, offset);
 
         /// <summary>
         /// Write 32-bit float value to span at the specified offset
@@ -1270,7 +1269,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public float SetSingle(Span<byte> span, float value, int offset = 0)
+        public static float SetSingle(Span<byte> span, float value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[4];
             MemoryMarshal.Cast<byte, float>(span2)[0] = value;
@@ -1285,7 +1284,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public float SetMSingle(Memory<byte> memory, float value, int offset = 0) =>
+        public static float SetMSingle(Memory<byte> memory, float value, int offset = 0) =>
             SetSingle(memory.Span, value, offset);
 
         /// <summary>
@@ -1339,7 +1338,7 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to read from</param>
         /// <param name="offset">Offset to read from</param>
-        public double GetMDouble(ReadOnlyMemory<byte> memory, int offset = 0) => GetDouble(memory.Span, offset);
+        public static double GetMDouble(ReadOnlyMemory<byte> memory, int offset = 0) => GetDouble(memory.Span, offset);
 
         /// <summary>
         /// Write 32-bit float value to span at the specified offset
@@ -1348,7 +1347,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public double SetDouble(Span<byte> span, double value, int offset = 0)
+        public static double SetDouble(Span<byte> span, double value, int offset = 0)
         {
             Span<byte> span2 = stackalloc byte[8];
             MemoryMarshal.Cast<byte, double>(span2)[0] = value;
@@ -1363,7 +1362,7 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public double SetMDouble(Memory<byte> memory, double value, int offset = 0) =>
+        public static double SetMDouble(Memory<byte> memory, double value, int offset = 0) =>
             SetDouble(memory.Span, value, offset);
 
         /// <summary>

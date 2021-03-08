@@ -1,7 +1,7 @@
 using System;
+using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using static System.Buffers.ArrayPool<byte>;
 
@@ -80,7 +80,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS8(sbyte value, Stream? stream = null, int? offset = null)
+        public void WriteS8(sbyte value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -109,7 +109,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU8(byte value, Stream? stream = null, int? offset = null)
+        public void WriteU8(byte value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -138,14 +138,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(short value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(short value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 2);
-            MemoryMarshal.Cast<byte, short>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 2).CopyTo(span.Slice(offset, 2));
         }
 
         /// <summary>
@@ -162,14 +158,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(ushort value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(ushort value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 2);
-            MemoryMarshal.Cast<byte, ushort>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 2).CopyTo(span.Slice(offset, 2));
         }
 
         /// <summary>
@@ -215,7 +207,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS16(short value, Stream? stream = null, int? offset = null)
+        public void WriteS16(short value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -244,7 +236,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU16(ushort value, Stream? stream = null, int? offset = null)
+        public void WriteU16(ushort value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -273,14 +265,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(int value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(int value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 4);
-            MemoryMarshal.Cast<byte, int>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 4).CopyTo(span.Slice(offset, 4));
         }
 
         /// <summary>
@@ -297,14 +285,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(uint value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(uint value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 4);
-            MemoryMarshal.Cast<byte, uint>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 4).CopyTo(span.Slice(offset, 4));
         }
 
         /// <summary>
@@ -349,7 +333,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS32(int value, Stream? stream = null, int? offset = null)
+        public void WriteS32(int value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -378,7 +362,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU32(uint value, Stream? stream = null, int? offset = null)
+        public void WriteU32(uint value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -407,14 +391,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(long value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(long value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 2);
-            MemoryMarshal.Cast<byte, long>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 8).CopyTo(span.Slice(offset, 8));
         }
 
         /// <summary>
@@ -431,14 +411,10 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytes(ulong value, Span<byte> span, int offset = 0)
+        public unsafe void GetBytes(ulong value, Span<byte> span, int offset = 0)
         {
-            Span<byte> sub = span.Slice(offset, 2);
-            MemoryMarshal.Cast<byte, ulong>(sub)[0] = value;
-            if (_swap)
-            {
-                sub.Reverse();
-            }
+            if (_swap) value = BinaryPrimitives.ReverseEndianness(value);
+            new ReadOnlySpan<byte>(&value, 8).CopyTo(span.Slice(offset, 8));
         }
 
         /// <summary>
@@ -483,7 +459,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteS64(long value, Stream? stream = null, int? offset = null)
+        public void WriteS64(long value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -512,7 +488,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteU64(ulong value, Stream? stream = null, int? offset = null)
+        public void WriteU64(ulong value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -541,8 +517,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public static void GetBytesHalf(ushort value, Span<byte> span, int offset = 0) =>
-            MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0] = value;
+        public static unsafe void GetBytesHalf(ushort value, Span<byte> span, int offset = 0) =>
+            new ReadOnlySpan<byte>(&value, 2).CopyTo(span.Slice(offset, 2));
 
         /// <summary>
         /// Write 16-bit float value to memory at specified offset
@@ -550,7 +526,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesHalfM(ushort value, Memory<byte> memory, int offset = 0) =>
+        public static void GetBytesHalfM(ushort value, Memory<byte> memory, int offset = 0) =>
             GetBytesHalf(value, memory.Span, offset);
 
         /// <summary>
@@ -559,8 +535,11 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public static void GetBytesHalf(float value, Span<byte> span, int offset = 0) =>
-            MemoryMarshal.Cast<byte, ushort>(span.Slice(offset, 2))[0] = HalfHelper.SingleToHalf(value);
+        public static unsafe void GetBytesHalf(float value, Span<byte> span, int offset = 0)
+        {
+            ushort v = HalfHelper.SingleToHalf(value);
+            new ReadOnlySpan<byte>(&v, 2).CopyTo(span.Slice(offset, 2));
+        }
 
         /// <summary>
         /// Write 32-bit float value as 16-bit to memory at specified offset
@@ -568,7 +547,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="memory">Memory to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public void GetBytesHalfM(float value, Memory<byte> memory, int offset = 0) =>
+        public static void GetBytesHalfM(float value, Memory<byte> memory, int offset = 0) =>
             GetBytesHalf(value, memory.Span, offset);
 
         /// <summary>
@@ -578,7 +557,7 @@ namespace Fp
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytesHalf(ushort value, byte[]? array = null, int offset = 0)
+        public static byte[] GetBytesHalf(ushort value, byte[]? array = null, int offset = 0)
         {
             array ??= new byte[2];
             GetBytesHalf(value, array.AsSpan(offset, 2));
@@ -592,7 +571,7 @@ namespace Fp
         /// <param name="array">Array to write to</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Resultant array (newly allocated if none provided)</returns>
-        public byte[] GetBytesHalf(float value, byte[]? array = null, int offset = 0)
+        public static byte[] GetBytesHalf(float value, byte[]? array = null, int offset = 0)
         {
             array ??= new byte[2];
             GetBytesHalf(value, array.AsSpan(offset, 2));
@@ -605,7 +584,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteHalf(ushort value, Stream? stream = null, int? offset = null)
+        public void WriteHalf(ushort value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytesHalf(value, TempBuffer);
@@ -634,7 +613,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteHalf(float value, Stream? stream = null, int? offset = null)
+        public void WriteHalf(float value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytesHalf(value, TempBuffer);
@@ -663,8 +642,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public static void GetBytes(float value, Span<byte> span, int offset = 0) =>
-            MemoryMarshal.Cast<byte, float>(span.Slice(offset, 4))[0] = value;
+        public static unsafe void GetBytes(float value, Span<byte> span, int offset = 0) =>
+            new ReadOnlySpan<byte>(&value, 4).CopyTo(span.Slice(offset, 4));
 
         /// <summary>
         /// Write 32-bit float value to memory at specified offset
@@ -694,7 +673,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteSingle(float value, Stream? stream = null, int? offset = null)
+        public void WriteSingle(float value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -723,8 +702,8 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="span">Span to write to</param>
         /// <param name="offset">Offset to write to</param>
-        public static void GetBytes(double value, Span<byte> span, int offset = 0) =>
-            MemoryMarshal.Cast<byte, double>(span.Slice(offset, 8))[0] = value;
+        public static unsafe void GetBytes(double value, Span<byte> span, int offset = 0) =>
+            new ReadOnlySpan<byte>(&value, 8).CopyTo(span.Slice(offset, 8));
 
         /// <summary>
         /// Write 64-bit float value to memory at specified offset
@@ -755,7 +734,7 @@ namespace Fp
         /// <param name="value">Value to write</param>
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
-        public void WriteDouble(double value, Stream? stream = null, int? offset = null)
+        public void WriteDouble(double value, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             GetBytes(value, TempBuffer);
@@ -800,7 +779,7 @@ namespace Fp
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
         public unsafe void WriteUtf8String(string value, bool nullTerminate = true, Stream? stream = null,
-            int? offset = null)
+            long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             long origPos = offset.HasValue ? stream.Position : -1;
@@ -874,7 +853,7 @@ namespace Fp
         /// <param name="stream">Stream to write to, uses current output file if null</param>
         /// <param name="offset">Offset to write to, current position if null</param>
         public unsafe void WriteUtf16String(string value, bool nullTerminate = true, bool bigEndian = false,
-            bool byteOrderMark = false, Stream? stream = null, int? offset = null)
+            bool byteOrderMark = false, Stream? stream = null, long? offset = null)
         {
             stream ??= OutputStream ?? throw new InvalidOperationException();
             long origPos = offset.HasValue ? stream.Position : -1;

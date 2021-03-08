@@ -3,11 +3,8 @@ using System.Buffers;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
-using Fp.Intermediate;
-using static System.Buffers.ArrayPool<byte>;
 
-namespace Fp.Intermediate
-{
+namespace Fp {
     /// <summary>
     /// PCM audio data
     /// </summary>
@@ -85,19 +82,19 @@ namespace Fp.Intermediate
         {
             PcmInfo info = PcmInfo;
             if (info.ExtraParams.HasValue)
-                info.ExtraParams = IntermediateUtil.CopySegment(info.ExtraParams.Value);
+                info.ExtraParams = DataUtil.CopySegment(info.ExtraParams.Value);
             if (Dry)
                 return new PcmData(BasePath, info);
             if (_disposed)
                 throw new ObjectDisposedException(nameof(PcmData));
-            return new PcmData(BasePath, info, IntermediateUtil.CloneBuffer(Buffer));
+            return new PcmData(BasePath, info, DataUtil.CloneBuffer(Buffer));
         }
 
         // http://soundfile.sapp.org/doc/WaveFormat/
         private static void WritePcmWave(Stream outputStream, PcmInfo pcmInfo, ReadOnlySpan<byte> data)
         {
             int hLen = 12 + 8 + pcmInfo.SubChunk1Size + 8;
-            byte[] buffer = Shared.Rent(hLen);
+            byte[] buffer = ArrayPool<byte>.Shared.Rent(hLen);
             Span<byte> bufferSpan = buffer.AsSpan(0, hLen);
             try
             {
@@ -130,7 +127,7 @@ namespace Fp.Intermediate
             }
             finally
             {
-                Shared.Return(buffer);
+                ArrayPool<byte>.Shared.Return(buffer);
             }
 
             Processor.WriteBaseSpan(outputStream, data);
@@ -144,10 +141,7 @@ namespace Fp.Intermediate
             base.Dispose(disposing);
         }
     }
-}
 
-namespace Fp
-{
     public partial class Processor
     {
         /// <summary>

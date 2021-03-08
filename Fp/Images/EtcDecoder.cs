@@ -18,11 +18,11 @@ using System;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Fp.Images.Etc;
+using Fp.Images;
 
 #pragma warning disable 1591
 
-namespace Fp.Images.Etc
+namespace Fp.Images
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     [SuppressMessage("ReSharper", "IdentifierTypo")]
@@ -1187,15 +1187,16 @@ namespace Fp
         /// <param name="height">Output height</param>
         /// <param name="hasAlpha">Image has alpha channel</param>
         /// <returns>True if succeeded</returns>
-        public static unsafe bool DecodeEtc2(Span<byte> src, Span<uint> img, int width, int height, bool hasAlpha)
+        public static unsafe bool DecodeEtc2(ReadOnlySpan<byte> src, Span<uint> img, int width, int height,
+            bool hasAlpha)
         {
             int w = (width + 3) / 4 * 4;
             int h = (height + 3) / 4 * 4;
 
-            fixed (byte* bsrc = &src.GetPinnableReference())
+            fixed (byte* bsrc = src)
             {
                 byte* srcP = hasAlpha ? bsrc + 64 / 8 : bsrc;
-                fixed (uint* pImg = &img.GetPinnableReference())
+                fixed (uint* pImg = img)
                 {
                     uint* tar = stackalloc uint[4 * 4];
                     byte* tar2 = (byte*)tar;
@@ -1231,5 +1232,21 @@ namespace Fp
 
             return true;
         }
+    }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Decode ETC2-compressed image
+        /// </summary>
+        /// <param name="src">Source buffer</param>
+        /// <param name="img">Target buffer</param>
+        /// <param name="width">Output width</param>
+        /// <param name="height">Output height</param>
+        /// <param name="hasAlpha">Image has alpha channel</param>
+        /// <returns>True if succeeded</returns>
+        public static bool decodeEtc2(ReadOnlyMemory<byte> src, Memory<uint> img, int width, int height,
+            bool hasAlpha) =>
+            Processor.DecodeEtc2(src.Span, img.Span, width, height, hasAlpha);
     }
 }

@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Fp.Ciphers.BlowFish;
-using Fp.Intermediate;
+using Fp.Ciphers;
 using NUnit.Framework;
 
 namespace Fp.Tests
@@ -85,7 +84,7 @@ namespace Fp.Tests
             byte[] dataEnc = new byte[data.Length];
             Buffer.BlockCopy(data, 0, dataEnc, 0, data.Length);
             Blowfish bf = new();
-            var ptkey = Processor.DecodeHex("1010ffff");
+            byte[] ptkey = Processor.DecodeHex("1010ffff");
             bf.SetBlankIv();
             bf.SetKey(ptkey);
             bf.EncryptCbc(dataEnc);

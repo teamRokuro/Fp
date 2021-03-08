@@ -1,11 +1,11 @@
 using System;
 
-namespace Fp.Intermediate
+namespace Fp
 {
     /// <summary>
     /// Utility functions for format conversion
     /// </summary>
-    public static class IntermediateUtil
+    public static class DataUtil
     {
         /// <summary>
         /// Get file extension for format

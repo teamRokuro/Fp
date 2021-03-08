@@ -1,9 +1,9 @@
 using System;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
-using Fp.Images.Dxt;
+using Fp.Images;
 
-namespace Fp.Images.Dxt
+namespace Fp.Images
 {
     /// <summary>
     /// DXT1/DXT5 texture decoder
@@ -211,7 +211,7 @@ namespace Fp.Images.Dxt
         /// <param name="height">Texture height</param>
         /// <param name="blockStorage">pointer to compressed DXT1 blocks</param>
         /// <param name="image">pointer to the image where the decompressed pixels will be stored</param>
-        public static unsafe void BlockDecompressImageDxt1(uint width, uint height, Span<byte> blockStorage,
+        public static unsafe void BlockDecompressImageDxt1(uint width, uint height, ReadOnlySpan<byte> blockStorage,
             Span<uint> image)
         {
             uint blockCountX = (width + 3) / 4;
@@ -469,7 +469,7 @@ namespace Fp.Images.Dxt
         /// <param name="height">Texture height</param>
         /// <param name="blockStorage">pointer to compressed DXT5 blocks</param>
         /// <param name="image">pointer to the image where the decompressed pixels will be stored</param>
-        public static unsafe void BlockDecompressImageDxt5(uint width, uint height, Span<byte> blockStorage,
+        public static unsafe void BlockDecompressImageDxt5(uint width, uint height, ReadOnlySpan<byte> blockStorage,
             Span<uint> image)
         {
             uint blockCountX = (width + 3) / 4;
@@ -507,21 +507,45 @@ namespace Fp
         /// <summary>
         /// Decompress DXT1-compressed image
         /// </summary>
-        /// <param name="width">Width</param>
-        /// <param name="height">Height</param>
         /// <param name="src">Source buffer</param>
         /// <param name="img">Target buffer</param>
-        public static void DecodeDxt1(int width, int height, Span<byte> src, Span<uint> img) =>
+        /// <param name="width">Width</param>
+        /// <param name="height">Height</param>
+        public static void DecodeDxt1(ReadOnlySpan<byte> src, Span<uint> img,int width, int height) =>
             DxtDecoder.BlockDecompressImageDxt1((uint)width, (uint)height, src, img);
 
         /// <summary>
         /// Decompress DXT5-compressed image
         /// </summary>
-        /// <param name="width">Width</param>
-        /// <param name="height">Height</param>
         /// <param name="src">Source buffer</param>
         /// <param name="img">Target buffer</param>
-        public static void DecodeDxt5(int width, int height, Span<byte> src, Span<uint> img) =>
+        /// <param name="width">Width</param>
+        /// <param name="height">Height</param>
+        public static void DecodeDxt5(ReadOnlySpan<byte> src, Span<uint> img, int width, int height) =>
             DxtDecoder.BlockDecompressImageDxt5((uint)width, (uint)height, src, img);
+    }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Decompress DXT1-compressed image
+        /// </summary>
+        /// <param name="src">Source buffer</param>
+        /// <param name="img">Target buffer</param>
+        /// <param name="width">Width</param>
+        /// <param name="height">Height</param>
+        public static void decodeDxt1(ReadOnlyMemory<byte> src, Memory<uint> img, int width, int height) =>
+            Processor.DecodeDxt1(src.Span, img.Span, width, height);
+
+        /// <summary>
+        /// Decompress DXT5-compressed image
+        /// </summary>
+        /// <param name="src">Source buffer</param>
+        /// <param name="img">Target buffer</param>
+        /// <param name="width">Width</param>
+        /// <param name="height">Height</param>
+        public static void decodeDxt5(ReadOnlyMemory<byte> src, Memory<uint> img, int width, int height) =>
+            Processor.DecodeDxt5(src.Span, img.Span, width, height);
+
     }
 }

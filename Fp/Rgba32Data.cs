@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Fp.Intermediate;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Fp.Intermediate
-{
+namespace Fp {
     /// <summary>
     /// 32-bit RGBA data
     /// </summary>
@@ -138,13 +136,10 @@ namespace Fp.Intermediate
                 return new Rgba32Data(BasePath, Width, Height);
             if (_disposed)
                 throw new ObjectDisposedException(nameof(Rgba32Data));
-            return new Rgba32Data(BasePath, Width, Height, IntermediateUtil.CloneBuffer(Buffer));
+            return new Rgba32Data(BasePath, Width, Height, DataUtil.CloneBuffer(Buffer));
         }
     }
-}
 
-namespace Fp
-{
     public partial class Processor
     {
         /// <summary>

@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Fp.Intermediate;
 using Microsoft.Extensions.Logging;
 
 namespace Fp
@@ -21,6 +20,13 @@ namespace Fp
     public partial class Processor : IDisposable
     {
         #region Properties and fields
+
+        /// <summary>
+        /// Currently running <see cref="CurrentSegmentedProcessor"/> on this thread.
+        /// </summary>
+        public static Processor Current => _current ?? throw new InvalidOperationException();
+
+        [ThreadStatic] internal static Processor? _current;
 
         /// <summary>
         /// Per-thread instance.
@@ -283,12 +289,11 @@ namespace Fp
         /// <summary>
         /// Process current file
         /// </summary>
-        /// <returns>Generated outputs</returns>
         public void Process()
         {
-            ProcessImpl();
+            ShieldProcess();
             if (_overrideProcess) return;
-            foreach (Data d in ProcessSegmentedImpl())
+            foreach (Data d in ShieldProcessSegmented())
             {
                 if (Nop) continue;
                 using Data data = d;
@@ -305,14 +310,14 @@ namespace Fp
         /// <returns>Generated outputs</returns>
         public IEnumerable<Data> ProcessSegmented()
         {
-            foreach (Data entry in ProcessSegmentedImpl()) yield return entry;
+            foreach (Data entry in ShieldProcessSegmented()) yield return entry;
             if (_overrideProcessSegmented) yield break;
             FileSystemSource prevFs = FileSystem ?? throw new InvalidOperationException();
             FileSystemSource.SegmentedFileSystemSource fs = new(prevFs, false);
             FileSystem = fs;
             try
             {
-                ProcessImpl();
+                ShieldProcess();
                 foreach ((string path, Stream stream) in fs)
                     yield return new BufferData<byte>(path, GetMemory(stream));
             }
@@ -320,6 +325,46 @@ namespace Fp
             {
                 FileSystem = prevFs;
             }
+        }
+
+        /// <summary>
+        /// Process current file
+        /// </summary>
+        protected void ShieldProcess()
+        {
+            _current = this;
+            try
+            {
+                ProcessImpl();
+            }
+            finally
+            {
+                _current = null;
+            }
+        }
+
+        /// <summary>
+        /// Process current file in parts
+        /// </summary>
+        /// <returns>Generated outputs</returns>
+        protected IEnumerable<Data> ShieldProcessSegmented()
+        {
+            using var enumerator = ProcessSegmentedImpl().GetEnumerator();
+            bool has;
+            do
+            {
+                _current = this;
+                try
+                {
+                    has = enumerator.MoveNext();
+                }
+                finally
+                {
+                    _current = null;
+                }
+
+                if (has) yield return enumerator.Current!;
+            } while (has);
         }
 
         #endregion

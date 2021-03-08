@@ -3,10 +3,8 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Fp.Intermediate;
 
-namespace Fp.Intermediate
-{
+namespace Fp {
     /// <summary>
     /// Buffer containing unstructured data
     /// </summary>
@@ -122,7 +120,7 @@ namespace Fp.Intermediate
                 return new BufferData<T>(BasePath, Count);
             if (_disposed)
                 throw new ObjectDisposedException(nameof(BufferData<T>));
-            return new BufferData<T>(BasePath, IntermediateUtil.CloneBuffer(Buffer));
+            return new BufferData<T>(BasePath, DataUtil.CloneBuffer(Buffer));
         }
 
         /// <summary>
@@ -148,10 +146,7 @@ namespace Fp.Intermediate
             GC.SuppressFinalize(this);
         }
     }
-}
 
-namespace Fp
-{
     public partial class Processor
     {
         /// <summary>

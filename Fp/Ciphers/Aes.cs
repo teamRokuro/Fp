@@ -11,7 +11,7 @@ namespace Fp
         /// </summary>
         /// <param name="src">Source span</param>
         /// <param name="key">Cipher key</param>
-        public static unsafe void DecryptAesEcb(Span<byte> src, Span<byte> key)
+        public static unsafe void DecryptAesEcb(Span<byte> src, ReadOnlySpan<byte> key)
         {
             using Aes aes = Aes.Create() ?? throw new ApplicationException();
             aes.Key = key.ToArray();
@@ -33,7 +33,7 @@ namespace Fp
         /// <param name="src">Source span</param>
         /// <param name="key">Cipher key</param>
         /// <param name="iv">IV (CBC/CTR)</param>
-        public static unsafe void DecryptAesCbc(Span<byte> src, Span<byte> key, Span<byte> iv = default)
+        public static unsafe void DecryptAesCbc(Span<byte> src, ReadOnlySpan<byte> key, ReadOnlySpan<byte> iv = default)
         {
             using Aes aes = Aes.Create() ?? throw new ApplicationException();
             aes.Key = key.ToArray();
@@ -49,5 +49,26 @@ namespace Fp
                 cs.CopyTo(ps2);
             }
         }
+    }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Decrypt with Aes using ECB mode and key
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        public static void decryptAesEcb(Memory<byte> src, ReadOnlyMemory<byte> key) =>
+            Processor.DecryptAesEcb(src.Span, key.Span);
+
+        /// <summary>
+        /// Decrypt with Aes using CBC mode and key/IV
+        /// </summary>
+        /// <param name="src">Source span</param>
+        /// <param name="key">Cipher key</param>
+        /// <param name="iv">IV (CBC/CTR)</param>
+        public static void decryptAesCbc(Memory<byte> src, ReadOnlyMemory<byte> key,
+            ReadOnlyMemory<byte> iv = default) =>
+            Processor.DecryptAesCbc(src.Span, key.Span, iv.Length == 0 ? default : iv.Span);
     }
 }

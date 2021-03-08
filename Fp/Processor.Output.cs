@@ -1,10 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-#if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
-
-#endif
 
 namespace Fp
 {
@@ -14,6 +11,37 @@ namespace Fp
     public partial class Processor
     {
         #region Output from stream utilities
+
+        private static long WriteBaseStream(Stream stream, long length, Stream outputStream, bool lenient,
+            int bufferLength)
+        {
+            long outLen = 0;
+            byte[] buffer = Shared.Rent(bufferLength);
+            try
+            {
+                long left = length;
+                int read;
+                do
+                {
+                    read = stream.Read(buffer, 0, (int)Math.Min(left, buffer.Length));
+                    outputStream.Write(buffer, 0, read);
+                    left -= read;
+                    outLen += read;
+                } while (left > 0 && read != 0);
+
+                if (left > 0 && read != 0 && !lenient)
+                {
+                    throw new ProcessorException(
+                        $"Failed to read required number of bytes! 0x{read:X} read, 0x{left:X} left, 0x{stream.Position:X} end position");
+                }
+            }
+            finally
+            {
+                Shared.Return(buffer);
+            }
+
+            return outLen;
+        }
 
         /// <summary>
         /// Output data from stream to stream

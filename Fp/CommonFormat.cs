@@ -1,4 +1,4 @@
-namespace Fp.Intermediate
+namespace Fp
 {
     /// <summary>
     /// Common file formats
