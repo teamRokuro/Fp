@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "src": "../Fp",
+          "src": "../src/Fp",
           "files": [
             "**.csproj"
           ],
