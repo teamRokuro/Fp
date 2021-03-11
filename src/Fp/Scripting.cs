@@ -21,7 +21,7 @@ namespace Fp
         /// <param name="fileSystemSource">Filesystem.</param>
         /// <param name="args">Arguments. If null, only register processors.</param>
         /// <param name="factories">Processor factories.</param>
-        public static void fpCliFilesystem(FileSystemSource? fileSystemSource, IReadOnlyList<string>? args,
+        public static void fpCliFilesystem(FileSystemSource? fileSystemSource, IList<string>? args,
             params ProcessorFactory[] factories)
         {
             processors.Factories.UnionWith(factories);
@@ -35,7 +35,7 @@ namespace Fp
         /// <param name="func">Function or delegate run per file.</param>
         /// <param name="args">Arguments. If null, only register processor.</param>
         /// <param name="info">Processor info.</param>
-        public static void fp(Action func, IReadOnlyList<string>? args, ProcessorInfo? info = null) =>
+        public static void fp(Action func, IList<string>? args, ProcessorInfo? info = null) =>
             fpCliFilesystem(null, args,
                 new DelegateProcessorFactory(info, () => new ScriptingDirectProcessor(func)));
 
@@ -45,7 +45,7 @@ namespace Fp
         /// <param name="func">Function that returns enumerable (segmented processing enumerator).</param>
         /// <param name="args">Arguments. If null, only register processor.</param>
         /// <param name="info">Processor info.</param>
-        public static void fp(Func<IEnumerable<Data>> func, IReadOnlyList<string>? args, ProcessorInfo? info = null) =>
+        public static void fp(Func<IEnumerable<Data>> func, IList<string>? args, ProcessorInfo? info = null) =>
             fpCliFilesystem(null, args,
                 new DelegateProcessorFactory(info, () => new ScriptingSegmentedProcessor(func)));
     }
