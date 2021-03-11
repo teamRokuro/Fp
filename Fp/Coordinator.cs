@@ -19,6 +19,37 @@ namespace Fp
         public const string DefaultOutputFolderName = "fp_output";
 
         /// <summary>
+        /// Default name for current executable (argv[0] or generic name)
+        /// </summary>
+        public static string DefaultCurrentExecutableName
+        {
+            get
+            {
+                if (_defaultCurrentExecutableName != null) return _defaultCurrentExecutableName;
+                try
+                {
+                    _defaultCurrentExecutableName = Environment.GetCommandLineArgs()[0];
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                _defaultCurrentExecutableName = "<program>";
+                return _defaultCurrentExecutableName;
+            }
+        }
+
+        /// <summary>
+        /// Gets logger factory with console logger
+        /// </summary>
+        /// <returns></returns>
+        public static LoggerFactory GetDefaultConsoleLoggerFactory() =>
+            new(new[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())});
+
+        private static string? _defaultCurrentExecutableName;
+
+        /// <summary>
         /// Get processor configuration from cli
         /// </summary>
         /// <param name="exeName">Executable name</param>
@@ -36,7 +67,7 @@ namespace Fp
             List<(bool, string, string)> inputs = new();
             List<string> exArgs = new();
             string? outputRootDirectory = null;
-            int parallel = 0;
+            int parallel = 1;
             bool preload = false;
             bool debug = false;
             bool nop = false;
@@ -67,24 +98,32 @@ namespace Fp
                     case "-debug":
                         debug = true;
                         break;
-                    case "m" when enableParallel:
-                    case "-multithread" when enableParallel:
+                    case "m":
+                    case "-multithread":
+                        if (!enableParallel)
+                        {
+                            logger.LogWarning("Multithreading is not currently supported, ignoring switch {Switch}",
+                                str);
+                            break;
+                        }
+
                         string? arg = GetArgValue(args, i);
                         if (arg == null)
                         {
-                            logger.LogError($"No argument specified for switch {str}, requires int");
+                            logger.LogError("No argument specified for switch {Switch}, requires int", str);
                             return false;
                         }
 
                         if (!int.TryParse(arg, out int maxParallelRes))
                         {
-                            logger.LogError($"Switch {str} requires int, got {arg}");
+                            logger.LogError("Switch {Str} requires int, got {Arg}", str, arg);
                             return false;
                         }
 
                         if (maxParallelRes < 1)
                         {
-                            logger.LogError($"Switch {str} requires value >= 1, got {maxParallelRes}");
+                            logger.LogError("Switch {Switch} requires value >= 1, got {MaxParallelRes}", str,
+                                maxParallelRes);
                             return false;
                         }
 
@@ -105,7 +144,7 @@ namespace Fp
                         preload = true;
                         break;
                     default:
-                        logger.LogError($"Unknown switch {str}");
+                        logger.LogError("Unknown switch {Switch}", str);
                         return false;
                 }
             }
@@ -114,27 +153,22 @@ namespace Fp
             {
                 if (exeName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                     exeName = "dotnet " + exeName;
-                string usageStr = $@"Usage:
-    {exeName} <inputs...>";
-                if (enableParallel)
-                    usageStr += " [-m <value>]";
-                usageStr += @" [-o <dir>] [-p] [-- [args...]]
+                logger.LogInformation(@"Usage:
+    {ExeName} <inputs...> [options/flags] [-- [args...]]
 
-Parameters
+Parameters:
     inputs           : Input files/directories.
     args             : Arguments for processor. (Optional)
 
-Options
-    -d|--debug       : Enable debug";
-                if (enableParallel)
-                    usageStr += @"
-    -m|--multithread : Use specified # of workers";
-                usageStr += @"
+Options:
+    -m|--multithread : Use specified # of workers
+    -o|--outdir      : Output directory before working
+
+Flags:
+    -d|--debug       : Enable debug
     -n|--nop         : No outputs
-    -o|--outdir      : Output directory
     -p|--preload     : Load all streams to memory
-                       before working";
-                logger.LogInformation(usageStr);
+", exeName);
                 return false;
             }
 
@@ -164,13 +198,8 @@ Options
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
         public static void CliRunFilesystem<T>(string[] args, string? exeName = null,
-            ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new()
-        {
-            exeName ??= "<program>";
-            fileSystem ??= FileSystemSource.Default;
-            loggerFactory ??= new LoggerFactory(new[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())});
-            CliRunFilesystem(exeName, args, loggerFactory, fileSystem, () => new T());
-        }
+            ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
+            CliRunFilesystem(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
         /// <summary>
         /// Process filesystem tree using command-line argument inputs
@@ -182,9 +211,12 @@ Options
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static void CliRunFilesystem(string exeName, string[] args, ILoggerFactory loggerFactory,
-            FileSystemSource fileSystem, params Func<Processor>[] processorFactories)
+        public static void CliRunFilesystem(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+            FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
+            exeName ??= DefaultCurrentExecutableName;
+            loggerFactory ??= GetDefaultConsoleLoggerFactory();
+            fileSystem ??= FileSystemSource.Default;
             if (!CliGetConfiguration(exeName, args, loggerFactory, false, out ProcessorConfiguration? conf)) return;
             switch (conf!.Parallel)
             {
@@ -207,27 +239,25 @@ Options
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
         public static async Task CliRunFilesystemAsync<T>(string[] args, string? exeName = null,
-            ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new()
-        {
-            exeName ??= "<program>";
-            fileSystem ??= FileSystemSource.Default;
-            loggerFactory ??= new LoggerFactory(new[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())});
-            await CliRunFilesystemAsync(exeName, args, loggerFactory, fileSystem, () => new T());
-        }
+            ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
+            await CliRunFilesystemAsync(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
         /// <summary>
         /// Process filesystem tree using command-line argument inputs
         /// </summary>
-        /// <param name="exeName">Executable name</param>
         /// <param name="args">Command-line arguments</param>
+        /// <param name="exeName">Executable name</param>
         /// <param name="fileSystem">Filesystem to read from</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync(string exeName, string[] args, ILoggerFactory loggerFactory,
-            FileSystemSource fileSystem, params Func<Processor>[] processorFactories)
+        public static async Task CliRunFilesystemAsync(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+            FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
+            exeName ??= DefaultCurrentExecutableName;
+            loggerFactory ??= GetDefaultConsoleLoggerFactory();
+            fileSystem ??= FileSystemSource.Default;
             if (!CliGetConfiguration(exeName, args, loggerFactory, true, out ProcessorConfiguration? conf)) return;
             switch (conf!.Parallel)
             {
@@ -243,6 +273,58 @@ Options
         private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>
             cPos + 1 >= args.Count ? null : args[cPos + 1];
 
+        private static (Processor[] processors, int baseCount, int parallelCount) InitializeProcessors(
+            ProcessorConfiguration configuration, ProcessorFactory[] processorFactories)
+        {
+            if (processorFactories.Length == 0)
+                throw new ArgumentException("Cannot start operation with 0 provided processors");
+            if (configuration.Parallel < 1)
+                throw new ArgumentException(
+                    $"Illegal {nameof(configuration.Parallel)} value of {configuration.Parallel}");
+            int parallelCount = Math.Min(TaskScheduler.Current.MaximumConcurrencyLevel,
+                Math.Max(1, configuration.Parallel));
+            int baseCount = processorFactories.Length;
+            Processor[] processors = new Processor[parallelCount * baseCount];
+            for (int iParallel = 0; iParallel < parallelCount; iParallel++)
+            for (int iBase = 0; iBase < baseCount; iBase++)
+                processors[iParallel * baseCount + iBase] = processorFactories[iBase].CreateProcessor();
+            return (processors, baseCount, parallelCount);
+        }
+
+        private static (Queue<(string inputRoot, string curDir)> dQueue, Queue<(string inputRoot, string file)> fQueue)
+            SeedInputs(
+                IEnumerable<(bool isFile, string dir, string item)> inputs)
+        {
+            Queue<(string, string)> dQueue = new();
+            Queue<(string, string)> fQueue = new();
+            foreach ((bool isFile, string dir, string item) in inputs)
+                (isFile ? fQueue : dQueue).Enqueue((dir, item));
+            return (dQueue, fQueue);
+        }
+
+        private static void GetMoreInputs(FileSystemSource fileSystem, Queue<(string inputRoot, string curDir)> dQueue,
+            Queue<(string inputRoot, string file)> fQueue)
+        {
+            (string inputRoot, string curDir) = dQueue.Dequeue();
+            if (!fileSystem.DirectoryExists(curDir)) return;
+            foreach (string file in fileSystem.EnumerateFiles(curDir))
+                fQueue.Enqueue((inputRoot, file));
+            foreach (string folder in fileSystem.EnumerateDirectories(curDir))
+                dQueue.Enqueue((inputRoot, folder));
+        }
+
+        private static bool _TryDequeue<T>(this Queue<T> queue, out T? result)
+        {
+            if (queue.Count != 0)
+            {
+                result = queue.Dequeue();
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
         /// <summary>
         /// Process filesystem tree asynchronously
         /// </summary>
@@ -253,38 +335,21 @@ Options
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
         public static async Task OperateAsync(ProcessorConfiguration configuration,
             FileSystemSource fileSystem,
-            params Func<Processor>[] processorFactories)
+            params ProcessorFactory[] processorFactories)
         {
-            if (processorFactories.Length == 0)
-                throw new ArgumentException(
-                    "Cannot start operation with 0 provided processors");
-            if (configuration.Parallel < 0)
-                throw new ArgumentException(
-                    $"Cannot start operation with Parallel value of {configuration.Parallel}");
-            int parallelCount = Math.Min(TaskScheduler.Current.MaximumConcurrencyLevel,
-                Math.Max(1, configuration.Parallel));
-            int baseCount = processorFactories.Length;
-            Processor[] processors = new Processor[parallelCount * baseCount];
+            var (processors, baseCount, parallelCount) = InitializeProcessors(configuration, processorFactories);
+            var (dQueue, fQueue) = SeedInputs(configuration.Inputs);
             bool[] actives = new bool[processors.Length];
-            for (int iParallel = 0; iParallel < parallelCount; iParallel++)
-            for (int iBase = 0; iBase < baseCount; iBase++)
-                processors[iParallel * baseCount + iBase] = processorFactories[iBase].Invoke();
-
-            Queue<(string, string)> dQueue = new();
-            Queue<(string, string)> fQueue = new();
-            foreach ((bool isFile, string dir, string item) in configuration.Inputs)
-                (isFile ? fQueue : dQueue).Enqueue((dir, item));
             List<Task> tasks = new();
             List<int> taskIdxes = new();
             List<int> taskIds = new();
             fileSystem.ParallelAccess = true;
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {
-                if (fQueue.Count != 0)
-                {
-                    (string inputRoot, string file) = fQueue.Dequeue();
+                if (fQueue._TryDequeue(out var deq))
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
+                        // Wait for available task
                         while (tasks.Count >= parallelCount)
                         {
                             Task completed = await Task.WhenAny(tasks);
@@ -305,21 +370,13 @@ Options
                         actives[rIdx] = true;
                         int workerId = Enumerable.Range(0, parallelCount).Except(taskIds).First();
                         Task task = Task.Run(() =>
-                            OperateFile(processor, file, inputRoot, configuration, fileSystem, workerId));
+                            OperateFile(processor, deq.file, deq.inputRoot, configuration, fileSystem, workerId));
                         tasks.Add(task);
                         taskIdxes.Add(rIdx);
                         taskIds.Add(workerId);
                     }
-                }
                 else
-                {
-                    (string inputRoot, string curDir) = dQueue.Dequeue();
-                    if (!Directory.Exists(curDir)) continue;
-                    foreach (string file in fileSystem.EnumerateFiles(curDir))
-                        fQueue.Enqueue((inputRoot, file));
-                    foreach (string folder in fileSystem.EnumerateDirectories(curDir))
-                        dQueue.Enqueue((inputRoot, folder));
-                }
+                    GetMoreInputs(fileSystem, dQueue, fQueue);
             }
 
             await Task.WhenAll(tasks);
@@ -333,68 +390,72 @@ Options
         /// <param name="processorFactories">Functions that create new processor instances</param>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
         public static void Operate(ProcessorConfiguration configuration, FileSystemSource fileSystem,
-            params Func<Processor>[] processorFactories)
+            params ProcessorFactory[] processorFactories)
         {
-            if (processorFactories.Length == 0)
-                throw new ArgumentException(
-                    "Cannot start operation with 0 provided processors");
-            if (configuration.Parallel != 0 && configuration.Parallel != 1)
+            if (configuration.Parallel != 1)
                 throw new ArgumentException(
                     $"Cannot start synchronous operation with {nameof(configuration.Parallel)} value of {configuration.Parallel}, use {nameof(Coordinator)}.{nameof(OperateAsync)} instead");
-            int baseCount = processorFactories.Length;
-            Processor[] processors = new Processor[baseCount];
-            for (int iBase = 0; iBase < baseCount; iBase++)
-                processors[iBase] = processorFactories[iBase].Invoke();
-            Queue<(string, string)> dQueue = new();
-            Queue<(string, string)> fQueue = new();
-            foreach ((bool isFile, string dir, string item) in configuration.Inputs)
-                (isFile ? fQueue : dQueue).Enqueue((dir, item));
+            var (processors, baseCount, _) = InitializeProcessors(configuration, processorFactories);
+            var (dQueue, fQueue) = SeedInputs(configuration.Inputs);
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {
-                if (fQueue.Count != 0)
-                {
-                    (string inputRoot, string file) = fQueue.Dequeue();
+                if (fQueue._TryDequeue(out var deq))
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
-                        OperateFile(processors[iBase], file, inputRoot, configuration, fileSystem, 0);
-                        if (processors[iBase].Lock)
-                            break;
+                        var res = OperateFile(processors[iBase], deq.file, deq.inputRoot, configuration, fileSystem,
+                            iBase);
+                        if (res.Locked) break;
                     }
-                }
                 else
-                {
-                    (string inputRoot, string curDir) = dQueue.Dequeue();
-                    if (!Directory.Exists(curDir)) continue;
-                    foreach (string file in fileSystem.EnumerateFiles(curDir))
-                        fQueue.Enqueue((inputRoot, file));
-                    foreach (string folder in fileSystem.EnumerateDirectories(curDir))
-                        dQueue.Enqueue((inputRoot, folder));
-                }
+                    GetMoreInputs(fileSystem, dQueue, fQueue);
             }
         }
 
-        private static void OperateFile(Processor processor, string file, string inputRoot,
+        private static ProcessResult OperateFile(Processor processor, string file, string inputRoot,
             ProcessorConfiguration configuration, FileSystemSource fileSystem, int workerId)
         {
             try
             {
                 processor.Cleanup();
-                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration, workerId);
+                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration,
+                    workerId);
+                bool success;
                 if (processor.Debug)
+                {
                     processor.Process();
+                    success = true;
+                }
                 else
+                {
                     try
                     {
                         processor.Process();
+                        success = true;
                     }
                     catch (Exception e)
                     {
-                        configuration.Logger.LogError(e, $"Exception occurred during processing:\n{e}");
+                        configuration.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
+                        success = false;
                     }
+                }
+
+                return new ProcessResult(success, processor.Lock);
             }
             finally
             {
                 processor.Cleanup();
+            }
+        }
+
+        private struct ProcessResult
+        {
+            public bool Success;
+            public bool Locked;
+
+            public ProcessResult(bool success, bool locked)
+            {
+                Success = success;
+                Locked = locked;
             }
         }
     }

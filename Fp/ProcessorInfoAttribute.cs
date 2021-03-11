@@ -11,24 +11,9 @@ namespace Fp
     public class ProcessorInfoAttribute : Attribute
     {
         /// <summary>
-        /// Processor name
+        /// Processor information
         /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Processor description
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Processor extended description
-        /// </summary>
-        public string ExtendedDescription { get; set; }
-
-        /// <summary>
-        /// Processor extensions
-        /// </summary>
-        public string[] Extensions { get; set; }
+        public ProcessorInfo Info;
 
         /// <summary>
         /// Processor information attribute
@@ -40,10 +25,7 @@ namespace Fp
         public ProcessorInfoAttribute(string name, string description, string extendedDescription,
             params string[] extensions)
         {
-            Name = name;
-            Description = description;
-            ExtendedDescription = extendedDescription;
-            Extensions = extensions;
+            Info = new ProcessorInfo(name, description, extendedDescription, extensions);
         }
     }
 }

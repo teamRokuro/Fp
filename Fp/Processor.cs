@@ -207,14 +207,13 @@ namespace Fp
         public void Prepare(FileSystemSource fileSystem, string inputRoot, string outputRoot, string file,
             ProcessorConfiguration? configuration = null, int workerId = 0)
         {
+            Cleanup(true);
             InputRootDirectory = inputRoot.NormalizePath();
             InputFile = Path.Combine(InputRootDirectory, file).NormalizePath();
             InputDirectory = Path.GetDirectoryName(InputFile) ?? throw new ArgumentException("File is root");
             OutputRootDirectory = outputRoot.NormalizePath();
             OutputDirectory = Join(false,
                 OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)).NormalizePath();
-            InputStream = null;
-            OutputStream = null;
             LittleEndian = true;
             OutputCounter = 0;
             FileSystem = fileSystem;
@@ -261,7 +260,7 @@ namespace Fp
                     }
                     catch (Exception e)
                     {
-                        Logger.LogError(e, $"Exception occurred during processing:\n{e}");
+                        Logger.LogError(e, "Exception occurred during processing:{Exception}", e);
                     }
                 }
             }
@@ -391,17 +390,53 @@ namespace Fp
 
         #endregion
 
+        #region Factory utilities
+
+        /// <summary>
+        /// Creates a factory for the specified type, obtaining information from applied <see cref="ProcessorInfoAttribute"/> if possible
+        /// </summary>
+        /// <typeparam name="T">Processor type</typeparam>
+        /// <returns>Processor factory</returns>
+        public static ProcessorFactory GetFactory<T>() where T : Processor, new()
+        {
+            ProcessorInfo? processorInfo = null;
+            try
+            {
+                var attrs = typeof(T).GetCustomAttributes(typeof(ProcessorInfoAttribute), true);
+                if (attrs.FirstOrDefault() is ProcessorInfoAttribute attr) processorInfo = attr.Info;
+            }
+            catch
+            {
+                // When reflection doesn't work, just fallback
+            }
+
+            return new GenericNewProcessorFactory<T>(processorInfo);
+        }
+
+        #endregion
+
         #region Lifecycle
 
         /// <summary>
         /// Cleanup resources
         /// </summary>
-        public virtual void Cleanup()
+        /// <param name="warn">Warn if resources were not previously cleaned up</param>
+        public virtual void Cleanup(bool warn = false)
         {
-            InputStream?.Dispose();
-            OutputStream?.Dispose();
-            InputStream = null;
-            OutputStream = null;
+            if (InputStream != null)
+            {
+                InputStream.Dispose();
+                if (warn) Logger.LogWarning("Input stream was not disposed prior to cleanup call");
+                InputStream = null;
+            }
+
+            if (OutputStream != null)
+            {
+                OutputStream.Dispose();
+                if (warn) Logger.LogWarning("Output stream was not disposed prior to cleanup call");
+                OutputStream = null;
+            }
+
             MemClear();
         }
 

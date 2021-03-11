@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Microsoft.Extensions.Logging;
 
 namespace Fp
 {
@@ -13,44 +11,43 @@ namespace Fp
     public static partial class Scripting
     {
         /// <summary>
+        /// Registered scripting processors
+        /// </summary>
+        public static readonly ProcessorSource processors = new();
+
+        /// <summary>
         /// Process using processor factory.
         /// </summary>
-        /// <param name="factory">Processor factory.</param>
-        /// <param name="args">Arguments.</param>
         /// <param name="fileSystemSource">Filesystem.</param>
-        /// <param name="name">Program name (for help text).</param>
-        public static void process(Func<Processor> factory, IList<string> args,
-            FileSystemSource? fileSystemSource = null, string? name = null) =>
-            Coordinator.CliRunFilesystem(
-                name ?? "<program>",
-                args.ToArray(),
-                new LoggerFactory(new ILoggerProvider[] {new ConsoleLoggerProvider(new ConsoleLogger.Config())}),
-                fileSystemSource ?? FileSystemSource.Default,
-                factory);
+        /// <param name="args">Arguments. If null, only register processors.</param>
+        /// <param name="factories">Processor factories.</param>
+        public static void fpCliFilesystem(FileSystemSource? fileSystemSource, IReadOnlyList<string>? args,
+            params ProcessorFactory[] factories)
+        {
+            processors.Factories.UnionWith(factories);
+            if (args != null)
+                Coordinator.CliRunFilesystem(args.ToArray(), default, default, fileSystemSource, factories);
+        }
 
         /// <summary>
         /// Process using direct function.
         /// </summary>
         /// <param name="func">Function or delegate run per file.</param>
-        /// <param name="args">Arguments.</param>
-        /// <param name="fileSystemSource">Filesystem.</param>
-        /// <param name="name">Program name (for help text).</param>
-        public static void process(Action func, IList<string> args, FileSystemSource? fileSystemSource = null,
-            string? name = null) =>
-            process(() => new ScriptingDirectProcessor(func), args, fileSystemSource,
-                name ?? func.Method.Module.Assembly.GetName().Name);
+        /// <param name="args">Arguments. If null, only register processor.</param>
+        /// <param name="info">Processor info.</param>
+        public static void fp(Action func, IReadOnlyList<string>? args, ProcessorInfo? info = null) =>
+            fpCliFilesystem(null, args,
+                new DelegateProcessorFactory(info, () => new ScriptingDirectProcessor(func)));
 
         /// <summary>
         /// Process using segmented function.
         /// </summary>
         /// <param name="func">Function that returns enumerable (segmented processing enumerator).</param>
-        /// <param name="args">Arguments.</param>
-        /// <param name="fileSystemSource">Filesystem.</param>
-        /// <param name="name">Program name (for help text).</param>
-        public static void process(Func<IEnumerable<Data>> func, IList<string> args,
-            FileSystemSource? fileSystemSource = null, string? name = null) =>
-            process(() => new ScriptingSegmentedProcessor(func), args, fileSystemSource,
-                name ?? func.Method.Module.Assembly.GetName().Name);
+        /// <param name="args">Arguments. If null, only register processor.</param>
+        /// <param name="info">Processor info.</param>
+        public static void fp(Func<IEnumerable<Data>> func, IReadOnlyList<string>? args, ProcessorInfo? info = null) =>
+            fpCliFilesystem(null, args,
+                new DelegateProcessorFactory(info, () => new ScriptingSegmentedProcessor(func)));
     }
     // ReSharper restore InconsistentNaming
 }
