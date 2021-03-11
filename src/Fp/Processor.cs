@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using static Fp.Processor;
 
 namespace Fp
 {
@@ -464,4 +465,33 @@ namespace Fp
 
         #endregion
     }
+
+
+    // ReSharper disable InconsistentNaming
+    public partial class Scripting
+    {
+
+        #region Logging
+
+        /// <summary>
+        /// Invoke logger with formatted string containing specified log
+        /// </summary>
+        /// <param name="log">Message</param>
+        public static void info(string log) => Current.LogInfo(log);
+
+        /// <summary>
+        /// Invoke logger with formatted string containing specified log
+        /// </summary>
+        /// <param name="log">Message</param>
+        public static void warn(string log) => Current.LogWarn(log);
+
+        /// <summary>
+        /// Invoke logger with formatted string containing specified log
+        /// </summary>
+        /// <param name="log">Message</param>
+        public static void fail(string log) => Current.LogFail(log);
+
+        #endregion
+    }
+    // ReSharper restore InconsistentNaming
 }

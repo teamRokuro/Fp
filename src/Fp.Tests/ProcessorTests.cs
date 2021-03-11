@@ -47,7 +47,7 @@ namespace Fp.Tests
             processor.WriteUtf8String(pontoonString, true, ms);
             byte[] pontoonArr = ms.ToArray();
             ms.SetLength(0);
-            string pontoonRes = Processor.ReadUtf8String(pontoonArr.AsSpan(), out int pontoonResL);
+            string pontoonRes = Processor.ReadUtf8String(pontoonArr.AsSpan(), out int pontoonResL, out _);
             Assert.AreEqual(pontoonString, pontoonRes);
             Assert.AreEqual(7 + 1, pontoonResL);
 
@@ -57,7 +57,7 @@ namespace Fp.Tests
             processor.WriteUtf8String(floaterinoString2, true, ms);
             byte[] floaterinoArr = ms.ToArray();
             ms.SetLength(0);
-            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr.AsSpan(), out int floaterinoResL);
+            string floaterinoRes = Processor.ReadUtf8String(floaterinoArr.AsSpan(), out int floaterinoResL, out _);
             Assert.AreEqual(floaterinoString, floaterinoRes);
             Assert.AreEqual(10 + 1, floaterinoResL);
 
@@ -65,7 +65,7 @@ namespace Fp.Tests
             const string hailHydraString = "hail hydra";
             byte[] hailHydraArr = Encoding.Unicode.GetBytes(hailHydraString);
             Assert.AreEqual(10 * 2, hailHydraArr.Length);
-            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr.AsSpan(), out int hailHydraResL);
+            string hailHydraRes = Processor.ReadUtf16String(hailHydraArr.AsSpan(), out int hailHydraResL, out _);
             Assert.AreEqual(hailHydraString, hailHydraRes);
             Assert.AreEqual(10 * 2, hailHydraResL);
 
@@ -73,7 +73,7 @@ namespace Fp.Tests
             const string hydraString = "hydra";
             const string hydraString2 = "hydra\0hemert";
             byte[] hydraArr = Encoding.Unicode.GetBytes(hydraString2);
-            string hydraRes = Processor.ReadUtf16String(hydraArr.AsSpan(), out int hydraResL);
+            string hydraRes = Processor.ReadUtf16String(hydraArr.AsSpan(), out int hydraResL, out _);
             Assert.AreEqual(hydraString, hydraRes);
             Assert.AreEqual(6 * 2, hydraResL);
 
@@ -82,7 +82,7 @@ namespace Fp.Tests
             processor.WriteUtf16String(hailHydraString2, true, false, true, ms);
             byte[] hailHydra2Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr.AsSpan(), out int hailHydra2ResL);
+            string hailHydra2Res = Processor.ReadUtf16String(hailHydra2Arr.AsSpan(), out int hailHydra2ResL, out _);
             Assert.AreEqual(hailHydraString2, hailHydra2Res);
             Assert.AreEqual(10 * 2 + 2, hailHydra2ResL);
 
@@ -91,7 +91,7 @@ namespace Fp.Tests
             processor.WriteUtf16String(hailHydraString3, true, true, true, ms);
             byte[] hailHydra3Arr = ms.ToArray();
             ms.SetLength(0);
-            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr.AsSpan(), out int hailHydra3ResL);
+            string hailHydra3Res = Processor.ReadUtf16String(hailHydra3Arr.AsSpan(), out int hailHydra3ResL, out _);
             Assert.AreEqual(hailHydraString3, hailHydra3Res);
             Assert.AreEqual(10 * 2 + 2, hailHydra3ResL);
 
@@ -99,7 +99,7 @@ namespace Fp.Tests
             const string hailHydraString4 = "hail hydra";
             processor.WriteUtf16String(hailHydraString4, true, false, true, ms);
             ms.Position = 0;
-            string hailHydra4Res = processor.ReadUtf16String(ms, out int hailHydra4ResL);
+            string hailHydra4Res = processor.ReadUtf16String(ms, out int hailHydra4ResL, out _);
             Assert.AreEqual(hailHydraString4, hailHydra4Res);
             Assert.AreEqual(hailHydraString4, hailHydra4Res);
             Assert.AreEqual(10 * 2 + 2, hailHydra4ResL);

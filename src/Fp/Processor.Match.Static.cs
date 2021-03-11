@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using static System.Buffers.ArrayPool<byte>;
+using static Fp.Processor;
 
 namespace Fp
 {
@@ -620,4 +621,366 @@ namespace Fp
 
         #endregion
     }
+
+
+    // ReSharper disable InconsistentNaming
+    public partial class Scripting
+    {
+        #region Matching
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="maxCount">Maximum matches</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        // ReSharper disable once MemberCanBeProtected.Global
+        public static IEnumerable<long> match(Stream stream, long streamOffset, long streamMaxOffset,
+            ReadOnlyMemory<byte> match, int matchOffset, int matchLength, int maxCount = int.MaxValue,
+            int bufferLength = 4096) => Match(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength,
+            maxCount, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="maxCount">Maximum matches</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static List<long> match(Stream stream, long streamOffset, long streamMaxOffset, ReadOnlySpan<byte> match,
+            int maxCount = int.MaxValue, int bufferLength = 4096) =>
+            Match(stream, streamOffset, streamMaxOffset, match, maxCount, bufferLength);
+
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, long streamOffset, ReadOnlyMemory<byte> match,
+            int matchOffset, int matchLength, int bufferLength = 4096)
+            => Match(stream, streamOffset, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, ReadOnlyMemory<byte> match, int matchOffset,
+            int matchLength, int bufferLength = 4096)
+            => Match(stream, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, long streamOffset, long streamMaxOffset,
+            ReadOnlyMemory<byte> match, int bufferLength = 4096)
+            => Match(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, long streamOffset, ReadOnlyMemory<byte> match,
+            int bufferLength = 4096)
+            => Match(stream, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, ReadOnlyMemory<byte> match, int bufferLength = 4096)
+            => Match(stream, match, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, long streamOffset, long streamMaxOffset, string match,
+            int bufferLength = 4096) =>
+            Match(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long>
+            match(Stream stream, long streamOffset, string match, int bufferLength = 4096) =>
+            Match(stream, streamOffset, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Enumerate all occurrences of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Enumerator for matches</returns>
+        public static IEnumerable<long> match(Stream stream, string match, int bufferLength = 4096) =>
+            Match(stream, 0, long.MaxValue, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, long streamMaxOffset,
+            ReadOnlyMemory<byte> match, int matchOffset, int matchLength, int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, ReadOnlyMemory<byte> match, int matchOffset,
+            int matchLength, int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
+            int bufferLength = 4096)
+            => MatchFirst(stream, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, long streamMaxOffset,
+            ReadOnlyMemory<byte> match, int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, ReadOnlyMemory<byte> match,
+            int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, ReadOnlyMemory<byte> match, int bufferLength = 4096)
+            => MatchFirst(stream, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, long streamMaxOffset, string match,
+            int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, long streamOffset, string match, int bufferLength = 4096)
+            => MatchFirst(stream, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find first occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of first match or -1 if no match found</returns>
+        public static long matchFirst(Stream stream, string match, int bufferLength = 4096) =>
+            MatchFirst(stream, match, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match,
+            int matchOffset, int matchLength, int bufferLength = 4096)
+            => MatchLast(stream, streamOffset, streamMaxOffset, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, ReadOnlyMemory<byte> match, int matchOffset,
+            int matchLength, int bufferLength = 4096)
+            => MatchLast(stream, streamOffset, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="matchOffset">Offset in target to start matching</param>
+        /// <param name="matchLength">Length of target</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
+            int bufferLength = 4096)
+            => MatchLast(stream, match, matchOffset, matchLength, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match,
+            int bufferLength = 4096)
+            => MatchLast(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, ReadOnlyMemory<byte> match,
+            int bufferLength = 4096)
+            => MatchLast(stream, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, ReadOnlyMemory<byte> match, int bufferLength = 4096)
+            => MatchLast(stream, 0, long.MaxValue, match, 0, match.Length, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="streamMaxOffset">Upper bound (exclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, long streamMaxOffset, string match,
+            int bufferLength = 4096) =>
+            MatchLast(stream, streamOffset, streamMaxOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="streamOffset">Lower bound (inclusive) of stream positions to search</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, long streamOffset, string match, int bufferLength = 4096) =>
+            MatchLast(stream, streamOffset, match, bufferLength);
+
+        /// <summary>
+        /// Find last occurrence of a pattern
+        /// </summary>
+        /// <param name="stream">Stream to read from</param>
+        /// <param name="match">Target to match</param>
+        /// <param name="bufferLength">Minimum buffer length</param>
+        /// <returns>Position of last match or -1 if no match found</returns>
+        public static long matchLast(Stream stream, string match, int bufferLength = 4096) =>
+            MatchLast(stream, match, bufferLength);
+
+        #endregion
+    }
+    // ReSharper restore InconsistentNaming
 }

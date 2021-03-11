@@ -203,27 +203,27 @@ namespace Fp.Helpers
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source, int offset,
             int maxBytes = int.MaxValue] =>
-            new(ReadUtf8String(source.Slice(offset), out int byteCount, maxBytes), byteCount);
+            new(ReadUtf8String(source.Slice(offset), out _, out int numBytes, maxBytes), numBytes);
 
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source] =>
-            new(ReadUtf8String(source, out int byteCount), byteCount);
+            new(ReadUtf8String(source, out _, out int numBytes), numBytes);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream, int maxBytes = int.MaxValue] =>
             offset != -1
-                ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out int byteCount1, maxBytes),
-                    byteCount1)
-                : new StringData(Instance.ReadUtf8String(stream, out int byteCount2), byteCount2);
+                ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
+                    numBytes1)
+                : new StringData(Instance.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream]
         {
             get =>
                 offset != -1
-                    ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out int byteCount1),
-                        byteCount1)
-                    : new StringData(Instance.ReadUtf8String(stream, out int byteCount2), byteCount2);
+                    ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1),
+                        numBytes1)
+                    : new StringData(Instance.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
             set => Instance.WriteUtf8String(value.String, false, stream, offset != -1 ? offset : null);
         }
     }
@@ -248,27 +248,27 @@ namespace Fp.Helpers
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source, int offset,
             int maxBytes = int.MaxValue] =>
-            new(ReadUtf16String(source.Slice(offset), out int byteCount, maxBytes), byteCount);
+            new(ReadUtf16String(source.Slice(offset), out _, out int numBytes, maxBytes), numBytes);
 
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source] =>
-            new(ReadUtf16String(source, out int byteCount), byteCount);
+            new(ReadUtf16String(source, out _, out int numBytes), numBytes);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream, int maxBytes = int.MaxValue] =>
             offset != -1
-                ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out int byteCount1, maxBytes),
-                    byteCount1)
-                : new StringData(Instance.ReadUtf16String(stream, out int byteCount2), byteCount2);
+                ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
+                    numBytes1)
+                : new StringData(Instance.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream]
         {
             get =>
                 offset != -1
-                    ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out int byteCount1),
-                        byteCount1)
-                    : new StringData(Instance.ReadUtf16String(stream, out int byteCount2), byteCount2);
+                    ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1),
+                        numBytes1)
+                    : new StringData(Instance.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
             set => Instance.WriteUtf16String(value.String, false, false, false, stream, offset != -1 ? offset : null);
         }
     }

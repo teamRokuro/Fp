@@ -6,7 +6,7 @@ using static Fp.Processor;
 namespace Fp
 {
     // ReSharper disable InconsistentNaming
-    public static partial class Scripting
+    public partial class Scripting
     {
         /// <summary>
         /// Current file path.

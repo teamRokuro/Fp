@@ -226,4 +226,30 @@ namespace Fp {
             return result;
         }
     }
+
+    public partial class Scripting
+    {
+
+        /// <summary>
+        /// Creates 32bpp RGBA image data object.
+        /// </summary>
+        /// <param name="path">Base path (without extension).</param>
+        /// <param name="width">Image width.</param>
+        /// <param name="height">Image height.</param>
+        /// <param name="buffer">32bpp RGBA buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Data image(this FpPath path, int width, int height, ReadOnlyMemory<uint> buffer) =>
+            Processor.Image(path, width, height, buffer);
+
+        /// <summary>
+        /// Creates 32bpp RGBA image data object.
+        /// </summary>
+        /// <param name="path">Base path (without extension).</param>
+        /// <param name="width">Image width.</param>
+        /// <param name="height">Image height.</param>
+        /// <param name="buffer">32bpp RGBA buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Data image(this string path, int width, int height, ReadOnlyMemory<uint> buffer) =>
+            Processor.Image(path, width, height, buffer);
+    }
 }

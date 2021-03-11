@@ -164,4 +164,27 @@ namespace Fp {
         public static PcmData Audio(string name, PcmInfo info, ReadOnlyMemory<byte> memory) =>
             new(name, info, memory);
     }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Creates PCM audio data object.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <param name="info">PCM information.</param>
+        /// <param name="memory">Audio buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Data audio(this FpPath path, PcmInfo info, ReadOnlyMemory<byte> memory) =>
+            Processor.Audio(path, info, memory);
+
+        /// <summary>
+        /// Creates PCM audio data object.
+        /// </summary>
+        /// <param name="path">Path.</param>
+        /// <param name="info">PCM information.</param>
+        /// <param name="memory">Audio buffer.</param>
+        /// <returns>Data object.</returns>
+        public static Data audio(this string path, PcmInfo info, ReadOnlyMemory<byte> memory) =>
+            Processor.Audio(path, info, memory);
+    }
 }

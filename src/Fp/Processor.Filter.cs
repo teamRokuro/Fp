@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using static Fp.Processor;
 
 namespace Fp
 {
@@ -133,4 +134,132 @@ namespace Fp
 
         #endregion
     }
+
+
+    // ReSharper disable InconsistentNaming
+    public partial class Scripting
+    {
+
+        #region Filter
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this byte[] source, ReadOnlySpan<byte> text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this byte[] source, string text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this Memory<byte> source, ReadOnlySpan<byte> text, int offset = 0) =>
+            HasMagic(source.Span, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this Memory<byte> source, string text, int offset = 0) =>
+            HasMagic(source.Span, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this ReadOnlyMemory<byte> source, ReadOnlySpan<byte> text, int offset = 0) =>
+            HasMagic(source.Span, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this ReadOnlyMemory<byte> source, string text, int offset = 0) =>
+            HasMagic(source.Span, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this Span<byte> source, ReadOnlySpan<byte> text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this Span<byte> source, string text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this ReadOnlySpan<byte> source, ReadOnlySpan<byte> text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="source">Source to read.</param>v
+        /// <param name="offset">Source offset.</param>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(this ReadOnlySpan<byte> source, string text, int offset = 0) =>
+            HasMagic(source, text, offset);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(ReadOnlySpan<byte> text) =>
+            Current.HasMagic(text);
+
+        /// <summary>
+        /// Checks for identifier.
+        /// </summary>
+        /// <param name="text">Value to check for.</param>
+        /// <returns>True if found.</returns>
+        public static bool magic(string text) =>
+            Current.HasMagic(text);
+
+        #endregion
+
+    }
+    // ReSharper restore InconsistentNaming
 }
