@@ -32,10 +32,8 @@ namespace Fp
                 }
                 catch
                 {
-                    // ignored
+                    _defaultCurrentExecutableName = "<program>";
                 }
-
-                _defaultCurrentExecutableName = "<program>";
                 return _defaultCurrentExecutableName;
             }
         }
