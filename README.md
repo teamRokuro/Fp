@@ -1,4 +1,4 @@
-[![.NET](https://github.com/teamRokuro/Fp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/teamRokuro/Fp/actions/workflows/dotnet.yml)
+[![.NET](https://github.com/teamRokuro/Fp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/teamRokuro/Fp/actions/workflows/dotnet.yml) [![NuGet](https://img.shields.io/nuget/v/Fp.svg)](https://www.nuget.org/packages/Fp/)
 
 ### File processing
 
