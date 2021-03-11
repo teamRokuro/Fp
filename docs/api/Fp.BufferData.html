@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class ProcessorException
+    <title>Class BufferData
    </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class ProcessorException
+    <meta name="title" content="Class BufferData
    ">
     <meta name="generator" content="docfx 2.56.7.0">
     
@@ -68,65 +68,51 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Fp.ProcessorException">
+            <article class="content wrap" id="_content" data-uid="Fp.BufferData">
   
   
-  <h1 id="Fp_ProcessorException" data-uid="Fp.ProcessorException" class="text-break">Class ProcessorException
+  <h1 id="Fp_BufferData" data-uid="Fp.BufferData" class="text-break">Class BufferData
   </h1>
-  <div class="markdown level0 summary"><p>Exception thrown during execution of <a class="xref" href="Fp.Processor.html">Processor</a>'s <a class="xref" href="Fp.Processor.html#Fp_Processor_ProcessImpl">ProcessImpl()</a> function</p>
+  <div class="markdown level0 summary"><p>Buffer containing unstructured data</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.Exception</span></div>
-    <div class="level2"><span class="xref">ProcessorException</span></div>
+    <div class="level1"><a class="xref" href="Fp.Data.html">Data</a></div>
+    <div class="level2"><span class="xref">BufferData</span></div>
+      <div class="level3"><a class="xref" href="Fp.BufferData-1.html">BufferData&lt;T&gt;</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
-    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
-    <div><span class="xref">System.Runtime.InteropServices._Exception</span></div>
+    <div><span class="xref">System.IDisposable</span></div>
+    <div><span class="xref">System.ICloneable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <span class="xref">System.Exception.GetBaseException()</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_BasePath">Data.BasePath</a>
     </div>
     <div>
-      <span class="xref">System.Exception.ToString()</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_DefaultFormat">Data.DefaultFormat</a>
     </div>
     <div>
-      <span class="xref">System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_Dry">Data.Dry</a>
     </div>
     <div>
-      <span class="xref">System.Exception.GetType()</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__">Data.WriteConvertedData(Stream, CommonFormat, Dictionary&lt;Object, Object&gt;)</a>
     </div>
     <div>
-      <span class="xref">System.Exception.Message</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_Dispose">Data.Dispose()</a>
     </div>
     <div>
-      <span class="xref">System.Exception.Data</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_Clone">Data.Clone()</a>
     </div>
     <div>
-      <span class="xref">System.Exception.InnerException</span>
+      <a class="xref" href="Fp.Data.html#Fp_Data_CastNumber__2___0_">Data.CastNumber&lt;TIn, TOut&gt;(TIn)</a>
     </div>
     <div>
-      <span class="xref">System.Exception.TargetSite</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.StackTrace</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.HelpLink</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.Source</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.HResult</span>
-    </div>
-    <div>
-      <span class="xref">System.Exception.SerializeObjectState</span>
+      <span class="xref">System.Object.ToString()</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -141,32 +127,35 @@
       <span class="xref">System.Object.GetHashCode()</span>
     </div>
     <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Fp.html">Fp</a></h6>
   <h6><strong>Assembly</strong>: Fp.dll</h6>
-  <h5 id="Fp_ProcessorException_syntax">Syntax</h5>
+  <h5 id="Fp_BufferData_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ProcessorException : Exception, ISerializable, _Exception</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BufferData : Data, IDisposable, ICloneable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_ProcessorException__ctor_System_String_.md&amp;value=---%0Auid%3A%20Fp.ProcessorException.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_BufferData__ctor_System_String_.md&amp;value=---%0Auid%3A%20Fp.BufferData.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/ProcessorException.cs/#L14">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/BufferData.cs/#L14">View Source</a>
   </span>
-  <a id="Fp_ProcessorException__ctor_" data-uid="Fp.ProcessorException.#ctor*"></a>
-  <h4 id="Fp_ProcessorException__ctor_System_String_" data-uid="Fp.ProcessorException.#ctor(System.String)">ProcessorException(String)</h4>
-  <div class="markdown level1 summary"><p>Initialize exception with message</p>
+  <a id="Fp_BufferData__ctor_" data-uid="Fp.BufferData.#ctor*"></a>
+  <h4 id="Fp_BufferData__ctor_System_String_" data-uid="Fp.BufferData.#ctor(System.String)">BufferData(String)</h4>
+  <div class="markdown level1 summary"><p>Create instance of <a class="xref" href="Fp.Data.html">Data</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProcessorException(string message)</code></pre>
+    <pre><code class="lang-csharp hljs">protected BufferData(string basePath)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -180,58 +169,85 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>Textual information about exception</p>
+        <td><span class="parametername">basePath</span></td>
+        <td><p>Base path of resource</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h3 id="methods">Methods
+  </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_ProcessorException__ctor_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20Fp.ProcessorException.%23ctor(System.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_BufferData_AsSpan__1.md&amp;value=---%0Auid%3A%20Fp.BufferData.AsSpan%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/ProcessorException.cs/#L23">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/BufferData.cs/#L24">View Source</a>
   </span>
-  <a id="Fp_ProcessorException__ctor_" data-uid="Fp.ProcessorException.#ctor*"></a>
-  <h4 id="Fp_ProcessorException__ctor_System_String_System_Exception_" data-uid="Fp.ProcessorException.#ctor(System.String,System.Exception)">ProcessorException(String, Exception)</h4>
-  <div class="markdown level1 summary"><p>Initialize exception with message</p>
+  <a id="Fp_BufferData_AsSpan_" data-uid="Fp.BufferData.AsSpan*"></a>
+  <h4 id="Fp_BufferData_AsSpan__1" data-uid="Fp.BufferData.AsSpan``1">AsSpan&lt;TWant&gt;()</h4>
+  <div class="markdown level1 summary"><p>Get span of specified type from buffer</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ProcessorException(string message, Exception innerException)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract ReadOnlySpan&lt;TWant&gt; AsSpan&lt;TWant&gt;()
+    where TWant : struct</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
+  <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
         <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ReadOnlySpan</span>&lt;TWant&gt;</td>
+        <td><p>Span</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
         <th>Name</th>
         <th>Description</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">message</span></td>
-        <td><p>Textual information about exception</p>
+        <td><span class="parametername">TWant</span></td>
+        <td><p>Target type</p>
 </td>
       </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
       <tr>
-        <td><span class="xref">System.Exception</span></td>
-        <td><span class="parametername">innerException</span></td>
-        <td><p>Exception that was thrown inside processor</p>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ObjectDisposedException</span></td>
+        <td><p>If object was disposed</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h3 id="implements">Implements</h3>
   <div>
-      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+      <span class="xref">System.IDisposable</span>
   </div>
   <div>
-      <span class="xref">System.Runtime.InteropServices._Exception</span>
+      <span class="xref">System.ICloneable</span>
   </div>
 </article>
           </div>
@@ -241,10 +257,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_ProcessorException.md&amp;value=---%0Auid%3A%20Fp.ProcessorException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_BufferData.md&amp;value=---%0Auid%3A%20Fp.BufferData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/ProcessorException.cs/#L8" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/BufferData.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
