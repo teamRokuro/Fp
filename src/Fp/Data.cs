@@ -12,17 +12,17 @@ namespace Fp
         /// <summary>
         /// Base path of resource
         /// </summary>
-        public readonly string BasePath;
+        public string BasePath { get; protected init; }
+
+        /// <summary>
+        /// If true, object does not contain complete data, e.g. for <see cref="WriteConvertedData"/>
+        /// </summary>
+        public bool Dry { get; protected init; }
 
         /// <summary>
         /// Default format for container
         /// </summary>
         public abstract CommonFormat DefaultFormat { get; }
-
-        /// <summary>
-        /// If true, object does not contain complete data, e.g. for <see cref="WriteConvertedData"/>
-        /// </summary>
-        public bool Dry { get; protected set; }
 
         /// <summary>
         /// Create instance of <see cref="Data"/>

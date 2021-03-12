@@ -138,6 +138,9 @@ namespace Fp {
                 throw new ObjectDisposedException(nameof(Rgba32Data));
             return new Rgba32Data(BasePath, Width, Height, DataUtil.CloneBuffer(Buffer));
         }
+
+        /// <inheritdoc />
+        public override string ToString() => $"RGBA32 {{ Width = {Width}, Height = {Height} }}";
     }
 
     public partial class Processor

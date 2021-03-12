@@ -32,7 +32,7 @@ namespace Fp
         /// <param name="segment">Data to copy</param>
         /// <typeparam name="T">Type</typeparam>
         /// <returns>Newly allocated array</returns>
-        public static ArraySegment<T> CopySegment<T>(ArraySegment<T> segment)
+        public static ArraySegment<T> CloneSegment<T>(this ArraySegment<T> segment)
         {
             T[] arr = new T[segment.Count];
             segment.AsSpan(0, arr.Length).CopyTo(arr);
@@ -44,7 +44,7 @@ namespace Fp
         /// </summary>
         /// <param name="memory">Memory to clone</param>
         /// <returns>New array</returns>
-        public static Memory<T> CloneBuffer<T>(ReadOnlyMemory<T> memory)
+        public static Memory<T> CloneBuffer<T>(this ReadOnlyMemory<T> memory)
         {
             T[] target = new T[memory.Length];
             memory.CopyTo(target);

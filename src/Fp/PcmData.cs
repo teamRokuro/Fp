@@ -80,14 +80,11 @@ namespace Fp {
         /// <inheritdoc />
         public override object Clone()
         {
-            PcmInfo info = PcmInfo;
-            if (info.ExtraParams.HasValue)
-                info.ExtraParams = DataUtil.CopySegment(info.ExtraParams.Value);
             if (Dry)
-                return new PcmData(BasePath, info);
+                return new PcmData(BasePath, PcmInfo);
             if (_disposed)
                 throw new ObjectDisposedException(nameof(PcmData));
-            return new PcmData(BasePath, info, DataUtil.CloneBuffer(Buffer));
+            return new PcmData(BasePath, PcmInfo, DataUtil.CloneBuffer(Buffer));
         }
 
         // http://soundfile.sapp.org/doc/WaveFormat/
@@ -115,7 +112,7 @@ namespace Fp {
                 if (pcmInfo.SubChunk1Size != 0x10)
                 {
                     BinaryPrimitives.WriteInt16LittleEndian(bufferSpan.Slice(0x24), pcmInfo.ExtraParamSize);
-                    pcmInfo.ExtraParams?.AsSpan(0, pcmInfo.ExtraParamSize).CopyTo(bufferSpan.Slice(0x26));
+                    pcmInfo.ExtraParams?.Span.Slice(0, pcmInfo.ExtraParamSize).CopyTo(bufferSpan.Slice(0x26));
                 }
 
                 // data (subchunk2)
@@ -140,6 +137,9 @@ namespace Fp {
             _disposed = true;
             base.Dispose(disposing);
         }
+
+        /// <inheritdoc />
+        public override string ToString() => $"PCM {{ Buffer Length = {Count}, Info = {PcmInfo} }}";
     }
 
     public partial class Processor

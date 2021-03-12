@@ -295,7 +295,7 @@ namespace Fp
             if (_overrideProcess) return;
             foreach (Data d in ShieldProcessSegmented())
             {
-                if (Nop) continue;
+                if (Nop || d is MetaData && !Debug) continue;
                 using Data data = d;
                 using Stream stream =
                     (FileSystem ?? throw new InvalidOperationException()).OpenWrite(
@@ -375,19 +375,19 @@ namespace Fp
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogInfo(string log) => Logger.LogInformation(log);
+        public void LogInfo(string log) => Logger.LogInformation("{Log}", log);
 
         /// <summary>
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogWarn(string log) => Logger.LogWarning(log);
+        public void LogWarn(string log) => Logger.LogWarning("{Log}", log);
 
         /// <summary>
         /// Invoke logger with formatted string containing specified log
         /// </summary>
         /// <param name="log">Message</param>
-        public void LogFail(string log) => Logger.LogError(log);
+        public void LogFail(string log) => Logger.LogError("{Log}", log);
 
         #endregion
 
@@ -470,7 +470,6 @@ namespace Fp
     // ReSharper disable InconsistentNaming
     public partial class Scripting
     {
-
         #region Logging
 
         /// <summary>
