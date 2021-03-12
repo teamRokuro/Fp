@@ -4,14 +4,11 @@ using Avalonia.Markup.Xaml;
 
 namespace Dereliction.Views
 {
-    public class MainWindow : Window
+    public class OperationWindow : Window
     {
-        private OperationWindow _operationWindow;
-        public MainWindow()
+        public OperationWindow()
         {
             InitializeComponent();
-            _operationWindow = new OperationWindow();
-            _operationWindow.Show();
 #if DEBUG
             this.AttachDevTools();
 #endif
