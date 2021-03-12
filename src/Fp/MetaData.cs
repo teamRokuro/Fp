@@ -53,7 +53,7 @@ namespace Fp
         public override object Clone() => new MetaData(BasePath, Value);
 
         /// <inheritdoc />
-        public override string ToString() => Value.ToString();
+        public override string? ToString() => Value.ToString();
     }
 
     public partial class Processor
