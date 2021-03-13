@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Dereliction.ViewModels"
              xmlns:v="clr-namespace:Dereliction.Views"
+             xmlns:models="clr-namespace:Dereliction.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dereliction.Views.OperationRunnerView">
 
@@ -20,11 +21,14 @@
         </StackPanel>
         <Label Content="Input" Grid.Row="1" Grid.Column="0" />
         <TreeView Grid.Row="2" Grid.Column="0" Items="{Binding Inputs}">
-            <TreeView.ItemTemplate>
-                <TreeDataTemplate>
+            <TreeView.DataTemplates>
+                <TreeDataTemplate ItemsSource="{Binding Infos}">
                     <TextBlock Text="{Binding Name}" />
                 </TreeDataTemplate>
-            </TreeView.ItemTemplate>
+                <DataTemplate DataType="models:InfoElement">
+                    <TextBlock Text="{Binding Value}"/>
+                </DataTemplate>
+            </TreeView.DataTemplates>
         </TreeView>
         <Label Content="Output" Grid.Row="1" Grid.Column="1" />
         <TreeView Grid.Row="2" Grid.Column="1" Items="{Binding Outputs}">
