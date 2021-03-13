@@ -40,6 +40,18 @@ namespace Fp
                 new DelegateProcessorFactory(info, () => new ScriptingDirectProcessor(func)));
 
         /// <summary>
+        /// Process using direct function.
+        /// </summary>
+        /// <param name="func">Function or delegate run per file.</param>
+        /// <param name="args">Arguments. If null, only register processor.</param>
+        /// <param name="name">Processor name</param>
+        /// <param name="description">Processor description</param>
+        /// <param name="extensions">Processor extensions</param>
+        public static void fp(Action func, IList<string>? args, string name, string description,
+            params string[] extensions) =>
+            fp(func, args, new ProcessorInfo(name, description, description, extensions));
+
+        /// <summary>
         /// Process using segmented function.
         /// </summary>
         /// <param name="func">Function that returns enumerable (segmented processing enumerator).</param>
@@ -48,6 +60,18 @@ namespace Fp
         public static void fp(Func<IEnumerable<Data>> func, IList<string>? args, ProcessorInfo? info = null) =>
             fpCliFilesystem(null, args,
                 new DelegateProcessorFactory(info, () => new ScriptingSegmentedProcessor(func)));
+
+        /// <summary>
+        /// Process using segmented function.
+        /// </summary>
+        /// <param name="func">Function that returns enumerable (segmented processing enumerator).</param>
+        /// <param name="args">Arguments. If null, only register processor.</param>
+        /// <param name="name">Processor name</param>
+        /// <param name="description">Processor description</param>
+        /// <param name="extensions">Processor extensions</param>
+        public static void fp(Func<IEnumerable<Data>> func, IList<string>? args, string name, string description,
+            params string[] extensions) =>
+            fp(func, args, new ProcessorInfo(name, description, description, extensions));
     }
     // ReSharper restore InconsistentNaming
 }
