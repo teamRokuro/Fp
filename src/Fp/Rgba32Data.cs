@@ -141,7 +141,7 @@ namespace Fp
         }
 
         /// <inheritdoc />
-        public override string ToString() => $"RGBA32 {{ Width = {Width}, Height = {Height} }}";
+        public override string ToString() => $"RGBA32 {{ Path = {BasePath}, Width = {Width}, Height = {Height} }}";
     }
 
     public partial class Processor

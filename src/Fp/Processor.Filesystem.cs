@@ -346,10 +346,9 @@ namespace Fp
                     {
                         if (pathLength == 1)
                         {
-                            throw new ProcessorException("Joining single-character separator disallowed");
+                            if (cIdx == 0) bufSpan[cIdx++] = first;
                         }
-
-                        if (prevEndWithSeparator)
+                        else if (prevEndWithSeparator)
                         {
                             span = span.Slice(1, --pathLength);
                         }

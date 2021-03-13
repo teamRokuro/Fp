@@ -11,7 +11,6 @@ namespace Fp
         /// <summary>
         /// Create configuration
         /// </summary>
-        /// <param name="inputs">Input sources</param>
         /// <param name="outputRootDirectory">Output source</param>
         /// <param name="parallel">Thread count</param>
         /// <param name="preload">Whether to read all streams to memory</param>
@@ -19,10 +18,9 @@ namespace Fp
         /// <param name="nop">Whether to disable outputs</param>
         /// <param name="logger">Log writer</param>
         /// <param name="args">Arguments</param>
-        public ProcessorConfiguration(IReadOnlyList<(bool, string, string)> inputs, string outputRootDirectory,
+        public ProcessorConfiguration(string outputRootDirectory,
             int parallel, bool preload, bool debug, bool nop, ILogger logger, IReadOnlyList<string> args)
         {
-            Inputs = inputs;
             OutputRootDirectory = outputRootDirectory;
             Parallel = parallel;
             Preload = preload;
@@ -31,11 +29,6 @@ namespace Fp
             Logger = logger;
             Args = args;
         }
-
-        /// <summary>
-        /// Input sources
-        /// </summary>
-        public IReadOnlyList<(bool, string, string)> Inputs { get; init; }
 
         /// <summary>
         /// Output source

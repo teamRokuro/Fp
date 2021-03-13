@@ -140,7 +140,7 @@ namespace Fp
         }
 
         /// <inheritdoc />
-        public override string ToString() => $"PCM {{ Buffer Length = {Count}, Info = {PcmInfo} }}";
+        public override string ToString() => $"PCM {{ Path = {BasePath}, Buffer Length = {Count}, Info = {PcmInfo} }}";
     }
 
     public partial class Processor
