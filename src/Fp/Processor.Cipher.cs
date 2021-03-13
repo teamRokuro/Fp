@@ -274,6 +274,7 @@ namespace Fp
         /// <returns>Array with decoded hex string</returns>
         /// <exception cref="ArgumentException">If string has odd length</exception>
         public static byte[] decodeHex(string hex, bool validate = true) => DecodeHex(hex, validate);
+
         #endregion
     }
     // ReSharper restore InconsistentNaming

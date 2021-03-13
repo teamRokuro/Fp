@@ -76,7 +76,7 @@ namespace Fp
         /// <param name="filename">File name or relative path</param>
         /// <returns>Length of written data</returns>
         public long OutputAll(string? extension = null, string? filename = null)
-            => OutputAll(InputStream ?? throw new InvalidOperationException(), extension, filename);
+            => OutputAll(_inputStream ?? throw new InvalidOperationException(), extension, filename);
 
         /// <summary>
         /// Output data from stream to file under folder named by current file's name
@@ -98,7 +98,7 @@ namespace Fp
         /// <param name="filename">File name or relative path</param>
         /// <returns>Length of written data</returns>
         public long OutputAllSub(string? extension = null, string? filename = null)
-            => OutputAllSub(InputStream ?? throw new InvalidOperationException(), extension, filename == null
+            => OutputAllSub(_inputStream ?? throw new InvalidOperationException(), extension, filename == null
                 ? null
                 : Join(SupportBackSlash,
                     Path.GetFileName(InputFile ?? throw new InvalidOperationException()) ??
@@ -156,7 +156,7 @@ namespace Fp
         /// <returns>Length of written data</returns>
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from input stream</exception>
         public long Output(bool lenient = true, int bufferLength = 4096)
-            => Output(InputStream ?? throw new InvalidOperationException(), long.MaxValue, OutputStream, lenient,
+            => Output(_inputStream ?? throw new InvalidOperationException(), long.MaxValue, OutputStream, lenient,
                 bufferLength);
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Fp
         /// <returns>Length of written data</returns>
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from input stream</exception>
         public long Output(long length, bool lenient = true, int bufferLength = 4096)
-            => Output(InputStream ?? throw new InvalidOperationException(), length, OutputStream, lenient,
+            => Output(_inputStream ?? throw new InvalidOperationException(), length, OutputStream, lenient,
                 bufferLength);
 
         /// <summary>
@@ -183,16 +183,16 @@ namespace Fp
         /// <remarks>Original position of input stream is restored on completion</remarks>
         public long Output(long offset, long length, bool lenient = true, int bufferLength = 4096)
         {
-            long origPos = (InputStream ?? throw new InvalidOperationException()).Position;
+            long origPos = (_inputStream ?? throw new InvalidOperationException()).Position;
             try
             {
-                InputStream.Position = offset;
-                long outLen = Output(InputStream, length, OutputStream, lenient, bufferLength);
+                _inputStream.Position = offset;
+                long outLen = Output(_inputStream, length, OutputStream, lenient, bufferLength);
                 return outLen;
             }
             finally
             {
-                InputStream.Position = origPos;
+                _inputStream.Position = origPos;
             }
         }
 
@@ -264,7 +264,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> if <paramref name="lenient"/> is false and not enough bytes are available from input stream</exception>
         public long Output(long length, string? extension = null, string? filename = null, bool lenient = true,
             int bufferLength = 4096)
-            => Output(InputStream ?? throw new InvalidOperationException(), length, extension, filename, lenient,
+            => Output(_inputStream ?? throw new InvalidOperationException(), length, extension, filename, lenient,
                 bufferLength);
 
         /// <summary>
@@ -282,16 +282,16 @@ namespace Fp
         public long Output(long offset, long length, string? extension = null, string? filename = null,
             bool lenient = true, int bufferLength = 4096)
         {
-            long origPos = (InputStream ?? throw new InvalidOperationException()).Position;
+            long origPos = (_inputStream ?? throw new InvalidOperationException()).Position;
             try
             {
-                InputStream.Position = offset;
-                long outLen = Output(InputStream, offset, length, extension, filename, lenient, bufferLength);
+                _inputStream.Position = offset;
+                long outLen = Output(_inputStream, offset, length, extension, filename, lenient, bufferLength);
                 return outLen;
             }
             finally
             {
-                InputStream.Position = origPos;
+                _inputStream.Position = origPos;
             }
         }
 
@@ -358,7 +358,7 @@ namespace Fp
         /// <remarks>Original position of input stream is restored on completion</remarks>
         public long OutputSub(long offset, long length, string? extension = null, string? filename = null,
             bool lenient = true, int bufferLength = 4096)
-            => OutputSub(InputStream ?? throw new InvalidOperationException(), offset, length, extension, filename,
+            => OutputSub(_inputStream ?? throw new InvalidOperationException(), offset, length, extension, filename,
                 lenient, bufferLength);
 
         #endregion

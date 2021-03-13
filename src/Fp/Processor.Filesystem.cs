@@ -84,9 +84,8 @@ namespace Fp
                 return stream;
             }
 
-            InputStream?.Dispose();
+            _inputStream?.Dispose();
             InputStream = stream;
-            InputLength = InputStream.Length;
 
             return stream;
         }
@@ -114,12 +113,9 @@ namespace Fp
         /// <param name="stream">Stream to close</param>
         public void CloseFile(bool asMain, Stream? stream = null)
         {
-            stream ??= InputStream;
+            stream ??= _inputStream;
             stream?.Dispose();
-            if (asMain)
-            {
-                InputStream = null;
-            }
+            if (asMain) InputStream = null;
         }
 
         /// <summary>

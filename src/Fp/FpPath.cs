@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Represents a path element linked to parent nodes.
     /// </summary>

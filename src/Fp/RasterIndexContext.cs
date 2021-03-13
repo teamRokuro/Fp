@@ -1,6 +1,7 @@
 using System;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Row-major raster position helper.
     /// </summary>
@@ -10,14 +11,17 @@ namespace Fp {
         /// Width.
         /// </summary>
         public readonly int W;
+
         /// <summary>
         /// Height.
         /// </summary>
         public readonly int H;
+
         /// <summary>
         /// X position.
         /// </summary>
         public int X;
+
         /// <summary>
         /// Y position.
         /// </summary>

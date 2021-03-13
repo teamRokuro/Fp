@@ -511,7 +511,7 @@ namespace Fp
         /// <param name="img">Target buffer</param>
         /// <param name="width">Width</param>
         /// <param name="height">Height</param>
-        public static void DecodeDxt1(ReadOnlySpan<byte> src, Span<uint> img,int width, int height) =>
+        public static void DecodeDxt1(ReadOnlySpan<byte> src, Span<uint> img, int width, int height) =>
             DxtDecoder.BlockDecompressImageDxt1((uint)width, (uint)height, src, img);
 
         /// <summary>
@@ -546,6 +546,5 @@ namespace Fp
         /// <param name="height">Height</param>
         public static void decodeDxt5(ReadOnlyMemory<byte> src, Memory<uint> img, int width, int height) =>
             Processor.DecodeDxt5(src.Span, img.Span, width, height);
-
     }
 }

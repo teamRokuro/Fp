@@ -256,7 +256,8 @@ namespace Fp
         /// <param name="sourceMaxOffset">Upper bound (exclusive) of positions to search</param>
         /// <param name="match">Target to match</param>
         /// <returns>Position of first match or -1 if no match found</returns>
-        public static int MatchFirst(ReadOnlyMemory<byte> source, int sourceOffset, int sourceMaxOffset, string match) =>
+        public static int MatchFirst(ReadOnlyMemory<byte> source, int sourceOffset, int sourceMaxOffset,
+            string match) =>
             MatchFirst(source, sourceOffset, sourceMaxOffset, Ascii(match));
 
         /// <summary>

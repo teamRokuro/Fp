@@ -11,10 +11,10 @@ namespace Fp.Helpers
     public record S8Helper(Processor Parent) : BaseUnmanagedHelper<sbyte>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -39,10 +39,10 @@ namespace Fp.Helpers
     public record S8ArrayHelper(Processor Parent) : BaseUnmanagedArrayHelper<sbyte>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override sbyte[] this[Span<byte> source]
@@ -61,10 +61,10 @@ namespace Fp.Helpers
     public record S16Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<short>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -89,10 +89,10 @@ namespace Fp.Helpers
     public record S16ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<short>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override short[] this[Span<byte> source]
@@ -111,10 +111,10 @@ namespace Fp.Helpers
     public record S32Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<int>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -139,10 +139,10 @@ namespace Fp.Helpers
     public record S32ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<int>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override int[] this[Span<byte> source]
@@ -161,10 +161,10 @@ namespace Fp.Helpers
     public record S64Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<long>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -189,10 +189,10 @@ namespace Fp.Helpers
     public record S64ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<long>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override long[] this[Span<byte> source]
@@ -211,10 +211,10 @@ namespace Fp.Helpers
     public record U8Helper(Processor Parent) : BaseUnmanagedHelper<byte>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -239,10 +239,10 @@ namespace Fp.Helpers
     public record U8ArrayHelper(Processor Parent) : BaseUnmanagedArrayHelper<byte>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override byte[] this[Span<byte> source]
@@ -261,10 +261,10 @@ namespace Fp.Helpers
     public record U16Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<ushort>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -289,10 +289,10 @@ namespace Fp.Helpers
     public record U16ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<ushort>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override ushort[] this[Span<byte> source]
@@ -311,10 +311,10 @@ namespace Fp.Helpers
     public record U32Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<uint>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -339,10 +339,10 @@ namespace Fp.Helpers
     public record U32ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<uint>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override uint[] this[Span<byte> source]
@@ -361,10 +361,10 @@ namespace Fp.Helpers
     public record U64Helper(Processor Parent, bool LittleEndian) : BaseUnmanagedHelper<ulong>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -389,10 +389,10 @@ namespace Fp.Helpers
     public record U64ArrayHelper(Processor Parent, bool LittleEndian) : BaseUnmanagedArrayHelper<ulong>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override ulong[] this[Span<byte> source]
@@ -411,10 +411,10 @@ namespace Fp.Helpers
     public record THelper<T>(Processor Parent) : BaseUnmanagedHelper<T> where T : unmanaged
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override T this[Span<byte> source]
@@ -434,10 +434,10 @@ namespace Fp.Helpers
     public record TArrayHelper<T>(Processor Parent) : BaseUnmanagedArrayHelper<T> where T : unmanaged
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override T[] this[Span<byte> source]
@@ -457,10 +457,10 @@ namespace Fp.Helpers
     public record F16Helper(Processor Parent) : BaseHelper<float>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Read/write value.
@@ -492,10 +492,10 @@ namespace Fp.Helpers
     public record F16ArrayHelper(Processor Parent) : BaseHelper<float[], float[], int>
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
 
         /// <summary>

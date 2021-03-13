@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Text;
 using static Fp.Processor;
 
 namespace Fp
@@ -111,7 +110,7 @@ namespace Fp
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
         public bool HasMagic(ReadOnlySpan<byte> span, long offset = 0)
-            => HasMagic(InputStream ?? throw new InvalidOperationException(), span, offset);
+            => HasMagic(_inputStream ?? throw new InvalidOperationException(), span, offset);
 
         /// <summary>
         /// Check if current file's input stream has a specific value at a certain offset
@@ -120,7 +119,7 @@ namespace Fp
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
         public bool HasMagic(byte[] array, long offset = 0)
-            => HasMagic(InputStream ?? throw new InvalidOperationException(), array.AsSpan(), offset);
+            => HasMagic(_inputStream ?? throw new InvalidOperationException(), array.AsSpan(), offset);
 
         /// <summary>
         /// Check if current file's input stream has a specific value at a certain offset
@@ -129,7 +128,7 @@ namespace Fp
         /// <param name="offset">Position in stream to check</param>
         /// <returns>True if stream region matches value</returns>
         public bool HasMagic(string str, long offset = 0)
-            => HasMagic(InputStream ?? throw new InvalidOperationException(), Ascii(str),
+            => HasMagic(_inputStream ?? throw new InvalidOperationException(), Ascii(str),
                 offset);
 
         #endregion
@@ -139,7 +138,6 @@ namespace Fp
     // ReSharper disable InconsistentNaming
     public partial class Scripting
     {
-
         #region Filter
 
         /// <summary>
@@ -259,7 +257,6 @@ namespace Fp
             Current.HasMagic(text);
 
         #endregion
-
     }
     // ReSharper restore InconsistentNaming
 }

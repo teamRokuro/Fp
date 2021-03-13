@@ -20,7 +20,7 @@ namespace Fp
         /// <returns>Value</returns>
         public sbyte ReadS8(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
                 return (sbyte)buf.AsSpan((int)ms.Position)[0];
@@ -38,7 +38,7 @@ namespace Fp
         /// <returns>Value</returns>
         public sbyte ReadS8(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
                 return (sbyte)buf.AsSpan((int)offset)[0];
@@ -88,7 +88,7 @@ namespace Fp
         /// <returns>Value</returns>
         public byte ReadU8(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
                 return buf.AsSpan((int)ms.Position)[0];
@@ -106,7 +106,7 @@ namespace Fp
         /// <returns>Value</returns>
         public byte ReadU8(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
             {
                 return buf.AsSpan((int)offset)[0];
@@ -483,7 +483,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertS16Array(Span<byte> span, bool littleEndian) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), littleEndian);
+        public static void ConvertS16Array(Span<byte> span, bool littleEndian) =>
+            ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), littleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 16-bit array between source and platform's endianness
@@ -505,7 +506,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertU16Array(Span<byte> span, bool littleEndian) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), littleEndian);
+        public static void ConvertU16Array(Span<byte> span, bool littleEndian) =>
+            ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), littleEndian);
 
         /// <summary>
         /// Convert endianness of signed 32-bit array between source and platform's endianness
@@ -527,7 +529,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertS32Array(Span<byte> span, bool littleEndian) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), littleEndian);
+        public static void ConvertS32Array(Span<byte> span, bool littleEndian) =>
+            ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), littleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 32-bit array between source and platform's endianness
@@ -549,7 +552,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertU32Array(Span<byte> span, bool littleEndian) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), littleEndian);
+        public static void ConvertU32Array(Span<byte> span, bool littleEndian) =>
+            ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), littleEndian);
 
         /// <summary>
         /// Convert endianness of signed 64-bit array between source and platform's endianness
@@ -571,7 +575,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertS64Array(Span<byte> span, bool littleEndian) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), littleEndian);
+        public static void ConvertS64Array(Span<byte> span, bool littleEndian) =>
+            ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), littleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 64-bit array between source and platform's endianness
@@ -593,7 +598,8 @@ namespace Fp
         /// </summary>
         /// <param name="span">Span to convert</param>
         /// <param name="littleEndian">If true, use little-endian encoding</param>
-        public static void ConvertU64Array(Span<byte> span, bool littleEndian) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), littleEndian);
+        public static void ConvertU64Array(Span<byte> span, bool littleEndian) =>
+            ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), littleEndian);
 
         #endregion
 
@@ -606,7 +612,7 @@ namespace Fp
         /// <returns>Value</returns>
         public short ReadS16(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 2, out Span<byte> span2, false);
@@ -626,7 +632,7 @@ namespace Fp
         /// <returns>Value</returns>
         public short ReadS16(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 2, out Span<byte> span2, false);
@@ -679,7 +685,7 @@ namespace Fp
         /// <returns>Value</returns>
         public ushort ReadU16(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 2, out Span<byte> span2, false);
@@ -699,7 +705,7 @@ namespace Fp
         /// <returns>Value</returns>
         public ushort ReadU16(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 2, out Span<byte> span2, false);
@@ -753,7 +759,7 @@ namespace Fp
         /// <returns>Value</returns>
         public int ReadS32(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 4, out Span<byte> span2, false);
@@ -773,7 +779,7 @@ namespace Fp
         /// <returns>Value</returns>
         public int ReadS32(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 4, out Span<byte> span2, false);
@@ -827,7 +833,7 @@ namespace Fp
         /// <returns>Value</returns>
         public uint ReadU32(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 4, out Span<byte> span2, false);
@@ -847,7 +853,7 @@ namespace Fp
         /// <returns>Value</returns>
         public uint ReadU32(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 4, out Span<byte> span2, false);
@@ -900,7 +906,7 @@ namespace Fp
         /// <returns>Value</returns>
         public long ReadS64(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 8, out Span<byte> span2, false);
@@ -920,7 +926,7 @@ namespace Fp
         /// <returns>Value</returns>
         public long ReadS64(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 8, out Span<byte> span2, false);
@@ -973,7 +979,7 @@ namespace Fp
         /// <returns>Value</returns>
         public ulong ReadU64(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 8, out Span<byte> span2, false);
@@ -993,7 +999,7 @@ namespace Fp
         /// <returns>Value</returns>
         public ulong ReadU64(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 8, out Span<byte> span2, false);
@@ -1049,7 +1055,8 @@ namespace Fp
         /// Convert endianness of signed 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS16Array(Span<byte> span) => ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), LittleEndian);
+        public void ConvertS16Array(Span<byte> span) =>
+            ConvertS16Array(MemoryMarshal.Cast<byte, short>(span), LittleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 16-bit array between source and platform's endianness
@@ -1061,7 +1068,8 @@ namespace Fp
         /// Convert endianness of unsigned 16-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU16Array(Span<byte> span) => ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), LittleEndian);
+        public void ConvertU16Array(Span<byte> span) =>
+            ConvertU16Array(MemoryMarshal.Cast<byte, ushort>(span), LittleEndian);
 
         /// <summary>
         /// Convert endianness of signed 32-bit array between source and platform's endianness
@@ -1073,7 +1081,8 @@ namespace Fp
         /// Convert endianness of signed 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS32Array(Span<byte> span) => ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), LittleEndian);
+        public void ConvertS32Array(Span<byte> span) =>
+            ConvertS32Array(MemoryMarshal.Cast<byte, int>(span), LittleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 32-bit array between source and platform's endianness
@@ -1085,7 +1094,8 @@ namespace Fp
         /// Convert endianness of unsigned 32-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU32Array(Span<byte> span) => ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), LittleEndian);
+        public void ConvertU32Array(Span<byte> span) =>
+            ConvertU32Array(MemoryMarshal.Cast<byte, uint>(span), LittleEndian);
 
         /// <summary>
         /// Convert endianness of signed 64-bit array between source and platform's endianness
@@ -1097,7 +1107,8 @@ namespace Fp
         /// Convert endianness of signed 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertS64Array(Span<byte> span) => ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), LittleEndian);
+        public void ConvertS64Array(Span<byte> span) =>
+            ConvertS64Array(MemoryMarshal.Cast<byte, long>(span), LittleEndian);
 
         /// <summary>
         /// Convert endianness of unsigned 64-bit array between source and platform's endianness
@@ -1109,7 +1120,8 @@ namespace Fp
         /// Convert endianness of unsigned 64-bit array between source and platform's endianness
         /// </summary>
         /// <param name="span">Span to convert</param>
-        public void ConvertU64Array(Span<byte> span) => ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), LittleEndian);
+        public void ConvertU64Array(Span<byte> span) =>
+            ConvertU64Array(MemoryMarshal.Cast<byte, ulong>(span), LittleEndian);
 
         #endregion
 
@@ -1120,7 +1132,7 @@ namespace Fp
         /// <returns>Value</returns>
         public float ReadHalf(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 2, out Span<byte> span2, false);
@@ -1140,7 +1152,7 @@ namespace Fp
         /// <returns>Value</returns>
         public float ReadHalf(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 2, out Span<byte> span2, false);
@@ -1194,7 +1206,8 @@ namespace Fp
         /// <param name="value">Value</param>
         /// <param name="offset">Offset to write to</param>
         /// <returns>Value</returns>
-        public static float SetMHalf(Memory<byte> memory, float value, int offset = 0) => SetHalf(memory.Span, value, offset);
+        public static float SetMHalf(Memory<byte> memory, float value, int offset = 0) =>
+            SetHalf(memory.Span, value, offset);
 
         /// <summary>
         /// Read 32-bit float value from stream
@@ -1203,7 +1216,7 @@ namespace Fp
         /// <returns>Value</returns>
         public float ReadSingle(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, 4, out Span<byte> span2, false);
@@ -1223,7 +1236,7 @@ namespace Fp
         /// <returns>Value</returns>
         public float ReadSingle(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 4, out Span<byte> span2, false);
@@ -1287,7 +1300,7 @@ namespace Fp
         /// <returns>Value</returns>
         public double ReadDouble(Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Span<byte> span = stackalloc byte[8];
             Read(stream, span, false);
             return GetDouble(span);
@@ -1301,7 +1314,7 @@ namespace Fp
         /// <returns>Value</returns>
         public double ReadDouble(long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             if (stream is MemoryStream)
             {
                 Read(stream, offset, 8, out Span<byte> span2, false);
@@ -1365,7 +1378,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS8Array(Span<sbyte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<sbyte, byte>(span), false);
         }
 
@@ -1377,7 +1390,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS8Array(Span<sbyte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<sbyte, byte>(span), false);
         }
 
@@ -1388,7 +1401,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS8Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
         }
 
@@ -1400,7 +1413,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS8Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
         }
 
@@ -1442,7 +1455,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU8Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
         }
 
@@ -1454,7 +1467,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU8Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
         }
 
@@ -1492,7 +1505,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS16Array(Span<short> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<short, byte>(span), false);
             ConvertS16Array(span);
         }
@@ -1505,7 +1518,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS16Array(Span<short> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<short, byte>(span), false);
             ConvertS16Array(span);
         }
@@ -1517,7 +1530,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS16Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS16Array(span);
         }
@@ -1530,7 +1543,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS16Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS16Array(span);
         }
@@ -1571,7 +1584,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU16Array(Span<ushort> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<ushort, byte>(span), false);
             ConvertU16Array(span);
         }
@@ -1584,7 +1597,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU16Array(Span<ushort> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<ushort, byte>(span), false);
             ConvertU16Array(span);
         }
@@ -1596,7 +1609,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU16Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU16Array(span);
         }
@@ -1609,7 +1622,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU16Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU16Array(span);
         }
@@ -1650,7 +1663,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS32Array(Span<int> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<int, byte>(span), false);
             ConvertS32Array(span);
         }
@@ -1663,7 +1676,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS32Array(Span<int> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<int, byte>(span), false);
             ConvertS32Array(span);
         }
@@ -1675,7 +1688,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS32Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS32Array(span);
         }
@@ -1688,7 +1701,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS32Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS32Array(span);
         }
@@ -1729,7 +1742,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU32Array(Span<uint> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<uint, byte>(span), false);
             ConvertU32Array(span);
         }
@@ -1742,7 +1755,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU32Array(Span<uint> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<uint, byte>(span), false);
             ConvertU32Array(span);
         }
@@ -1754,7 +1767,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU32Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU32Array(span);
         }
@@ -1767,7 +1780,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU32Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU32Array(span);
         }
@@ -1808,7 +1821,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS64Array(Span<long> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<long, byte>(span), false);
             ConvertS64Array(span);
         }
@@ -1821,7 +1834,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS64Array(Span<long> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<long, byte>(span), false);
             ConvertS64Array(span);
         }
@@ -1833,7 +1846,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS64Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertS64Array(span);
         }
@@ -1846,7 +1859,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadS64Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertS64Array(span);
         }
@@ -1887,7 +1900,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU64Array(Span<ulong> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<ulong, byte>(span), false);
             ConvertU64Array(span);
         }
@@ -1900,7 +1913,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU64Array(Span<ulong> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<ulong, byte>(span), false);
             ConvertU64Array(span);
         }
@@ -1912,7 +1925,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU64Array(Span<byte> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, span, false);
             ConvertU64Array(span);
         }
@@ -1925,7 +1938,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadU64Array(Span<byte> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, span, false);
             ConvertU64Array(span);
         }
@@ -1994,7 +2007,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadHalfArray(Span<float> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             byte[] arr = Shared.Rent(span.Length * 2);
             try
             {
@@ -2016,7 +2029,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadHalfArray(Span<float> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             byte[] arr = Shared.Rent(span.Length * 2);
             try
             {
@@ -2064,7 +2077,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadSingleArray(Span<float> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<float, byte>(span), false);
         }
 
@@ -2076,7 +2089,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadSingleArray(Span<float> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<float, byte>(span), false);
         }
 
@@ -2114,7 +2127,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadDoubleArray(Span<double> span, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, MemoryMarshal.Cast<double, byte>(span), false);
         }
 
@@ -2126,7 +2139,7 @@ namespace Fp
         /// <param name="stream">Stream to read from, uses current file if null</param>
         public void ReadDoubleArray(Span<double> span, long offset, Stream? stream = null)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
+            stream ??= _inputStream ?? throw new InvalidOperationException();
             Read(stream, offset, MemoryMarshal.Cast<double, byte>(span), false);
         }
 

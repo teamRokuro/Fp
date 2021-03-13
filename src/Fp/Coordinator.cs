@@ -34,6 +34,7 @@ namespace Fp
                 {
                     _defaultCurrentExecutableName = "<program>";
                 }
+
                 return _defaultCurrentExecutableName;
             }
         }

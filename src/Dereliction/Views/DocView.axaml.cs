@@ -21,9 +21,9 @@ namespace Dereliction.Views
     public class DocView : UserControl
     {
         private readonly TextEditor _textEditor;
-        private CompletionWindow _completionWindow;
-        private OverloadInsightWindow _insightWindow;
-        private ElementGenerator _generator = new ElementGenerator();
+        private CompletionWindow? _completionWindow;
+        private OverloadInsightWindow? _insightWindow;
+        private readonly ElementGenerator _generator = new();
 
         public DocView()
         {
@@ -39,7 +39,7 @@ namespace Dereliction.Views
 
             _textEditor.TextArea.TextView.ElementGenerators.Add(_generator);
 
-            this.AddHandler(PointerWheelChangedEvent, (o, i) =>
+            AddHandler(PointerWheelChangedEvent, (_, i) =>
             {
                 if (i.KeyModifiers != KeyModifiers.Control) return;
                 if (i.Delta.Y > 0) _textEditor.FontSize++;
@@ -54,7 +54,7 @@ namespace Dereliction.Views
 
         void textEditor_TextArea_TextEntering(object sender, TextInputEventArgs e)
         {
-            if (e.Text.Length > 0 && _completionWindow != null)
+            if (!string.IsNullOrEmpty(e.Text) && _completionWindow != null)
             {
                 if (!char.IsLetterOrDigit(e.Text[0]))
                 {
@@ -76,7 +76,7 @@ namespace Dereliction.Views
             {
 
                 _completionWindow = new CompletionWindow(_textEditor.TextArea);
-                _completionWindow.Closed += (o, args) => _completionWindow = null;
+                _completionWindow.Closed += (_, _) => _completionWindow = null;
 
                 var data = _completionWindow.CompletionList.CompletionData;
                 data.Add(new MyCompletionData("Item1"));
@@ -99,7 +99,7 @@ namespace Dereliction.Views
             else if (e.Text == "(")
             {
                 _insightWindow = new OverloadInsightWindow(_textEditor.TextArea);
-                _insightWindow.Closed += (o, args) => _insightWindow = null;
+                _insightWindow.Closed += (_, _) => _insightWindow = null;
 
                 _insightWindow.Provider = new MyOverloadProvider(new[]
                 {

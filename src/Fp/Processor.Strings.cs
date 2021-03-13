@@ -48,7 +48,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8String(Stream stream, out int read, out int numBytes, int maxLength = int.MaxValue, bool strict = false)
+        public string ReadUtf8String(Stream stream, out int read, out int numBytes, int maxLength = int.MaxValue,
+            bool strict = false)
         {
             try
             {
@@ -90,7 +91,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8StringFromOffset(Stream stream, long offset, out int read, out int numBytes, int maxLength = int.MaxValue,
+        public string ReadUtf8StringFromOffset(Stream stream, long offset, out int read, out int numBytes,
+            int maxLength = int.MaxValue,
             bool strict = false)
         {
             long position = stream.Position;
@@ -115,7 +117,8 @@ namespace Fp
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
         public string ReadUtf8String(out int read, out int numBytes, int maxLength = int.MaxValue, bool strict = false)
-            => ReadUtf8String(InputStream ?? throw new InvalidOperationException(), out read, out numBytes, maxLength, strict);
+            => ReadUtf8String(_inputStream ?? throw new InvalidOperationException(), out read, out numBytes, maxLength,
+                strict);
 
         /// <summary>
         /// Read UTF-8 encoded string from current file's input stream at the specified offset
@@ -126,9 +129,11 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf8StringFromOffset(long offset, out int read, out int numBytes, int maxLength = int.MaxValue,
+        public string ReadUtf8StringFromOffset(long offset, out int read, out int numBytes,
+            int maxLength = int.MaxValue,
             bool strict = false) =>
-            ReadUtf8StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, out read, out numBytes, maxLength,
+            ReadUtf8StringFromOffset(_inputStream ?? throw new InvalidOperationException(), offset, out read,
+                out numBytes, maxLength,
                 strict);
 
         /// <summary>
@@ -139,7 +144,8 @@ namespace Fp
         /// <param name="numBytes">Length of string in bytes (excluding null terminator)</param>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf8String(ReadOnlySpan<byte> span, out int read, out int numBytes, int maxLength = int.MaxValue)
+        public static string ReadUtf8String(ReadOnlySpan<byte> span, out int read, out int numBytes,
+            int maxLength = int.MaxValue)
         {
             int lim = Math.Min(span.Length, maxLength);
             int end = span.Slice(0, lim).IndexOf((byte)0);
@@ -167,7 +173,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf8String(ReadOnlyMemory<byte> memory, out int read, out int numBytes, int maxLength = int.MaxValue)
+        public static string ReadMUtf8String(ReadOnlyMemory<byte> memory, out int read, out int numBytes,
+            int maxLength = int.MaxValue)
             => ReadUtf8String(memory.Span, out read, out numBytes, maxLength);
 
         /// <summary>
@@ -180,7 +187,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, out int read, out int numBytes, int offset = 0,
+        public static string ReadMUtf8StringFromOffset(ReadOnlyMemory<byte> memory, out int read, out int numBytes,
+            int offset = 0,
             int maxLength = int.MaxValue)
             => ReadUtf8String(memory.Span.Slice(offset), out read, out numBytes, maxLength);
 
@@ -193,7 +201,8 @@ namespace Fp
         /// <param name="numBytes">Length of string in bytes (excluding null terminator)</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16String(Stream stream, out int read, out int numBytes, int maxLength = int.MaxValue, bool strict = false)
+        public string ReadUtf16String(Stream stream, out int read, out int numBytes, int maxLength = int.MaxValue,
+            bool strict = false)
         {
             try
             {
@@ -235,7 +244,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16StringFromOffset(Stream stream, long offset, out int read, out int numBytes, int maxLength = int.MaxValue,
+        public string ReadUtf16StringFromOffset(Stream stream, long offset, out int read, out int numBytes,
+            int maxLength = int.MaxValue,
             bool strict = false)
         {
             long position = stream.Position;
@@ -260,7 +270,8 @@ namespace Fp
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
         public string ReadUtf16String(out int read, out int numBytes, int maxLength = int.MaxValue, bool strict = false)
-            => ReadUtf16String(InputStream ?? throw new InvalidOperationException(), out read, out numBytes, maxLength, strict);
+            => ReadUtf16String(_inputStream ?? throw new InvalidOperationException(), out read, out numBytes, maxLength,
+                strict);
 
         /// <summary>
         /// Read UTF-16 encoded string from current file's input stream at the specified offset
@@ -271,9 +282,11 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <param name="strict">If true, enforces ending stream position to original position + <paramref name="maxLength"/></param>
         /// <returns>Value</returns>
-        public string ReadUtf16StringFromOffset(long offset, out int read, out int numBytes, int maxLength = int.MaxValue,
+        public string ReadUtf16StringFromOffset(long offset, out int read, out int numBytes,
+            int maxLength = int.MaxValue,
             bool strict = false) =>
-            ReadUtf16StringFromOffset(InputStream ?? throw new InvalidOperationException(), offset, out read, out numBytes, maxLength,
+            ReadUtf16StringFromOffset(_inputStream ?? throw new InvalidOperationException(), offset, out read,
+                out numBytes, maxLength,
                 strict);
 
 
@@ -285,7 +298,8 @@ namespace Fp
         /// <param name="numBytes">Length of string in bytes (excluding null terminator)</param>>
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
-        public static string ReadUtf16String(ReadOnlySpan<byte> span, out int read, out int numBytes, int maxLength = int.MaxValue)
+        public static string ReadUtf16String(ReadOnlySpan<byte> span, out int read, out int numBytes,
+            int maxLength = int.MaxValue)
         {
             int lim = Math.Min(span.Length, maxLength);
             lim = (lim >> 1) << 1;
@@ -308,10 +322,10 @@ namespace Fp
 
             if (!bom && span.Length > 1)
             {
-                const int _numBytes = 16 * sizeof(char);
+                const int numBytesHead = 16 * sizeof(char);
                 const float threshold = 0.75f;
                 int countAscii = 0, countTotal = 0, sl = span.Length;
-                for (int i = 0; i < _numBytes && i + 1 < sl; i += 2)
+                for (int i = 0; i < numBytesHead && i + 1 < sl; i += 2)
                 {
                     if (span[i] == 0 && span[i + 1] < 0x80)
                     {
@@ -336,7 +350,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf16String(ReadOnlyMemory<byte> memory, out int read, out int numBytes, int maxLength = int.MaxValue)
+        public static string ReadMUtf16String(ReadOnlyMemory<byte> memory, out int read, out int numBytes,
+            int maxLength = int.MaxValue)
             => ReadUtf16String(memory.Span, out read, out numBytes, maxLength);
 
         /// <summary>
@@ -349,7 +364,8 @@ namespace Fp
         /// <param name="maxLength">Maximum string length</param>
         /// <returns>Value</returns>
         // ReSharper disable once MemberCanBeProtected.Global
-        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, out int read, out int numBytes, int offset = 0,
+        public static string ReadMUtf16StringFromOffset(ReadOnlyMemory<byte> memory, out int read, out int numBytes,
+            int offset = 0,
             int maxLength = int.MaxValue)
             => ReadUtf16String(memory.Span.Slice(offset), out read, out numBytes, maxLength);
 
@@ -505,7 +521,6 @@ namespace Fp
     // ReSharper disable InconsistentNaming
     public partial class Scripting
     {
-
         #region Strings
 
         /// <summary>
@@ -516,7 +531,6 @@ namespace Fp
         public static byte[] ascii(this string text) => Processor.Ascii(text);
 
         #endregion
-
     }
     // ReSharper restore InconsistentNaming
 }

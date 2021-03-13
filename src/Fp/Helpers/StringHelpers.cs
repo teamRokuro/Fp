@@ -189,10 +189,10 @@ namespace Fp.Helpers
     public record Utf8StringHelper(Processor Parent) : BaseStringHelper
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override StringData this[Span<byte> source, int offset]
@@ -234,10 +234,10 @@ namespace Fp.Helpers
     public record Utf16StringHelper(Processor Parent) : BaseStringHelper
     {
         /// <inheritdoc />
-        public override Stream InputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override Stream OutputStream => Parent.InputStream ?? throw new InvalidOperationException();
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override StringData this[Span<byte> source, int offset]

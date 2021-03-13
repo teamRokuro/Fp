@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 #if !NET5_0
 using static System.Buffers.ArrayPool<byte>;
+
 #endif
 
 namespace Fp
@@ -29,7 +30,7 @@ namespace Fp
         /// <param name="bytes">Number of bytes to skip</param>
         /// <returns>New position in stream</returns>
         public long Skip(long bytes)
-            => (InputStream ?? throw new InvalidOperationException()).Seek(bytes, SeekOrigin.Current);
+            => (_inputStream ?? throw new InvalidOperationException()).Seek(bytes, SeekOrigin.Current);
 
         internal static int ReadBaseArray(Stream stream, byte[] array, int offset, int length, bool lenient)
         {
@@ -192,7 +193,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(ref Span<byte> span, bool lenient = true, bool forceNew = false)
-            => Read(InputStream ?? throw new InvalidOperationException(), ref span, lenient, forceNew);
+            => Read(_inputStream ?? throw new InvalidOperationException(), ref span, lenient, forceNew);
 
         /// <summary>
         /// Read data from current file's input stream
@@ -205,7 +206,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(int length, out Span<byte> span, bool lenient = true, bool forceNew = false)
-            => Read(InputStream ?? throw new InvalidOperationException(), length, out span, lenient, forceNew);
+            => Read(_inputStream ?? throw new InvalidOperationException(), length, out span, lenient, forceNew);
 
         /// <summary>
         /// Read data from current file's input stream
@@ -216,7 +217,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(Span<byte> span, bool lenient = true)
-            => Read(InputStream ?? throw new InvalidOperationException(), span, lenient);
+            => Read(_inputStream ?? throw new InvalidOperationException(), span, lenient);
 
         /// <summary>
         /// Read data from stream at the specified offset
@@ -253,19 +254,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(long offset, Span<byte> span, bool lenient = true)
-        {
-            long position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try
-            {
-                InputStream.Position = offset;
-                int count = Read(InputStream, span, lenient);
-                return count;
-            }
-            finally
-            {
-                InputStream.Position = position;
-            }
-        }
+            => Read(_inputStream ?? throw new InvalidOperationException(), offset, span, lenient);
 
         /// <summary>
         /// Read data from stream at the specified offset
@@ -278,7 +267,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, long offset, ref Span<byte> span, bool lenient = true,
+        public static int Read(Stream stream, long offset, ref Span<byte> span, bool lenient = true,
             bool forceNew = false)
         {
             long position = stream.Position;
@@ -305,19 +294,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(long offset, ref Span<byte> span, bool lenient = true, bool forceNew = false)
-        {
-            long position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try
-            {
-                InputStream.Position = offset;
-                int count = Read(InputStream, ref span, lenient, forceNew);
-                return count;
-            }
-            finally
-            {
-                InputStream.Position = position;
-            }
-        }
+            => Read(_inputStream ?? throw new InvalidOperationException(), offset, ref span, lenient, forceNew);
 
         /// <summary>
         /// Read data from stream at the specified offset
@@ -359,19 +336,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(long offset, int length, out Span<byte> span, bool lenient = true, bool forceNew = false)
-        {
-            long position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try
-            {
-                InputStream.Position = offset;
-                int count = Read(InputStream, length, out span, lenient, forceNew);
-                return count;
-            }
-            finally
-            {
-                InputStream.Position = position;
-            }
-        }
+            => Read(_inputStream ?? throw new InvalidOperationException(), offset, length, out span, lenient, forceNew);
 
         /// <summary>
         /// Read data from stream
@@ -398,7 +363,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(byte[] array, int arrayOffset, int arrayLength, bool lenient = true)
-            => Read(InputStream ?? throw new InvalidOperationException(), array, arrayOffset, arrayLength, lenient);
+            => Read(_inputStream ?? throw new InvalidOperationException(), array, arrayOffset, arrayLength, lenient);
 
         /// <summary>
         /// Read data from stream at the specified offset
@@ -440,19 +405,8 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(long offset, byte[] array, int arrayOffset, int arrayLength, bool lenient = true)
-        {
-            long position = (InputStream ?? throw new InvalidOperationException()).Position;
-            try
-            {
-                InputStream.Position = offset;
-                int count = Read(InputStream, array, arrayOffset, arrayLength, lenient);
-                return count;
-            }
-            finally
-            {
-                InputStream.Position = position;
-            }
-        }
+            => Read(_inputStream ?? throw new InvalidOperationException(), offset, array, arrayOffset, arrayLength,
+                lenient);
 
         /// <summary>
         /// Read data from stream
@@ -463,7 +417,7 @@ namespace Fp
         /// <returns>Number of bytes read</returns>
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
-        public int Read(Stream stream, byte[] array, bool lenient = true)
+        public static int Read(Stream stream, byte[] array, bool lenient = true)
             => Read(stream, array, 0, array.Length, lenient);
 
         /// <summary>
@@ -475,7 +429,7 @@ namespace Fp
         /// <exception cref="ProcessorException"> when <paramref name="lenient"/> is false
         /// and stream cannot provide enough data to fill target</exception>
         public int Read(byte[] array, bool lenient = true)
-            => Read(InputStream ?? throw new InvalidOperationException(), array, 0, array.Length, lenient);
+            => Read(_inputStream ?? throw new InvalidOperationException(), array, 0, array.Length, lenient);
 
         /// <summary>
         /// Read data from stream at the specified offset
@@ -503,14 +457,13 @@ namespace Fp
             => Read(offset, array, 0, array.Length, lenient);
 
         /// <summary>
-        /// Get byte array from input
+        /// Get byte array from stream
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <param name="forceNew">Force use newly allocated buffer</param>
         /// <returns>Array with file contents</returns>
-        public byte[] GetArray(Stream? stream = null, bool forceNew = false)
+        public static byte[] GetArray(Stream stream, bool forceNew = false)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
             if (!stream.CanSeek)
                 throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
             switch (stream)
@@ -539,16 +492,23 @@ namespace Fp
         }
 
         /// <summary>
-        /// Get byte array from input
+        /// Get byte array from input stream
+        /// </summary>
+        /// <param name="forceNew">Force use newly allocated buffer</param>
+        /// <returns>Array with file contents</returns>
+        public byte[] GetArray(bool forceNew = false)
+            => GetArray(_inputStream ?? throw new InvalidOperationException(), forceNew);
+
+        /// <summary>
+        /// Get byte array from stream
         /// </summary>
         /// <param name="offset">Offset in stream</param>
         /// <param name="length">Length of segment</param>
         /// <param name="stream">Stream to read from</param>
         /// <param name="forceNew">Force use newly allocated buffer</param>
         /// <returns>Array with file contents</returns>
-        public byte[] GetArray(int offset, int length, Stream? stream = null, bool forceNew = false)
+        public static byte[] GetArray(int offset, int length, Stream stream, bool forceNew = false)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
             if (!stream.CanSeek)
                 throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
             switch (stream)
@@ -581,28 +541,44 @@ namespace Fp
         }
 
         /// <summary>
+        /// Get byte array from input stream
+        /// </summary>
+        /// <param name="offset">Offset in stream</param>
+        /// <param name="length">Length of segment</param>
+        /// <param name="forceNew">Force use newly allocated buffer</param>
+        /// <returns>Array with file contents</returns>
+        public byte[] GetArray(int offset, int length, bool forceNew = false)
+            => GetArray(offset, length, _inputStream ?? throw new InvalidOperationException(), forceNew);
+
+        /// <summary>
         /// Dump remaining content from stream to byte array
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <param name="maxLength">Maximum length.</param>
         /// <returns>Array with file contents</returns>
-        public byte[] DumpArray(Stream? stream = null, int maxLength = int.MaxValue)
+        public static byte[] DumpArray(Stream stream, int maxLength = int.MaxValue)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
             MemoryStream ms2 = new();
             new SStream(stream, maxLength, false).CopyTo(ms2);
             return ms2.ToArray();
         }
 
         /// <summary>
-        /// Get read-only memory from input
+        /// Dump remaining content from input stream to byte array
+        /// </summary>
+        /// <param name="maxLength">Maximum length.</param>
+        /// <returns>Array with file contents</returns>
+        public byte[] DumpArray(int maxLength = int.MaxValue)
+            => DumpArray(_inputStream ?? throw new InvalidOperationException(), maxLength);
+
+        /// <summary>
+        /// Get read-only memory from stream
         /// </summary>
         /// <param name="stream">Stream to read from</param>
         /// <returns>Array with file contents</returns>
         /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
-        public ReadOnlyMemory<byte> GetMemory(Stream? stream = null)
+        public static ReadOnlyMemory<byte> GetMemory(Stream stream)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
             if (!stream.CanSeek)
                 throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
             switch (stream)
@@ -631,26 +607,32 @@ namespace Fp
         }
 
         /// <summary>
-        /// Get read-only memory from input
+        /// Get read-only memory from input stream
+        /// </summary>
+        /// <returns>Array with file contents</returns>
+        /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
+        public ReadOnlyMemory<byte> GetMemory()
+            => GetMemory(_inputStream ?? throw new InvalidOperationException());
+
+        /// <summary>
+        /// Get read-only memory from stream
         /// </summary>
         /// <param name="offset">Offset in stream</param>
         /// <param name="length">Length of segment</param>
         /// <param name="stream">Stream to read from</param>
         /// <returns>Array with file contents</returns>
         /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
-        public ReadOnlyMemory<byte> GetMemory(int offset, int length, Stream? stream = null)
+        public static ReadOnlyMemory<byte> GetMemory(long offset, int length, Stream stream)
         {
-            stream ??= InputStream ?? throw new InvalidOperationException();
             if (!stream.CanSeek)
                 throw new NotSupportedException("Getting memory from non-seekable stream is unsupported");
             switch (stream)
             {
                 case MStream mes:
-                    return mes.GetMemory().Slice(offset, length);
+                    return mes.GetMemory().Slice((int)offset, length);
                 case MemoryStream ms when ms.TryGetBuffer(out ArraySegment<byte> buffer):
-                    return buffer.AsMemory(offset, length);
+                    return buffer.AsMemory((int)offset, length);
                 default:
-
                     if (offset + length > stream.Length)
                         throw new IOException("Target range exceeds stream bounds");
                     stream.Position = offset;
@@ -670,6 +652,16 @@ namespace Fp
                     }
             }
         }
+
+        /// <summary>
+        /// Get read-only memory from input stream
+        /// </summary>
+        /// <param name="offset">Offset in stream</param>
+        /// <param name="length">Length of segment</param>
+        /// <returns>Array with file contents</returns>
+        /// <remarks>Non-allocating requisition of memory from <see cref="MemoryStream"/> and <see cref="MStream"/> is supported</remarks>
+        public ReadOnlyMemory<byte> GetMemory(long offset, int length)
+            => GetMemory(offset, length, _inputStream ?? throw new InvalidOperationException());
 
         #endregion
     }

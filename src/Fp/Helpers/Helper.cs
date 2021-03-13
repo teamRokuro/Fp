@@ -1,6 +1,7 @@
 using System.IO;
 
-namespace Fp.Helpers {
+namespace Fp.Helpers
+{
     /// <summary>
     /// Base data helper.
     /// </summary>

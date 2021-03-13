@@ -4,7 +4,8 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// PCM audio data
     /// </summary>

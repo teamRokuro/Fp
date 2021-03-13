@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// Buffer containing unstructured data
     /// </summary>
@@ -147,7 +148,8 @@ namespace Fp {
         }
 
         /// <inheritdoc />
-        public override unsafe string ToString() => $"Buffer {{ Element Size = {sizeof(T)}, Element Count = {Count}, Buffer Length = {sizeof(T) * Count} }}";
+        public override unsafe string ToString() =>
+            $"Buffer {{ Element Size = {sizeof(T)}, Element Count = {Count}, Buffer Length = {sizeof(T) * Count} }}";
     }
 
     public partial class Processor

@@ -9,7 +9,8 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Fp {
+namespace Fp
+{
     /// <summary>
     /// 32-bit RGBA data
     /// </summary>
@@ -232,7 +233,6 @@ namespace Fp {
 
     public partial class Scripting
     {
-
         /// <summary>
         /// Creates 32bpp RGBA image data object.
         /// </summary>

@@ -78,12 +78,23 @@ namespace Fp
         /// <summary>
         /// Input stream for current file if opened
         /// </summary>
-        public Stream? InputStream;
+        public Stream? InputStream
+        {
+            get => _inputStream;
+            set => SetInputStream(value);
+        }
+
+        internal Stream? _inputStream;
+
+        /// <summary>
+        /// Input stream stack
+        /// </summary>
+        private readonly Stack<Stream?> _inputStack = new(new[] {(Stream?)null});
 
         /// <summary>
         /// Length of input stream for current file if opened
         /// </summary>
-        public long InputLength;
+        public long InputLength => _inputStream?.Length ?? throw new InvalidOperationException();
 
         /// <summary>
         /// Root input directory
@@ -103,7 +114,7 @@ namespace Fp
         /// <summary>
         /// Output stream for current file if opened
         /// </summary>
-        public Stream? OutputStream;
+        public Stream? OutputStream { get; set; }
 
         /// <summary>
         /// Root output directory
@@ -416,6 +427,99 @@ namespace Fp
 
         #endregion
 
+        #region I/O stack
+
+        /// <summary>
+        /// Manages a processor's stream stack
+        /// </summary>
+        private sealed class InputStackContext : IDisposable
+        {
+            /// <summary>
+            /// Processor to operate on
+            /// </summary>
+            private readonly Processor _processor;
+
+            /// <summary>
+            /// Stream to push
+            /// </summary>
+            private readonly Stream _stream;
+
+            private bool _disposed;
+
+            /// <summary>
+            /// Create new instance of <see cref="InputStackContext"/>
+            /// </summary>
+            /// <param name="processor">Processor to operate on</param>
+            /// <param name="stream">Stream to push</param>
+            /// <remarks>
+            /// This constructor also calls <see cref="PushInput"/>
+            /// </remarks>
+            internal InputStackContext(Processor processor, Stream stream)
+            {
+                _processor = processor;
+                _stream = stream;
+                _processor.PushInput(_stream);
+            }
+
+            /// <inheritdoc />
+            public void Dispose()
+            {
+                if (_disposed) return;
+                _disposed = true;
+                _stream.Dispose();
+                _processor.PopInput();
+            }
+        }
+
+        private void PushInput(Stream? stream)
+        {
+            _inputStack.Push(stream);
+            _inputStream = stream;
+        }
+
+        private void PopInput()
+        {
+            if (_inputStack.Count == 1)
+                throw new InvalidOperationException("Cannot pop input stack at root level");
+            _inputStack.Pop();
+            _inputStream = _inputStack.Peek();
+        }
+
+        private void SetInputStream(Stream? stream)
+        {
+            _inputStack.Pop();
+            _inputStack.Push(stream);
+            _inputStream = stream;
+        }
+
+        /// <summary>
+        /// Creates a region of and overwrites current <see cref="InputStream"/>
+        /// </summary>
+        /// <param name="offset">Offset relative to current stream</param>
+        /// <param name="length">Length of region</param>
+        /// <returns>Disposable context that will restore previous <see cref="InputStream"/> when disposed</returns>
+        /// <exception cref="InvalidOperationException">Thrown when <see cref="InputStream"/> is null or not seekable</exception>
+        public IDisposable Region(long offset, long? length = null)
+        {
+            if (_inputStream == null)
+                throw new InvalidOperationException($"Cannot make region when {nameof(InputStream)} is null");
+            if (!_inputStream.CanSeek)
+                throw new InvalidOperationException($"Cannot make region when {nameof(InputStream)} is not seekable");
+
+            var ins = _inputStream;
+            // Go through sub-streams if possible to reduce chaining
+            while (ins is SStream {CanSeek: true} sStr)
+            {
+                offset += sStr.Offset;
+                ins = sStr.BaseStream;
+            }
+
+            ins.Position = offset;
+            return new InputStackContext(this, new SStream(ins, length ?? ins.Length - offset));
+        }
+
+        #endregion
+
         #region Lifecycle
 
         /// <summary>
@@ -424,9 +528,9 @@ namespace Fp
         /// <param name="warn">Warn if resources were not previously cleaned up</param>
         public virtual void Cleanup(bool warn = false)
         {
-            if (InputStream != null)
+            if (_inputStream != null)
             {
-                InputStream.Dispose();
+                _inputStream.Dispose();
                 if (warn) Logger.LogWarning("Input stream was not disposed prior to cleanup call");
                 InputStream = null;
             }
@@ -465,7 +569,6 @@ namespace Fp
 
         #endregion
     }
-
 
     // ReSharper disable InconsistentNaming
     public partial class Scripting

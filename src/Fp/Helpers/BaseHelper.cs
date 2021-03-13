@@ -1,7 +1,8 @@
 using System;
 using System.IO;
 
-namespace Fp.Helpers {
+namespace Fp.Helpers
+{
     /// <summary>
     /// Base single-unit unmanaged data helper.
     /// </summary>

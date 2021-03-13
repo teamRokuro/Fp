@@ -23,7 +23,7 @@ namespace Fp
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match,
             int matchOffset, int matchLength, int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
                 matchOffset, matchLength, bufferLength);
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Fp
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
             int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
                 matchOffset, matchLength, bufferLength);
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Fp
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
             int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
+            => Match(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
                 matchLength, bufferLength);
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Fp
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, long streamMaxOffset, byte[] match,
             int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match, 0,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0, match.Length,
+            => Match(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0, match.Length,
                 bufferLength);
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Fp
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, long streamMaxOffset, string match,
             int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
                 bufferLength);
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(long streamOffset, string match, int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
+            => Match(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
                 bufferLength);
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Enumerator for matches</returns>
         public IEnumerable<long> Match(string match, int bufferLength = 4096)
-            => Match(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
+            => Match(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
 
         /// <summary>
         /// Find first occurrence of a pattern
@@ -133,7 +133,7 @@ namespace Fp
         public long MatchFirst(long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match, int matchOffset,
             int matchLength, int bufferLength = 4096)
         {
-            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+            foreach (long v in Match(_inputStream ?? throw new InvalidOperationException(), streamOffset,
                 streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
@@ -155,7 +155,7 @@ namespace Fp
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
             int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
                 matchOffset, matchLength, bufferLength);
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(ReadOnlyMemory<byte> match, int matchOffset, int matchLength, int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
                 matchLength, bufferLength);
 
         /// <summary>
@@ -180,7 +180,8 @@ namespace Fp
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match,
             int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match, 0,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
+                0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -201,7 +202,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -214,7 +215,7 @@ namespace Fp
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, long streamMaxOffset, string match,
             int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
                 bufferLength);
 
         /// <summary>
@@ -225,7 +226,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(long streamOffset, string match, int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
                 bufferLength);
 
         /// <summary>
@@ -235,7 +236,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of first match or -1 if no match found</returns>
         public long MatchFirst(string match, int bufferLength = 4096)
-            => MatchFirst(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
+            => MatchFirst(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
 
         /// <summary>
         /// Find last occurrence of a pattern
@@ -251,7 +252,7 @@ namespace Fp
             int matchLength, int bufferLength = 4096)
         {
             long u = -1;
-            foreach (long v in Match(InputStream ?? throw new InvalidOperationException(), streamOffset,
+            foreach (long v in Match(_inputStream ?? throw new InvalidOperationException(), streamOffset,
                 streamMaxOffset,
                 match, matchOffset, matchLength,
                 bufferLength))
@@ -273,7 +274,7 @@ namespace Fp
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, ReadOnlyMemory<byte> match, int matchOffset, int matchLength,
             int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match,
                 matchOffset, matchLength, bufferLength);
 
         /// <summary>
@@ -285,7 +286,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(ReadOnlyMemory<byte> match, int matchOffset, int matchLength, int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, matchOffset,
                 matchLength, bufferLength);
 
         /// <summary>
@@ -298,7 +299,7 @@ namespace Fp
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, long streamMaxOffset, ReadOnlyMemory<byte> match,
             int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match, 0,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -309,7 +310,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, 0,
                 match.Length, bufferLength);
 
         /// <summary>
@@ -319,7 +320,8 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(ReadOnlyMemory<byte> match, int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0, match.Length,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, 0,
+                match.Length,
                 bufferLength);
 
         /// <summary>
@@ -332,7 +334,7 @@ namespace Fp
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, long streamMaxOffset, string match,
             int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), streamOffset, streamMaxOffset, match,
                 bufferLength);
 
         /// <summary>
@@ -343,7 +345,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(long streamOffset, string match, int bufferLength = 4096) => MatchLast(
-            InputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, bufferLength);
+            _inputStream ?? throw new InvalidOperationException(), streamOffset, long.MaxValue, match, bufferLength);
 
         /// <summary>
         /// Find last occurrence of a pattern
@@ -352,7 +354,7 @@ namespace Fp
         /// <param name="bufferLength">Minimum buffer length</param>
         /// <returns>Position of last match or -1 if no match found</returns>
         public long MatchLast(string match, int bufferLength = 4096)
-            => MatchLast(InputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
+            => MatchLast(_inputStream ?? throw new InvalidOperationException(), 0, long.MaxValue, match, bufferLength);
 
         #endregion
     }
