@@ -3,6 +3,7 @@ using Avalonia;
 #endif
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Dereliction.ViewModels;
 
 namespace Dereliction.Views
 {
@@ -18,8 +19,7 @@ namespace Dereliction.Views
             this.AttachDevTools();
 #endif
 
-            _operationWindow = new OperationWindow();
-            System.Console.WriteLine(_operationWindow.DataContext);
+            _operationWindow = new OperationWindow {DataContext = new OperationWindowViewModel()};
             _operationWindow.Closing += (s, e) =>
             {
                 if (_shutdownWindow) return;
