@@ -39,14 +39,6 @@ namespace Dereliction.ViewModels
             set { this.RaiseAndSetIfChanged(ref _logText, value); }
         }
 
-        private int _logIndex;
-
-        public int LogIndex
-        {
-            get => _logIndex;
-            set { this.RaiseAndSetIfChanged(ref _logIndex, value); }
-        }
-
         public OperationRunnerViewModel()
         {
             Inputs = new ObservableCollection<FsElement>();
@@ -112,7 +104,6 @@ namespace Dereliction.ViewModels
         public void Log(string value, bool newLine = true)
         {
             LogText += newLine ? value + '\n' : value;
-            LogIndex = int.MaxValue;
         }
     }
 }
