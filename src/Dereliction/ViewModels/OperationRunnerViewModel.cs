@@ -1,10 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia.VisualTree;
 using Dereliction.Models;
 using Dereliction.Views;
+using Dotnet.Script.Core;
 using Dotnet.Script.Core.Commands;
 using Dotnet.Script.DependencyModel.Logging;
 using Fp;
@@ -39,15 +41,15 @@ namespace Dereliction.ViewModels
             set { this.RaiseAndSetIfChanged(ref _logText, value); }
         }
 
+        private readonly Tw _tw;
+
         public OperationRunnerViewModel()
         {
+            _tw = new Tw(this);
             Inputs = new ObservableCollection<FsElement>();
             Outputs = new ObservableCollection<FsElement>();
             LogText = "";
             ClearLog();
-            Log("Megumin");
-            Log("Darkness");
-            Log("Aqua");
             /*Inputs.Add(new RealFsElement("R1", @"C:\Users"));
             Inputs.Add(new RealFsElement("R2", @"C:\Users"));
             Outputs.Add(new RealFsElement("D1", @"C:\Users"));
@@ -72,14 +74,16 @@ namespace Dereliction.ViewModels
                 {
                     try
                     {
-                        Log("Loading script...");
                         var progress = new Progress<float>();
                         progress.ProgressChanged += (_, e) => state.Percent = e * 100.0f;
                         Scripting.processors.Factories.Clear();
                         var options = new ExecuteCodeCommandOptions(text, Directory.GetCurrentDirectory(), null,
                             OptimizationLevel.Debug, false, null);
+                        Log("Executing script...");
+                        await new ExecuteCodeCommand(new ScriptConsole(_tw, TextReader.Null, _tw), CreateLogFactory)
+                            .Execute<int>(options);
+                        Log("Execution finished.");
                         // TODO fp specifics
-                        //await new ExecuteCodeCommand(ScriptConsole.Default, CreateLogFactory).Execute<int>(options);
                     }
                     catch (Exception e)
                     {
@@ -94,7 +98,24 @@ namespace Dereliction.ViewModels
             }
         }
 
-        private Logger CreateLogFactory(Type t) => (l, m, e) => Log(m);
+        private Logger CreateLogFactory(Type t) => (l, m, e) =>
+        {
+            switch (l)
+            {
+                case LogLevel.Trace:
+                case LogLevel.Warning:
+                case LogLevel.Critical:
+
+                case LogLevel.Error:
+                    Log(m);
+                    break;
+                case LogLevel.Debug:
+#if DEBUG
+                    Log(m);
+#endif
+                    break;
+            }
+        };
 
         public void ClearLog()
         {
@@ -104,6 +125,14 @@ namespace Dereliction.ViewModels
         public void Log(string value, bool newLine = true)
         {
             LogText += newLine ? value + '\n' : value;
+        }
+
+        private class Tw : TextWriter
+        {
+            private readonly OperationRunnerViewModel _parent;
+            public Tw(OperationRunnerViewModel parent) => _parent = parent;
+            public override Encoding Encoding => Encoding.Unicode;
+            public override void Write(char value) => _parent.LogText += value;
         }
     }
 }

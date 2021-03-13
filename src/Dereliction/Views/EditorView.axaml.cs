@@ -43,7 +43,11 @@ namespace Dereliction.Views
 
             AddHandler(
                 PointerWheelChangedEvent,
-                (_, i) => _textEditor.FontSize = Math.Clamp(_textEditor.FontSize + Math.Sign(i.Delta.Y) * 2, 2, 140),
+                (_, i) =>
+                {
+                    if ((i.KeyModifiers & KeyModifiers.Control) != 0)
+                        _textEditor.FontSize = Math.Clamp(_textEditor.FontSize + Math.Sign(i.Delta.Y) * 2, 2, 140);
+                },
                 RoutingStrategies.Bubble,
                 true);
         }
