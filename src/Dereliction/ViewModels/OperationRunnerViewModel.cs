@@ -1,7 +1,14 @@
+using System;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia.VisualTree;
 using Dereliction.Models;
 using Dereliction.Views;
+using Dotnet.Script.Core.Commands;
+using Dotnet.Script.DependencyModel.Logging;
+using Fp;
+using Microsoft.CodeAnalysis;
 using ReactiveUI;
 
 namespace Dereliction.ViewModels
@@ -24,10 +31,31 @@ namespace Dereliction.ViewModels
             set { this.RaiseAndSetIfChanged(ref _outputs, value); }
         }
 
+        private string _logText = null!;
+
+        public string LogText
+        {
+            get => _logText;
+            set { this.RaiseAndSetIfChanged(ref _logText, value); }
+        }
+
+        private int _logIndex;
+
+        public int LogIndex
+        {
+            get => _logIndex;
+            set { this.RaiseAndSetIfChanged(ref _logIndex, value); }
+        }
+
         public OperationRunnerViewModel()
         {
             Inputs = new ObservableCollection<FsElement>();
             Outputs = new ObservableCollection<FsElement>();
+            LogText = "";
+            ClearLog();
+            Log("Megumin");
+            Log("Darkness");
+            Log("Aqua");
             /*Inputs.Add(new RealFsElement("R1", @"C:\Users"));
             Inputs.Add(new RealFsElement("R2", @"C:\Users"));
             Outputs.Add(new RealFsElement("D1", @"C:\Users"));
@@ -39,11 +67,52 @@ namespace Dereliction.ViewModels
             // TODO set input
         }
 
-        public void RunScript(MainWindow w)
+        public async Task RunScript(MainWindow w)
         {
             var editorView = w.FindDescendantOfType<EditorView>();
-            System.Console.WriteLine(editorView.GetBody());
-            // TODO execute script
+            var state = (editorView.DataContext as EditorViewModel)!.State;
+            state.Busy = true;
+            state.Locked = true;
+            string text = editorView.GetBody();
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    try
+                    {
+                        Log("Loading script...");
+                        var progress = new Progress<float>();
+                        progress.ProgressChanged += (_, e) => state.Percent = e * 100.0f;
+                        Scripting.processors.Factories.Clear();
+                        var options = new ExecuteCodeCommandOptions(text, Directory.GetCurrentDirectory(), null,
+                            OptimizationLevel.Debug, false, null);
+                        // TODO fp specifics
+                        //await new ExecuteCodeCommand(ScriptConsole.Default, CreateLogFactory).Execute<int>(options);
+                    }
+                    catch (Exception e)
+                    {
+                        Log(e.ToString());
+                    }
+                });
+            }
+            finally
+            {
+                state.Busy = false;
+                state.Locked = false;
+            }
+        }
+
+        private Logger CreateLogFactory(Type t) => (l, m, e) => Log(m);
+
+        public void ClearLog()
+        {
+            LogText = "";
+        }
+
+        public void Log(string value, bool newLine = true)
+        {
+            LogText += newLine ? value + '\n' : value;
+            LogIndex = int.MaxValue;
         }
     }
 }

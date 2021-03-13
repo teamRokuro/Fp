@@ -32,6 +32,6 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <Label Content="Log" Grid.Row="1" Grid.Column="2" />
-        <TextBox Grid.Row="2" Grid.Column="2" AcceptsReturn="True" TextWrapping="Wrap" />
+        <TextBox Grid.Row="2" Grid.Column="2" AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding LogText}" CaretIndex="{Binding LogIndex}"/>
     </Grid>
 </UserControl>

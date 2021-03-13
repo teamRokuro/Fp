@@ -19,7 +19,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Dotnet.Script" Version="1.0.1" />
+    <PackageReference Include="Dotnet.Script.Core" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
