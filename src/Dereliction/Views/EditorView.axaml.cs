@@ -53,6 +53,8 @@ namespace Dereliction.Views
             AvaloniaXamlLoader.Load(this);
         }
 
+        public string GetBody() => _textEditor.Document.Text;
+
         void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Text) && _completionWindow != null)

@@ -19,7 +19,7 @@ namespace Dereliction.Views
             this.AttachDevTools();
 #endif
 
-            _operationWindow = new OperationWindow {DataContext = new OperationWindowViewModel()};
+            _operationWindow = new OperationWindow {Main = this, DataContext = new OperationWindowViewModel()};
             _operationWindow.Closing += (s, e) =>
             {
                 if (_shutdownWindow) return;

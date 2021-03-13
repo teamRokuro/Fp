@@ -2,6 +2,6 @@
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public EditorViewModel Editor => new();
+        public EditorViewModel Editor { get; } = new();
     }
 }

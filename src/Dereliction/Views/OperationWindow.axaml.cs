@@ -8,6 +8,7 @@ namespace Dereliction.Views
 {
     public class OperationWindow : Window
     {
+        public MainWindow Main { get; init; } = null!;
         public OperationWindow()
         {
             InitializeComponent();

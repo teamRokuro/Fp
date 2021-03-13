@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using Avalonia.VisualTree;
 using Dereliction.Models;
+using Dereliction.Views;
 using ReactiveUI;
 
 namespace Dereliction.ViewModels
@@ -26,11 +28,22 @@ namespace Dereliction.ViewModels
         {
             Inputs = new ObservableCollection<FsElement>();
             Outputs = new ObservableCollection<FsElement>();
-            // TODO
-            Inputs.Add(new RealFsElement("R1", @"C:\Users"));
+            /*Inputs.Add(new RealFsElement("R1", @"C:\Users"));
             Inputs.Add(new RealFsElement("R2", @"C:\Users"));
             Outputs.Add(new RealFsElement("D1", @"C:\Users"));
-            Outputs.Add(new RealFsElement("D2", @"C:\Users"));
+            Outputs.Add(new RealFsElement("D2", @"C:\Users"));*/
+        }
+
+        public void SetInput()
+        {
+            // TODO set input
+        }
+
+        public void RunScript(MainWindow w)
+        {
+            var editorView = w.FindDescendantOfType<EditorView>();
+            System.Console.WriteLine(editorView.GetBody());
+            // TODO execute script
         }
     }
 }
