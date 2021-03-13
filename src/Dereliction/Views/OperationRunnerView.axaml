@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Dereliction.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Dereliction.Views.OperationRunnerView">
+
+    <Design.DataContext>
+        <vm:OperationRunnerViewModel />
+    </Design.DataContext>
+    <Grid ColumnDefinitions="1*,1*,1*" RowDefinitions="30,30,1*" Margin="4">
+        <Label Content="Input" Grid.Row="0" Grid.Column="0" />
+        <TreeView Grid.Row="2" Grid.Column="0" Items="{Binding Inputs}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <Label Content="Output" Grid.Row="0" Grid.Column="1" />
+        <TreeView Grid.Row="2" Grid.Column="1" Items="{Binding Outputs}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <Label Content="Log" Grid.Row="0" Grid.Column="2" />
+        <TextBox Grid.Row="2" Grid.Column="2" AcceptsReturn="True" TextWrapping="Wrap" />
+    </Grid>
+</UserControl>

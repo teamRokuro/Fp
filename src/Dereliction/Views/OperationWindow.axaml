@@ -3,11 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Dereliction.ViewModels"
-        xmlns:view="using:Dereliction.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dereliction.Views.OperationWindow"
-        Title="OperationWindow">
-    <DockPanel LastChildFill="true">
-        <view:OperationView/>
-    </DockPanel>
+        Title="Operation"
+        Content="{Binding OperationRunner}">
+
+    <Design.DataContext>
+        <vm:OperationWindowViewModel/>
+    </Design.DataContext>
 </Window>

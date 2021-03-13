@@ -1,12 +1,11 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace Dereliction.Views
 {
-    public class OperationView : UserControl
+    public class OperationRunnerView : UserControl
     {
-        public OperationView()
+        public OperationRunnerView()
         {
             InitializeComponent();
         }

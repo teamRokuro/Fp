@@ -1,19 +1,16 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Dereliction.ViewModels"
-        xmlns:view="using:Dereliction.Views"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Dereliction.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dereliction.Views.MainWindow"
         Icon="/Assets/icon_win.ico"
-        Title="Dereliction">
+        Title="Dereliction"
+        Content="{Binding Editor}">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <DockPanel LastChildFill="true">
-        <view:DocView/>
-    </DockPanel>
 
 </Window>

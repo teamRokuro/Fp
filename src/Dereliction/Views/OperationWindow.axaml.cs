@@ -1,4 +1,6 @@
+#if DEBUG
 using Avalonia;
+#endif
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 

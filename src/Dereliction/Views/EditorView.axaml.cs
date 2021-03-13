@@ -13,22 +13,24 @@ using AvaloniaEdit.CodeCompletion;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
-using Pair = System.Collections.Generic.KeyValuePair<int, Avalonia.Controls.IControl>;
+using Dereliction.Models;
+using Dereliction.ViewModels;
+using Pair = System.Collections.Generic.KeyValuePair<int, Avalonia.Controls.IControl?>;
 
 namespace Dereliction.Views
 {
     // Taken from AvaloniaEdit demo program
-    public class DocView : UserControl
+    public class EditorView : UserControl
     {
+        private EditorViewModel ViewModel => DataContext as EditorViewModel ?? throw new ApplicationException();
         private readonly TextEditor _textEditor;
         private CompletionWindow? _completionWindow;
         private OverloadInsightWindow? _insightWindow;
         private readonly ElementGenerator _generator = new();
 
-        public DocView()
+        public EditorView()
         {
             InitializeComponent();
-
             _textEditor = this.FindControl<TextEditor>("Editor");
             _textEditor.Background = Brushes.Transparent;
             _textEditor.ShowLineNumbers = true;
@@ -39,12 +41,11 @@ namespace Dereliction.Views
 
             _textEditor.TextArea.TextView.ElementGenerators.Add(_generator);
 
-            AddHandler(PointerWheelChangedEvent, (_, i) =>
-            {
-                if (i.KeyModifiers != KeyModifiers.Control) return;
-                if (i.Delta.Y > 0) _textEditor.FontSize++;
-                else _textEditor.FontSize = _textEditor.FontSize > 1 ? _textEditor.FontSize - 1 : 1;
-            }, RoutingStrategies.Bubble, true);
+            AddHandler(
+                PointerWheelChangedEvent,
+                (_, i) => _textEditor.FontSize = Math.Clamp(_textEditor.FontSize + Math.Sign(i.Delta.Y) * 2, 2, 140),
+                RoutingStrategies.Bubble,
+                true);
         }
 
         private void InitializeComponent()
@@ -52,7 +53,7 @@ namespace Dereliction.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        void textEditor_TextArea_TextEntering(object sender, TextInputEventArgs e)
+        void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Text) && _completionWindow != null)
             {
@@ -70,11 +71,10 @@ namespace Dereliction.Views
             // We still want to insert the character that was typed.
         }
 
-        void textEditor_TextArea_TextEntered(object sender, TextInputEventArgs e)
+        void textEditor_TextArea_TextEntered(object? sender, TextInputEventArgs e)
         {
             if (e.Text == ".")
             {
-
                 _completionWindow = new CompletionWindow(_textEditor.TextArea);
                 _completionWindow.Closed += (_, _) => _completionWindow = null;
 
@@ -103,8 +103,7 @@ namespace Dereliction.Views
 
                 _insightWindow.Provider = new MyOverloadProvider(new[]
                 {
-                    ("Method1(int, string)", "Method1 description"),
-                    ("Method2(int)", "Method2 description"),
+                    ("Method1(int, string)", "Method1 description"), ("Method2(int)", "Method2 description"),
                     ("Method3(string)", "Method3 description"),
                 });
 
@@ -138,13 +137,13 @@ namespace Dereliction.Views
             }
 
             public int Count => _items.Count;
-            public string CurrentIndexText => null;
+            public string? CurrentIndexText => null;
             public object CurrentHeader => _items[SelectedIndex].header;
             public object CurrentContent => _items[SelectedIndex].content;
 
-            public event PropertyChangedEventHandler PropertyChanged;
+            public event PropertyChangedEventHandler? PropertyChanged;
 
-            private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -157,7 +156,7 @@ namespace Dereliction.Views
                 Text = text;
             }
 
-            public IBitmap Image => null;
+            public IBitmap? Image => null;
 
             public string Text { get; }
 
@@ -177,7 +176,7 @@ namespace Dereliction.Views
 
         class ElementGenerator : VisualLineElementGenerator, IComparer<Pair>
         {
-            public List<Pair> controls = new List<Pair>();
+            public List<Pair> controls = new();
 
             /// <summary>
             /// Gets the first interested offset using binary search
@@ -191,23 +190,27 @@ namespace Dereliction.Views
                     pos = ~pos;
                 if (pos < controls.Count)
                     return controls[pos].Key;
-                else
-                    return -1;
+                return -1;
             }
 
-            public override VisualLineElement ConstructElement(int offset)
+            public override VisualLineElement? ConstructElement(int offset)
             {
                 int pos = controls.BinarySearch(new Pair(offset, null), this);
                 if (pos >= 0)
                     return new InlineObjectElement(0, controls[pos].Value);
-                else
-                    return null;
+                return null;
             }
 
             int IComparer<Pair>.Compare(Pair x, Pair y)
             {
                 return x.Key.CompareTo(y.Key);
             }
+        }
+
+        private void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count >= 1 && e.AddedItems[0] is RealFsElement fse)
+                ViewModel.OpenFile(fse);
         }
     }
 }
