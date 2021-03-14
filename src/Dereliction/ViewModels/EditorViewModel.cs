@@ -21,7 +21,7 @@ namespace Dereliction.ViewModels
             ScriptList.Add(new RealFsElement("General Kenobi.", @"C:\Users\black"));*/
         }
 
-        public EditorStateModel State { get; } = new();
+        public OperationStateModel State { get; } = new();
 
         public void OpenFile(RealFsElement element)
         {

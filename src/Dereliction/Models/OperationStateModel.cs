@@ -2,7 +2,7 @@ using ReactiveUI;
 
 namespace Dereliction.Models
 {
-    public class EditorStateModel : ReactiveObject
+    public class OperationStateModel : ReactiveObject
     {
         private bool _busy;
         private bool _locked;

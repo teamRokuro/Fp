@@ -1,36 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
 using AvaloniaEdit;
-using AvaloniaEdit.CodeCompletion;
-using AvaloniaEdit.Document;
-using AvaloniaEdit.Editing;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
-using AvaloniaEdit.Rendering;
 using Dereliction.Models;
 using Dereliction.ViewModels;
-using Pair = System.Collections.Generic.KeyValuePair<int, Avalonia.Controls.IControl?>;
 
 namespace Dereliction.Views
 {
-    // Taken from AvaloniaEdit demo program
     public class EditorView : UserControl
     {
         private EditorViewModel ViewModel => DataContext as EditorViewModel ?? throw new ApplicationException();
         private readonly TextEditor _textEditor;
-        private CompletionWindow? _completionWindow;
-        private OverloadInsightWindow? _insightWindow;
-        private readonly ElementGenerator _generator = new();
+        //private CompletionWindow? _completionWindow;
+        //private OverloadInsightWindow? _insightWindow;
 
         public EditorView()
         {
@@ -50,11 +39,9 @@ namespace Dereliction.Views
             _textEditor.Background = Brushes.Transparent;
             _textEditor.ShowLineNumbers = true;
             //_textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
-            _textEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
-            _textEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            //_textEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
+            //_textEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy();
-
-            _textEditor.TextArea.TextView.ElementGenerators.Add(_generator);
 
             AddHandler(
                 PointerWheelChangedEvent,
@@ -74,7 +61,13 @@ namespace Dereliction.Views
 
         public string GetBody() => _textEditor.Document.Text;
 
-        void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)
+        private void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count >= 1 && e.AddedItems[0] is RealFsElement fse)
+                ViewModel.OpenFile(fse);
+        }
+
+        /*void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Text) && _completionWindow != null)
             {
@@ -101,18 +94,6 @@ namespace Dereliction.Views
 
                 var data = _completionWindow.CompletionList.CompletionData;
                 data.Add(new MyCompletionData("Item1"));
-                data.Add(new MyCompletionData("Item2"));
-                data.Add(new MyCompletionData("Item3"));
-                data.Add(new MyCompletionData("Item4"));
-                data.Add(new MyCompletionData("Item5"));
-                data.Add(new MyCompletionData("Item6"));
-                data.Add(new MyCompletionData("Item7"));
-                data.Add(new MyCompletionData("Item8"));
-                data.Add(new MyCompletionData("Item9"));
-                data.Add(new MyCompletionData("Item10"));
-                data.Add(new MyCompletionData("Item11"));
-                data.Add(new MyCompletionData("Item12"));
-                data.Add(new MyCompletionData("Item13"));
 
 
                 _completionWindow.Show();
@@ -124,8 +105,7 @@ namespace Dereliction.Views
 
                 _insightWindow.Provider = new MyOverloadProvider(new[]
                 {
-                    ("Method1(int, string)", "Method1 description"), ("Method2(int)", "Method2 description"),
-                    ("Method3(string)", "Method3 description"),
+                    ("Method1(int, string)", "Method1 description"), ("Method2(int)", "Method2 description")
                 });
 
                 _insightWindow.Show();
@@ -193,45 +173,6 @@ namespace Dereliction.Views
             {
                 textArea.Document.Replace(completionSegment, Text);
             }
-        }
-
-        class ElementGenerator : VisualLineElementGenerator, IComparer<Pair>
-        {
-            public List<Pair> controls = new();
-
-            /// <summary>
-            /// Gets the first interested offset using binary search
-            /// </summary>
-            /// <returns>The first interested offset.</returns>
-            /// <param name="startOffset">Start offset.</param>
-            public override int GetFirstInterestedOffset(int startOffset)
-            {
-                int pos = controls.BinarySearch(new Pair(startOffset, null), this);
-                if (pos < 0)
-                    pos = ~pos;
-                if (pos < controls.Count)
-                    return controls[pos].Key;
-                return -1;
-            }
-
-            public override VisualLineElement? ConstructElement(int offset)
-            {
-                int pos = controls.BinarySearch(new Pair(offset, null), this);
-                if (pos >= 0)
-                    return new InlineObjectElement(0, controls[pos].Value);
-                return null;
-            }
-
-            int IComparer<Pair>.Compare(Pair x, Pair y)
-            {
-                return x.Key.CompareTo(y.Key);
-            }
-        }
-
-        private void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count >= 1 && e.AddedItems[0] is RealFsElement fse)
-                ViewModel.OpenFile(fse);
-        }
+        }*/
     }
 }

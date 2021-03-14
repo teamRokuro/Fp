@@ -39,13 +39,7 @@ namespace Dereliction.ViewModels
             set { this.RaiseAndSetIfChanged(ref _outputs, value); }
         }
 
-        private string _logText = null!;
-
-        public string LogText
-        {
-            get => _logText;
-            set { this.RaiseAndSetIfChanged(ref _logText, value); }
-        }
+        public OperationStateModel State { get; } = new();
 
         private readonly Tw _tw;
         private readonly MsLogger _msLogger;
@@ -56,7 +50,6 @@ namespace Dereliction.ViewModels
             _msLogger = new MsLogger(this);
             Inputs = new ObservableCollection<RealFsElement>();
             Outputs = new ObservableCollection<FsElement>();
-            LogText = "";
             ClearLog();
             /*Inputs.Add(new RealFsElement("R1", @"C:\Users"));
             Inputs.Add(new RealFsElement("R2", @"C:\Users"));
@@ -103,6 +96,8 @@ namespace Dereliction.ViewModels
             var state = (editorView.DataContext as EditorViewModel)!.State;
             state.Busy = true;
             state.Locked = true;
+            State.Busy = true;
+            State.Locked = true;
             string text = editorView.GetBody();
             try
             {
@@ -144,17 +139,15 @@ namespace Dereliction.ViewModels
                         Log("Processing tree...");
                         HashSet<Data> results = new();
                         foreach ((string fakeRoot, string fake) in inputModel.Inputs)
+                        foreach (var processor in processors)
                         {
-                            foreach (var processor in processors)
+                            Log($"{fake} <{processor.name}>");
+                            foreach (var data in Coordinator.OperateFileSegmented(processor.processor, fake,
+                                fakeRoot,
+                                configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
                             {
-                                Log($"{fake} <{processor.name}>");
-                                foreach (var data in Coordinator.OperateFileSegmented(processor.processor, fake,
-                                    fakeRoot,
-                                    configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
-                                {
-                                    results.Add(data);
-                                    Outputs.Add(new DataFsElement(Path.GetFileName(data.BasePath), data));
-                                }
+                                results.Add(data);
+                                Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
                             }
                         }
 
@@ -162,6 +155,7 @@ namespace Dereliction.ViewModels
 
                         Log("\nResults:");
                         foreach (var data in results) Log(data.ToString()!);
+                        Log("\nOperation complete.");
                     }
                     catch (Exception e)
                     {
@@ -173,6 +167,8 @@ namespace Dereliction.ViewModels
             {
                 state.Busy = false;
                 state.Locked = false;
+                State.Busy = false;
+                State.Locked = false;
             }
         }
 
@@ -325,12 +321,12 @@ namespace Dereliction.ViewModels
 
         public void ClearLog()
         {
-            LogText = "";
+            State.LogText = "";
         }
 
         public void Log(string value, bool newLine = true)
         {
-            LogText += newLine ? value + '\n' : value;
+            State.LogText += newLine ? value + '\n' : value;
         }
 
         private class MsLogger : ILogger
@@ -352,7 +348,7 @@ namespace Dereliction.ViewModels
             private readonly OperationRunnerViewModel _parent;
             public Tw(OperationRunnerViewModel parent) => _parent = parent;
             public override Encoding Encoding => Encoding.Unicode;
-            public override void Write(char value) => _parent.LogText += value;
+            public override void Write(char value) => _parent.State.LogText += value;
         }
     }
 }
