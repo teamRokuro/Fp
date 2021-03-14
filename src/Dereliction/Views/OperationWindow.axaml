@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Dereliction.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dereliction.Views.OperationWindow"
+        Icon="/Assets/icon_win.ico"
         Title="Script Execution"
         Content="{Binding OperationRunner}">
 
