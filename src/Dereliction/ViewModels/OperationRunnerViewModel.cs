@@ -90,25 +90,42 @@ namespace Dereliction.ViewModels
         private void AddInput(string path) =>
             Inputs.Add(new RealFsElement(Path.GetFileName(path), Path.GetFullPath(path)));
 
-        public async Task RunScript(MainWindow w)
+        public Task RunScript(MainWindow w)
         {
             var editorView = w.FindDescendantOfType<EditorView>();
-            var state = (editorView.DataContext as EditorViewModel)!.State;
-            state.Busy = true;
-            state.Locked = true;
+            var state = (editorView.DataContext as EditorViewModel)!.OperationState;
+            return RunScriptCore(editorView.GetBody(), state);
+        }
+
+        private async Task RunScriptCore(string text, OperationStateModel? state)
+        {
+            if (state != null)
+            {
+                state.Busy = true;
+                state.Locked = true;
+            }
+
             State.Busy = true;
             State.Locked = true;
-            string text = editorView.GetBody();
+            var progress = new Progress<float>();
+            progress.ProgressChanged += (_, e) =>
+            {
+                float percent = e * 100.0f;
+                if (state != null) state.Percent = percent;
+                State.Percent = percent;
+            };
+            var p = (IProgress<float>)progress;
             try
             {
                 await Task.Run(async () =>
                 {
                     try
                     {
+                        p.Report(0.0f);
+
                         ClearLog();
                         Outputs.Clear();
-                        var progress = new Progress<float>();
-                        progress.ProgressChanged += (_, e) => state.Percent = e * 100.0f;
+
                         Scripting.processors.Factories.Clear();
                         var options = new ExecuteCodeCommandOptions(text, Directory.GetCurrentDirectory(),
                             new[] {Scripting.NO_EXECUTE_CLI},
@@ -117,6 +134,9 @@ namespace Dereliction.ViewModels
                         await new ExecuteCodeCommand(new ScriptConsole(_tw, TextReader.Null, _tw), CreateLogFactory)
                             .Execute<int>(options);
                         Log("Execution finished.");
+
+                        p.Report(0.2f);
+
                         Log("Registered processors:");
                         foreach (var x in Scripting.processors.Factories)
                         {
@@ -132,12 +152,16 @@ namespace Dereliction.ViewModels
                             .Select(f => (name: f.Info.Name, processor: f.CreateProcessor())).ToArray();
                         var configuration =
                             new ProcessorConfiguration("", 1, false, true, false, _msLogger, Array.Empty<string>());
+
                         Log("Loading input tree...");
                         var inputModel = InputModel.Create(Inputs);
                         var inputFilesystem = new DeInputFileSystemSource(inputModel);
 
+                        p.Report(0.3f);
+
                         Log("Processing tree...");
                         HashSet<Data> results = new();
+                        float idx = 0, count = inputModel.Inputs.Count * processors.Length;
                         foreach ((string fakeRoot, string fake) in inputModel.Inputs)
                         foreach (var processor in processors)
                         {
@@ -149,9 +173,15 @@ namespace Dereliction.ViewModels
                                 results.Add(data);
                                 Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
                             }
+
+                            p.Report(0.3f + 0.7f * ++idx / count);
+
+                            await Task.Delay(1000);
                         }
 
                         Log("\nTree processing complete");
+
+                        p.Report(1.0f);
 
                         Log("\nResults:");
                         foreach (var data in results) Log(data.ToString()!);
@@ -165,8 +195,12 @@ namespace Dereliction.ViewModels
             }
             finally
             {
-                state.Busy = false;
-                state.Locked = false;
+                if (state != null)
+                {
+                    state.Busy = false;
+                    state.Locked = false;
+                }
+
                 State.Busy = false;
                 State.Locked = false;
             }

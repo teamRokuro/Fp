@@ -11,47 +11,53 @@
     <Design.DataContext>
         <vm:OperationRunnerViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="1*,1*" RowDefinitions="30,30,1*,30,1*" Margin="4" IsEnabled="{Binding !State.Busy, Mode=OneWay}">
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Button Content="Add Input Folder" Command="{Binding AddDirectory}"
-                    CommandParameter="{Binding $parent[Window]}" />
-            <Button Content="Add Input File" Command="{Binding AddFile}" CommandParameter="{Binding $parent[Window]}" />
-            <Button Content="Clear Input Files" Command="{Binding ClearInputs}" />
-            <Button Content="Run Script" Command="{Binding RunScript}"
-                    CommandParameter="{Binding $parent[v:OperationWindow].Main}" />
-        </StackPanel>
-        <Label Content="Input" Grid.Row="1" Grid.Column="0" />
-        <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="0">
-            <TreeView Items="{Binding Inputs}">
-                <TreeView.DataTemplates>
-                    <TreeDataTemplate DataType="models:InfoElement">
-                        <TextBlock Text="{Binding Value}" />
-                    </TreeDataTemplate>
-                    <TreeDataTemplate ItemsSource="{Binding Infos}">
-                        <TextBlock Text="{Binding Name}" />
-                    </TreeDataTemplate>
-                </TreeView.DataTemplates>
-            </TreeView>
-        </Border>
-        <Label Content="Output" Grid.Row="1" Grid.Column="1" />
-        <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="1">
-            <TreeView Items="{Binding Outputs}">
-                <TreeView.DataTemplates>
-                    <TreeDataTemplate DataType="models:InfoElement">
-                        <TextBlock Text="{Binding Value}" />
-                    </TreeDataTemplate>
-                    <TreeDataTemplate ItemsSource="{Binding Infos}">
-                        <TextBlock Text="{Binding Name}" />
-                    </TreeDataTemplate>
-                </TreeView.DataTemplates>
-            </TreeView>
-        </Border>
-        <Label Content="Log" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
-        <Border BorderBrush="White" BorderThickness="1" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
-            <ScrollViewer Name="LogScrollViewer" ScrollChanged="LogScrollViewer_OnScrollChanged">
-                <TextBox AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding State.LogText}"
-                         BorderThickness="0" />
-            </ScrollViewer>
-        </Border>
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <ProgressBar Name="Progress" IsVisible="{Binding State.Busy, Mode=OneWay}"
+                     Value="{Binding State.Percent, Mode=OneWay}" DockPanel.Dock="Bottom" Height="20"/>
+        <Grid ColumnDefinitions="1*,1*" RowDefinitions="30,30,1*,30,1*" Margin="4"
+              IsEnabled="{Binding !State.Busy, Mode=OneWay}">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <Button Content="Add Input Folder" Command="{Binding AddDirectory}"
+                        CommandParameter="{Binding $parent[Window]}" />
+                <Button Content="Add Input File" Command="{Binding AddFile}"
+                        CommandParameter="{Binding $parent[Window]}" />
+                <Button Content="Clear Input Files" Command="{Binding ClearInputs}" />
+                <Button Content="Run Script" Command="{Binding RunScript}"
+                        CommandParameter="{Binding $parent[v:OperationWindow].Main}" />
+            </StackPanel>
+            <Label Content="Input" Grid.Row="1" Grid.Column="0" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="0">
+                <TreeView Items="{Binding Inputs}">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="models:InfoElement">
+                            <TextBlock Text="{Binding Value}" />
+                        </TreeDataTemplate>
+                        <TreeDataTemplate ItemsSource="{Binding Infos}">
+                            <TextBlock Text="{Binding Name}" />
+                        </TreeDataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Border>
+            <Label Content="Output" Grid.Row="1" Grid.Column="1" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="1">
+                <TreeView Items="{Binding Outputs}">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="models:InfoElement">
+                            <TextBlock Text="{Binding Value}" />
+                        </TreeDataTemplate>
+                        <TreeDataTemplate ItemsSource="{Binding Infos}">
+                            <TextBlock Text="{Binding Name}" />
+                        </TreeDataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Border>
+            <Label Content="Log" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                <ScrollViewer Name="LogScrollViewer" ScrollChanged="LogScrollViewer_OnScrollChanged">
+                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding State.LogText}"
+                             BorderThickness="0" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

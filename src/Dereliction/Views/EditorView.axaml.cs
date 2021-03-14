@@ -17,6 +17,7 @@ namespace Dereliction.Views
     public class EditorView : UserControl
     {
         private EditorViewModel ViewModel => DataContext as EditorViewModel ?? throw new ApplicationException();
+
         private readonly TextEditor _textEditor;
         //private CompletionWindow? _completionWindow;
         //private OverloadInsightWindow? _insightWindow;
@@ -41,6 +42,7 @@ namespace Dereliction.Views
             //_textEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
             //_textEditor.TextArea.TextEntered += textEditor_TextArea_TextEntered;
             //_textEditor.TextArea.TextEntering += textEditor_TextArea_TextEntering;
+            _textEditor.TextChanged += OnChange;
             _textEditor.TextArea.IndentationStrategy = new AvaloniaEdit.Indentation.CSharp.CSharpIndentationStrategy();
 
             AddHandler(
@@ -54,17 +56,23 @@ namespace Dereliction.Views
                 true);
         }
 
+        private void OnChange(object? sender, EventArgs e) =>
+            ViewModel.SetModified(true);
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
 
+        public void ClearBody() => _textEditor.Clear();
+
         public string GetBody() => _textEditor.Document.Text;
+        public void SetBody(string text) => _textEditor.Document.Text = text;
 
         private void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count >= 1 && e.AddedItems[0] is RealFsElement fse)
-                ViewModel.OpenFile(fse);
+                ViewModel.OpenFile(fse, this);
         }
 
         /*void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)

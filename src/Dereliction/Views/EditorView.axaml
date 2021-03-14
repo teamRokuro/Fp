@@ -11,11 +11,14 @@
     <Design.DataContext>
         <vm:EditorViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="200,1*" RowDefinitions="30,30,1*" Margin="4" IsEnabled="{Binding !State.Busy, Mode=OneWay}">
+    <Grid ColumnDefinitions="200,1*" RowDefinitions="30,30,1*" Margin="4"
+          IsEnabled="{Binding !OperationState.Busy, Mode=OneWay}">
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Button Content="New Script" Command="{Binding NewScript}" />
-            <Button Content="Reload Script Folder" Command="{Binding RefreshScriptFolder}" />
-            <Button Content="Save Current Script" Command="{Binding SaveScript}" />
+            <Button Content="New Script" Command="{Binding NewScriptAsync}"
+                    CommandParameter="{Binding $parent[v:EditorView]}" />
+            <Button Content="Refresh Script Folder" Command="{Binding RefreshScriptFolder}" />
+            <Button Content="Save Current Script" Command="{Binding SaveScriptAsync}"
+                    CommandParameter="{Binding $parent[v:EditorView]}" />
             <Button Content="Open Operation View" Command="{Binding $parent[v:MainWindow].ShowOperationView}" />
         </StackPanel>
         <Label Content="Scripts" Grid.Row="1" Grid.Column="0" />
@@ -30,7 +33,7 @@
                 </TreeView.ItemTemplate>
             </TreeView>
         </Border>
-        <Label Content="Editor" Grid.Row="1" Grid.Column="1" />
+        <Label Content="{Binding EditorState.DisplayName}" Grid.Row="1" Grid.Column="1" />
         <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="1">
             <avalonEdit:TextEditor Name="Editor"
                                    Background="Gray"
