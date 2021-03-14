@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -16,7 +17,7 @@ namespace Dereliction.Views
 {
     public class EditorView : UserControl
     {
-        private EditorViewModel ViewModel => DataContext as EditorViewModel ?? throw new ApplicationException();
+        private EditorViewModel EditorModel => DataContext as EditorViewModel ?? throw new ApplicationException();
 
         private readonly TextEditor _textEditor;
         //private CompletionWindow? _completionWindow;
@@ -56,8 +57,12 @@ namespace Dereliction.Views
                 true);
         }
 
+        public async Task NewFileAsync() => await EditorModel.NewFileAsync(this);
+        public async Task OpenFileAsync() => await EditorModel.OpenFileAsync(this);
+        public async Task SaveFileAsync() => await EditorModel.SaveFileAsync(this);
+
         private void OnChange(object? sender, EventArgs e) =>
-            ViewModel.SetModified(true);
+            EditorModel.SetModified(true);
 
         private void InitializeComponent()
         {
@@ -69,10 +74,10 @@ namespace Dereliction.Views
         public string GetBody() => _textEditor.Document.Text;
         public void SetBody(string text) => _textEditor.Document.Text = text;
 
-        private void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        private async void FsTreeView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count >= 1 && e.AddedItems[0] is RealFsElement fse)
-                ViewModel.OpenFile(fse, this);
+                await EditorModel.OpenFileAsync(fse, this);
         }
 
         /*void textEditor_TextArea_TextEntering(object? sender, TextInputEventArgs e)

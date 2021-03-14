@@ -8,6 +8,7 @@ namespace Dereliction
 {
     internal static class Program
     {
+        public const string PROGRAM_NAME = nameof(Dereliction);
         public const string SCRIPT_DIRECTORY = "scripts";
         private static string[]? _args;
         private static string? _workingDirectory;

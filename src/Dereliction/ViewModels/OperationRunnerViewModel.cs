@@ -90,14 +90,14 @@ namespace Dereliction.ViewModels
         private void AddInput(string path) =>
             Inputs.Add(new RealFsElement(Path.GetFileName(path), Path.GetFullPath(path)));
 
-        public Task RunScript(MainWindow w)
+        public Task RunScriptVisualAsync(MainWindow w)
         {
             var editorView = w.FindDescendantOfType<EditorView>();
             var state = (editorView.DataContext as EditorViewModel)!.OperationState;
-            return RunScriptCore(editorView.GetBody(), state);
+            return RunScriptAsync(editorView.GetBody(), state);
         }
 
-        private async Task RunScriptCore(string text, OperationStateModel? state)
+        public async Task RunScriptAsync(string text, OperationStateModel? state)
         {
             if (state != null)
             {

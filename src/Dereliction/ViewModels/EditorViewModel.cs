@@ -28,23 +28,33 @@ namespace Dereliction.ViewModels
         {
             ScriptList = new ObservableCollection<FsElement>();
             RefreshScriptFolder();
-            NewScriptCore(null);
+            NewFileCore(null);
         }
 
         public EditorStateModel EditorState { get; } = new();
         public OperationStateModel OperationState { get; } = new();
 
-        public void OpenFile(RealFsElement element, EditorView? view)
+        #region Public surface
+
+        public async Task<bool> NewFileAsync(EditorView? view)
         {
-            string file = element.RealPath;
+            if (EditorState.Modified && view != null && !await PromptSaveBeforeAsync(view)) return false;
+            NewFileCore(view);
+            return true;
+        }
+
+        public async Task OpenFileAsync(EditorView? view)
+        {
+            string? file = await PromptSourceAsync(view);
+            if (file == null) return;
             string text;
             try
             {
-                text = File.ReadAllText(file);
+                text = await File.ReadAllTextAsync(file);
             }
             catch (Exception e)
             {
-                DialogOrException(e, view);
+                await DialogOrExceptionAsync(e, view);
                 return;
             }
 
@@ -52,15 +62,83 @@ namespace Dereliction.ViewModels
             SetFile(file, false, true);
         }
 
-        private static void DialogOrException(Exception e, IVisual? control)
+        public async Task OpenFileAsync(RealFsElement element, EditorView? view)
+        {
+            string file = element.RealPath;
+            string text;
+            try
+            {
+                text = await File.ReadAllTextAsync(file);
+            }
+            catch (Exception e)
+            {
+                await DialogOrExceptionAsync(e, view);
+                return;
+            }
+
+            view?.SetBody(text);
+            SetFile(file, false, true);
+        }
+
+        public async Task<bool> SaveFileAsync(EditorView? view)
+        {
+            if (view == null) return false;
+            if (!EditorState.Modified) return true;
+            if (!EditorState.OnDisk)
+            {
+                string? name = await PromptTargetAsync(view);
+                if (name == null) return false;
+                UpdateEditorCore(name, default, true);
+            }
+
+            try
+            {
+                await File.WriteAllTextAsync(EditorState.CurrentFile, view.GetBody());
+            }
+            catch (Exception e)
+            {
+                await DialogOrExceptionAsync(e, view);
+                return false;
+            }
+
+            SetModified(false);
+            RefreshScriptFolder();
+            return true;
+        }
+
+        public void SetModified(bool modified)
+        {
+            UpdateEditorCore(default, modified, default);
+        }
+
+        #endregion
+
+        private static async Task DialogOrExceptionAsync(Exception e, IVisual? control)
         {
             var window = control?.FindAncestorOfType<Window>();
             if (control == null || window == null) throw e;
             var msgWindow = MessageBoxManager.GetMessageBoxStandardWindow(e.Message, e.ToString());
-            msgWindow.Show(window);
+            await msgWindow.Show(window);
         }
 
-        private static async Task<string?> PromptTarget(EditorView? view)
+        private static async Task<string?> PromptSourceAsync(EditorView? view)
+        {
+            if (view == null) return null;
+            var window = view.FindAncestorOfType<Window>();
+            if (window == null) throw new ApplicationException("Couldn't find root window");
+            string[] res = await new OpenFileDialog
+            {
+                Directory = Program.WorkingDirectory,
+                Filters = new List<FileDialogFilter>
+                {
+                    new() {Name = "dotnet-script csx file", Extensions = new List<string> {"csx"}}
+                }
+            }.ShowAsync(window);
+            if (res == null || res.Length == 0) return null;
+            return res[0];
+        }
+
+        private static async Task<string?> PromptTargetAsync(EditorView? view)
         {
             if (view == null) return null;
             var window = view.FindAncestorOfType<Window>();
@@ -86,12 +164,12 @@ namespace Dereliction.ViewModels
                 new MessageBoxStandardParams
                 {
                     ContentTitle = "Save before closing?",
-                    ContentMessage = "Do you want to save the current file before closing it?",
+                    ContentMessage = "Do you want to save the current file before closing?",
                     ButtonDefinitions = ButtonEnum.YesNoCancel,
                 });
             return await msgWindow.ShowDialog(window) switch
             {
-                ButtonResult.Yes => await SaveScriptAsync(view),
+                ButtonResult.Yes => await SaveFileAsync(view),
                 ButtonResult.No => true,
                 _ => false
             };
@@ -105,14 +183,7 @@ namespace Dereliction.ViewModels
                 ScriptList.Add(new RealFsElement(Path.GetFileName(script), script));
         }
 
-        public async Task<bool> NewScriptAsync(EditorView? view)
-        {
-            if (EditorState.Modified && view != null && !await PromptSaveBeforeAsync(view)) return false;
-            NewScriptCore(view);
-            return true;
-        }
-
-        private void NewScriptCore(EditorView? view)
+        private void NewFileCore(EditorView? view)
         {
             view?.ClearBody();
             SetFile(Path.Combine(Program.WorkingDirectory, "untitled.csx"), false, false);
@@ -121,11 +192,6 @@ namespace Dereliction.ViewModels
         private void SetFile(string fileName, bool modified, bool onDisk)
         {
             UpdateEditorCore(fileName, modified, onDisk);
-        }
-
-        public void SetModified(bool modified)
-        {
-            UpdateEditorCore(default, modified, default);
         }
 
         private void UpdateEditorCore(string? fileName, bool? modified, bool? onDisk)
@@ -141,32 +207,6 @@ namespace Dereliction.ViewModels
                 string fn = Path.GetFileName(EditorState.CurrentFile);
                 EditorState.DisplayName = EditorState.Modified ? $"* {fn}" : fn;
             }
-        }
-
-        public async Task<bool> SaveScriptAsync(EditorView? view)
-        {
-            if (view == null) return false;
-            if (!EditorState.Modified) return true;
-            if (!EditorState.OnDisk)
-            {
-                string? name = await PromptTarget(view);
-                if (name == null) return false;
-                UpdateEditorCore(name, default, true);
-            }
-
-            try
-            {
-                await File.WriteAllTextAsync(EditorState.CurrentFile, view.GetBody());
-            }
-            catch (Exception e)
-            {
-                DialogOrException(e, view);
-                return false;
-            }
-
-            SetModified(false);
-            RefreshScriptFolder();
-            return true;
         }
     }
 }

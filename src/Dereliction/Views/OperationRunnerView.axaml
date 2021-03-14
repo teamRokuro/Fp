@@ -22,7 +22,7 @@
                 <Button Content="Add Input File" Command="{Binding AddFile}"
                         CommandParameter="{Binding $parent[Window]}" />
                 <Button Content="Clear Input Files" Command="{Binding ClearInputs}" />
-                <Button Content="Run Script" Command="{Binding RunScript}"
+                <Button Content="Run Script" Command="{Binding RunScriptVisualAsync}"
                         CommandParameter="{Binding $parent[v:OperationWindow].Main}" />
             </StackPanel>
             <Label Content="Input" Grid.Row="1" Grid.Column="0" />
