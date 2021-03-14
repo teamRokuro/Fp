@@ -13,9 +13,23 @@
     <DockPanel LastChildFill="True">
         <ProgressBar Name="Progress" IsVisible="{Binding State.Busy, Mode=OneWay}"
                      Value="{Binding State.Percent, Mode=OneWay}" DockPanel.Dock="Bottom" Height="20" />
-        <Grid ColumnDefinitions="1*,1*" RowDefinitions="0,30,1*,30,1*" Margin="4"
+        <Grid ColumnDefinitions="1*,1*" RowDefinitions="30,30,1*,30,1*" Margin="4"
               IsEnabled="{Binding !State.Busy, Mode=OneWay}">
-            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" />
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding #DirectOutput.IsChecked, Mode=OneWay}">
+                    <TextBox Text="{Binding OutputDirectory}"
+                             ToolTip.Tip="Directory for direct output." Width="400"/>
+                    <TextBlock VerticalAlignment="Center">Output directory</TextBlock>
+                    <Button Command="{Binding SetOutputDirectoryAsync}"
+                            CommandParameter="{Binding $parent[Window]}">
+                        Select...
+                    </Button>
+                </StackPanel>
+                <CheckBox Name="DirectOutput" IsChecked="{Binding DirectOutput}"
+                          ToolTip.Tip="Directly write outputs to target folder instead of caching.">
+                    Direct output
+                </CheckBox>
+            </StackPanel>
             <Label Content="Input" Grid.Row="1" Grid.Column="0" />
             <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="0">
                 <TreeView Items="{Binding Inputs}">

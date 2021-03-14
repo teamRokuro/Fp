@@ -39,6 +39,22 @@ namespace Dereliction.ViewModels
             set { this.RaiseAndSetIfChanged(ref _outputs, value); }
         }
 
+        private string _outputDirectory = string.Empty;
+
+        public string OutputDirectory
+        {
+            get => _outputDirectory;
+            set { this.RaiseAndSetIfChanged(ref _outputDirectory, value); }
+        }
+
+        private bool _directOutput;
+
+        public bool DirectOutput
+        {
+            get => _directOutput;
+            set { this.RaiseAndSetIfChanged(ref _directOutput, value); }
+        }
+
         public OperationStateModel State { get; } = new();
 
         private readonly Tw _tw;
@@ -162,9 +178,33 @@ namespace Dereliction.ViewModels
                                 fakeRoot,
                                 configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
                             {
-                                results.Add(data);
-                                // TODO direct export option (no in-memory caching of results)
-                                Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
+                                Log($" > {data}");
+                                if (DirectOutput)
+                                {
+                                    if (!data.Dry && data.DefaultFormat != CommonFormat.ExportUnsupported)
+                                    {
+                                        try
+                                        {
+                                            using var d = data;
+                                            string bp = processor.processor.GenPath(d.DefaultFormat.GetExtension(),
+                                                d.BasePath, mkDirs: false);
+                                            string fp = Path.Join(OutputDirectory, bp);
+                                            string? dir = Path.GetDirectoryName(fp);
+                                            if (dir != null) Directory.CreateDirectory(dir);
+                                            await using var stream = File.OpenWrite(fp);
+                                            d.WriteConvertedData(stream, d.DefaultFormat);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            Log(e.ToString());
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    results.Add(data);
+                                    Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
+                                }
                             }
 
                             p.Report(0.3f + 0.7f * ++idx / count);
@@ -172,12 +212,8 @@ namespace Dereliction.ViewModels
                             await Task.Delay(1000);
                         }
 
-                        Log("\nTree processing complete");
 
                         p.Report(1.0f);
-
-                        Log("\nResults:");
-                        foreach (var data in results) Log(data.ToString()!);
                         Log("\nOperation complete.");
                     }
                     catch (Exception e)
@@ -200,6 +236,21 @@ namespace Dereliction.ViewModels
         }
 
         #endregion
+
+        public async Task SetOutputDirectoryAsync(Window window)
+        {
+            await new OpenFolderDialog().ShowAsync(window).ContinueWith(t =>
+            {
+                if (!t.IsCanceled)
+                {
+                    string sourcePath = t.Result;
+                    if (sourcePath.Length == 0)
+                        return;
+                    OutputDirectory = sourcePath;
+                }
+            });
+        }
+
 
         private class DeInputFileSystemSource : FileSystemSource
         {
@@ -250,7 +301,7 @@ namespace Dereliction.ViewModels
                 foreach (var e in elements)
                 {
                     string real = e.RealPath;
-                    string fakeRoot = $"{Path.VolumeSeparatorChar}{i}".NormalizePath();
+                    string fakeRoot = $"{Path.DirectorySeparatorChar}{i}".NormalizePath();
                     string fake = Path.Combine(fakeRoot, e.Name);
                     Add(fakeRoot, real, fake, out _);
                     i++;
