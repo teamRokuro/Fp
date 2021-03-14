@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "src": "../src/Fp",
+          "src": "../Fp",
           "files": [
             "**.csproj"
           ],
@@ -55,7 +55,7 @@
         ]
       }
     ],
-    "dest": "../docs",
+    "dest": "../../docs",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
