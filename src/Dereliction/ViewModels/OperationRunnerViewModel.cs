@@ -100,12 +100,26 @@ namespace Dereliction.ViewModels
 
         public Task RunScriptVisualAsync(MainWindow w)
         {
-            var editorView = w.FindDescendantOfType<EditorView>();
-            var state = (editorView.DataContext as EditorViewModel)!.OperationState;
-            return RunScriptAsync(editorView.GetBody(), state);
+            var view = w.FindDescendantOfType<EditorView>();
+            var viewModel = (view.DataContext as EditorViewModel)!;
+            return RunScriptAsync(view.GetBody(), viewModel.EditorState.CurrentFile, viewModel.OperationState);
         }
 
-        public async Task RunScriptAsync(string text, OperationStateModel? state)
+        public async Task RunJustScriptAsync(string text, string? file, IList<string>? args)
+        {
+            string directory = string.IsNullOrEmpty(file) || !File.Exists(file)
+                ? Directory.GetCurrentDirectory()
+                : Path.GetDirectoryName(file) ?? Directory.GetCurrentDirectory();
+            var options = new ExecuteCodeCommandOptions(text, directory,
+                args?.ToArray() ?? new[] {Scripting.NO_EXECUTE_CLI},
+                OptimizationLevel.Debug, false, null);
+            Log("Executing script...");
+            await new ExecuteCodeCommand(new ScriptConsole(_tw, TextReader.Null, _tw), CreateLogFactory)
+                .Execute<int>(options);
+            Log("Execution finished.");
+        }
+
+        public async Task RunScriptAsync(string text, string? directory, OperationStateModel? state)
         {
             if (state != null)
             {
@@ -133,15 +147,9 @@ namespace Dereliction.ViewModels
 
                         ClearLog();
                         Outputs.Clear();
-
                         Scripting.processors.Factories.Clear();
-                        var options = new ExecuteCodeCommandOptions(text, Directory.GetCurrentDirectory(),
-                            new[] {Scripting.NO_EXECUTE_CLI},
-                            OptimizationLevel.Debug, false, null);
-                        Log("Executing script...");
-                        await new ExecuteCodeCommand(new ScriptConsole(_tw, TextReader.Null, _tw), CreateLogFactory)
-                            .Execute<int>(options);
-                        Log("Execution finished.");
+
+                        await RunJustScriptAsync(text, directory, null);
 
                         p.Report(0.2f);
 

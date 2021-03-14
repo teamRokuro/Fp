@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -58,12 +59,12 @@ namespace Fp
         /// <param name="configuration">Generated configuration</param>
         /// <param name="inputs">Generated input sources</param>
         /// <returns>True if parsing succeeded</returns>
-        public static bool CliGetConfiguration(string exeName, IReadOnlyList<string> args,
+        public static bool CliGetConfiguration(IList<string> exeName, IReadOnlyList<string> args,
             ILoggerFactory? loggerFactory, bool enableParallel, out ProcessorConfiguration? configuration,
             out List<(bool, string, string)> inputs)
         {
             loggerFactory ??= NullLoggerFactory.Instance;
-            var logger = loggerFactory.CreateLogger(exeName);
+            var logger = loggerFactory.CreateLogger(exeName[exeName.Count-1]);
             configuration = null;
             inputs = new List<(bool, string, string)>();
             List<string> exArgs = new();
@@ -152,8 +153,11 @@ namespace Fp
 
             if (inputs.Count == 0)
             {
-                if (exeName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
-                    exeName = "dotnet " + exeName;
+                if (exeName[0].EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
+                    exeName = exeName.Prepend("dotnet").ToList();
+                var sb = new StringBuilder(exeName[0]);
+                foreach (string str in exeName.Skip(1))
+                    sb.Append(' ').Append(str);
                 logger.LogInformation(@"Usage:
     {ExeName} <inputs...> [options/flags] [-- [args...]]
 
@@ -169,7 +173,7 @@ Flags:
     -d|--debug       : Enable debug
     -n|--nop         : No outputs
     -p|--preload     : Load all streams to memory
-", exeName);
+", sb.ToString());
                 return false;
             }
 
@@ -198,7 +202,7 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static void CliRunFilesystem<T>(string[] args, string? exeName = null,
+        public static void CliRunFilesystem<T>(string[] args, IList<string>? exeName = null,
             ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
             CliRunFilesystem(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
@@ -212,10 +216,10 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static void CliRunFilesystem(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+        public static void CliRunFilesystem(string[] args, IList<string>? exeName, ILoggerFactory? loggerFactory,
             FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
-            exeName ??= DefaultCurrentExecutableName;
+            exeName ??= GuessExe(args);
             loggerFactory ??= GetDefaultConsoleLoggerFactory();
             fileSystem ??= FileSystemSource.Default;
             if (!CliGetConfiguration(exeName, args, loggerFactory, false, out ProcessorConfiguration? conf,
@@ -240,7 +244,7 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync<T>(string[] args, string? exeName = null,
+        public static async Task CliRunFilesystemAsync<T>(string[] args, IList<string>? exeName = null,
             ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
             await CliRunFilesystemAsync(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
@@ -254,10 +258,10 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+        public static async Task CliRunFilesystemAsync(string[] args, IList<string>? exeName, ILoggerFactory? loggerFactory,
             FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
-            exeName ??= DefaultCurrentExecutableName;
+            exeName ??= GuessExe(args);
             loggerFactory ??= GetDefaultConsoleLoggerFactory();
             fileSystem ??= FileSystemSource.Default;
             if (!CliGetConfiguration(exeName, args, loggerFactory, true, out ProcessorConfiguration? conf,
@@ -271,6 +275,26 @@ Flags:
                     await OperateAsync(inputs, conf, fileSystem, processorFactories);
                     break;
             }
+        }
+
+        private static IList<string> GuessExe(IList<string>? args)
+        {
+            // Guess executable string (might be multiple) based on args
+            // Just match up the tail and send the rest
+            // Fallback on argv[0]
+            if (args == null) return new[]{DefaultCurrentExecutableName};
+            string[] oargs = Environment.GetCommandLineArgs();
+            int i = 0;
+            while (i < args.Count && i < oargs.Length)
+            {
+                if (args[args.Count - i - 1] != oargs[oargs.Length - i - 1])
+                    return new[]{DefaultCurrentExecutableName};
+                i++;
+            }
+
+            i = oargs.Length - i;
+            if (i > 0) return new ArraySegment<string>(oargs, 0, i);
+            return new[]{DefaultCurrentExecutableName};
         }
 
         private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>
