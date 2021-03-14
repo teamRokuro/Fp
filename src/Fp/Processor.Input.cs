@@ -671,15 +671,23 @@ namespace Fp
         /// <summary>
         /// Loads byte array from input.
         /// </summary>
-        /// <returns>Byte array</returns>
+        /// <returns>Byte array.</returns>
         public static byte[] load() => Processor.Current.GetArray(true);
 
         /// <summary>
         /// Dumps byte array from a stream.
         /// </summary>
-        /// <param name="stream">Stream to dump</param>
-        /// <returns>Byte array</returns>
+        /// <param name="stream">Stream to dump.</param>
+        /// <returns>Byte array.</returns>
         public static byte[] dump(this Stream stream) => Processor.DumpArray(stream);
+
+        /// <summary>
+        /// Dumps byte array from a stream.
+        /// </summary>
+        /// <param name="stream">Stream to dump.</param>
+        /// <param name="maxLength">Maximum input length.</param>
+        /// <returns>Byte array.</returns>
+        public static byte[] dump(this Stream stream, int maxLength) => Processor.DumpArray(stream, maxLength);
 
         /// <summary>
         /// Creates stream from array.

@@ -8701,6 +8701,40 @@ references:
   commentId: T:Fp.Scripting
   fullName: Fp.Scripting
   nameWithType: Scripting
+- uid: Fp.Scripting._nothing
+  name: _nothing
+  href: api/Fp.Scripting.html#Fp_Scripting__nothing
+  commentId: F:Fp.Scripting._nothing
+  fullName: Fp.Scripting._nothing
+  nameWithType: Scripting._nothing
+- uid: Fp.Scripting._WAV
+  name: _WAV()
+  href: api/Fp.Scripting.html#Fp_Scripting__WAV
+  commentId: M:Fp.Scripting._WAV
+  fullName: Fp.Scripting._WAV()
+  nameWithType: Scripting._WAV()
+- uid: Fp.Scripting._WAV(System.Nullable{Detector},System.Object)
+  name: _WAV(Nullable<Detector>, Object)
+  href: api/Fp.Scripting.html#Fp_Scripting__WAV_System_Nullable_Detector__System_Object_
+  commentId: M:Fp.Scripting._WAV(System.Nullable{Detector},System.Object)
+  name.vb: _WAV(Nullable(Of Detector), Object)
+  fullName: Fp.Scripting._WAV(System.Nullable<Detector>, System.Object)
+  fullName.vb: Fp.Scripting._WAV(System.Nullable(Of Detector), System.Object)
+  nameWithType: Scripting._WAV(Nullable<Detector>, Object)
+  nameWithType.vb: Scripting._WAV(Nullable(Of Detector), Object)
+- uid: Fp.Scripting._WAV(System.Object)
+  name: _WAV(Object)
+  href: api/Fp.Scripting.html#Fp_Scripting__WAV_System_Object_
+  commentId: M:Fp.Scripting._WAV(System.Object)
+  fullName: Fp.Scripting._WAV(System.Object)
+  nameWithType: Scripting._WAV(Object)
+- uid: Fp.Scripting._WAV*
+  name: _WAV
+  href: api/Fp.Scripting.html#Fp_Scripting__WAV_
+  commentId: Overload:Fp.Scripting._WAV
+  isSpec: "True"
+  fullName: Fp.Scripting._WAV
+  nameWithType: Scripting._WAV
 - uid: Fp.Scripting.and(Memory{System.Byte},System.Byte)
   name: and(Memory<Byte>, Byte)
   href: api/Fp.Scripting.html#Fp_Scripting_and_Memory_System_Byte__System_Byte_
@@ -9022,6 +9056,12 @@ references:
   commentId: M:Fp.Scripting.dump(System.IO.Stream)
   fullName: Fp.Scripting.dump(System.IO.Stream)
   nameWithType: Scripting.dump(Stream)
+- uid: Fp.Scripting.dump(System.IO.Stream,System.Int32)
+  name: dump(Stream, Int32)
+  href: api/Fp.Scripting.html#Fp_Scripting_dump_System_IO_Stream_System_Int32_
+  commentId: M:Fp.Scripting.dump(System.IO.Stream,System.Int32)
+  fullName: Fp.Scripting.dump(System.IO.Stream, System.Int32)
+  nameWithType: Scripting.dump(Stream, Int32)
 - uid: Fp.Scripting.dump*
   name: dump
   href: api/Fp.Scripting.html#Fp_Scripting_dump_
@@ -9454,15 +9494,6 @@ references:
   fullName.vb: Fp.Scripting.magic(ReadOnlyMemory(Of System.Byte), System.String, System.Int32)
   nameWithType: Scripting.magic(ReadOnlyMemory<Byte>, String, Int32)
   nameWithType.vb: Scripting.magic(ReadOnlyMemory(Of Byte), String, Int32)
-- uid: Fp.Scripting.magic(ReadOnlySpan{System.Byte})
-  name: magic(ReadOnlySpan<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_magic_ReadOnlySpan_System_Byte__
-  commentId: M:Fp.Scripting.magic(ReadOnlySpan{System.Byte})
-  name.vb: magic(ReadOnlySpan(Of Byte))
-  fullName: Fp.Scripting.magic(ReadOnlySpan<System.Byte>)
-  fullName.vb: Fp.Scripting.magic(ReadOnlySpan(Of System.Byte))
-  nameWithType: Scripting.magic(ReadOnlySpan<Byte>)
-  nameWithType.vb: Scripting.magic(ReadOnlySpan(Of Byte))
 - uid: Fp.Scripting.magic(ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte},System.Int32)
   name: magic(ReadOnlySpan<Byte>, ReadOnlySpan<Byte>, Int32)
   href: api/Fp.Scripting.html#Fp_Scripting_magic_ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__System_Int32_
@@ -9472,6 +9503,15 @@ references:
   fullName.vb: Fp.Scripting.magic(ReadOnlySpan(Of System.Byte), ReadOnlySpan(Of System.Byte), System.Int32)
   nameWithType: Scripting.magic(ReadOnlySpan<Byte>, ReadOnlySpan<Byte>, Int32)
   nameWithType.vb: Scripting.magic(ReadOnlySpan(Of Byte), ReadOnlySpan(Of Byte), Int32)
+- uid: Fp.Scripting.magic(ReadOnlySpan{System.Byte},System.Int64)
+  name: magic(ReadOnlySpan<Byte>, Int64)
+  href: api/Fp.Scripting.html#Fp_Scripting_magic_ReadOnlySpan_System_Byte__System_Int64_
+  commentId: M:Fp.Scripting.magic(ReadOnlySpan{System.Byte},System.Int64)
+  name.vb: magic(ReadOnlySpan(Of Byte), Int64)
+  fullName: Fp.Scripting.magic(ReadOnlySpan<System.Byte>, System.Int64)
+  fullName.vb: Fp.Scripting.magic(ReadOnlySpan(Of System.Byte), System.Int64)
+  nameWithType: Scripting.magic(ReadOnlySpan<Byte>, Int64)
+  nameWithType.vb: Scripting.magic(ReadOnlySpan(Of Byte), Int64)
 - uid: Fp.Scripting.magic(ReadOnlySpan{System.Byte},System.String,System.Int32)
   name: magic(ReadOnlySpan<Byte>, String, Int32)
   href: api/Fp.Scripting.html#Fp_Scripting_magic_ReadOnlySpan_System_Byte__System_String_System_Int32_
@@ -9517,12 +9557,12 @@ references:
   fullName.vb: Fp.Scripting.magic(System.Byte(), System.String, System.Int32)
   nameWithType: Scripting.magic(Byte[], String, Int32)
   nameWithType.vb: Scripting.magic(Byte(), String, Int32)
-- uid: Fp.Scripting.magic(System.String)
-  name: magic(String)
-  href: api/Fp.Scripting.html#Fp_Scripting_magic_System_String_
-  commentId: M:Fp.Scripting.magic(System.String)
-  fullName: Fp.Scripting.magic(System.String)
-  nameWithType: Scripting.magic(String)
+- uid: Fp.Scripting.magic(System.String,System.Int64)
+  name: magic(String, Int64)
+  href: api/Fp.Scripting.html#Fp_Scripting_magic_System_String_System_Int64_
+  commentId: M:Fp.Scripting.magic(System.String,System.Int64)
+  fullName: Fp.Scripting.magic(System.String, System.Int64)
+  nameWithType: Scripting.magic(String, Int64)
 - uid: Fp.Scripting.magic*
   name: magic
   href: api/Fp.Scripting.html#Fp_Scripting_magic_
@@ -10525,6 +10565,25 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.u8la
   nameWithType: Scripting.u8la
+- uid: Fp.Scripting.unsupported(System.Int64)
+  name: unsupported(Int64)
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupported_System_Int64_
+  commentId: M:Fp.Scripting.unsupported(System.Int64)
+  fullName: Fp.Scripting.unsupported(System.Int64)
+  nameWithType: Scripting.unsupported(Int64)
+- uid: Fp.Scripting.unsupported(System.UInt64)
+  name: unsupported(UInt64)
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupported_System_UInt64_
+  commentId: M:Fp.Scripting.unsupported(System.UInt64)
+  fullName: Fp.Scripting.unsupported(System.UInt64)
+  nameWithType: Scripting.unsupported(UInt64)
+- uid: Fp.Scripting.unsupported*
+  name: unsupported
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupported_
+  commentId: Overload:Fp.Scripting.unsupported
+  isSpec: "True"
+  fullName: Fp.Scripting.unsupported
+  nameWithType: Scripting.unsupported
 - uid: Fp.Scripting.utf16
   name: utf16
   href: api/Fp.Scripting.html#Fp_Scripting_utf16

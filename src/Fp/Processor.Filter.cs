@@ -244,17 +244,19 @@ namespace Fp
         /// Checks for identifier.
         /// </summary>
         /// <param name="text">Value to check for.</param>
+        /// <param name="offset">Source offset.</param>
         /// <returns>True if found.</returns>
-        public static bool magic(ReadOnlySpan<byte> text) =>
-            Current.HasMagic(text);
+        public static bool magic(ReadOnlySpan<byte> text, long offset = 0) =>
+            Current.HasMagic(text, offset);
 
         /// <summary>
         /// Checks for identifier.
         /// </summary>
         /// <param name="text">Value to check for.</param>
+        /// <param name="offset">Source offset.</param>
         /// <returns>True if found.</returns>
-        public static bool magic(string text) =>
-            Current.HasMagic(text);
+        public static bool magic(string text, long offset = 0) =>
+            Current.HasMagic(text, offset);
 
         #endregion
     }
