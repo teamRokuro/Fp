@@ -63,19 +63,22 @@ namespace Dereliction.Models
         }
     }
 
-    public class InfoElement : ReactiveObject
+    public class InfoElement
     {
         public InfoElement(string initial)
         {
-            _value = initial;
+            //_value = initial;
+            Value = initial;
         }
 
-        private string _value;
+        public string Value { get; set; }
+
+        /*private string _value;
 
         public string Value
         {
             get => _value;
             set { this.RaiseAndSetIfChanged(ref _value, value); }
-        }
+        }*/
     }
 }

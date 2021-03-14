@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Xml;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -12,6 +14,8 @@ using AvaloniaEdit;
 using AvaloniaEdit.CodeCompletion;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
 using AvaloniaEdit.Rendering;
 using Dereliction.Models;
 using Dereliction.ViewModels;
@@ -30,6 +34,17 @@ namespace Dereliction.Views
 
         public EditorView()
         {
+            IHighlightingDefinition csScriptDarkHighlighting;
+            using (Stream? s =
+                typeof(EditorView).Assembly.GetManifestResourceStream("Dereliction.CSharp-Mode-ScriptDark.xshd"))
+            {
+                if (s == null) throw new InvalidOperationException("Could not find embedded resource");
+                using XmlReader reader = new XmlTextReader(s);
+                csScriptDarkHighlighting = HighlightingLoader.Load(reader, HighlightingManager.Instance);
+            }
+
+            HighlightingManager.Instance.RegisterHighlighting("C#ScriptDark", new[] {".csx"}, csScriptDarkHighlighting);
+
             InitializeComponent();
             _textEditor = this.FindControl<TextEditor>("Editor");
             _textEditor.Background = Brushes.Transparent;
