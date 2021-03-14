@@ -205,6 +205,23 @@ references:
   fullName.vb: Fp.BufferData(Of T).MemoryOwner
   nameWithType: BufferData<T>.MemoryOwner
   nameWithType.vb: BufferData(Of T).MemoryOwner
+- uid: Fp.BufferData`1.ToString
+  name: ToString()
+  href: api/Fp.BufferData-1.html#Fp_BufferData_1_ToString
+  commentId: M:Fp.BufferData`1.ToString
+  fullName: Fp.BufferData<T>.ToString()
+  fullName.vb: Fp.BufferData(Of T).ToString()
+  nameWithType: BufferData<T>.ToString()
+  nameWithType.vb: BufferData(Of T).ToString()
+- uid: Fp.BufferData`1.ToString*
+  name: ToString
+  href: api/Fp.BufferData-1.html#Fp_BufferData_1_ToString_
+  commentId: Overload:Fp.BufferData`1.ToString
+  isSpec: "True"
+  fullName: Fp.BufferData<T>.ToString
+  fullName.vb: Fp.BufferData(Of T).ToString
+  nameWithType: BufferData<T>.ToString
+  nameWithType.vb: BufferData(Of T).ToString
 - uid: Fp.BufferData`1.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
   name: WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
   href: api/Fp.BufferData-1.html#Fp_BufferData_1_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__
@@ -764,109 +781,19 @@ references:
   commentId: T:Fp.Data
   fullName: Fp.Data
   nameWithType: Data
-- uid: Fp.Data.#ctor(System.String)
-  name: Data(String)
-  href: api/Fp.Data.html#Fp_Data__ctor_System_String_
-  commentId: M:Fp.Data.#ctor(System.String)
-  fullName: Fp.Data.Data(System.String)
-  nameWithType: Data.Data(String)
-- uid: Fp.Data.#ctor*
-  name: Data
-  href: api/Fp.Data.html#Fp_Data__ctor_
-  commentId: Overload:Fp.Data.#ctor
-  isSpec: "True"
-  fullName: Fp.Data.Data
-  nameWithType: Data.Data
 - uid: Fp.Data.BasePath
   name: BasePath
   href: api/Fp.Data.html#Fp_Data_BasePath
-  commentId: F:Fp.Data.BasePath
+  commentId: P:Fp.Data.BasePath
   fullName: Fp.Data.BasePath
   nameWithType: Data.BasePath
-- uid: Fp.Data.CastNumber*
-  name: CastNumber
-  href: api/Fp.Data.html#Fp_Data_CastNumber_
-  commentId: Overload:Fp.Data.CastNumber
+- uid: Fp.Data.BasePath*
+  name: BasePath
+  href: api/Fp.Data.html#Fp_Data_BasePath_
+  commentId: Overload:Fp.Data.BasePath
   isSpec: "True"
-  fullName: Fp.Data.CastNumber
-  nameWithType: Data.CastNumber
-- uid: Fp.Data.CastNumber``2(``0)
-  name: CastNumber<TIn, TOut>(TIn)
-  href: api/Fp.Data.html#Fp_Data_CastNumber__2___0_
-  commentId: M:Fp.Data.CastNumber``2(``0)
-  name.vb: CastNumber(Of TIn, TOut)(TIn)
-  fullName: Fp.Data.CastNumber<TIn, TOut>(TIn)
-  fullName.vb: Fp.Data.CastNumber(Of TIn, TOut)(TIn)
-  nameWithType: Data.CastNumber<TIn, TOut>(TIn)
-  nameWithType.vb: Data.CastNumber(Of TIn, TOut)(TIn)
-- uid: Fp.Data.Clone
-  name: Clone()
-  href: api/Fp.Data.html#Fp_Data_Clone
-  commentId: M:Fp.Data.Clone
-  fullName: Fp.Data.Clone()
-  nameWithType: Data.Clone()
-- uid: Fp.Data.Clone*
-  name: Clone
-  href: api/Fp.Data.html#Fp_Data_Clone_
-  commentId: Overload:Fp.Data.Clone
-  isSpec: "True"
-  fullName: Fp.Data.Clone
-  nameWithType: Data.Clone
-- uid: Fp.Data.DefaultFormat
-  name: DefaultFormat
-  href: api/Fp.Data.html#Fp_Data_DefaultFormat
-  commentId: P:Fp.Data.DefaultFormat
-  fullName: Fp.Data.DefaultFormat
-  nameWithType: Data.DefaultFormat
-- uid: Fp.Data.DefaultFormat*
-  name: DefaultFormat
-  href: api/Fp.Data.html#Fp_Data_DefaultFormat_
-  commentId: Overload:Fp.Data.DefaultFormat
-  isSpec: "True"
-  fullName: Fp.Data.DefaultFormat
-  nameWithType: Data.DefaultFormat
-- uid: Fp.Data.Dispose
-  name: Dispose()
-  href: api/Fp.Data.html#Fp_Data_Dispose
-  commentId: M:Fp.Data.Dispose
-  fullName: Fp.Data.Dispose()
-  nameWithType: Data.Dispose()
-- uid: Fp.Data.Dispose*
-  name: Dispose
-  href: api/Fp.Data.html#Fp_Data_Dispose_
-  commentId: Overload:Fp.Data.Dispose
-  isSpec: "True"
-  fullName: Fp.Data.Dispose
-  nameWithType: Data.Dispose
-- uid: Fp.Data.Dry
-  name: Dry
-  href: api/Fp.Data.html#Fp_Data_Dry
-  commentId: P:Fp.Data.Dry
-  fullName: Fp.Data.Dry
-  nameWithType: Data.Dry
-- uid: Fp.Data.Dry*
-  name: Dry
-  href: api/Fp.Data.html#Fp_Data_Dry_
-  commentId: Overload:Fp.Data.Dry
-  isSpec: "True"
-  fullName: Fp.Data.Dry
-  nameWithType: Data.Dry
-- uid: Fp.Data.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
-  name: WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
-  href: api/Fp.Data.html#Fp_Data_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__
-  commentId: M:Fp.Data.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
-  name.vb: WriteConvertedData(Stream, CommonFormat, Dictionary(Of Object, Object))
-  fullName: Fp.Data.WriteConvertedData(System.IO.Stream, Fp.CommonFormat, System.Collections.Generic.Dictionary<System.Object, System.Object>)
-  fullName.vb: Fp.Data.WriteConvertedData(System.IO.Stream, Fp.CommonFormat, System.Collections.Generic.Dictionary(Of System.Object, System.Object))
-  nameWithType: Data.WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
-  nameWithType.vb: Data.WriteConvertedData(Stream, CommonFormat, Dictionary(Of Object, Object))
-- uid: Fp.Data.WriteConvertedData*
-  name: WriteConvertedData
-  href: api/Fp.Data.html#Fp_Data_WriteConvertedData_
-  commentId: Overload:Fp.Data.WriteConvertedData
-  isSpec: "True"
-  fullName: Fp.Data.WriteConvertedData
-  nameWithType: Data.WriteConvertedData
+  fullName: Fp.Data.BasePath
+  nameWithType: Data.BasePath
 - uid: Fp.DataUtil
   name: DataUtil
   href: api/Fp.DataUtil.html
@@ -889,22 +816,22 @@ references:
   fullName.vb: Fp.DataUtil.CloneBuffer(Of T)(System.ReadOnlyMemory(Of T))
   nameWithType: DataUtil.CloneBuffer<T>(ReadOnlyMemory<T>)
   nameWithType.vb: DataUtil.CloneBuffer(Of T)(ReadOnlyMemory(Of T))
-- uid: Fp.DataUtil.CopySegment*
-  name: CopySegment
-  href: api/Fp.DataUtil.html#Fp_DataUtil_CopySegment_
-  commentId: Overload:Fp.DataUtil.CopySegment
+- uid: Fp.DataUtil.CloneSegment*
+  name: CloneSegment
+  href: api/Fp.DataUtil.html#Fp_DataUtil_CloneSegment_
+  commentId: Overload:Fp.DataUtil.CloneSegment
   isSpec: "True"
-  fullName: Fp.DataUtil.CopySegment
-  nameWithType: DataUtil.CopySegment
-- uid: Fp.DataUtil.CopySegment``1(System.ArraySegment{``0})
-  name: CopySegment<T>(ArraySegment<T>)
-  href: api/Fp.DataUtil.html#Fp_DataUtil_CopySegment__1_System_ArraySegment___0__
-  commentId: M:Fp.DataUtil.CopySegment``1(System.ArraySegment{``0})
-  name.vb: CopySegment(Of T)(ArraySegment(Of T))
-  fullName: Fp.DataUtil.CopySegment<T>(System.ArraySegment<T>)
-  fullName.vb: Fp.DataUtil.CopySegment(Of T)(System.ArraySegment(Of T))
-  nameWithType: DataUtil.CopySegment<T>(ArraySegment<T>)
-  nameWithType.vb: DataUtil.CopySegment(Of T)(ArraySegment(Of T))
+  fullName: Fp.DataUtil.CloneSegment
+  nameWithType: DataUtil.CloneSegment
+- uid: Fp.DataUtil.CloneSegment``1(System.ArraySegment{``0})
+  name: CloneSegment<T>(ArraySegment<T>)
+  href: api/Fp.DataUtil.html#Fp_DataUtil_CloneSegment__1_System_ArraySegment___0__
+  commentId: M:Fp.DataUtil.CloneSegment``1(System.ArraySegment{``0})
+  name.vb: CloneSegment(Of T)(ArraySegment(Of T))
+  fullName: Fp.DataUtil.CloneSegment<T>(System.ArraySegment<T>)
+  fullName.vb: Fp.DataUtil.CloneSegment(Of T)(System.ArraySegment(Of T))
+  nameWithType: DataUtil.CloneSegment<T>(ArraySegment<T>)
+  nameWithType.vb: DataUtil.CloneSegment(Of T)(ArraySegment(Of T))
 - uid: Fp.DataUtil.GetExtension(Fp.CommonFormat)
   name: GetExtension(CommonFormat)
   href: api/Fp.DataUtil.html#Fp_DataUtil_GetExtension_Fp_CommonFormat_
@@ -995,6 +922,19 @@ references:
   isSpec: "True"
   fullName: Fp.FileSystemSource.FileExists
   nameWithType: FileSystemSource.FileExists
+- uid: Fp.FileSystemSource.NormalizePath(System.String)
+  name: NormalizePath(String)
+  href: api/Fp.FileSystemSource.html#Fp_FileSystemSource_NormalizePath_System_String_
+  commentId: M:Fp.FileSystemSource.NormalizePath(System.String)
+  fullName: Fp.FileSystemSource.NormalizePath(System.String)
+  nameWithType: FileSystemSource.NormalizePath(String)
+- uid: Fp.FileSystemSource.NormalizePath*
+  name: NormalizePath
+  href: api/Fp.FileSystemSource.html#Fp_FileSystemSource_NormalizePath_
+  commentId: Overload:Fp.FileSystemSource.NormalizePath
+  isSpec: "True"
+  fullName: Fp.FileSystemSource.NormalizePath
+  nameWithType: FileSystemSource.NormalizePath
 - uid: Fp.FileSystemSource.OpenRead(System.String,System.IO.FileMode,System.IO.FileShare)
   name: OpenRead(String, FileMode, FileShare)
   href: api/Fp.FileSystemSource.html#Fp_FileSystemSource_OpenRead_System_String_System_IO_FileMode_System_IO_FileShare_
@@ -1062,19 +1002,19 @@ references:
   isSpec: "True"
   fullName: Fp.FpUtil.IsolateFlags
   nameWithType: FpUtil.IsolateFlags
-- uid: Fp.FpUtil.NormalizePath(System.String)
-  name: NormalizePath(String)
-  href: api/Fp.FpUtil.html#Fp_FpUtil_NormalizePath_System_String_
-  commentId: M:Fp.FpUtil.NormalizePath(System.String)
-  fullName: Fp.FpUtil.NormalizePath(System.String)
-  nameWithType: FpUtil.NormalizePath(String)
-- uid: Fp.FpUtil.NormalizePath*
-  name: NormalizePath
-  href: api/Fp.FpUtil.html#Fp_FpUtil_NormalizePath_
-  commentId: Overload:Fp.FpUtil.NormalizePath
+- uid: Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)
+  name: NormalizeAndStripWindowsDrive(String)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_NormalizeAndStripWindowsDrive_System_String_
+  commentId: M:Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)
+  fullName: Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)
+  nameWithType: FpUtil.NormalizeAndStripWindowsDrive(String)
+- uid: Fp.FpUtil.NormalizeAndStripWindowsDrive*
+  name: NormalizeAndStripWindowsDrive
+  href: api/Fp.FpUtil.html#Fp_FpUtil_NormalizeAndStripWindowsDrive_
+  commentId: Overload:Fp.FpUtil.NormalizeAndStripWindowsDrive
   isSpec: "True"
-  fullName: Fp.FpUtil.NormalizePath
-  nameWithType: FpUtil.NormalizePath
+  fullName: Fp.FpUtil.NormalizeAndStripWindowsDrive
+  nameWithType: FpUtil.NormalizeAndStripWindowsDrive
 - uid: Fp.FpUtil.PostDispose*
   name: PostDispose
   href: api/Fp.FpUtil.html#Fp_FpUtil_PostDispose_
@@ -1809,6 +1749,106 @@ references:
   isSpec: "True"
   fullName: Fp.Images.EtcDecoder.SetModeEtc2Thp
   nameWithType: EtcDecoder.SetModeEtc2Thp
+- uid: Fp.MetaData
+  name: MetaData
+  href: api/Fp.MetaData.html
+  commentId: T:Fp.MetaData
+  fullName: Fp.MetaData
+  nameWithType: MetaData
+- uid: Fp.MetaData.#ctor(System.String,System.Object)
+  name: MetaData(String, Object)
+  href: api/Fp.MetaData.html#Fp_MetaData__ctor_System_String_System_Object_
+  commentId: M:Fp.MetaData.#ctor(System.String,System.Object)
+  fullName: Fp.MetaData.MetaData(System.String, System.Object)
+  nameWithType: MetaData.MetaData(String, Object)
+- uid: Fp.MetaData.#ctor*
+  name: MetaData
+  href: api/Fp.MetaData.html#Fp_MetaData__ctor_
+  commentId: Overload:Fp.MetaData.#ctor
+  isSpec: "True"
+  fullName: Fp.MetaData.MetaData
+  nameWithType: MetaData.MetaData
+- uid: Fp.MetaData.Clone
+  name: Clone()
+  href: api/Fp.MetaData.html#Fp_MetaData_Clone
+  commentId: M:Fp.MetaData.Clone
+  fullName: Fp.MetaData.Clone()
+  nameWithType: MetaData.Clone()
+- uid: Fp.MetaData.Clone*
+  name: Clone
+  href: api/Fp.MetaData.html#Fp_MetaData_Clone_
+  commentId: Overload:Fp.MetaData.Clone
+  isSpec: "True"
+  fullName: Fp.MetaData.Clone
+  nameWithType: MetaData.Clone
+- uid: Fp.MetaData.DefaultFormat
+  name: DefaultFormat
+  href: api/Fp.MetaData.html#Fp_MetaData_DefaultFormat
+  commentId: P:Fp.MetaData.DefaultFormat
+  fullName: Fp.MetaData.DefaultFormat
+  nameWithType: MetaData.DefaultFormat
+- uid: Fp.MetaData.DefaultFormat*
+  name: DefaultFormat
+  href: api/Fp.MetaData.html#Fp_MetaData_DefaultFormat_
+  commentId: Overload:Fp.MetaData.DefaultFormat
+  isSpec: "True"
+  fullName: Fp.MetaData.DefaultFormat
+  nameWithType: MetaData.DefaultFormat
+- uid: Fp.MetaData.Dispose
+  name: Dispose()
+  href: api/Fp.MetaData.html#Fp_MetaData_Dispose
+  commentId: M:Fp.MetaData.Dispose
+  fullName: Fp.MetaData.Dispose()
+  nameWithType: MetaData.Dispose()
+- uid: Fp.MetaData.Dispose*
+  name: Dispose
+  href: api/Fp.MetaData.html#Fp_MetaData_Dispose_
+  commentId: Overload:Fp.MetaData.Dispose
+  isSpec: "True"
+  fullName: Fp.MetaData.Dispose
+  nameWithType: MetaData.Dispose
+- uid: Fp.MetaData.ToString
+  name: ToString()
+  href: api/Fp.MetaData.html#Fp_MetaData_ToString
+  commentId: M:Fp.MetaData.ToString
+  fullName: Fp.MetaData.ToString()
+  nameWithType: MetaData.ToString()
+- uid: Fp.MetaData.ToString*
+  name: ToString
+  href: api/Fp.MetaData.html#Fp_MetaData_ToString_
+  commentId: Overload:Fp.MetaData.ToString
+  isSpec: "True"
+  fullName: Fp.MetaData.ToString
+  nameWithType: MetaData.ToString
+- uid: Fp.MetaData.Value
+  name: Value
+  href: api/Fp.MetaData.html#Fp_MetaData_Value
+  commentId: P:Fp.MetaData.Value
+  fullName: Fp.MetaData.Value
+  nameWithType: MetaData.Value
+- uid: Fp.MetaData.Value*
+  name: Value
+  href: api/Fp.MetaData.html#Fp_MetaData_Value_
+  commentId: Overload:Fp.MetaData.Value
+  isSpec: "True"
+  fullName: Fp.MetaData.Value
+  nameWithType: MetaData.Value
+- uid: Fp.MetaData.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
+  name: WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
+  href: api/Fp.MetaData.html#Fp_MetaData_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__
+  commentId: M:Fp.MetaData.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
+  name.vb: WriteConvertedData(Stream, CommonFormat, Dictionary(Of Object, Object))
+  fullName: Fp.MetaData.WriteConvertedData(System.IO.Stream, Fp.CommonFormat, System.Collections.Generic.Dictionary<System.Object, System.Object>)
+  fullName.vb: Fp.MetaData.WriteConvertedData(System.IO.Stream, Fp.CommonFormat, System.Collections.Generic.Dictionary(Of System.Object, System.Object))
+  nameWithType: MetaData.WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
+  nameWithType.vb: MetaData.WriteConvertedData(Stream, CommonFormat, Dictionary(Of Object, Object))
+- uid: Fp.MetaData.WriteConvertedData*
+  name: WriteConvertedData
+  href: api/Fp.MetaData.html#Fp_MetaData_WriteConvertedData_
+  commentId: Overload:Fp.MetaData.WriteConvertedData
+  isSpec: "True"
+  fullName: Fp.MetaData.WriteConvertedData
+  nameWithType: MetaData.WriteConvertedData
 - uid: Fp.MStream
   name: MStream
   href: api/Fp.MStream.html
@@ -2169,28 +2209,28 @@ references:
   commentId: T:Fp.PcmData
   fullName: Fp.PcmData
   nameWithType: PcmData
-- uid: Fp.PcmData.#ctor(System.String,Fp.PcmInfo)
+- uid: Fp.PcmData.#ctor(System.String,PcmInfo)
   name: PcmData(String, PcmInfo)
-  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_Fp_PcmInfo_
-  commentId: M:Fp.PcmData.#ctor(System.String,Fp.PcmInfo)
-  fullName: Fp.PcmData.PcmData(System.String, Fp.PcmInfo)
+  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_PcmInfo_
+  commentId: M:Fp.PcmData.#ctor(System.String,PcmInfo)
+  fullName: Fp.PcmData.PcmData(System.String, PcmInfo)
   nameWithType: PcmData.PcmData(String, PcmInfo)
-- uid: Fp.PcmData.#ctor(System.String,Fp.PcmInfo,System.Buffers.IMemoryOwner{System.Byte},System.Nullable{System.Int32})
+- uid: Fp.PcmData.#ctor(System.String,PcmInfo,System.Buffers.IMemoryOwner{System.Byte},System.Nullable{System.Int32})
   name: PcmData(String, PcmInfo, IMemoryOwner<Byte>, Nullable<Int32>)
-  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_Fp_PcmInfo_System_Buffers_IMemoryOwner_System_Byte__System_Nullable_System_Int32__
-  commentId: M:Fp.PcmData.#ctor(System.String,Fp.PcmInfo,System.Buffers.IMemoryOwner{System.Byte},System.Nullable{System.Int32})
+  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_PcmInfo_System_Buffers_IMemoryOwner_System_Byte__System_Nullable_System_Int32__
+  commentId: M:Fp.PcmData.#ctor(System.String,PcmInfo,System.Buffers.IMemoryOwner{System.Byte},System.Nullable{System.Int32})
   name.vb: PcmData(String, PcmInfo, IMemoryOwner(Of Byte), Nullable(Of Int32))
-  fullName: Fp.PcmData.PcmData(System.String, Fp.PcmInfo, System.Buffers.IMemoryOwner<System.Byte>, System.Nullable<System.Int32>)
-  fullName.vb: Fp.PcmData.PcmData(System.String, Fp.PcmInfo, System.Buffers.IMemoryOwner(Of System.Byte), System.Nullable(Of System.Int32))
+  fullName: Fp.PcmData.PcmData(System.String, PcmInfo, System.Buffers.IMemoryOwner<System.Byte>, System.Nullable<System.Int32>)
+  fullName.vb: Fp.PcmData.PcmData(System.String, PcmInfo, System.Buffers.IMemoryOwner(Of System.Byte), System.Nullable(Of System.Int32))
   nameWithType: PcmData.PcmData(String, PcmInfo, IMemoryOwner<Byte>, Nullable<Int32>)
   nameWithType.vb: PcmData.PcmData(String, PcmInfo, IMemoryOwner(Of Byte), Nullable(Of Int32))
-- uid: Fp.PcmData.#ctor(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+- uid: Fp.PcmData.#ctor(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name: PcmData(String, PcmInfo, ReadOnlyMemory<Byte>)
-  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_Fp_PcmInfo_System_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.PcmData.#ctor(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  href: api/Fp.PcmData.html#Fp_PcmData__ctor_System_String_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.PcmData.#ctor(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name.vb: PcmData(String, PcmInfo, ReadOnlyMemory(Of Byte))
-  fullName: Fp.PcmData.PcmData(System.String, Fp.PcmInfo, System.ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.PcmData.PcmData(System.String, Fp.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  fullName: Fp.PcmData.PcmData(System.String, PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.PcmData.PcmData(System.String, PcmInfo, System.ReadOnlyMemory(Of System.Byte))
   nameWithType: PcmData.PcmData(String, PcmInfo, ReadOnlyMemory<Byte>)
   nameWithType.vb: PcmData.PcmData(String, PcmInfo, ReadOnlyMemory(Of Byte))
 - uid: Fp.PcmData.#ctor*
@@ -2245,6 +2285,19 @@ references:
   commentId: F:Fp.PcmData.PcmInfo
   fullName: Fp.PcmData.PcmInfo
   nameWithType: PcmData.PcmInfo
+- uid: Fp.PcmData.ToString
+  name: ToString()
+  href: api/Fp.PcmData.html#Fp_PcmData_ToString
+  commentId: M:Fp.PcmData.ToString
+  fullName: Fp.PcmData.ToString()
+  nameWithType: PcmData.ToString()
+- uid: Fp.PcmData.ToString*
+  name: ToString
+  href: api/Fp.PcmData.html#Fp_PcmData_ToString_
+  commentId: Overload:Fp.PcmData.ToString
+  isSpec: "True"
+  fullName: Fp.PcmData.ToString
+  nameWithType: PcmData.ToString
 - uid: Fp.PcmData.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})
   name: WriteConvertedData(Stream, CommonFormat, Dictionary<Object, Object>)
   href: api/Fp.PcmData.html#Fp_PcmData_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__
@@ -2261,119 +2314,12 @@ references:
   isSpec: "True"
   fullName: Fp.PcmData.WriteConvertedData
   nameWithType: PcmData.WriteConvertedData
-- uid: Fp.PcmInfo
-  name: PcmInfo
-  href: api/Fp.PcmInfo.html
-  commentId: T:Fp.PcmInfo
-  fullName: Fp.PcmInfo
-  nameWithType: PcmInfo
-- uid: Fp.PcmInfo.#ctor(System.Int16,System.Int32,System.Int16,System.Int32)
-  name: PcmInfo(Int16, Int32, Int16, Int32)
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo__ctor_System_Int16_System_Int32_System_Int16_System_Int32_
-  commentId: M:Fp.PcmInfo.#ctor(System.Int16,System.Int32,System.Int16,System.Int32)
-  fullName: Fp.PcmInfo.PcmInfo(System.Int16, System.Int32, System.Int16, System.Int32)
-  nameWithType: PcmInfo.PcmInfo(Int16, Int32, Int16, Int32)
-- uid: Fp.PcmInfo.#ctor(System.Int32,System.Int16,System.Int16,System.Int32,System.Int32,System.Int16,System.Int16,System.Int16,System.Nullable{System.ArraySegment{System.Byte}},System.Int32)
-  name: PcmInfo(Int32, Int16, Int16, Int32, Int32, Int16, Int16, Int16, Nullable<ArraySegment<Byte>>, Int32)
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo__ctor_System_Int32_System_Int16_System_Int16_System_Int32_System_Int32_System_Int16_System_Int16_System_Int16_System_Nullable_System_ArraySegment_System_Byte___System_Int32_
-  commentId: M:Fp.PcmInfo.#ctor(System.Int32,System.Int16,System.Int16,System.Int32,System.Int32,System.Int16,System.Int16,System.Int16,System.Nullable{System.ArraySegment{System.Byte}},System.Int32)
-  name.vb: PcmInfo(Int32, Int16, Int16, Int32, Int32, Int16, Int16, Int16, Nullable(Of ArraySegment(Of Byte)), Int32)
-  fullName: Fp.PcmInfo.PcmInfo(System.Int32, System.Int16, System.Int16, System.Int32, System.Int32, System.Int16, System.Int16, System.Int16, System.Nullable<System.ArraySegment<System.Byte>>, System.Int32)
-  fullName.vb: Fp.PcmInfo.PcmInfo(System.Int32, System.Int16, System.Int16, System.Int32, System.Int32, System.Int16, System.Int16, System.Int16, System.Nullable(Of System.ArraySegment(Of System.Byte)), System.Int32)
-  nameWithType: PcmInfo.PcmInfo(Int32, Int16, Int16, Int32, Int32, Int16, Int16, Int16, Nullable<ArraySegment<Byte>>, Int32)
-  nameWithType.vb: PcmInfo.PcmInfo(Int32, Int16, Int16, Int32, Int32, Int16, Int16, Int16, Nullable(Of ArraySegment(Of Byte)), Int32)
-- uid: Fp.PcmInfo.#ctor*
-  name: PcmInfo
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo__ctor_
-  commentId: Overload:Fp.PcmInfo.#ctor
-  isSpec: "True"
-  fullName: Fp.PcmInfo.PcmInfo
-  nameWithType: PcmInfo.PcmInfo
-- uid: Fp.PcmInfo.AudioFormat
-  name: AudioFormat
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_AudioFormat
-  commentId: F:Fp.PcmInfo.AudioFormat
-  fullName: Fp.PcmInfo.AudioFormat
-  nameWithType: PcmInfo.AudioFormat
-- uid: Fp.PcmInfo.BitsPerSample
-  name: BitsPerSample
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_BitsPerSample
-  commentId: F:Fp.PcmInfo.BitsPerSample
-  fullName: Fp.PcmInfo.BitsPerSample
-  nameWithType: PcmInfo.BitsPerSample
-- uid: Fp.PcmInfo.BlockAlign
-  name: BlockAlign
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_BlockAlign
-  commentId: F:Fp.PcmInfo.BlockAlign
-  fullName: Fp.PcmInfo.BlockAlign
-  nameWithType: PcmInfo.BlockAlign
-- uid: Fp.PcmInfo.ByteRate
-  name: ByteRate
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_ByteRate
-  commentId: F:Fp.PcmInfo.ByteRate
-  fullName: Fp.PcmInfo.ByteRate
-  nameWithType: PcmInfo.ByteRate
-- uid: Fp.PcmInfo.ExtraParams
-  name: ExtraParams
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_ExtraParams
-  commentId: F:Fp.PcmInfo.ExtraParams
-  fullName: Fp.PcmInfo.ExtraParams
-  nameWithType: PcmInfo.ExtraParams
-- uid: Fp.PcmInfo.ExtraParamSize
-  name: ExtraParamSize
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_ExtraParamSize
-  commentId: F:Fp.PcmInfo.ExtraParamSize
-  fullName: Fp.PcmInfo.ExtraParamSize
-  nameWithType: PcmInfo.ExtraParamSize
-- uid: Fp.PcmInfo.NumChannels
-  name: NumChannels
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_NumChannels
-  commentId: F:Fp.PcmInfo.NumChannels
-  fullName: Fp.PcmInfo.NumChannels
-  nameWithType: PcmInfo.NumChannels
-- uid: Fp.PcmInfo.NumSamples
-  name: NumSamples
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_NumSamples
-  commentId: F:Fp.PcmInfo.NumSamples
-  fullName: Fp.PcmInfo.NumSamples
-  nameWithType: PcmInfo.NumSamples
-- uid: Fp.PcmInfo.SampleRate
-  name: SampleRate
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_SampleRate
-  commentId: F:Fp.PcmInfo.SampleRate
-  fullName: Fp.PcmInfo.SampleRate
-  nameWithType: PcmInfo.SampleRate
-- uid: Fp.PcmInfo.SubChunk1Size
-  name: SubChunk1Size
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_SubChunk1Size
-  commentId: F:Fp.PcmInfo.SubChunk1Size
-  fullName: Fp.PcmInfo.SubChunk1Size
-  nameWithType: PcmInfo.SubChunk1Size
-- uid: Fp.PcmInfo.SubChunk2Size
-  name: SubChunk2Size
-  href: api/Fp.PcmInfo.html#Fp_PcmInfo_SubChunk2Size
-  commentId: F:Fp.PcmInfo.SubChunk2Size
-  fullName: Fp.PcmInfo.SubChunk2Size
-  nameWithType: PcmInfo.SubChunk2Size
 - uid: Fp.Processor
   name: Processor
   href: api/Fp.Processor.html
   commentId: T:Fp.Processor
   fullName: Fp.Processor
   nameWithType: Processor
-- uid: Fp.Processor.#ctor
-  name: Processor()
-  href: api/Fp.Processor.html#Fp_Processor__ctor
-  commentId: M:Fp.Processor.#ctor
-  fullName: Fp.Processor.Processor()
-  nameWithType: Processor.Processor()
-- uid: Fp.Processor.#ctor*
-  name: Processor
-  href: api/Fp.Processor.html#Fp_Processor__ctor_
-  commentId: Overload:Fp.Processor.#ctor
-  isSpec: "True"
-  fullName: Fp.Processor.Processor
-  nameWithType: Processor.Processor
 - uid: Fp.Processor.ApplyAnd(System.Span{System.Byte},System.Byte)
   name: ApplyAnd(Span<Byte>, Byte)
   href: api/Fp.Processor.html#Fp_Processor_ApplyAnd_System_Span_System_Byte__System_Byte_
@@ -2562,22 +2508,22 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Ascii
   nameWithType: Processor.Ascii
-- uid: Fp.Processor.Audio(FpPath,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+- uid: Fp.Processor.Audio(FpPath,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name: Audio(FpPath, PcmInfo, ReadOnlyMemory<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_Audio_FpPath_Fp_PcmInfo_System_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Processor.Audio(FpPath,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  href: api/Fp.Processor.html#Fp_Processor_Audio_FpPath_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.Processor.Audio(FpPath,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name.vb: Audio(FpPath, PcmInfo, ReadOnlyMemory(Of Byte))
-  fullName: Fp.Processor.Audio(FpPath, Fp.PcmInfo, System.ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Processor.Audio(FpPath, Fp.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  fullName: Fp.Processor.Audio(FpPath, PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.Processor.Audio(FpPath, PcmInfo, System.ReadOnlyMemory(Of System.Byte))
   nameWithType: Processor.Audio(FpPath, PcmInfo, ReadOnlyMemory<Byte>)
   nameWithType.vb: Processor.Audio(FpPath, PcmInfo, ReadOnlyMemory(Of Byte))
-- uid: Fp.Processor.Audio(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+- uid: Fp.Processor.Audio(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name: Audio(String, PcmInfo, ReadOnlyMemory<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_Audio_System_String_Fp_PcmInfo_System_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Processor.Audio(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  href: api/Fp.Processor.html#Fp_Processor_Audio_System_String_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.Processor.Audio(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name.vb: Audio(String, PcmInfo, ReadOnlyMemory(Of Byte))
-  fullName: Fp.Processor.Audio(System.String, Fp.PcmInfo, System.ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Processor.Audio(System.String, Fp.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  fullName: Fp.Processor.Audio(System.String, PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.Processor.Audio(System.String, PcmInfo, System.ReadOnlyMemory(Of System.Byte))
   nameWithType: Processor.Audio(String, PcmInfo, ReadOnlyMemory<Byte>)
   nameWithType.vb: Processor.Audio(String, PcmInfo, ReadOnlyMemory(Of Byte))
 - uid: Fp.Processor.Audio*
@@ -2612,19 +2558,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Buffer
   nameWithType: Processor.Buffer
-- uid: Fp.Processor.Cleanup(System.Boolean)
-  name: Cleanup(Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_Cleanup_System_Boolean_
-  commentId: M:Fp.Processor.Cleanup(System.Boolean)
-  fullName: Fp.Processor.Cleanup(System.Boolean)
-  nameWithType: Processor.Cleanup(Boolean)
-- uid: Fp.Processor.Cleanup*
-  name: Cleanup
-  href: api/Fp.Processor.html#Fp_Processor_Cleanup_
-  commentId: Overload:Fp.Processor.Cleanup
-  isSpec: "True"
-  fullName: Fp.Processor.Cleanup
-  nameWithType: Processor.Cleanup
 - uid: Fp.Processor.CloseFile(System.Boolean,System.IO.Stream)
   name: CloseFile(Boolean, Stream)
   href: api/Fp.Processor.html#Fp_Processor_CloseFile_System_Boolean_System_IO_Stream_
@@ -3097,31 +3030,18 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.DecryptBlowfishEcb
   nameWithType: Processor.DecryptBlowfishEcb
-- uid: Fp.Processor.Dispose
-  name: Dispose()
-  href: api/Fp.Processor.html#Fp_Processor_Dispose
-  commentId: M:Fp.Processor.Dispose
-  fullName: Fp.Processor.Dispose()
-  nameWithType: Processor.Dispose()
-- uid: Fp.Processor.Dispose(System.Boolean)
-  name: Dispose(Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_Dispose_System_Boolean_
-  commentId: M:Fp.Processor.Dispose(System.Boolean)
-  fullName: Fp.Processor.Dispose(System.Boolean)
-  nameWithType: Processor.Dispose(Boolean)
-- uid: Fp.Processor.Dispose*
-  name: Dispose
-  href: api/Fp.Processor.html#Fp_Processor_Dispose_
-  commentId: Overload:Fp.Processor.Dispose
-  isSpec: "True"
-  fullName: Fp.Processor.Dispose
-  nameWithType: Processor.Dispose
 - uid: Fp.Processor.Dry
   name: Dry
   href: api/Fp.Processor.html#Fp_Processor_Dry
   commentId: F:Fp.Processor.Dry
   fullName: Fp.Processor.Dry
   nameWithType: Processor.Dry
+- uid: Fp.Processor.DumpArray(System.Int32)
+  name: DumpArray(Int32)
+  href: api/Fp.Processor.html#Fp_Processor_DumpArray_System_Int32_
+  commentId: M:Fp.Processor.DumpArray(System.Int32)
+  fullName: Fp.Processor.DumpArray(System.Int32)
+  nameWithType: Processor.DumpArray(Int32)
 - uid: Fp.Processor.DumpArray(System.IO.Stream,System.Int32)
   name: DumpArray(Stream, Int32)
   href: api/Fp.Processor.html#Fp_Processor_DumpArray_System_IO_Stream_System_Int32_
@@ -3216,12 +3136,6 @@ references:
   commentId: F:Fp.Processor.F64A
   fullName: Fp.Processor.F64A
   nameWithType: Processor.F64A
-- uid: Fp.Processor.FileSystem
-  name: FileSystem
-  href: api/Fp.Processor.html#Fp_Processor_FileSystem
-  commentId: F:Fp.Processor.FileSystem
-  fullName: Fp.Processor.FileSystem
-  nameWithType: Processor.FileSystem
 - uid: Fp.Processor.FromBgra(System.ReadOnlySpan{System.Byte})
   name: FromBgra(ReadOnlySpan<Byte>)
   href: api/Fp.Processor.html#Fp_Processor_FromBgra_System_ReadOnlySpan_System_Byte__
@@ -3298,6 +3212,18 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GenPathSub
   nameWithType: Processor.GenPathSub
+- uid: Fp.Processor.GetArray(System.Boolean)
+  name: GetArray(Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_GetArray_System_Boolean_
+  commentId: M:Fp.Processor.GetArray(System.Boolean)
+  fullName: Fp.Processor.GetArray(System.Boolean)
+  nameWithType: Processor.GetArray(Boolean)
+- uid: Fp.Processor.GetArray(System.Int32,System.Int32,System.Boolean)
+  name: GetArray(Int32, Int32, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_GetArray_System_Int32_System_Int32_System_Boolean_
+  commentId: M:Fp.Processor.GetArray(System.Int32,System.Int32,System.Boolean)
+  fullName: Fp.Processor.GetArray(System.Int32, System.Int32, System.Boolean)
+  nameWithType: Processor.GetArray(Int32, Int32, Boolean)
 - uid: Fp.Processor.GetArray(System.Int32,System.Int32,System.IO.Stream,System.Boolean)
   name: GetArray(Int32, Int32, Stream, Boolean)
   href: api/Fp.Processor.html#Fp_Processor_GetArray_System_Int32_System_Int32_System_IO_Stream_System_Boolean_
@@ -3701,22 +3627,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GetDouble
   nameWithType: Processor.GetDouble
-- uid: Fp.Processor.GetFactory*
-  name: GetFactory
-  href: api/Fp.Processor.html#Fp_Processor_GetFactory_
-  commentId: Overload:Fp.Processor.GetFactory
-  isSpec: "True"
-  fullName: Fp.Processor.GetFactory
-  nameWithType: Processor.GetFactory
-- uid: Fp.Processor.GetFactory``1
-  name: GetFactory<T>()
-  href: api/Fp.Processor.html#Fp_Processor_GetFactory__1
-  commentId: M:Fp.Processor.GetFactory``1
-  name.vb: GetFactory(Of T)()
-  fullName: Fp.Processor.GetFactory<T>()
-  fullName.vb: Fp.Processor.GetFactory(Of T)()
-  nameWithType: Processor.GetFactory<T>()
-  nameWithType.vb: Processor.GetFactory(Of T)()
 - uid: Fp.Processor.GetHalf(System.ReadOnlySpan{System.Byte},System.Int32)
   name: GetHalf(ReadOnlySpan<Byte>, Int32)
   href: api/Fp.Processor.html#Fp_Processor_GetHalf_System_ReadOnlySpan_System_Byte__System_Int32_
@@ -3749,12 +3659,24 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GetMDouble
   nameWithType: Processor.GetMDouble
-- uid: Fp.Processor.GetMemory(System.Int32,System.Int32,System.IO.Stream)
-  name: GetMemory(Int32, Int32, Stream)
-  href: api/Fp.Processor.html#Fp_Processor_GetMemory_System_Int32_System_Int32_System_IO_Stream_
-  commentId: M:Fp.Processor.GetMemory(System.Int32,System.Int32,System.IO.Stream)
-  fullName: Fp.Processor.GetMemory(System.Int32, System.Int32, System.IO.Stream)
-  nameWithType: Processor.GetMemory(Int32, Int32, Stream)
+- uid: Fp.Processor.GetMemory
+  name: GetMemory()
+  href: api/Fp.Processor.html#Fp_Processor_GetMemory
+  commentId: M:Fp.Processor.GetMemory
+  fullName: Fp.Processor.GetMemory()
+  nameWithType: Processor.GetMemory()
+- uid: Fp.Processor.GetMemory(System.Int64,System.Int32)
+  name: GetMemory(Int64, Int32)
+  href: api/Fp.Processor.html#Fp_Processor_GetMemory_System_Int64_System_Int32_
+  commentId: M:Fp.Processor.GetMemory(System.Int64,System.Int32)
+  fullName: Fp.Processor.GetMemory(System.Int64, System.Int32)
+  nameWithType: Processor.GetMemory(Int64, Int32)
+- uid: Fp.Processor.GetMemory(System.Int64,System.Int32,System.IO.Stream)
+  name: GetMemory(Int64, Int32, Stream)
+  href: api/Fp.Processor.html#Fp_Processor_GetMemory_System_Int64_System_Int32_System_IO_Stream_
+  commentId: M:Fp.Processor.GetMemory(System.Int64,System.Int32,System.IO.Stream)
+  fullName: Fp.Processor.GetMemory(System.Int64, System.Int32, System.IO.Stream)
+  nameWithType: Processor.GetMemory(Int64, Int32, Stream)
 - uid: Fp.Processor.GetMemory(System.IO.Stream)
   name: GetMemory(Stream)
   href: api/Fp.Processor.html#Fp_Processor_GetMemory_System_IO_Stream_
@@ -4557,34 +4479,17 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Image
   nameWithType: Processor.Image
-- uid: Fp.Processor.InputDirectory
-  name: InputDirectory
-  href: api/Fp.Processor.html#Fp_Processor_InputDirectory
-  commentId: F:Fp.Processor.InputDirectory
-  fullName: Fp.Processor.InputDirectory
-  nameWithType: Processor.InputDirectory
-- uid: Fp.Processor.InputFile
-  name: InputFile
-  href: api/Fp.Processor.html#Fp_Processor_InputFile
-  commentId: F:Fp.Processor.InputFile
-  fullName: Fp.Processor.InputFile
-  nameWithType: Processor.InputFile
-- uid: Fp.Processor.InputLength
-  name: InputLength
-  href: api/Fp.Processor.html#Fp_Processor_InputLength
-  commentId: F:Fp.Processor.InputLength
-  fullName: Fp.Processor.InputLength
-  nameWithType: Processor.InputLength
-- uid: Fp.Processor.InputRootDirectory
-  name: InputRootDirectory
-  href: api/Fp.Processor.html#Fp_Processor_InputRootDirectory
-  commentId: F:Fp.Processor.InputRootDirectory
-  fullName: Fp.Processor.InputRootDirectory
-  nameWithType: Processor.InputRootDirectory
 - uid: Fp.Processor.InputStream
   name: InputStream
   href: api/Fp.Processor.html#Fp_Processor_InputStream
-  commentId: F:Fp.Processor.InputStream
+  commentId: P:Fp.Processor.InputStream
+  fullName: Fp.Processor.InputStream
+  nameWithType: Processor.InputStream
+- uid: Fp.Processor.InputStream*
+  name: InputStream
+  href: api/Fp.Processor.html#Fp_Processor_InputStream_
+  commentId: Overload:Fp.Processor.InputStream
+  isSpec: "True"
   fullName: Fp.Processor.InputStream
   nameWithType: Processor.InputStream
 - uid: Fp.Processor.Instance
@@ -4625,70 +4530,12 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Join
   nameWithType: Processor.Join
-- uid: Fp.Processor.LittleEndian
-  name: LittleEndian
-  href: api/Fp.Processor.html#Fp_Processor_LittleEndian
-  commentId: P:Fp.Processor.LittleEndian
-  fullName: Fp.Processor.LittleEndian
-  nameWithType: Processor.LittleEndian
-- uid: Fp.Processor.LittleEndian*
-  name: LittleEndian
-  href: api/Fp.Processor.html#Fp_Processor_LittleEndian_
-  commentId: Overload:Fp.Processor.LittleEndian
-  isSpec: "True"
-  fullName: Fp.Processor.LittleEndian
-  nameWithType: Processor.LittleEndian
-- uid: Fp.Processor.Lock
-  name: Lock
-  href: api/Fp.Processor.html#Fp_Processor_Lock
-  commentId: F:Fp.Processor.Lock
-  fullName: Fp.Processor.Lock
-  nameWithType: Processor.Lock
-- uid: Fp.Processor.LogFail(System.String)
-  name: LogFail(String)
-  href: api/Fp.Processor.html#Fp_Processor_LogFail_System_String_
-  commentId: M:Fp.Processor.LogFail(System.String)
-  fullName: Fp.Processor.LogFail(System.String)
-  nameWithType: Processor.LogFail(String)
-- uid: Fp.Processor.LogFail*
-  name: LogFail
-  href: api/Fp.Processor.html#Fp_Processor_LogFail_
-  commentId: Overload:Fp.Processor.LogFail
-  isSpec: "True"
-  fullName: Fp.Processor.LogFail
-  nameWithType: Processor.LogFail
 - uid: Fp.Processor.Logger
   name: Logger
   href: api/Fp.Processor.html#Fp_Processor_Logger
   commentId: F:Fp.Processor.Logger
   fullName: Fp.Processor.Logger
   nameWithType: Processor.Logger
-- uid: Fp.Processor.LogInfo(System.String)
-  name: LogInfo(String)
-  href: api/Fp.Processor.html#Fp_Processor_LogInfo_System_String_
-  commentId: M:Fp.Processor.LogInfo(System.String)
-  fullName: Fp.Processor.LogInfo(System.String)
-  nameWithType: Processor.LogInfo(String)
-- uid: Fp.Processor.LogInfo*
-  name: LogInfo
-  href: api/Fp.Processor.html#Fp_Processor_LogInfo_
-  commentId: Overload:Fp.Processor.LogInfo
-  isSpec: "True"
-  fullName: Fp.Processor.LogInfo
-  nameWithType: Processor.LogInfo
-- uid: Fp.Processor.LogWarn(System.String)
-  name: LogWarn(String)
-  href: api/Fp.Processor.html#Fp_Processor_LogWarn_System_String_
-  commentId: M:Fp.Processor.LogWarn(System.String)
-  fullName: Fp.Processor.LogWarn(System.String)
-  nameWithType: Processor.LogWarn(String)
-- uid: Fp.Processor.LogWarn*
-  name: LogWarn
-  href: api/Fp.Processor.html#Fp_Processor_LogWarn_
-  commentId: Overload:Fp.Processor.LogWarn
-  isSpec: "True"
-  fullName: Fp.Processor.LogWarn
-  nameWithType: Processor.LogWarn
 - uid: Fp.Processor.MakeNative(System.String)
   name: MakeNative(String)
   href: api/Fp.Processor.html#Fp_Processor_MakeNative_System_String_
@@ -5467,6 +5314,25 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.MemPrint
   nameWithType: Processor.MemPrint
+- uid: Fp.Processor.Meta(FpPath,System.Object)
+  name: Meta(FpPath, Object)
+  href: api/Fp.Processor.html#Fp_Processor_Meta_FpPath_System_Object_
+  commentId: M:Fp.Processor.Meta(FpPath,System.Object)
+  fullName: Fp.Processor.Meta(FpPath, System.Object)
+  nameWithType: Processor.Meta(FpPath, Object)
+- uid: Fp.Processor.Meta(System.String,System.Object)
+  name: Meta(String, Object)
+  href: api/Fp.Processor.html#Fp_Processor_Meta_System_String_System_Object_
+  commentId: M:Fp.Processor.Meta(System.String,System.Object)
+  fullName: Fp.Processor.Meta(System.String, System.Object)
+  nameWithType: Processor.Meta(String, Object)
+- uid: Fp.Processor.Meta*
+  name: Meta
+  href: api/Fp.Processor.html#Fp_Processor_Meta_
+  commentId: Overload:Fp.Processor.Meta
+  isSpec: "True"
+  fullName: Fp.Processor.Meta
+  nameWithType: Processor.Meta
 - uid: Fp.Processor.MkDirs(System.String)
   name: MkDirs(String)
   href: api/Fp.Processor.html#Fp_Processor_MkDirs_System_String_
@@ -5761,30 +5627,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.OutputAllSub
   nameWithType: Processor.OutputAllSub
-- uid: Fp.Processor.OutputCounter
-  name: OutputCounter
-  href: api/Fp.Processor.html#Fp_Processor_OutputCounter
-  commentId: F:Fp.Processor.OutputCounter
-  fullName: Fp.Processor.OutputCounter
-  nameWithType: Processor.OutputCounter
-- uid: Fp.Processor.OutputDirectory
-  name: OutputDirectory
-  href: api/Fp.Processor.html#Fp_Processor_OutputDirectory
-  commentId: F:Fp.Processor.OutputDirectory
-  fullName: Fp.Processor.OutputDirectory
-  nameWithType: Processor.OutputDirectory
-- uid: Fp.Processor.OutputRootDirectory
-  name: OutputRootDirectory
-  href: api/Fp.Processor.html#Fp_Processor_OutputRootDirectory
-  commentId: F:Fp.Processor.OutputRootDirectory
-  fullName: Fp.Processor.OutputRootDirectory
-  nameWithType: Processor.OutputRootDirectory
-- uid: Fp.Processor.OutputStream
-  name: OutputStream
-  href: api/Fp.Processor.html#Fp_Processor_OutputStream
-  commentId: F:Fp.Processor.OutputStream
-  fullName: Fp.Processor.OutputStream
-  nameWithType: Processor.OutputStream
 - uid: Fp.Processor.OutputSub(System.Byte[],System.Int32,System.Int32,System.String,System.String)
   name: OutputSub(Byte[], Int32, Int32, String, String)
   href: api/Fp.Processor.html#Fp_Processor_OutputSub_System_Byte___System_Int32_System_Int32_System_String_System_String_
@@ -5902,74 +5744,6 @@ references:
   commentId: F:Fp.Processor.Preload
   fullName: Fp.Processor.Preload
   nameWithType: Processor.Preload
-- uid: Fp.Processor.Prepare(Fp.FileSystemSource,System.String,System.String,System.String,System.Nullable{ProcessorConfiguration},System.Int32)
-  name: Prepare(FileSystemSource, String, String, String, Nullable<ProcessorConfiguration>, Int32)
-  href: api/Fp.Processor.html#Fp_Processor_Prepare_Fp_FileSystemSource_System_String_System_String_System_String_System_Nullable_ProcessorConfiguration__System_Int32_
-  commentId: M:Fp.Processor.Prepare(Fp.FileSystemSource,System.String,System.String,System.String,System.Nullable{ProcessorConfiguration},System.Int32)
-  name.vb: Prepare(FileSystemSource, String, String, String, Nullable(Of ProcessorConfiguration), Int32)
-  fullName: Fp.Processor.Prepare(Fp.FileSystemSource, System.String, System.String, System.String, System.Nullable<ProcessorConfiguration>, System.Int32)
-  fullName.vb: Fp.Processor.Prepare(Fp.FileSystemSource, System.String, System.String, System.String, System.Nullable(Of ProcessorConfiguration), System.Int32)
-  nameWithType: Processor.Prepare(FileSystemSource, String, String, String, Nullable<ProcessorConfiguration>, Int32)
-  nameWithType.vb: Processor.Prepare(FileSystemSource, String, String, String, Nullable(Of ProcessorConfiguration), Int32)
-- uid: Fp.Processor.Prepare*
-  name: Prepare
-  href: api/Fp.Processor.html#Fp_Processor_Prepare_
-  commentId: Overload:Fp.Processor.Prepare
-  isSpec: "True"
-  fullName: Fp.Processor.Prepare
-  nameWithType: Processor.Prepare
-- uid: Fp.Processor.Process
-  name: Process()
-  href: api/Fp.Processor.html#Fp_Processor_Process
-  commentId: M:Fp.Processor.Process
-  fullName: Fp.Processor.Process()
-  nameWithType: Processor.Process()
-- uid: Fp.Processor.Process*
-  name: Process
-  href: api/Fp.Processor.html#Fp_Processor_Process_
-  commentId: Overload:Fp.Processor.Process
-  isSpec: "True"
-  fullName: Fp.Processor.Process
-  nameWithType: Processor.Process
-- uid: Fp.Processor.ProcessImpl
-  name: ProcessImpl()
-  href: api/Fp.Processor.html#Fp_Processor_ProcessImpl
-  commentId: M:Fp.Processor.ProcessImpl
-  fullName: Fp.Processor.ProcessImpl()
-  nameWithType: Processor.ProcessImpl()
-- uid: Fp.Processor.ProcessImpl*
-  name: ProcessImpl
-  href: api/Fp.Processor.html#Fp_Processor_ProcessImpl_
-  commentId: Overload:Fp.Processor.ProcessImpl
-  isSpec: "True"
-  fullName: Fp.Processor.ProcessImpl
-  nameWithType: Processor.ProcessImpl
-- uid: Fp.Processor.ProcessSegmented
-  name: ProcessSegmented()
-  href: api/Fp.Processor.html#Fp_Processor_ProcessSegmented
-  commentId: M:Fp.Processor.ProcessSegmented
-  fullName: Fp.Processor.ProcessSegmented()
-  nameWithType: Processor.ProcessSegmented()
-- uid: Fp.Processor.ProcessSegmented*
-  name: ProcessSegmented
-  href: api/Fp.Processor.html#Fp_Processor_ProcessSegmented_
-  commentId: Overload:Fp.Processor.ProcessSegmented
-  isSpec: "True"
-  fullName: Fp.Processor.ProcessSegmented
-  nameWithType: Processor.ProcessSegmented
-- uid: Fp.Processor.ProcessSegmentedImpl
-  name: ProcessSegmentedImpl()
-  href: api/Fp.Processor.html#Fp_Processor_ProcessSegmentedImpl
-  commentId: M:Fp.Processor.ProcessSegmentedImpl
-  fullName: Fp.Processor.ProcessSegmentedImpl()
-  nameWithType: Processor.ProcessSegmentedImpl()
-- uid: Fp.Processor.ProcessSegmentedImpl*
-  name: ProcessSegmentedImpl
-  href: api/Fp.Processor.html#Fp_Processor_ProcessSegmentedImpl_
-  commentId: Overload:Fp.Processor.ProcessSegmentedImpl
-  isSpec: "True"
-  fullName: Fp.Processor.ProcessSegmentedImpl
-  nameWithType: Processor.ProcessSegmentedImpl
 - uid: Fp.Processor.Read(System.Byte[],System.Boolean)
   name: Read(Byte[], Boolean)
   href: api/Fp.Processor.html#Fp_Processor_Read_System_Byte___System_Boolean_
@@ -7823,32 +7597,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetU8Array
   nameWithType: Processor.SetU8Array
-- uid: Fp.Processor.ShieldProcess
-  name: ShieldProcess()
-  href: api/Fp.Processor.html#Fp_Processor_ShieldProcess
-  commentId: M:Fp.Processor.ShieldProcess
-  fullName: Fp.Processor.ShieldProcess()
-  nameWithType: Processor.ShieldProcess()
-- uid: Fp.Processor.ShieldProcess*
-  name: ShieldProcess
-  href: api/Fp.Processor.html#Fp_Processor_ShieldProcess_
-  commentId: Overload:Fp.Processor.ShieldProcess
-  isSpec: "True"
-  fullName: Fp.Processor.ShieldProcess
-  nameWithType: Processor.ShieldProcess
-- uid: Fp.Processor.ShieldProcessSegmented
-  name: ShieldProcessSegmented()
-  href: api/Fp.Processor.html#Fp_Processor_ShieldProcessSegmented
-  commentId: M:Fp.Processor.ShieldProcessSegmented
-  fullName: Fp.Processor.ShieldProcessSegmented()
-  nameWithType: Processor.ShieldProcessSegmented()
-- uid: Fp.Processor.ShieldProcessSegmented*
-  name: ShieldProcessSegmented
-  href: api/Fp.Processor.html#Fp_Processor_ShieldProcessSegmented_
-  commentId: Overload:Fp.Processor.ShieldProcessSegmented
-  isSpec: "True"
-  fullName: Fp.Processor.ShieldProcessSegmented
-  nameWithType: Processor.ShieldProcessSegmented
 - uid: Fp.Processor.Skip(System.Int64)
   name: Skip(Int64)
   href: api/Fp.Processor.html#Fp_Processor_Skip_System_Int64_
@@ -7868,22 +7616,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Skip
   nameWithType: Processor.Skip
-- uid: Fp.Processor.SubProcess*
-  name: SubProcess
-  href: api/Fp.Processor.html#Fp_Processor_SubProcess_
-  commentId: Overload:Fp.Processor.SubProcess
-  isSpec: "True"
-  fullName: Fp.Processor.SubProcess
-  nameWithType: Processor.SubProcess
-- uid: Fp.Processor.SubProcess``1(Fp.BufferData{System.Byte},System.String[],System.Collections.Generic.IEnumerable{Fp.BufferData{System.Byte}})
-  name: SubProcess<T>(BufferData<Byte>, String[], IEnumerable<BufferData<Byte>>)
-  href: api/Fp.Processor.html#Fp_Processor_SubProcess__1_Fp_BufferData_System_Byte__System_String___System_Collections_Generic_IEnumerable_Fp_BufferData_System_Byte___
-  commentId: M:Fp.Processor.SubProcess``1(Fp.BufferData{System.Byte},System.String[],System.Collections.Generic.IEnumerable{Fp.BufferData{System.Byte}})
-  name.vb: SubProcess(Of T)(BufferData(Of Byte), String(), IEnumerable(Of BufferData(Of Byte)))
-  fullName: Fp.Processor.SubProcess<T>(Fp.BufferData<System.Byte>, System.String[], System.Collections.Generic.IEnumerable<Fp.BufferData<System.Byte>>)
-  fullName.vb: Fp.Processor.SubProcess(Of T)(Fp.BufferData(Of System.Byte), System.String(), System.Collections.Generic.IEnumerable(Of Fp.BufferData(Of System.Byte)))
-  nameWithType: Processor.SubProcess<T>(BufferData<Byte>, String[], IEnumerable<BufferData<Byte>>)
-  nameWithType.vb: Processor.SubProcess(Of T)(BufferData(Of Byte), String(), IEnumerable(Of BufferData(Of Byte)))
 - uid: Fp.Processor.SupportBackSlash
   name: SupportBackSlash
   href: api/Fp.Processor.html#Fp_Processor_SupportBackSlash
@@ -8366,6 +8098,37 @@ references:
   fullName.vb: Fp.ProcessorSource.GetProcessors(Of T)(System.Predicate(Of T))
   nameWithType: ProcessorSource.GetProcessors<T>(Predicate<T>)
   nameWithType.vb: ProcessorSource.GetProcessors(Of T)(Predicate(Of T))
+- uid: Fp.ProcessResult
+  name: ProcessResult
+  href: api/Fp.ProcessResult.html
+  commentId: T:Fp.ProcessResult
+  fullName: Fp.ProcessResult
+  nameWithType: ProcessResult
+- uid: Fp.ProcessResult.#ctor(System.Boolean,System.Boolean)
+  name: ProcessResult(Boolean, Boolean)
+  href: api/Fp.ProcessResult.html#Fp_ProcessResult__ctor_System_Boolean_System_Boolean_
+  commentId: M:Fp.ProcessResult.#ctor(System.Boolean,System.Boolean)
+  fullName: Fp.ProcessResult.ProcessResult(System.Boolean, System.Boolean)
+  nameWithType: ProcessResult.ProcessResult(Boolean, Boolean)
+- uid: Fp.ProcessResult.#ctor*
+  name: ProcessResult
+  href: api/Fp.ProcessResult.html#Fp_ProcessResult__ctor_
+  commentId: Overload:Fp.ProcessResult.#ctor
+  isSpec: "True"
+  fullName: Fp.ProcessResult.ProcessResult
+  nameWithType: ProcessResult.ProcessResult
+- uid: Fp.ProcessResult.Locked
+  name: Locked
+  href: api/Fp.ProcessResult.html#Fp_ProcessResult_Locked
+  commentId: F:Fp.ProcessResult.Locked
+  fullName: Fp.ProcessResult.Locked
+  nameWithType: ProcessResult.Locked
+- uid: Fp.ProcessResult.Success
+  name: Success
+  href: api/Fp.ProcessResult.html#Fp_ProcessResult_Success
+  commentId: F:Fp.ProcessResult.Success
+  fullName: Fp.ProcessResult.Success
+  nameWithType: ProcessResult.Success
 - uid: Fp.PStream
   name: PStream
   href: api/Fp.PStream.html
@@ -8897,6 +8660,19 @@ references:
   commentId: F:Fp.Rgba32Data.Options.JpegQuality
   fullName: Fp.Rgba32Data.Options.JpegQuality
   nameWithType: Rgba32Data.Options.JpegQuality
+- uid: Fp.Rgba32Data.ToString
+  name: ToString()
+  href: api/Fp.Rgba32Data.html#Fp_Rgba32Data_ToString
+  commentId: M:Fp.Rgba32Data.ToString
+  fullName: Fp.Rgba32Data.ToString()
+  nameWithType: Rgba32Data.ToString()
+- uid: Fp.Rgba32Data.ToString*
+  name: ToString
+  href: api/Fp.Rgba32Data.html#Fp_Rgba32Data_ToString_
+  commentId: Overload:Fp.Rgba32Data.ToString
+  isSpec: "True"
+  fullName: Fp.Rgba32Data.ToString
+  nameWithType: Rgba32Data.ToString
 - uid: Fp.Rgba32Data.Width
   name: Width
   href: api/Fp.Rgba32Data.html#Fp_Rgba32Data_Width
@@ -9050,22 +8826,22 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.ascii
   nameWithType: Scripting.ascii
-- uid: Fp.Scripting.audio(FpPath,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+- uid: Fp.Scripting.audio(FpPath,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name: audio(FpPath, PcmInfo, ReadOnlyMemory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_audio_FpPath_Fp_PcmInfo_System_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Scripting.audio(FpPath,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  href: api/Fp.Scripting.html#Fp_Scripting_audio_FpPath_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.Scripting.audio(FpPath,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name.vb: audio(FpPath, PcmInfo, ReadOnlyMemory(Of Byte))
-  fullName: Fp.Scripting.audio(FpPath, Fp.PcmInfo, System.ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Scripting.audio(FpPath, Fp.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  fullName: Fp.Scripting.audio(FpPath, PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.Scripting.audio(FpPath, PcmInfo, System.ReadOnlyMemory(Of System.Byte))
   nameWithType: Scripting.audio(FpPath, PcmInfo, ReadOnlyMemory<Byte>)
   nameWithType.vb: Scripting.audio(FpPath, PcmInfo, ReadOnlyMemory(Of Byte))
-- uid: Fp.Scripting.audio(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+- uid: Fp.Scripting.audio(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name: audio(String, PcmInfo, ReadOnlyMemory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_audio_System_String_Fp_PcmInfo_System_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Scripting.audio(System.String,Fp.PcmInfo,System.ReadOnlyMemory{System.Byte})
+  href: api/Fp.Scripting.html#Fp_Scripting_audio_System_String_PcmInfo_System_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.Scripting.audio(System.String,PcmInfo,System.ReadOnlyMemory{System.Byte})
   name.vb: audio(String, PcmInfo, ReadOnlyMemory(Of Byte))
-  fullName: Fp.Scripting.audio(System.String, Fp.PcmInfo, System.ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Scripting.audio(System.String, Fp.PcmInfo, System.ReadOnlyMemory(Of System.Byte))
+  fullName: Fp.Scripting.audio(System.String, PcmInfo, System.ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.Scripting.audio(System.String, PcmInfo, System.ReadOnlyMemory(Of System.Byte))
   nameWithType: Scripting.audio(String, PcmInfo, ReadOnlyMemory<Byte>)
   nameWithType.vb: Scripting.audio(String, PcmInfo, ReadOnlyMemory(Of Byte))
 - uid: Fp.Scripting.audio*
@@ -9428,37 +9204,42 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.f8a
   nameWithType: Scripting.f8a
-- uid: Fp.Scripting.fail(System.String)
-  name: fail(String)
-  href: api/Fp.Scripting.html#Fp_Scripting_fail_System_String_
-  commentId: M:Fp.Scripting.fail(System.String)
-  fullName: Fp.Scripting.fail(System.String)
-  nameWithType: Scripting.fail(String)
-- uid: Fp.Scripting.fail*
-  name: fail
-  href: api/Fp.Scripting.html#Fp_Scripting_fail_
-  commentId: Overload:Fp.Scripting.fail
-  isSpec: "True"
-  fullName: Fp.Scripting.fail
-  nameWithType: Scripting.fail
-- uid: Fp.Scripting.fp(System.Action,System.Collections.Generic.IReadOnlyList{System.String},System.Nullable{ProcessorInfo})
-  name: fp(Action, IReadOnlyList<String>, Nullable<ProcessorInfo>)
-  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Action_System_Collections_Generic_IReadOnlyList_System_String__System_Nullable_ProcessorInfo__
-  commentId: M:Fp.Scripting.fp(System.Action,System.Collections.Generic.IReadOnlyList{System.String},System.Nullable{ProcessorInfo})
-  name.vb: fp(Action, IReadOnlyList(Of String), Nullable(Of ProcessorInfo))
-  fullName: Fp.Scripting.fp(System.Action, System.Collections.Generic.IReadOnlyList<System.String>, System.Nullable<ProcessorInfo>)
-  fullName.vb: Fp.Scripting.fp(System.Action, System.Collections.Generic.IReadOnlyList(Of System.String), System.Nullable(Of ProcessorInfo))
-  nameWithType: Scripting.fp(Action, IReadOnlyList<String>, Nullable<ProcessorInfo>)
-  nameWithType.vb: Scripting.fp(Action, IReadOnlyList(Of String), Nullable(Of ProcessorInfo))
-- uid: Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IReadOnlyList{System.String},System.Nullable{ProcessorInfo})
-  name: fp(Func<IEnumerable<Data>>, IReadOnlyList<String>, Nullable<ProcessorInfo>)
-  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Func_System_Collections_Generic_IEnumerable_Fp_Data___System_Collections_Generic_IReadOnlyList_System_String__System_Nullable_ProcessorInfo__
-  commentId: M:Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IReadOnlyList{System.String},System.Nullable{ProcessorInfo})
-  name.vb: fp(Func(Of IEnumerable(Of Data)), IReadOnlyList(Of String), Nullable(Of ProcessorInfo))
-  fullName: Fp.Scripting.fp(System.Func<System.Collections.Generic.IEnumerable<Fp.Data>>, System.Collections.Generic.IReadOnlyList<System.String>, System.Nullable<ProcessorInfo>)
-  fullName.vb: Fp.Scripting.fp(System.Func(Of System.Collections.Generic.IEnumerable(Of Fp.Data)), System.Collections.Generic.IReadOnlyList(Of System.String), System.Nullable(Of ProcessorInfo))
-  nameWithType: Scripting.fp(Func<IEnumerable<Data>>, IReadOnlyList<String>, Nullable<ProcessorInfo>)
-  nameWithType.vb: Scripting.fp(Func(Of IEnumerable(Of Data)), IReadOnlyList(Of String), Nullable(Of ProcessorInfo))
+- uid: Fp.Scripting.fp(System.Action,System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name: fp(Action, IList<String>, Nullable<ProcessorInfo>)
+  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Action_System_Collections_Generic_IList_System_String__System_Nullable_ProcessorInfo__
+  commentId: M:Fp.Scripting.fp(System.Action,System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name.vb: fp(Action, IList(Of String), Nullable(Of ProcessorInfo))
+  fullName: Fp.Scripting.fp(System.Action, System.Collections.Generic.IList<System.String>, System.Nullable<ProcessorInfo>)
+  fullName.vb: Fp.Scripting.fp(System.Action, System.Collections.Generic.IList(Of System.String), System.Nullable(Of ProcessorInfo))
+  nameWithType: Scripting.fp(Action, IList<String>, Nullable<ProcessorInfo>)
+  nameWithType.vb: Scripting.fp(Action, IList(Of String), Nullable(Of ProcessorInfo))
+- uid: Fp.Scripting.fp(System.Action,System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name: fp(Action, IList<String>, String, String, String[])
+  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Action_System_Collections_Generic_IList_System_String__System_String_System_String_System_String___
+  commentId: M:Fp.Scripting.fp(System.Action,System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name.vb: fp(Action, IList(Of String), String, String, String())
+  fullName: Fp.Scripting.fp(System.Action, System.Collections.Generic.IList<System.String>, System.String, System.String, System.String[])
+  fullName.vb: Fp.Scripting.fp(System.Action, System.Collections.Generic.IList(Of System.String), System.String, System.String, System.String())
+  nameWithType: Scripting.fp(Action, IList<String>, String, String, String[])
+  nameWithType.vb: Scripting.fp(Action, IList(Of String), String, String, String())
+- uid: Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name: fp(Func<IEnumerable<Data>>, IList<String>, Nullable<ProcessorInfo>)
+  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Func_System_Collections_Generic_IEnumerable_Fp_Data___System_Collections_Generic_IList_System_String__System_Nullable_ProcessorInfo__
+  commentId: M:Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name.vb: fp(Func(Of IEnumerable(Of Data)), IList(Of String), Nullable(Of ProcessorInfo))
+  fullName: Fp.Scripting.fp(System.Func<System.Collections.Generic.IEnumerable<Fp.Data>>, System.Collections.Generic.IList<System.String>, System.Nullable<ProcessorInfo>)
+  fullName.vb: Fp.Scripting.fp(System.Func(Of System.Collections.Generic.IEnumerable(Of Fp.Data)), System.Collections.Generic.IList(Of System.String), System.Nullable(Of ProcessorInfo))
+  nameWithType: Scripting.fp(Func<IEnumerable<Data>>, IList<String>, Nullable<ProcessorInfo>)
+  nameWithType.vb: Scripting.fp(Func(Of IEnumerable(Of Data)), IList(Of String), Nullable(Of ProcessorInfo))
+- uid: Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name: fp(Func<IEnumerable<Data>>, IList<String>, String, String, String[])
+  href: api/Fp.Scripting.html#Fp_Scripting_fp_System_Func_System_Collections_Generic_IEnumerable_Fp_Data___System_Collections_Generic_IList_System_String__System_String_System_String_System_String___
+  commentId: M:Fp.Scripting.fp(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name.vb: fp(Func(Of IEnumerable(Of Data)), IList(Of String), String, String, String())
+  fullName: Fp.Scripting.fp(System.Func<System.Collections.Generic.IEnumerable<Fp.Data>>, System.Collections.Generic.IList<System.String>, System.String, System.String, System.String[])
+  fullName.vb: Fp.Scripting.fp(System.Func(Of System.Collections.Generic.IEnumerable(Of Fp.Data)), System.Collections.Generic.IList(Of System.String), System.String, System.String, System.String())
+  nameWithType: Scripting.fp(Func<IEnumerable<Data>>, IList<String>, String, String, String[])
+  nameWithType.vb: Scripting.fp(Func(Of IEnumerable(Of Data)), IList(Of String), String, String, String())
 - uid: Fp.Scripting.fp*
   name: fp
   href: api/Fp.Scripting.html#Fp_Scripting_fp_
@@ -9466,15 +9247,15 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.fp
   nameWithType: Scripting.fp
-- uid: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IReadOnlyList{System.String},ProcessorFactory[])
-  name: fpCliFilesystem(FileSystemSource, IReadOnlyList<String>, ProcessorFactory[])
-  href: api/Fp.Scripting.html#Fp_Scripting_fpCliFilesystem_Fp_FileSystemSource_System_Collections_Generic_IReadOnlyList_System_String__ProcessorFactory___
-  commentId: M:Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IReadOnlyList{System.String},ProcessorFactory[])
-  name.vb: fpCliFilesystem(FileSystemSource, IReadOnlyList(Of String), ProcessorFactory())
-  fullName: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IReadOnlyList<System.String>, ProcessorFactory[])
-  fullName.vb: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IReadOnlyList(Of System.String), ProcessorFactory())
-  nameWithType: Scripting.fpCliFilesystem(FileSystemSource, IReadOnlyList<String>, ProcessorFactory[])
-  nameWithType.vb: Scripting.fpCliFilesystem(FileSystemSource, IReadOnlyList(Of String), ProcessorFactory())
+- uid: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
+  name: fpCliFilesystem(FileSystemSource, IList<String>, ProcessorFactory[])
+  href: api/Fp.Scripting.html#Fp_Scripting_fpCliFilesystem_Fp_FileSystemSource_System_Collections_Generic_IList_System_String__ProcessorFactory___
+  commentId: M:Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
+  name.vb: fpCliFilesystem(FileSystemSource, IList(Of String), ProcessorFactory())
+  fullName: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IList<System.String>, ProcessorFactory[])
+  fullName.vb: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IList(Of System.String), ProcessorFactory())
+  nameWithType: Scripting.fpCliFilesystem(FileSystemSource, IList<String>, ProcessorFactory[])
+  nameWithType.vb: Scripting.fpCliFilesystem(FileSystemSource, IList(Of String), ProcessorFactory())
 - uid: Fp.Scripting.fpCliFilesystem*
   name: fpCliFilesystem
   href: api/Fp.Scripting.html#Fp_Scripting_fpCliFilesystem_
@@ -9689,19 +9470,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.image
   nameWithType: Scripting.image
-- uid: Fp.Scripting.info(System.String)
-  name: info(String)
-  href: api/Fp.Scripting.html#Fp_Scripting_info_System_String_
-  commentId: M:Fp.Scripting.info(System.String)
-  fullName: Fp.Scripting.info(System.String)
-  nameWithType: Scripting.info(String)
-- uid: Fp.Scripting.info*
-  name: info
-  href: api/Fp.Scripting.html#Fp_Scripting_info_
-  commentId: Overload:Fp.Scripting.info
-  isSpec: "True"
-  fullName: Fp.Scripting.info
-  nameWithType: Scripting.info
 - uid: Fp.Scripting.magic(System.Byte[],System.ReadOnlySpan{System.Byte},System.Int32)
   name: magic(Byte[], ReadOnlySpan<Byte>, Int32)
   href: api/Fp.Scripting.html#Fp_Scripting_magic_System_Byte___System_ReadOnlySpan_System_Byte__System_Int32_
@@ -10528,6 +10296,31 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.matchLast
   nameWithType: Scripting.matchLast
+- uid: Fp.Scripting.meta(FpPath,System.Object)
+  name: meta(FpPath, Object)
+  href: api/Fp.Scripting.html#Fp_Scripting_meta_FpPath_System_Object_
+  commentId: M:Fp.Scripting.meta(FpPath,System.Object)
+  fullName: Fp.Scripting.meta(FpPath, System.Object)
+  nameWithType: Scripting.meta(FpPath, Object)
+- uid: Fp.Scripting.meta(System.String,System.Object)
+  name: meta(String, Object)
+  href: api/Fp.Scripting.html#Fp_Scripting_meta_System_String_System_Object_
+  commentId: M:Fp.Scripting.meta(System.String,System.Object)
+  fullName: Fp.Scripting.meta(System.String, System.Object)
+  nameWithType: Scripting.meta(String, Object)
+- uid: Fp.Scripting.meta*
+  name: meta
+  href: api/Fp.Scripting.html#Fp_Scripting_meta_
+  commentId: Overload:Fp.Scripting.meta
+  isSpec: "True"
+  fullName: Fp.Scripting.meta
+  nameWithType: Scripting.meta
+- uid: Fp.Scripting.NO_EXECUTE_CLI
+  name: NO_EXECUTE_CLI
+  href: api/Fp.Scripting.html#Fp_Scripting_NO_EXECUTE_CLI
+  commentId: F:Fp.Scripting.NO_EXECUTE_CLI
+  fullName: Fp.Scripting.NO_EXECUTE_CLI
+  nameWithType: Scripting.NO_EXECUTE_CLI
 - uid: Fp.Scripting.or(System.Byte[],System.Byte)
   name: or(Byte[], Byte)
   href: api/Fp.Scripting.html#Fp_Scripting_or_System_Byte___System_Byte_
@@ -10776,19 +10569,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.utf8
   nameWithType: Scripting.utf8
-- uid: Fp.Scripting.warn(System.String)
-  name: warn(String)
-  href: api/Fp.Scripting.html#Fp_Scripting_warn_System_String_
-  commentId: M:Fp.Scripting.warn(System.String)
-  fullName: Fp.Scripting.warn(System.String)
-  nameWithType: Scripting.warn(String)
-- uid: Fp.Scripting.warn*
-  name: warn
-  href: api/Fp.Scripting.html#Fp_Scripting_warn_
-  commentId: Overload:Fp.Scripting.warn
-  isSpec: "True"
-  fullName: Fp.Scripting.warn
-  nameWithType: Scripting.warn
 - uid: Fp.Scripting.xor(System.Byte[],System.Byte)
   name: xor(Byte[], Byte)
   href: api/Fp.Scripting.html#Fp_Scripting_xor_System_Byte___System_Byte_
@@ -10842,6 +10622,19 @@ references:
   isSpec: "True"
   fullName: Fp.SStream.SStream
   nameWithType: SStream.SStream
+- uid: Fp.SStream.BaseStream
+  name: BaseStream
+  href: api/Fp.SStream.html#Fp_SStream_BaseStream
+  commentId: P:Fp.SStream.BaseStream
+  fullName: Fp.SStream.BaseStream
+  nameWithType: SStream.BaseStream
+- uid: Fp.SStream.BaseStream*
+  name: BaseStream
+  href: api/Fp.SStream.html#Fp_SStream_BaseStream_
+  commentId: Overload:Fp.SStream.BaseStream
+  isSpec: "True"
+  fullName: Fp.SStream.BaseStream
+  nameWithType: SStream.BaseStream
 - uid: Fp.SStream.CanRead
   name: CanRead
   href: api/Fp.SStream.html#Fp_SStream_CanRead
@@ -10913,6 +10706,19 @@ references:
   isSpec: "True"
   fullName: Fp.SStream.Length
   nameWithType: SStream.Length
+- uid: Fp.SStream.Offset
+  name: Offset
+  href: api/Fp.SStream.html#Fp_SStream_Offset
+  commentId: P:Fp.SStream.Offset
+  fullName: Fp.SStream.Offset
+  nameWithType: SStream.Offset
+- uid: Fp.SStream.Offset*
+  name: Offset
+  href: api/Fp.SStream.html#Fp_SStream_Offset_
+  commentId: Overload:Fp.SStream.Offset
+  isSpec: "True"
+  fullName: Fp.SStream.Offset
+  nameWithType: SStream.Offset
 - uid: Fp.SStream.Position
   name: Position
   href: api/Fp.SStream.html#Fp_SStream_Position

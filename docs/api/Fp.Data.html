@@ -81,6 +81,7 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Data</span></div>
       <div class="level2"><a class="xref" href="Fp.BufferData.html">BufferData</a></div>
+      <div class="level2"><a class="xref" href="Fp.MetaData.html">MetaData</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -117,60 +118,25 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class Data : IDisposable, ICloneable</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data__ctor_System_String_.md&amp;value=---%0Auid%3A%20Fp.Data.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-dereliction-alpha/apiSpec/new?filename=Fp_Data_BasePath.md&amp;value=---%0Auid%3A%20Fp.Data.BasePath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L31">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-dereliction-alpha/src/Fp/Data.cs/#L15">View Source</a>
   </span>
-  <a id="Fp_Data__ctor_" data-uid="Fp.Data.#ctor*"></a>
-  <h4 id="Fp_Data__ctor_System_String_" data-uid="Fp.Data.#ctor(System.String)">Data(String)</h4>
-  <div class="markdown level1 summary"><p>Create instance of <a class="xref" href="Fp.Data.html">Data</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Data(string basePath)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">basePath</span></td>
-        <td><p>Base path of resource</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="fields">Fields
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_BasePath.md&amp;value=---%0Auid%3A%20Fp.Data.BasePath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L15">View Source</a>
-  </span>
+  <a id="Fp_Data_BasePath_" data-uid="Fp.Data.BasePath*"></a>
   <h4 id="Fp_Data_BasePath" data-uid="Fp.Data.BasePath">BasePath</h4>
   <div class="markdown level1 summary"><p>Base path of resource</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly string BasePath</code></pre>
+    <pre><code class="lang-csharp hljs">public string BasePath { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -182,266 +148,6 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="properties">Properties
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_DefaultFormat.md&amp;value=---%0Auid%3A%20Fp.Data.DefaultFormat%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L20">View Source</a>
-  </span>
-  <a id="Fp_Data_DefaultFormat_" data-uid="Fp.Data.DefaultFormat*"></a>
-  <h4 id="Fp_Data_DefaultFormat" data-uid="Fp.Data.DefaultFormat">DefaultFormat</h4>
-  <div class="markdown level1 summary"><p>Default format for container</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract CommonFormat DefaultFormat { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Fp.CommonFormat.html">CommonFormat</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_Dry.md&amp;value=---%0Auid%3A%20Fp.Data.Dry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L25">View Source</a>
-  </span>
-  <a id="Fp_Data_Dry_" data-uid="Fp.Data.Dry*"></a>
-  <h4 id="Fp_Data_Dry" data-uid="Fp.Data.Dry">Dry</h4>
-  <div class="markdown level1 summary"><p>If true, object does not contain complete data, e.g. for <a class="xref" href="Fp.Data.html#Fp_Data_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;Object, Object&gt;)</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Dry { get; protected set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_CastNumber__2___0_.md&amp;value=---%0Auid%3A%20Fp.Data.CastNumber%60%602(%60%600)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L69">View Source</a>
-  </span>
-  <a id="Fp_Data_CastNumber_" data-uid="Fp.Data.CastNumber*"></a>
-  <h4 id="Fp_Data_CastNumber__2___0_" data-uid="Fp.Data.CastNumber``2(``0)">CastNumber&lt;TIn, TOut&gt;(TIn)</h4>
-  <div class="markdown level1 summary"><p>Cast number</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TOut CastNumber&lt;TIn, TOut&gt;(TIn value)
-    where TOut : struct</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TIn</span></td>
-        <td><span class="parametername">value</span></td>
-        <td><p>Input value</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">TOut</span></td>
-        <td><p>Converted value</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">TIn</span></td>
-        <td><p>Input type</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="parametername">TOut</span></td>
-        <td><p>Output type</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ApplicationException</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_Clone.md&amp;value=---%0Auid%3A%20Fp.Data.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L50">View Source</a>
-  </span>
-  <a id="Fp_Data_Clone_" data-uid="Fp.Data.Clone*"></a>
-  <h4 id="Fp_Data_Clone" data-uid="Fp.Data.Clone">Clone()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract object Clone()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Object</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_Dispose.md&amp;value=---%0Auid%3A%20Fp.Data.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L47">View Source</a>
-  </span>
-  <a id="Fp_Data_Dispose_" data-uid="Fp.Data.Dispose*"></a>
-  <h4 id="Fp_Data_Dispose" data-uid="Fp.Data.Dispose">Dispose()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void Dispose()</code></pre>
-  </div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__.md&amp;value=---%0Auid%3A%20Fp.Data.WriteConvertedData(System.IO.Stream%2CFp.CommonFormat%2CSystem.Collections.Generic.Dictionary%7BSystem.Object%2CSystem.Object%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L43">View Source</a>
-  </span>
-  <a id="Fp_Data_WriteConvertedData_" data-uid="Fp.Data.WriteConvertedData*"></a>
-  <h4 id="Fp_Data_WriteConvertedData_System_IO_Stream_Fp_CommonFormat_System_Collections_Generic_Dictionary_System_Object_System_Object__" data-uid="Fp.Data.WriteConvertedData(System.IO.Stream,Fp.CommonFormat,System.Collections.Generic.Dictionary{System.Object,System.Object})">WriteConvertedData(Stream, CommonFormat, Dictionary&lt;Object, Object&gt;)</h4>
-  <div class="markdown level1 summary"><p>Get stream of data converted to common file format</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract bool WriteConvertedData(Stream outputStream, CommonFormat format, Dictionary&lt;object, object&gt; formatOptions = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
-        <td><span class="parametername">outputStream</span></td>
-        <td><p>Target stream</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Fp.CommonFormat.html">CommonFormat</a></td>
-        <td><span class="parametername">format</span></td>
-        <td><p>Requested file format</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.Object</span>, <span class="xref">System.Object</span>&gt;</td>
-        <td><span class="parametername">formatOptions</span></td>
-        <td><p>Format-specific options</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>False if requested format is not supported</p>
-</td>
       </tr>
     </tbody>
   </table>
@@ -460,10 +166,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_Data.md&amp;value=---%0Auid%3A%20Fp.Data%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-dereliction-alpha/apiSpec/new?filename=Fp_Data.md&amp;value=---%0Auid%3A%20Fp.Data%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/Data.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-dereliction-alpha/src/Fp/Data.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
