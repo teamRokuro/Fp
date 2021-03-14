@@ -3,12 +3,44 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Dereliction.ViewModels"
+        xmlns:local="clr-namespace:Dereliction.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dereliction.Views.OperationWindow"
-        Title="Operation"
+        Icon="/Assets/icon_win.ico"
+        Title="Script Execution"
         Content="{Binding OperationRunner}">
 
     <Design.DataContext>
         <vm:OperationWindowViewModel/>
     </Design.DataContext>
+
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="File">
+                <NativeMenuItem.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static local:OperationWindow.AddFilesHeader}"
+                                        Gesture="{x:Static local:OperationWindow.AddFilesGesture}" Click="OnAddFilesClicked" />
+                        <NativeMenuItem Header="{x:Static local:OperationWindow.AddDirectoryHeader}"
+                                        Gesture="{x:Static local:OperationWindow.AddDirectoryGesture}" Click="OnAddDirectoryClicked" />
+                        <NativeMenuItem Header="{x:Static local:OperationWindow.ClearHeader}"
+                                        Gesture="{x:Static local:OperationWindow.ClearGesture}" Click="OnClearClicked" />
+                        <NativeMenuItemSeperator />
+                        <NativeMenuItem Header="{x:Static local:OperationWindow.QuitHeader}"
+                                        Gesture="{x:Static local:OperationWindow.QuitGesture}"
+                                        Click="OnQuitClicked" />
+                    </NativeMenu>
+                </NativeMenuItem.Menu>
+            </NativeMenuItem>
+            <NativeMenuItem Header="Run">
+                <NativeMenuItem.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static local:OperationWindow.RunScriptHeader}"
+                                        Gesture="{x:Static local:OperationWindow.RunScriptGesture}"
+                                        Click="OnRunScriptClicked" />
+                    </NativeMenu>
+                </NativeMenuItem.Menu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
 </Window>

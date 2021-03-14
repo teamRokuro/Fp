@@ -4,33 +4,33 @@ namespace Dereliction.Models
 {
     public class EditorStateModel : ReactiveObject
     {
-        private bool _busy;
-        private bool _locked;
-        private float _percent;
-        private string _logText = string.Empty;
+        private bool _onDisk;
+        private bool _modified;
+        private string _displayName = string.Empty;
+        private string _currentFile = string.Empty;
 
-        public bool Busy
+        public bool OnDisk
         {
-            get => _busy;
-            set => this.RaiseAndSetIfChanged(ref _busy, value);
+            get => _onDisk;
+            set => this.RaiseAndSetIfChanged(ref _onDisk, value);
         }
 
-        public bool Locked
+        public bool Modified
         {
-            get => _locked;
-            set => this.RaiseAndSetIfChanged(ref _locked, value);
+            get => _modified;
+            set => this.RaiseAndSetIfChanged(ref _modified, value);
         }
 
-        public float Percent
+        public string DisplayName
         {
-            get => _percent;
-            set => this.RaiseAndSetIfChanged(ref _percent, value);
+            get => _displayName;
+            set => this.RaiseAndSetIfChanged(ref _displayName, value);
         }
 
-        public string LogText
+        public string CurrentFile
         {
-            get => _logText;
-            set => this.RaiseAndSetIfChanged(ref _logText, value);
+            get => _currentFile;
+            set => this.RaiseAndSetIfChanged(ref _currentFile, value);
         }
     }
 }

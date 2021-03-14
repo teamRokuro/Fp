@@ -22,6 +22,13 @@ namespace Fp
         public static readonly FileSystemSource Default = new RealFileSystemSource();
 
         /// <summary>
+        /// Normalize a path to the underlying filesystem
+        /// </summary>
+        /// <param name="path">Path to normalize</param>
+        /// <returns>Normalized path</returns>
+        public abstract string NormalizePath(string path);
+
+        /// <summary>
         /// Get seekable read-only stream
         /// </summary>
         /// <param name="path">Path to open</param>
@@ -119,6 +126,8 @@ namespace Fp
 
             public override bool DirectoryExists(string path)
                 => Directory.Exists(path);
+
+            public override string NormalizePath(string path) => Path.GetFullPath(path);
         }
 
         internal class SegmentedFileSystemSource : FileSystemSource,
@@ -139,7 +148,7 @@ namespace Fp
                 if (existingEntries == null) return;
                 foreach (var existingEntry in existingEntries)
                 {
-                    string path = existingEntry.BasePath.NormalizePath();
+                    string path = existingEntry.BasePath.NormalizeAndStripWindowsDrive();
                     _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
                     _outputEntries.Add(path, new MStream(existingEntry.Buffer));
                 }
@@ -149,7 +158,7 @@ namespace Fp
                 FileShare fileShare = FileShare.Delete | FileShare.None | FileShare.Read | FileShare.ReadWrite |
                                       FileShare.Write)
             {
-                path = path.NormalizePath();
+                path = NormalizePath(path);
                 if (_source.FileExists(path))
                     return _source.OpenRead(path, fileMode, fileShare);
                 if (_outputEntries.TryGetValue(path, out var stream))
@@ -162,7 +171,7 @@ namespace Fp
                                       FileShare.Write)
             {
                 if (_proxyWrites) return _source.OpenWrite(path, fileMode, fileShare);
-                path = path.NormalizePath();
+                path = NormalizePath(path);
                 MemoryStream stream = new();
                 _outputEntries.Add(path, stream);
                 _dirs.Add(Path.GetDirectoryName(path) ?? Path.GetFullPath("/"));
@@ -170,26 +179,26 @@ namespace Fp
             }
 
             public override IEnumerable<string> EnumerateFiles(string path)
-                => _source.EnumerateFiles(path.NormalizePath());
+                => _source.EnumerateFiles(NormalizePath(path));
 
             public override IEnumerable<string> EnumerateDirectories(string path)
-                => _source.EnumerateDirectories(path.NormalizePath());
+                => _source.EnumerateDirectories(NormalizePath(path));
 
             public override bool CreateDirectory(string path)
             {
-                _dirs.Add(path.NormalizePath());
+                _dirs.Add(NormalizePath(path));
                 return true;
             }
 
             public override bool FileExists(string path)
             {
-                path = path.NormalizePath();
+                path = NormalizePath(path);
                 return _source.FileExists(path) || _outputEntries.ContainsKey(path);
             }
 
             public override bool DirectoryExists(string path)
             {
-                path = path.NormalizePath();
+                path = NormalizePath(path);
                 return _source.DirectoryExists(path) || _dirs.Contains(path);
             }
 
@@ -202,6 +211,8 @@ namespace Fp
             {
                 return GetEnumerator();
             }
+
+            public override string NormalizePath(string path) => path.NormalizeAndStripWindowsDrive();
         }
     }
 }

@@ -3,6 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Dereliction.ViewModels"
+        xmlns:local="clr-namespace:Dereliction.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Dereliction.Views.MainWindow"
         Icon="/Assets/icon_win.ico"
@@ -10,7 +11,57 @@
         Content="{Binding Editor}">
 
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
+
+    <NativeMenu.Menu>
+        <NativeMenu>
+            <NativeMenuItem Header="File">
+                <NativeMenuItem.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static local:MainWindow.NewHeader}"
+                                        Gesture="{x:Static local:MainWindow.NewGesture}" Click="OnNewClicked" />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.OpenHeader}"
+                                        Gesture="{x:Static local:MainWindow.OpenGesture}" Click="OnOpenClicked" />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.SaveHeader}"
+                                        Gesture="{x:Static local:MainWindow.SaveGesture}" Click="OnSaveClicked" />
+                        <!--<NativeMenuItemSeperator/>
+            <NativeMenuItem Header="Recent">
+              <NativeMenuItem.Menu>
+                <NativeMenu/>
+              </NativeMenuItem.Menu>
+            </NativeMenuItem>-->
+                        <NativeMenuItemSeperator />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.RefreshScriptsHeader}"
+                                        Gesture="{x:Static local:MainWindow.RefreshScriptsGesture}" Click="OnRefreshScriptsClicked" />
+                        <NativeMenuItemSeperator />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.QuitHeader}"
+                                        Gesture="{x:Static local:MainWindow.QuitGesture}"
+                                        Click="OnQuitClicked" />
+                    </NativeMenu>
+                </NativeMenuItem.Menu>
+            </NativeMenuItem>
+            <!--<NativeMenuItem Header="Edit">
+        <NativeMenuItem.Menu>
+          <NativeMenu>
+            <NativeMenuItem Header="Copy"/>
+            <NativeMenuItem Header="Paste"/>
+          </NativeMenu>
+        </NativeMenuItem.Menu>
+      </NativeMenuItem>-->
+            <NativeMenuItem Header="Run">
+                <NativeMenuItem.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="{x:Static local:MainWindow.OpenExecutionHeader}"
+                                        Gesture="{x:Static local:MainWindow.OpenExecutionGesture}"
+                                        Click="OnOpenExecutionClicked" />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.RunScriptHeader}"
+                                        Gesture="{x:Static local:MainWindow.RunScriptGesture}"
+                                        Click="OnRunScriptClicked" />
+                    </NativeMenu>
+                </NativeMenuItem.Menu>
+            </NativeMenuItem>
+        </NativeMenu>
+    </NativeMenu.Menu>
 
 </Window>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -56,14 +57,16 @@ namespace Fp
         /// <param name="loggerFactory">Logger for errors</param>
         /// <param name="enableParallel">If true, enable async options</param>
         /// <param name="configuration">Generated configuration</param>
+        /// <param name="inputs">Generated input sources</param>
         /// <returns>True if parsing succeeded</returns>
-        public static bool CliGetConfiguration(string exeName, IReadOnlyList<string> args,
-            ILoggerFactory? loggerFactory, bool enableParallel, out ProcessorConfiguration? configuration)
+        public static bool CliGetConfiguration(IList<string> exeName, IReadOnlyList<string> args,
+            ILoggerFactory? loggerFactory, bool enableParallel, out ProcessorConfiguration? configuration,
+            out List<(bool, string, string)> inputs)
         {
             loggerFactory ??= NullLoggerFactory.Instance;
-            var logger = loggerFactory.CreateLogger(exeName);
+            var logger = loggerFactory.CreateLogger(exeName[exeName.Count-1]);
             configuration = null;
-            List<(bool, string, string)> inputs = new();
+            inputs = new List<(bool, string, string)>();
             List<string> exArgs = new();
             string? outputRootDirectory = null;
             int parallel = 1;
@@ -150,8 +153,11 @@ namespace Fp
 
             if (inputs.Count == 0)
             {
-                if (exeName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
-                    exeName = "dotnet " + exeName;
+                if (exeName[0].EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
+                    exeName = exeName.Prepend("dotnet").ToList();
+                var sb = new StringBuilder(exeName[0]);
+                foreach (string str in exeName.Skip(1))
+                    sb.Append(' ').Append(str);
                 logger.LogInformation(@"Usage:
     {ExeName} <inputs...> [options/flags] [-- [args...]]
 
@@ -167,7 +173,7 @@ Flags:
     -d|--debug       : Enable debug
     -n|--nop         : No outputs
     -p|--preload     : Load all streams to memory
-", exeName);
+", sb.ToString());
                 return false;
             }
 
@@ -183,7 +189,7 @@ Flags:
             }
 
             configuration =
-                new ProcessorConfiguration(inputs, outputRootDirectory, parallel, preload, debug, nop, logger, exArgs);
+                new ProcessorConfiguration(outputRootDirectory, parallel, preload, debug, nop, logger, exArgs);
             return true;
         }
 
@@ -196,7 +202,7 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static void CliRunFilesystem<T>(string[] args, string? exeName = null,
+        public static void CliRunFilesystem<T>(string[] args, IList<string>? exeName = null,
             ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
             CliRunFilesystem(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
@@ -210,20 +216,21 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static void CliRunFilesystem(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+        public static void CliRunFilesystem(string[] args, IList<string>? exeName, ILoggerFactory? loggerFactory,
             FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
-            exeName ??= DefaultCurrentExecutableName;
+            exeName ??= GuessExe(args);
             loggerFactory ??= GetDefaultConsoleLoggerFactory();
             fileSystem ??= FileSystemSource.Default;
-            if (!CliGetConfiguration(exeName, args, loggerFactory, false, out ProcessorConfiguration? conf)) return;
+            if (!CliGetConfiguration(exeName, args, loggerFactory, false, out ProcessorConfiguration? conf,
+                out var inputs)) return;
             switch (conf!.Parallel)
             {
                 case 0:
-                    Operate(conf, fileSystem, processorFactories);
+                    Operate(inputs, conf, fileSystem, processorFactories);
                     break;
                 default:
-                    OperateAsync(conf, fileSystem, processorFactories).Wait();
+                    OperateAsync(inputs, conf, fileSystem, processorFactories).Wait();
                     break;
             }
         }
@@ -237,7 +244,7 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync<T>(string[] args, string? exeName = null,
+        public static async Task CliRunFilesystemAsync<T>(string[] args, IList<string>? exeName = null,
             ILoggerFactory? loggerFactory = null, FileSystemSource? fileSystem = null) where T : Processor, new() =>
             await CliRunFilesystemAsync(args, exeName, loggerFactory, fileSystem, Processor.GetFactory<T>());
 
@@ -251,22 +258,43 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync(string[] args, string? exeName, ILoggerFactory? loggerFactory,
+        public static async Task CliRunFilesystemAsync(string[] args, IList<string>? exeName, ILoggerFactory? loggerFactory,
             FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
-            exeName ??= DefaultCurrentExecutableName;
+            exeName ??= GuessExe(args);
             loggerFactory ??= GetDefaultConsoleLoggerFactory();
             fileSystem ??= FileSystemSource.Default;
-            if (!CliGetConfiguration(exeName, args, loggerFactory, true, out ProcessorConfiguration? conf)) return;
+            if (!CliGetConfiguration(exeName, args, loggerFactory, true, out ProcessorConfiguration? conf,
+                out var inputs)) return;
             switch (conf!.Parallel)
             {
                 case 0:
-                    Operate(conf, fileSystem, processorFactories);
+                    Operate(inputs, conf, fileSystem, processorFactories);
                     break;
                 default:
-                    await OperateAsync(conf, fileSystem, processorFactories);
+                    await OperateAsync(inputs, conf, fileSystem, processorFactories);
                     break;
             }
+        }
+
+        private static IList<string> GuessExe(IList<string>? args)
+        {
+            // Guess executable string (might be multiple) based on args
+            // Just match up the tail and send the rest
+            // Fallback on argv[0]
+            if (args == null) return new[]{DefaultCurrentExecutableName};
+            string[] oargs = Environment.GetCommandLineArgs();
+            int i = 0;
+            while (i < args.Count && i < oargs.Length)
+            {
+                if (args[args.Count - i - 1] != oargs[oargs.Length - i - 1])
+                    return new[]{DefaultCurrentExecutableName};
+                i++;
+            }
+
+            i = oargs.Length - i;
+            if (i > 0) return new ArraySegment<string>(oargs, 0, i);
+            return new[]{DefaultCurrentExecutableName};
         }
 
         private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>
@@ -327,17 +355,18 @@ Flags:
         /// <summary>
         /// Process filesystem tree asynchronously
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="inputs">Input sources</param>
+        /// <param name="configuration">Processor configuration</param>
         /// <param name="fileSystem">Filesystem to read from</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
         /// <returns>Task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
-        public static async Task OperateAsync(ProcessorConfiguration configuration,
-            FileSystemSource fileSystem,
+        public static async Task OperateAsync(IReadOnlyList<(bool, string, string)> inputs,
+            ProcessorConfiguration configuration, FileSystemSource fileSystem,
             params ProcessorFactory[] processorFactories)
         {
             var (processors, baseCount, parallelCount) = InitializeProcessors(configuration, processorFactories);
-            var (dQueue, fQueue) = SeedInputs(configuration.Inputs);
+            var (dQueue, fQueue) = SeedInputs(inputs);
             bool[] actives = new bool[processors.Length];
             List<Task> tasks = new();
             List<int> taskIdxes = new();
@@ -384,18 +413,20 @@ Flags:
         /// <summary>
         /// Process filesystem tree
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="inputs">Input sources</param>
+        /// <param name="configuration">Processor configuration</param>
         /// <param name="fileSystem">Filesystem to read from</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
         /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
-        public static void Operate(ProcessorConfiguration configuration, FileSystemSource fileSystem,
+        public static void Operate(IReadOnlyList<(bool, string, string)> inputs, ProcessorConfiguration configuration,
+            FileSystemSource fileSystem,
             params ProcessorFactory[] processorFactories)
         {
             if (configuration.Parallel != 1)
                 throw new ArgumentException(
                     $"Cannot start synchronous operation with {nameof(configuration.Parallel)} value of {configuration.Parallel}, use {nameof(Coordinator)}.{nameof(OperateAsync)} instead");
             var (processors, baseCount, _) = InitializeProcessors(configuration, processorFactories);
-            var (dQueue, fQueue) = SeedInputs(configuration.Inputs);
+            var (dQueue, fQueue) = SeedInputs(inputs);
             while (fQueue.Count != 0 || dQueue.Count != 0)
             {
                 if (fQueue._TryDequeue(out var deq))
@@ -410,7 +441,17 @@ Flags:
             }
         }
 
-        private static ProcessResult OperateFile(Processor processor, string file, string inputRoot,
+        /// <summary>
+        /// Operate on a file
+        /// </summary>
+        /// <param name="processor">Processor to operate with</param>
+        /// <param name="file">File path</param>
+        /// <param name="inputRoot">Input root</param>
+        /// <param name="configuration">Processor configuration</param>
+        /// <param name="fileSystem">Base filesystem</param>
+        /// <param name="workerId">Worker ID</param>
+        /// <returns>Processing result</returns>
+        public static ProcessResult OperateFile(Processor processor, string file, string inputRoot,
             ProcessorConfiguration configuration, FileSystemSource fileSystem, int workerId)
         {
             try
@@ -446,11 +487,67 @@ Flags:
             }
         }
 
-        private struct ProcessResult
+        /// <summary>
+        /// Operate on a file using segmented operation
+        /// </summary>
+        /// <param name="processor">Processor to operate with</param>
+        /// <param name="file">File path</param>
+        /// <param name="inputRoot">Input root</param>
+        /// <param name="configuration">Processor configuration</param>
+        /// <param name="fileSystem">Base filesystem</param>
+        /// <param name="workerId">Worker ID</param>
+        /// <returns>Processing results</returns>
+        public static IEnumerable<Data> OperateFileSegmented(Processor processor, string file, string inputRoot,
+            ProcessorConfiguration configuration, FileSystemSource fileSystem, int workerId)
         {
+            try
+            {
+                processor.Cleanup();
+                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration,
+                    workerId);
+                if (processor.Debug)
+                {
+                    return processor.ProcessSegmented();
+                }
+                else
+                {
+                    try
+                    {
+                        return processor.ProcessSegmented();
+                    }
+                    catch (Exception e)
+                    {
+                        configuration.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
+                        return Enumerable.Empty<Data>();
+                    }
+                }
+            }
+            finally
+            {
+                processor.Cleanup();
+            }
+        }
+
+        /// <summary>
+        /// Result of processing
+        /// </summary>
+        public struct ProcessResult
+        {
+            /// <summary>
+            /// Successful operation
+            /// </summary>
             public bool Success;
+
+            /// <summary>
+            /// Request no more runs
+            /// </summary>
             public bool Locked;
 
+            /// <summary>
+            /// Create new instance of <see cref="ProcessResult"/>
+            /// </summary>
+            /// <param name="success">Successful operation</param>
+            /// <param name="locked">Request no more runs</param>
             public ProcessResult(bool success, bool locked)
             {
                 Success = success;

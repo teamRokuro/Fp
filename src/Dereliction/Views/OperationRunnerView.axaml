@@ -3,38 +3,83 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Dereliction.ViewModels"
-             xmlns:v="clr-namespace:Dereliction.Views"
+             xmlns:models="clr-namespace:Dereliction.Models"
+             xmlns:local="clr-namespace:Dereliction.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dereliction.Views.OperationRunnerView">
 
     <Design.DataContext>
         <vm:OperationRunnerViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="1*,1*,1*" RowDefinitions="30,30,1*" Margin="4">
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal">
-            <Button Content="Set Input" Command="{Binding SetInput}" />
-            <Button Content="Run Script" Command="{Binding RunScript}"
-                    CommandParameter="{Binding $parent[v:OperationWindow].Main}" />
-        </StackPanel>
-        <Label Content="Input" Grid.Row="1" Grid.Column="0" />
-        <TreeView Grid.Row="2" Grid.Column="0" Items="{Binding Inputs}">
-            <TreeView.ItemTemplate>
-                <TreeDataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </TreeDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        <Label Content="Output" Grid.Row="1" Grid.Column="1" />
-        <TreeView Grid.Row="2" Grid.Column="1" Items="{Binding Outputs}">
-            <TreeView.ItemTemplate>
-                <TreeDataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </TreeDataTemplate>
-            </TreeView.ItemTemplate>
-        </TreeView>
-        <Label Content="Log" Grid.Row="1" Grid.Column="2" />
-        <ScrollViewer Name="LogScrollViewer" Grid.Row="2" Grid.Column="2" ScrollChanged="LogScrollViewer_OnScrollChanged">
-            <TextBox AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding LogText}" />
-        </ScrollViewer>
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top" IsVisible="{x:Static local:MainWindow.EnableInlineMenu}">
+            <MenuItem Header="_File">
+                <MenuItem Header="Add _Files..." Command="{Binding AddFiles}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="Add _Directory..." Command="{Binding AddDirectory}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="_Clear Inputs" Command="{Binding AddDirectory}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="E_xit" Command="{Binding Quit}"
+                          CommandParameter="{Binding $parent[local:OperationWindow]}" />
+            </MenuItem>
+            <MenuItem Header="_Run">
+                <MenuItem Header="_Run Script" Command="{Binding RunScriptVisualAsync}"
+                          CommandParameter="{Binding $parent[local:OperationWindow].Main}" />
+            </MenuItem>
+        </Menu>
+        <ProgressBar Name="Progress" IsVisible="{Binding State.Busy, Mode=OneWay}"
+                     Value="{Binding State.Percent, Mode=OneWay}" DockPanel.Dock="Bottom" Height="20" />
+        <Grid ColumnDefinitions="1*,1*" RowDefinitions="30,30,1*,30,1*" Margin="4"
+              IsEnabled="{Binding !State.Busy, Mode=OneWay}">
+            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" IsEnabled="{Binding #DirectOutput.IsChecked, Mode=OneWay}">
+                    <TextBox Text="{Binding OutputDirectory}"
+                             ToolTip.Tip="Directory for direct output." Width="400" />
+                    <TextBlock VerticalAlignment="Center">Output directory</TextBlock>
+                    <Button Command="{Binding SetOutputDirectoryAsync}"
+                            CommandParameter="{Binding $parent[Window]}">
+                        Select...
+                    </Button>
+                </StackPanel>
+                <CheckBox Name="DirectOutput" IsChecked="{Binding DirectOutput}"
+                          ToolTip.Tip="Directly write outputs to target folder instead of caching.">
+                    Direct output
+                </CheckBox>
+            </StackPanel>
+            <Label Content="Input" Grid.Row="1" Grid.Column="0" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="0">
+                <TreeView Items="{Binding Inputs}">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="models:InfoElement">
+                            <TextBlock Text="{Binding Value}" />
+                        </TreeDataTemplate>
+                        <TreeDataTemplate ItemsSource="{Binding Infos}">
+                            <TextBlock Text="{Binding Name}" />
+                        </TreeDataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Border>
+            <Label Content="Output" Grid.Row="1" Grid.Column="1" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="2" Grid.Column="1">
+                <TreeView Items="{Binding Outputs}">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="models:InfoElement">
+                            <TextBlock Text="{Binding Value}" />
+                        </TreeDataTemplate>
+                        <TreeDataTemplate ItemsSource="{Binding Infos}">
+                            <TextBlock Text="{Binding Name}" />
+                        </TreeDataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </Border>
+            <Label Content="Log" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+            <Border BorderBrush="White" BorderThickness="1" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                <ScrollViewer Name="LogScrollViewer" ScrollChanged="LogScrollViewer_OnScrollChanged">
+                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" IsReadOnly="True" Text="{Binding State.LogText}"
+                             BorderThickness="0" />
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

@@ -220,12 +220,12 @@ namespace Fp
             ProcessorConfiguration? configuration = null, int workerId = 0)
         {
             Cleanup(true);
-            InputRootDirectory = inputRoot.NormalizePath();
-            InputFile = Path.Combine(InputRootDirectory, file).NormalizePath();
+            InputRootDirectory = fileSystem.NormalizePath(inputRoot);
+            InputFile = fileSystem.NormalizePath(Path.Combine(InputRootDirectory, file));
             InputDirectory = Path.GetDirectoryName(InputFile) ?? throw new ArgumentException("File is root");
-            OutputRootDirectory = outputRoot.NormalizePath();
-            OutputDirectory = Join(false,
-                OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)).NormalizePath();
+            OutputRootDirectory = fileSystem.NormalizePath(outputRoot);
+            OutputDirectory = fileSystem.NormalizePath(Join(false,
+                OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)));
             LittleEndian = true;
             OutputCounter = 0;
             FileSystem = fileSystem;

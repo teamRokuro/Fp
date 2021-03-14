@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Fp
 {
@@ -213,11 +214,19 @@ namespace Fp
             }
         }
 
+        private static readonly bool _subNormalize = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         /// <summary>
         /// Normalize the specified path.
         /// </summary>
         /// <param name="path">Path to normalize.</param>
         /// <returns>Normalized path.</returns>
-        public static string NormalizePath(this string path) => Path.GetFullPath(path);
+        public static string NormalizeAndStripWindowsDrive(this string path)
+        {
+            string sub = Path.GetFullPath(path);
+            if (_subNormalize && sub.Length >= 2 && char.IsLetter(sub[0]) && sub[1] == Path.VolumeSeparatorChar)
+                sub = sub.Substring(2);
+            return sub;
+        }
     }
 }

@@ -25,9 +25,14 @@ namespace Fp
             params ProcessorFactory[] factories)
         {
             processors.Factories.UnionWith(factories);
-            if (args != null)
-                Coordinator.CliRunFilesystem(args.ToArray(), default, default, fileSystemSource, factories);
+            if (args == null || args.Count == 1 && args[0] == NO_EXECUTE_CLI) return;
+            Coordinator.CliRunFilesystem(args.ToArray(), default, default, fileSystemSource, factories);
         }
+
+        /// <summary>
+        /// Keyword arg for stopping cli execution
+        /// </summary>
+        public const string NO_EXECUTE_CLI = "--no-execute-cli";
 
         /// <summary>
         /// Process using direct function.

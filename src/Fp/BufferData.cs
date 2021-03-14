@@ -149,7 +149,7 @@ namespace Fp
 
         /// <inheritdoc />
         public override unsafe string ToString() =>
-            $"Buffer {{ Element Size = {sizeof(T)}, Element Count = {Count}, Buffer Length = {sizeof(T) * Count} }}";
+            $"Buffer {{ Path = {BasePath}, Element Size = {sizeof(T)}, Element Count = {Count}, Buffer Length = {sizeof(T) * Count} }}";
     }
 
     public partial class Processor
