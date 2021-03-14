@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:vm="using:Dereliction.ViewModels"
+             xmlns:local="clr-namespace:Dereliction.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dereliction.Views.EditorView">
 
@@ -11,6 +12,25 @@
         <vm:EditorViewModel />
     </Design.DataContext>
     <DockPanel LastChildFill="True">
+
+        <Menu DockPanel.Dock="Top" IsVisible="{x:Static local:MainWindow.EnableInlineMenu}">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Script" Command="{Binding  NewFileAsync}"
+                          CommandParameter="{Binding $parent[local:EditorView]}" />
+                <MenuItem Header="_Open..." Command="{Binding  OpenFileVisualAsync}"
+                          CommandParameter="{Binding $parent[local:EditorView]}" />
+                <MenuItem Header="_Save" Command="{Binding SaveFileAsync}"
+                          CommandParameter="{Binding $parent[local:EditorView]}" />
+                <MenuItem Header="E_xit" Command="{Binding Quit}"
+                          CommandParameter="{Binding $parent[local:MainWindow]}" />
+            </MenuItem>
+            <MenuItem Header="_Run">
+                <MenuItem Header="Open _Execution View" Command="{Binding ShowOperationView}"
+                          CommandParameter="{Binding $parent[local:MainWindow]}" />
+                <MenuItem Header="_Run Script" Command="{Binding RunScriptAsync}"
+                          CommandParameter="{Binding $parent[local:MainWindow]}" />
+            </MenuItem>
+        </Menu>
         <Grid ColumnDefinitions="200,1*" RowDefinitions="30,1*" Margin="4"
               IsEnabled="{Binding !OperationState.Busy, Mode=OneWay}">
             <Label Content="Scripts" Grid.Row="0" Grid.Column="0" />

@@ -63,7 +63,7 @@ namespace Dereliction.Views
             ? new KeyGesture(Key.Q, KeyModifiers.Meta)
             : new KeyGesture(Key.F4, KeyModifiers.Alt);
 
-        private void OnQuitClicked(object? sender, EventArgs e) => Main.OnQuitClicked(sender, e);
+        public void OnQuitClicked(object? sender, EventArgs e) => Main.OnQuitClicked(sender, e);
 
         #endregion
 

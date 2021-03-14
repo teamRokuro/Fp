@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.VisualTree;
@@ -97,6 +98,8 @@ namespace Dereliction.ViewModels
             Inputs.Add(new RealFsElement(Path.GetFileName(path), Path.GetFullPath(path)));
 
         public void ClearInputs() => Inputs.Clear();
+
+        public void Quit(OperationWindow mw) => mw.OnQuitClicked(mw, EventArgs.Empty);
 
         public Task RunScriptVisualAsync(MainWindow w)
         {
@@ -216,8 +219,6 @@ namespace Dereliction.ViewModels
                             }
 
                             p.Report(0.3f + 0.7f * ++idx / count);
-
-                            await Task.Delay(1000);
                         }
 
 
@@ -269,10 +270,12 @@ namespace Dereliction.ViewModels
                 _inputModel = inputModel;
             }
 
+            public override string NormalizePath(string path) => path.NormalizeAndStripWindowsDrive();
+
             protected override Stream OpenReadImpl(string path, FileMode fileMode = FileMode.Open,
                 FileShare fileShare = FileShare.None | FileShare.Read | FileShare.Write | FileShare.ReadWrite |
                                       FileShare.Delete) =>
-                _inputModel.TryGetFile(path, out string? realPath)
+                _inputModel.TryGetFile(NormalizePath(path), out string? realPath)
                     ? File.OpenRead(realPath)
                     : throw new FileNotFoundException();
 
@@ -281,20 +284,20 @@ namespace Dereliction.ViewModels
                                       FileShare.Delete) => throw new NotSupportedException();
 
             public override IEnumerable<string> EnumerateFiles(string path) =>
-                _inputModel.TryGetDirectory(path, out List<(string fakePath, bool isDirectory)>? children)
+                _inputModel.TryGetDirectory(NormalizePath(path), out List<(string fakePath, bool isDirectory)>? children)
                     ? children.Where(c => !c.isDirectory).Select(c => c.fakePath)
                     : throw new FileNotFoundException();
 
             public override IEnumerable<string> EnumerateDirectories(string path) =>
-                _inputModel.TryGetDirectory(path, out List<(string fakePath, bool isDirectory)>? children)
+                _inputModel.TryGetDirectory(NormalizePath(path), out List<(string fakePath, bool isDirectory)>? children)
                     ? children.Where(c => c.isDirectory).Select(c => c.fakePath)
                     : throw new FileNotFoundException();
 
             public override bool CreateDirectory(string path) => throw new NotSupportedException();
 
-            public override bool FileExists(string path) => _inputModel.TryGetFile(path, out string? _);
+            public override bool FileExists(string path) => _inputModel.TryGetFile(NormalizePath(path), out string? _);
 
-            public override bool DirectoryExists(string path) => _inputModel.TryGetDirectory(path, out string? _);
+            public override bool DirectoryExists(string path) => _inputModel.TryGetDirectory(NormalizePath(path), out string? _);
         }
 
         private class InputModel
@@ -309,7 +312,7 @@ namespace Dereliction.ViewModels
                 foreach (var e in elements)
                 {
                     string real = e.RealPath;
-                    string fakeRoot = $"{Path.DirectorySeparatorChar}{i}".NormalizePath();
+                    string fakeRoot = $"{Path.DirectorySeparatorChar}{i}";
                     string fake = Path.Combine(fakeRoot, e.Name);
                     Add(fakeRoot, real, fake, out _);
                     i++;
@@ -348,7 +351,7 @@ namespace Dereliction.ViewModels
 
             public bool TryGetFile(string path, [NotNullWhen(true)] out string? realPath)
             {
-                if (Leaves.TryGetValue(path.NormalizePath(), out (string realPath, bool isDirectory) x) &&
+                if (Leaves.TryGetValue(path, out (string realPath, bool isDirectory) x) &&
                     !x.isDirectory)
                 {
                     realPath = x.realPath;
@@ -362,7 +365,7 @@ namespace Dereliction.ViewModels
             public bool TryGetDirectory(string path,
                 [NotNullWhen(true)] out List<(string fakePath, bool isDirectory)>? children)
             {
-                if (Directories.TryGetValue(path.NormalizePath(), out var child))
+                if (Directories.TryGetValue(path, out var child))
                 {
                     children = child;
                     return true;
@@ -374,7 +377,7 @@ namespace Dereliction.ViewModels
 
             public bool TryGetDirectory(string path, [NotNullWhen(true)] out string? realPath)
             {
-                if (Leaves.TryGetValue(path.NormalizePath(), out (string realPath, bool isDirectory) x) &&
+                if (Leaves.TryGetValue(path, out (string realPath, bool isDirectory) x) &&
                     x.isDirectory)
                 {
                     realPath = x.realPath;
@@ -407,14 +410,20 @@ namespace Dereliction.ViewModels
             }
         };
 
+        private readonly AutoResetEvent _are = new AutoResetEvent(true);
+
         private void ClearLog()
         {
-            State.LogText = "";
+            _are.WaitOne();
+            State.HardUp(_ => "");
+            _are.Set();
         }
 
         private void Log(string value, bool newLine = true)
         {
-            State.LogText += newLine ? value + '\n' : value;
+            _are.WaitOne();
+            State.HardUp(v => v + (newLine ? value + '\n' : value));
+            _are.Set();
         }
 
         private class MsLogger : ILogger

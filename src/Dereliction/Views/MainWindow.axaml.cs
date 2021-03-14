@@ -3,6 +3,7 @@ using Avalonia;
 #endif
 using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -14,6 +15,8 @@ namespace Dereliction.Views
 {
     public class MainWindow : Window
     {
+        public static bool EnableInlineMenu => IsOSPlatform(OSPlatform.Windows);
+
         private readonly OperationWindow _operationWindow;
         private EditorView EditorView => this.FindDescendantOfType<EditorView>();
         private bool _shutdownWindow;
@@ -45,6 +48,12 @@ namespace Dereliction.Views
             _operationWindow.Show();
         }
 
+        public async Task RunScriptAsync()
+        {
+            ShowOperationView();
+            await _operationWindow.RunScriptAsync(this);
+        }
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -56,7 +65,7 @@ namespace Dereliction.Views
             ? new KeyGesture(Key.N, KeyModifiers.Meta)
             : new KeyGesture(Key.N, KeyModifiers.Control);
 
-        public static string NewHeader => IsOSPlatform(OSPlatform.OSX) ? "New" : "_New";
+        public static string NewHeader => IsOSPlatform(OSPlatform.OSX) ? "New Script" : "_New Script";
         private async void OnNewClicked(object? sender, EventArgs e) => await EditorView.NewFileAsync();
 
         public static string OpenHeader => IsOSPlatform(OSPlatform.OSX) ? "Open..." : "_Open...";
@@ -115,8 +124,7 @@ namespace Dereliction.Views
 
         private async void OnRunScriptClicked(object? sender, EventArgs e)
         {
-            ShowOperationView();
-            await _operationWindow.RunScriptAsync(this);
+            await RunScriptAsync();
         }
 
         #endregion

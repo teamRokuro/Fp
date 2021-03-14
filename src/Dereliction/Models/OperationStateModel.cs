@@ -1,3 +1,4 @@
+using System;
 using ReactiveUI;
 
 namespace Dereliction.Models
@@ -8,6 +9,7 @@ namespace Dereliction.Models
         private bool _locked;
         private float _percent;
         private string _logText = string.Empty;
+        private string __logText = string.Empty;
 
         public bool Busy
         {
@@ -32,5 +34,8 @@ namespace Dereliction.Models
             get => _logText;
             set => this.RaiseAndSetIfChanged(ref _logText, value);
         }
+
+
+        public void HardUp(Func<string, string> func) => LogText = __logText = func(__logText);
     }
 }

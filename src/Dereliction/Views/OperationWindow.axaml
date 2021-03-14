@@ -25,7 +25,6 @@
                         <NativeMenuItem Header="{x:Static local:OperationWindow.ClearHeader}"
                                         Gesture="{x:Static local:OperationWindow.ClearGesture}" Click="OnClearClicked" />
                         <NativeMenuItemSeperator />
-                        <NativeMenuItemSeperator />
                         <NativeMenuItem Header="{x:Static local:OperationWindow.QuitHeader}"
                                         Gesture="{x:Static local:OperationWindow.QuitGesture}"
                                         Click="OnQuitClicked" />

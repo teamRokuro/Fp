@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Dereliction.ViewModels"
              xmlns:models="clr-namespace:Dereliction.Models"
+             xmlns:local="clr-namespace:Dereliction.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Dereliction.Views.OperationRunnerView">
 
@@ -11,6 +12,22 @@
         <vm:OperationRunnerViewModel />
     </Design.DataContext>
     <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top" IsVisible="{x:Static local:MainWindow.EnableInlineMenu}">
+            <MenuItem Header="_File">
+                <MenuItem Header="Add _Files..." Command="{Binding AddFiles}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="Add _Directory..." Command="{Binding AddDirectory}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="_Clear Inputs" Command="{Binding AddDirectory}"
+                          CommandParameter="{Binding $parent[Window]}" />
+                <MenuItem Header="E_xit" Command="{Binding Quit}"
+                          CommandParameter="{Binding $parent[local:OperationWindow]}" />
+            </MenuItem>
+            <MenuItem Header="_Run">
+                <MenuItem Header="_Run Script" Command="{Binding RunScriptVisualAsync}"
+                          CommandParameter="{Binding $parent[local:OperationWindow].Main}" />
+            </MenuItem>
+        </Menu>
         <ProgressBar Name="Progress" IsVisible="{Binding State.Busy, Mode=OneWay}"
                      Value="{Binding State.Percent, Mode=OneWay}" DockPanel.Dock="Bottom" Height="20" />
         <Grid ColumnDefinitions="1*,1*" RowDefinitions="30,30,1*,30,1*" Margin="4"
@@ -18,7 +35,7 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <StackPanel Orientation="Horizontal" IsEnabled="{Binding #DirectOutput.IsChecked, Mode=OneWay}">
                     <TextBox Text="{Binding OutputDirectory}"
-                             ToolTip.Tip="Directory for direct output." Width="400"/>
+                             ToolTip.Tip="Directory for direct output." Width="400" />
                     <TextBlock VerticalAlignment="Center">Output directory</TextBlock>
                     <Button Command="{Binding SetOutputDirectoryAsync}"
                             CommandParameter="{Binding $parent[Window]}">

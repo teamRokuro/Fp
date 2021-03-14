@@ -43,7 +43,7 @@ namespace Dereliction.ViewModels
             return true;
         }
 
-        public async Task OpenFileAsync(EditorView? view)
+        public async Task OpenFileVisualAsync(EditorView? view)
         {
             string? file = await PromptSourceAsync(view);
             if (file == null) return;
@@ -164,7 +164,7 @@ namespace Dereliction.ViewModels
                 new MessageBoxStandardParams
                 {
                     ContentTitle = "Save before closing?",
-                    ContentMessage = "Do you want to save the current file before closing?",
+                    ContentMessage = "Do you want to save the current file\nbefore closing?",
                     ButtonDefinitions = ButtonEnum.YesNoCancel,
                 });
             return await msgWindow.ShowDialog(window) switch
@@ -208,5 +208,10 @@ namespace Dereliction.ViewModels
                 EditorState.DisplayName = EditorState.Modified ? $"* {fn}" : fn;
             }
         }
+
+        public void ShowOperationView(MainWindow mainWindow) => mainWindow.ShowOperationView();
+        public async Task RunScriptAsync(MainWindow mainWindow) => await mainWindow.RunScriptAsync();
+
+        public void Quit(MainWindow mw) => mw.OnQuitClicked(mw, EventArgs.Empty);
     }
 }
