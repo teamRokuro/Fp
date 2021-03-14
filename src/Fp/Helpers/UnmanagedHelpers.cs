@@ -489,20 +489,22 @@ namespace Fp.Helpers
     /// <summary>
     /// Unsigned 8-bit helper.
     /// </summary>
-    public record F16ArrayHelper(Processor Parent) : BaseHelper<float[], float[], int>
+    public record F16ArrayHelper(Processor Parent) : BaseUnmanagedArrayHelper<float>
     {
+        /// <inheritdoc />
+        public override int ElementSize => 2;
+
         /// <inheritdoc />
         public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
-
         /// <summary>
         /// Read / write value.
         /// </summary>
         /// <param name="source">Data source.</param>
-        public float[] this[Span<byte> source]
+        public override float[] this[Span<byte> source]
         {
             get => this[(ReadOnlySpan<byte>)source];
             set
@@ -510,24 +512,6 @@ namespace Fp.Helpers
                 byte[] src = new byte[value.Length * 2];
                 ConvertFloatArrayToHalf(value, src);
                 src.CopyTo(source);
-            }
-        }
-
-        /// <inheritdoc />
-        public override float[] this[Span<byte> source, int offset]
-        {
-            set => this[source.Slice(offset)] = value;
-        }
-
-        /// <inheritdoc />
-        public override float[] this[ReadOnlySpan<byte> source, int offset, int count]
-        {
-            get
-            {
-                float[] result = new float[count];
-                // New array for aligning
-                ConvertHalfArrayToFloat(source.Slice(offset, count * 2).ToArray(), result);
-                return result;
             }
         }
 
@@ -540,23 +524,6 @@ namespace Fp.Helpers
                 // New array for aligning
                 ConvertHalfArrayToFloat(source.Slice(0, source.Length / 2 * 2).ToArray(), result);
                 return result;
-            }
-        }
-
-        /// <inheritdoc />
-        public override float[] this[long offset, int count, Stream stream] => offset != 1
-            ? Parent.ReadHalfArray(offset, count, stream)
-            : Parent.ReadHalfArray(count, stream);
-
-        /// <inheritdoc />
-        public override float[] this[long offset, Stream stream]
-        {
-            set
-            {
-                byte[] src = new byte[value.Length * 2];
-                ConvertFloatArrayToHalf(value, src);
-                if (offset != -1) stream.Position = offset;
-                stream.Write(src, 0, src.Length);
             }
         }
     }

@@ -665,4 +665,41 @@ namespace Fp
 
         #endregion
     }
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Loads byte array from input.
+        /// </summary>
+        /// <returns>Byte array</returns>
+        public static byte[] load() => Processor.Current.GetArray(true);
+
+        /// <summary>
+        /// Dumps byte array from a stream.
+        /// </summary>
+        /// <param name="stream">Stream to dump</param>
+        /// <returns>Byte array</returns>
+        public static byte[] dump(this Stream stream) => Processor.DumpArray(stream);
+
+        /// <summary>
+        /// Creates stream from array.
+        /// </summary>
+        /// <param name="source">Source array.</param>
+        /// <returns>Stream.</returns>
+        public static Stream stream(this byte[] source) => new MStream(source);
+
+        /// <summary>
+        /// Creates stream from memory.
+        /// </summary>
+        /// <param name="source">Source memory.</param>
+        /// <returns>Stream.</returns>
+        public static Stream stream(this Memory<byte> source) => new MStream(source);
+
+        /// <summary>
+        /// Creates stream from memory.
+        /// </summary>
+        /// <param name="source">Source memory.</param>
+        /// <returns>Stream.</returns>
+        public static Stream stream(this ReadOnlyMemory<byte> source) => new MStream(source);
+    }
 }

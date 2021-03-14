@@ -23,7 +23,7 @@ namespace Fp
         #region Properties and fields
 
         /// <summary>
-        /// Currently running <see cref="ScriptingSegmentedProcessor"/> on this thread.
+        /// Currently running <see cref="Processor"/> on this thread.
         /// </summary>
         public static Processor Current => _current ?? throw new InvalidOperationException();
 
@@ -573,6 +573,47 @@ namespace Fp
     // ReSharper disable InconsistentNaming
     public partial class Scripting
     {
+        #region Properties
+
+        /// <summary>
+        /// Current file path.
+        /// </summary>
+        public static FpPath _file => FpPath.GetFromString(Current.InputFile) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file path without extension.
+        /// </summary>
+        public static FpPath _fileNoExt =>
+            new(Path.GetFileNameWithoutExtension(Current.InputFile), Current.InputDirectory);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public static string _name => Path.GetFileName(Current.InputFile);
+
+        /// <summary>
+        /// Current file length.
+        /// </summary>
+        public static long _length => Current.InputLength;
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public static string _nameNoExt => Path.GetFileNameWithoutExtension(Current.InputFile);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public static FpPath _namePath => FpPath.GetFromString(_name) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public static FpPath _namePathNoExt =>
+            FpPath.GetFromString(_nameNoExt) ?? throw new InvalidOperationException();
+
+        #endregion
+
         #region Logging
 
         /// <summary>

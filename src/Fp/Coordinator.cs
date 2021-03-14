@@ -64,7 +64,7 @@ namespace Fp
             out List<(bool, string, string)> inputs)
         {
             loggerFactory ??= NullLoggerFactory.Instance;
-            var logger = loggerFactory.CreateLogger(exeName[exeName.Count-1]);
+            var logger = loggerFactory.CreateLogger(exeName[exeName.Count - 1]);
             configuration = null;
             inputs = new List<(bool, string, string)>();
             List<string> exArgs = new();
@@ -258,7 +258,8 @@ Flags:
         /// <param name="loggerFactory">Log output target</param>
         /// <returns>A task that will execute recursively</returns>
         /// <exception cref="ArgumentException">If invalid argument count is provided</exception>
-        public static async Task CliRunFilesystemAsync(string[] args, IList<string>? exeName, ILoggerFactory? loggerFactory,
+        public static async Task CliRunFilesystemAsync(string[] args, IList<string>? exeName,
+            ILoggerFactory? loggerFactory,
             FileSystemSource? fileSystem, params ProcessorFactory[] processorFactories)
         {
             exeName ??= GuessExe(args);
@@ -282,19 +283,19 @@ Flags:
             // Guess executable string (might be multiple) based on args
             // Just match up the tail and send the rest
             // Fallback on argv[0]
-            if (args == null) return new[]{DefaultCurrentExecutableName};
+            if (args == null) return new[] {DefaultCurrentExecutableName};
             string[] oargs = Environment.GetCommandLineArgs();
             int i = 0;
             while (i < args.Count && i < oargs.Length)
             {
                 if (args[args.Count - i - 1] != oargs[oargs.Length - i - 1])
-                    return new[]{DefaultCurrentExecutableName};
+                    return new[] {DefaultCurrentExecutableName};
                 i++;
             }
 
             i = oargs.Length - i;
             if (i > 0) return new ArraySegment<string>(oargs, 0, i);
-            return new[]{DefaultCurrentExecutableName};
+            return new[] {DefaultCurrentExecutableName};
         }
 
         private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>

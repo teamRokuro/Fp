@@ -87,7 +87,18 @@ namespace Fp.Helpers
         /// <param name="offset">Offset.</param>
         public virtual StringData this[byte[] source, int offset]
         {
+            get => this[source.AsSpan(), offset];
             set => this[source.AsSpan(), offset] = value;
+        }
+
+        /// <summary>
+        /// Write data.
+        /// </summary>
+        /// <param name="source">Data source.</param>
+        public virtual StringData this[byte[] source]
+        {
+            get => this[source.AsSpan()];
+            set => this[source.AsSpan()] = value;
         }
 
         /// <summary>
@@ -100,13 +111,24 @@ namespace Fp.Helpers
             this[source.Span, offset, maxBytes];
 
         /// <summary>
-        /// Write data.
+        /// Read/write data.
         /// </summary>
         /// <param name="offset">Offset.</param>
         /// <param name="source">Data source.</param>
         public virtual StringData this[Memory<byte> source, int offset]
         {
+            get => this[source.Span, offset];
             set => this[source.Span, offset] = value;
+        }
+
+        /// <summary>
+        /// Read/write data.
+        /// </summary>
+        /// <param name="source">Data source.</param>
+        public virtual StringData this[Memory<byte> source]
+        {
+            get => this[source.Span];
+            set => this[source.Span] = value;
         }
 
         /// <summary>
@@ -119,11 +141,21 @@ namespace Fp.Helpers
             this[(ReadOnlySpan<byte>)source, offset, maxBytes];
 
         /// <summary>
-        /// Write data.
+        /// Read/write data.
         /// </summary>
         /// <param name="source">Data source.</param>
         /// <param name="offset">Offset.</param>
-        public abstract StringData this[Span<byte> source, int offset] { set; }
+        public virtual StringData this[Span<byte> source, int offset]
+        {
+            get => this[source.Slice(offset)];
+            set => this[source.Slice(offset)] = value;
+        }
+
+        /// <summary>
+        /// Read/write data.
+        /// </summary>
+        /// <param name="source">Data source.</param>
+        public abstract StringData this[Span<byte> source] { get; set; }
 
         /// <summary>
         /// Read data.
@@ -141,13 +173,21 @@ namespace Fp.Helpers
         /// <param name="offset">Offset.</param>
         /// <param name="maxBytes">Maximum bytes to read.</param>
         public abstract StringData this[ReadOnlySpan<byte> source, int offset,
-            int maxBytes = int.MaxValue] { get; }
+            int maxBytes] { get; }
 
         /// <summary>
         /// Read data.
         /// </summary>
         /// <param name="source">Data source.</param>
-        public abstract StringData this[ReadOnlySpan<byte> source] { get; }
+        /// <param name="offset">Offset.</param>
+        public virtual StringData this[ReadOnlySpan<byte> source, int offset] =>
+            this[source, offset, int.MaxValue];
+
+        /// <summary>
+        /// Read data.
+        /// </summary>
+        /// <param name="source">Data source.</param>
+        public virtual StringData this[ReadOnlySpan<byte> source] => this[source, 0, int.MaxValue];
 
         /// <summary>
         /// Read data.
@@ -155,14 +195,14 @@ namespace Fp.Helpers
         /// <param name="offset">Offset (no seeking if -1).</param>v
         /// <param name="stream">Data source.</param>
         /// <param name="maxBytes">Maximum bytes to read.</param>
-        public abstract StringData this[long offset, Stream stream, int maxBytes = int.MaxValue] { get; }
+        public abstract StringData this[long offset, Stream stream, int maxBytes] { get; }
 
         /// <summary>
         /// Read data.
         /// </summary>
         /// <param name="offset">Offset (no seeking if -1).</param>
         /// <param name="maxBytes">Maximum bytes to read.</param>
-        public virtual StringData this[long offset, int maxBytes = int.MaxValue] =>
+        public virtual StringData this[long offset, int maxBytes] =>
             this[offset, InputStream, maxBytes];
 
         /// <summary>
@@ -195,22 +235,19 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override StringData this[Span<byte> source, int offset]
+        public override StringData this[Span<byte> source]
         {
-            set => Encoding.UTF8.GetBytes(value.String).CopyTo(source.Slice(offset));
+            get => this[(ReadOnlySpan<byte>)source];
+            set => Encoding.UTF8.GetBytes(value.String).CopyTo(source);
         }
 
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source, int offset,
-            int maxBytes = int.MaxValue] =>
+            int maxBytes] =>
             new(ReadUtf8String(source.Slice(offset), out _, out int numBytes, maxBytes), numBytes);
 
         /// <inheritdoc />
-        public override StringData this[ReadOnlySpan<byte> source] =>
-            new(ReadUtf8String(source, out _, out int numBytes), numBytes);
-
-        /// <inheritdoc />
-        public override StringData this[long offset, Stream stream, int maxBytes = int.MaxValue] =>
+        public override StringData this[long offset, Stream stream, int maxBytes] =>
             offset != -1
                 ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
                     numBytes1)
@@ -240,22 +277,19 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override StringData this[Span<byte> source, int offset]
+        public override StringData this[Span<byte> source]
         {
-            set => Encoding.Unicode.GetBytes(value.String).CopyTo(source.Slice(offset));
+            get => this[(ReadOnlySpan<byte>)source];
+            set => Encoding.Unicode.GetBytes(value.String).CopyTo(source);
         }
 
         /// <inheritdoc />
         public override StringData this[ReadOnlySpan<byte> source, int offset,
-            int maxBytes = int.MaxValue] =>
+            int maxBytes] =>
             new(ReadUtf16String(source.Slice(offset), out _, out int numBytes, maxBytes), numBytes);
 
         /// <inheritdoc />
-        public override StringData this[ReadOnlySpan<byte> source] =>
-            new(ReadUtf16String(source, out _, out int numBytes), numBytes);
-
-        /// <inheritdoc />
-        public override StringData this[long offset, Stream stream, int maxBytes = int.MaxValue] =>
+        public override StringData this[long offset, Stream stream, int maxBytes] =>
             offset != -1
                 ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
                     numBytes1)
