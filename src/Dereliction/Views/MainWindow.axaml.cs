@@ -39,12 +39,18 @@ namespace Dereliction.Views
             };
         }
 
-        public void ShowOperationView() => _operationWindow.Show();
+        public void ShowOperationView()
+        {
+            _operationWindow.Hide();
+            _operationWindow.Show();
+        }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+
+        #region Menu File
 
         public static KeyGesture NewGesture => IsOSPlatform(OSPlatform.OSX)
             ? new KeyGesture(Key.N, KeyModifiers.Meta)
@@ -69,6 +75,28 @@ namespace Dereliction.Views
 
         private async void OnSaveClicked(object? sender, EventArgs e) => await EditorView.SaveFileAsync();
 
+
+        public static string RefreshScriptsHeader =>
+            IsOSPlatform(OSPlatform.OSX) ? "Reload script folder" : "Re_load script folder";
+
+        public static KeyGesture RefreshScriptsGesture => IsOSPlatform(OSPlatform.OSX)
+            ? new KeyGesture(Key.L, KeyModifiers.Meta)
+            : new KeyGesture(Key.L, KeyModifiers.Control);
+
+        private void OnRefreshScriptsClicked(object? sender, EventArgs e) => EditorView.RefreshScriptFolder();
+
+        public static string QuitHeader => IsOSPlatform(OSPlatform.OSX) ? $"Quit {Program.PROGRAM_NAME}" : "E_xit";
+
+        public static KeyGesture QuitGesture => IsOSPlatform(OSPlatform.OSX)
+            ? new KeyGesture(Key.Q, KeyModifiers.Meta)
+            : new KeyGesture(Key.F4, KeyModifiers.Alt);
+
+        internal void OnQuitClicked(object? sender, EventArgs e) => Environment.Exit(0);
+
+        #endregion
+
+        #region Menu Run
+
         public static string OpenExecutionHeader =>
             IsOSPlatform(OSPlatform.OSX) ? "Open Execution View" : "Open _Execution View";
 
@@ -91,12 +119,6 @@ namespace Dereliction.Views
             await _operationWindow.RunScriptAsync(this);
         }
 
-        public static string QuitHeader => IsOSPlatform(OSPlatform.OSX) ? $"Quit {Program.PROGRAM_NAME}" : "E_xit";
-
-        public static KeyGesture QuitGesture => IsOSPlatform(OSPlatform.OSX)
-            ? new KeyGesture(Key.Q, KeyModifiers.Meta)
-            : new KeyGesture(Key.F4, KeyModifiers.Alt);
-
-        private void OnQuitClicked(object? sender, EventArgs e) => Environment.Exit(0);
+        #endregion
     }
 }

@@ -51,44 +51,36 @@ namespace Dereliction.ViewModels
             Inputs = new ObservableCollection<RealFsElement>();
             Outputs = new ObservableCollection<FsElement>();
             ClearLog();
-            /*Inputs.Add(new RealFsElement("R1", @"C:\Users"));
-            Inputs.Add(new RealFsElement("R2", @"C:\Users"));
-            Outputs.Add(new RealFsElement("D1", @"C:\Users"));
-            Outputs.Add(new RealFsElement("D2", @"C:\Users"));*/
         }
 
-        public void AddDirectory(Window window) =>
-            new OpenFolderDialog().ShowAsync(window).ContinueWith(AddDirectoryFromTask);
+        #region Public surface
 
-        private void AddDirectoryFromTask(Task<string> t)
-        {
-            if (!t.IsCanceled)
+        public async Task AddDirectory(Window window) =>
+            await new OpenFolderDialog().ShowAsync(window).ContinueWith(t =>
             {
-                string file = t.Result;
-                if (file.Length == 0)
-                    return;
-                AddInput(file);
-            }
-        }
+                if (!t.IsCanceled)
+                {
+                    string file = t.Result;
+                    if (file.Length == 0)
+                        return;
+                    AddInput(file);
+                }
+            });
 
-        public void AddFile(Window window) =>
-            new OpenFileDialog {AllowMultiple = false}.ShowAsync(window).ContinueWith(AddFileFromTask);
-
-        private void AddFileFromTask(Task<string[]> t)
-        {
-            if (!t.IsCanceled)
+        public async Task AddFiles(Window window) =>
+            await new OpenFileDialog {AllowMultiple = false}.ShowAsync(window).ContinueWith(t =>
             {
-                string file = t.Result[0];
-                if (file.Length == 0)
-                    return;
-                AddInput(file);
-            }
-        }
+                if (!t.IsCanceled)
+                {
+                    foreach (var f in t.Result)
+                        AddInput(f);
+                }
+            });
+
+        public void AddInput(string path) =>
+            Inputs.Add(new RealFsElement(Path.GetFileName(path), Path.GetFullPath(path)));
 
         public void ClearInputs() => Inputs.Clear();
-
-        private void AddInput(string path) =>
-            Inputs.Add(new RealFsElement(Path.GetFileName(path), Path.GetFullPath(path)));
 
         public Task RunScriptVisualAsync(MainWindow w)
         {
@@ -171,6 +163,7 @@ namespace Dereliction.ViewModels
                                 configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
                             {
                                 results.Add(data);
+                                // TODO direct export option (no in-memory caching of results)
                                 Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
                             }
 
@@ -205,6 +198,8 @@ namespace Dereliction.ViewModels
                 State.Locked = false;
             }
         }
+
+        #endregion
 
         private class DeInputFileSystemSource : FileSystemSource
         {
@@ -353,12 +348,12 @@ namespace Dereliction.ViewModels
             }
         };
 
-        public void ClearLog()
+        private void ClearLog()
         {
             State.LogText = "";
         }
 
-        public void Log(string value, bool newLine = true)
+        private void Log(string value, bool newLine = true)
         {
             State.LogText += newLine ? value + '\n' : value;
         }

@@ -32,6 +32,9 @@
               </NativeMenuItem.Menu>
             </NativeMenuItem>-->
                         <NativeMenuItemSeperator />
+                        <NativeMenuItem Header="{x:Static local:MainWindow.RefreshScriptsHeader}"
+                                        Gesture="{x:Static local:MainWindow.RefreshScriptsGesture}" Click="OnRefreshScriptsClicked" />
+                        <NativeMenuItemSeperator />
                         <NativeMenuItem Header="{x:Static local:MainWindow.QuitHeader}"
                                         Gesture="{x:Static local:MainWindow.QuitGesture}"
                                         Click="OnQuitClicked" />
@@ -46,7 +49,7 @@
           </NativeMenu>
         </NativeMenuItem.Menu>
       </NativeMenuItem>-->
-            <NativeMenuItem Header="Execute">
+            <NativeMenuItem Header="Run">
                 <NativeMenuItem.Menu>
                     <NativeMenu>
                         <NativeMenuItem Header="{x:Static local:MainWindow.OpenExecutionHeader}"

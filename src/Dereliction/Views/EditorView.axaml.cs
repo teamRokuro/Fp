@@ -60,6 +60,7 @@ namespace Dereliction.Views
         public async Task NewFileAsync() => await EditorModel.NewFileAsync(this);
         public async Task OpenFileAsync() => await EditorModel.OpenFileAsync(this);
         public async Task SaveFileAsync() => await EditorModel.SaveFileAsync(this);
+        public void RefreshScriptFolder() => EditorModel.RefreshScriptFolder();
 
         private void OnChange(object? sender, EventArgs e) =>
             EditorModel.SetModified(true);

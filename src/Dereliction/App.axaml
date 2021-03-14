@@ -7,6 +7,8 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
+    <Application.Name>Dereliction</Application.Name>
+
     <!-- Taken from AvaloniaEdit demo program -->
     <Application.Styles>
         <FluentTheme Mode="Dark" />
