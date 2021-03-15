@@ -11,14 +11,9 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using Dereliction.Models;
 using Dereliction.Views;
-using Dotnet.Script.Core;
-using Dotnet.Script.Core.Commands;
-using Dotnet.Script.DependencyModel.Logging;
 using Fp;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using LogLevel = Dotnet.Script.DependencyModel.Logging.LogLevel;
 
 namespace Dereliction.ViewModels
 {
@@ -58,12 +53,10 @@ namespace Dereliction.ViewModels
 
         public OperationStateModel State { get; } = new();
 
-        private readonly Tw _tw;
         private readonly MsLogger _msLogger;
 
         public OperationRunnerViewModel()
         {
-            _tw = new Tw(this);
             _msLogger = new MsLogger(this);
             Inputs = new ObservableCollection<RealFsElement>();
             Outputs = new ObservableCollection<FsElement>();
@@ -108,20 +101,6 @@ namespace Dereliction.ViewModels
             return RunScriptAsync(view.GetBody(), viewModel.EditorState.CurrentFile, viewModel.OperationState);
         }
 
-        public async Task RunJustScriptAsync(string text, string? file, IList<string>? args)
-        {
-            string directory = string.IsNullOrEmpty(file) || !File.Exists(file)
-                ? Directory.GetCurrentDirectory()
-                : Path.GetDirectoryName(file) ?? Directory.GetCurrentDirectory();
-            var options = new ExecuteCodeCommandOptions(text, directory,
-                args?.ToArray() ?? new[] {Scripting.NO_EXECUTE_CLI},
-                OptimizationLevel.Debug, false, null);
-            Log("Executing script...");
-            await new ExecuteCodeCommand(new ScriptConsole(_tw, TextReader.Null, _tw), CreateLogFactory)
-                .Execute<int>(options);
-            Log("Execution finished.");
-        }
-
         public async Task RunScriptAsync(string text, string? directory, OperationStateModel? state)
         {
             if (state != null)
@@ -152,7 +131,7 @@ namespace Dereliction.ViewModels
                         Outputs.Clear();
                         Scripting.processors.Factories.Clear();
 
-                        await RunJustScriptAsync(text, directory, null);
+                        await fpx.Program.LoadAsync(text, directory, Log);
 
                         p.Report(0.2f);
 
@@ -284,12 +263,14 @@ namespace Dereliction.ViewModels
                                       FileShare.Delete) => throw new NotSupportedException();
 
             public override IEnumerable<string> EnumerateFiles(string path) =>
-                _inputModel.TryGetDirectory(NormalizePath(path), out List<(string fakePath, bool isDirectory)>? children)
+                _inputModel.TryGetDirectory(NormalizePath(path),
+                    out List<(string fakePath, bool isDirectory)>? children)
                     ? children.Where(c => !c.isDirectory).Select(c => c.fakePath)
                     : throw new FileNotFoundException();
 
             public override IEnumerable<string> EnumerateDirectories(string path) =>
-                _inputModel.TryGetDirectory(NormalizePath(path), out List<(string fakePath, bool isDirectory)>? children)
+                _inputModel.TryGetDirectory(NormalizePath(path),
+                    out List<(string fakePath, bool isDirectory)>? children)
                     ? children.Where(c => c.isDirectory).Select(c => c.fakePath)
                     : throw new FileNotFoundException();
 
@@ -297,7 +278,8 @@ namespace Dereliction.ViewModels
 
             public override bool FileExists(string path) => _inputModel.TryGetFile(NormalizePath(path), out string? _);
 
-            public override bool DirectoryExists(string path) => _inputModel.TryGetDirectory(NormalizePath(path), out string? _);
+            public override bool DirectoryExists(string path) =>
+                _inputModel.TryGetDirectory(NormalizePath(path), out string? _);
         }
 
         private class InputModel
@@ -391,25 +373,6 @@ namespace Dereliction.ViewModels
             public static InputModel Create(IEnumerable<RealFsElement> elements) => new(elements);
         }
 
-        // ReSharper disable once UnusedParameter.Local
-        private Logger CreateLogFactory(Type t) => (l, m, e) =>
-        {
-            switch (l)
-            {
-                case LogLevel.Trace:
-                case LogLevel.Warning:
-                case LogLevel.Critical:
-                case LogLevel.Error:
-                    Log(m);
-                    break;
-                case LogLevel.Debug:
-#if DEBUG
-                    Log(m);
-#endif
-                    break;
-            }
-        };
-
         private readonly AutoResetEvent _are = new AutoResetEvent(true);
 
         private void ClearLog()
@@ -419,10 +382,16 @@ namespace Dereliction.ViewModels
             _are.Set();
         }
 
-        private void Log(string value, bool newLine = true)
+        private void Log(string? value, bool newLine = true)
         {
             _are.WaitOne();
-            State.HardUp(v => v + (newLine ? value + '\n' : value));
+            State.HardUp(src => src + value switch
+            {
+                { } v when newLine => v + '\n',
+                { } v => v,
+                _ when newLine => "\n",
+                _ => "",
+            });
             _are.Set();
         }
 
@@ -438,14 +407,6 @@ namespace Dereliction.ViewModels
             public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => true;
 
             public IDisposable BeginScope<TState>(TState state) => default!;
-        }
-
-        private class Tw : TextWriter
-        {
-            private readonly OperationRunnerViewModel _parent;
-            public Tw(OperationRunnerViewModel parent) => _parent = parent;
-            public override Encoding Encoding => Encoding.Unicode;
-            public override void Write(char value) => _parent.State.LogText += value;
         }
     }
 }

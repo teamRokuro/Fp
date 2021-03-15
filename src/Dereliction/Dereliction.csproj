@@ -6,26 +6,25 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Assets\**"/>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\icon_win.ico" />
+    <None Remove="Assets\icon_win.ico"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.0" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Dotnet.Script.Core" Version="1.0.1" />
-    <PackageReference Include="MessageBox.Avalonia" Version="1.0.6" />
+    <PackageReference Include="Avalonia" Version="0.10.0"/>
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.0"/>
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0"/>
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0"/>
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="0.10.0"/>
+    <PackageReference Include="MessageBox.Avalonia" Version="1.0.6"/>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="CSharp-Mode-ScriptDark.xshd" />
+    <EmbeddedResource Include="CSharp-Mode-ScriptDark.xshd"/>
   </ItemGroup>
+  
   <ItemGroup>
-    <ProjectReference Include="..\Fp\Fp.csproj" />
+    <ProjectReference Include="..\fpx\fpx.csproj"/>
   </ItemGroup>
 </Project>

@@ -2,7 +2,6 @@
 using System.IO;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Dereliction.ViewModels;
 using Fp;
 
 namespace Dereliction
@@ -54,12 +53,8 @@ namespace Dereliction
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            if (MainScript != null)
-                new OperationRunnerViewModel().RunJustScriptAsync(File.ReadAllText(MainScript), MainScript, args[1..])
-                    .Wait();
-            else
-                BuildAvaloniaApp()
-                    .StartWithClassicDesktopLifetime(args);
+            if (MainScript != null) fpx.Program.ConsoleAsync(args).Wait();
+            else BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

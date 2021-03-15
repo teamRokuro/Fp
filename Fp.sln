@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fp", "src\Fp\Fp.csproj", "{91C8FD21-9DCB-4EBE-8895-F8EB6A6E164F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fp.Tests", "src\Fp.Tests\Fp.Tests.csproj", "{4F5E9556-A3F4-4CCF-94AD-F73DD6F7A600}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dereliction", "src\Dereliction\Dereliction.csproj", "{9640DD04-AF78-4354-AEEE-A3C35FEFEEF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fpx", "src\fpx\fpx.csproj", "{EE3218C7-ACEF-44AB-AD32-B6086A70BB54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,5 +27,9 @@ Global
 		{9640DD04-AF78-4354-AEEE-A3C35FEFEEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9640DD04-AF78-4354-AEEE-A3C35FEFEEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9640DD04-AF78-4354-AEEE-A3C35FEFEEF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE3218C7-ACEF-44AB-AD32-B6086A70BB54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3218C7-ACEF-44AB-AD32-B6086A70BB54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3218C7-ACEF-44AB-AD32-B6086A70BB54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3218C7-ACEF-44AB-AD32-B6086A70BB54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
