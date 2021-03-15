@@ -400,11 +400,11 @@ namespace Dereliction.ViewModels
             private readonly OperationRunnerViewModel _parent;
             public MsLogger(OperationRunnerViewModel parent) => _parent = parent;
 
-            public void Log<TState>(Microsoft.Extensions.Logging.LogLevel logLevel, EventId eventId, TState state,
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state,
                 Exception exception, Func<TState, Exception, string> formatter) =>
                 _parent.Log(formatter(state, exception));
 
-            public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => true;
+            public bool IsEnabled(LogLevel logLevel) => true;
 
             public IDisposable BeginScope<TState>(TState state) => default!;
         }
