@@ -360,22 +360,31 @@ namespace Fp
         /// <returns>Generated outputs</returns>
         protected IEnumerable<Data> ShieldProcessSegmented()
         {
-            using var enumerator = ProcessSegmentedImpl().GetEnumerator();
-            bool has;
-            do
+            try
             {
                 _current = this;
-                try
+                using var enumerator = ProcessSegmentedImpl().GetEnumerator();
+                _current = null;
+                bool has;
+                do
                 {
-                    has = enumerator.MoveNext();
-                }
-                finally
-                {
-                    _current = null;
-                }
+                    _current = this;
+                    try
+                    {
+                        has = enumerator.MoveNext();
+                    }
+                    finally
+                    {
+                        _current = null;
+                    }
 
-                if (has) yield return enumerator.Current!;
-            } while (has);
+                    if (has) yield return enumerator.Current!;
+                } while (has);
+            }
+            finally
+            {
+                _current = null;
+            }
         }
 
         #endregion
