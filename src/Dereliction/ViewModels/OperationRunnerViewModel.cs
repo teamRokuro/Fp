@@ -129,14 +129,14 @@ namespace Dereliction.ViewModels
 
                         ClearLog();
                         Outputs.Clear();
-                        Scripting.processors.Factories.Clear();
+                        Processor.Registered.Factories.Clear();
 
                         await fpx.Program.LoadAsync(text, directory, Log);
 
                         p.Report(0.2f);
 
                         Log("Registered processors:");
-                        foreach (var x in Scripting.processors.Factories)
+                        foreach (var x in Processor.Registered.Factories)
                         {
                             var i = x.Info;
                             string exts = i.Extensions.Length == 0
@@ -146,7 +146,7 @@ namespace Dereliction.ViewModels
                         }
 
                         Log("Creating processors...");
-                        var processors = Scripting.processors.Factories
+                        var processors = Processor.Registered.Factories
                             .Select(f => (name: f.Info.Name, processor: f.CreateProcessor())).ToArray();
                         var configuration =
                             new ProcessorConfiguration("", 1, false, true, false, _msLogger, Array.Empty<string>());
@@ -373,7 +373,7 @@ namespace Dereliction.ViewModels
             public static InputModel Create(IEnumerable<RealFsElement> elements) => new(elements);
         }
 
-        private readonly AutoResetEvent _are = new AutoResetEvent(true);
+        private readonly AutoResetEvent _are = new(true);
 
         private void ClearLog()
         {

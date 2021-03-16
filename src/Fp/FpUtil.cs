@@ -10,7 +10,7 @@ namespace Fp
     /// <summary>
     /// Utility methods.
     /// </summary>
-    public static class FpUtil
+    public static partial class FpUtil
     {
         private static readonly HashSet<string> _emptyStringHashSet = new();
 
@@ -213,6 +213,27 @@ namespace Fp
                 yield return (v0, v1, v2, v3);
             }
         }
+
+        #region Strings
+
+        /// <summary>
+        /// Get byte array from string assuming 8-bit characters.
+        /// </summary>
+        /// <param name="text">String to process.</param>
+        /// <param name="result">Result buffer.</param>
+        /// <returns>Byte array containing lower byte of each code unit in the string.</returns>
+        public static byte[] Ascii(this string text, byte[]? result = null)
+        {
+            var sp = text.AsSpan();
+            int l = sp.Length;
+            if ((result?.Length ?? int.MaxValue) < l)
+                throw new ArgumentException("Buffer not long enough to contain string", nameof(result));
+            result ??= new byte[l];
+            for (int i = 0; i < l; i++) result[i] = (byte)sp[i];
+            return result;
+        }
+
+        #endregion
 
         private static readonly bool _subNormalize = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 

@@ -16,15 +16,9 @@ namespace Fp
         /// Get byte array from string assuming 8-bit characters.
         /// </summary>
         /// <param name="text">String to process.</param>
+        /// <param name="result">Result buffer.</param>
         /// <returns>Byte array containing lower byte of each code unit in the string.</returns>
-        public static byte[] Ascii(string text)
-        {
-            char[] arr = text.ToCharArray();
-            int l = arr.Length;
-            byte[] result = new byte[l];
-            for (int i = 0; i < l; i++) result[i] = (byte)arr[i];
-            return result;
-        }
+        public static byte[] Ascii(string text, byte[]? result = null) => FpUtil.Ascii(text, result);
 
         private static unsafe string DecodeSpan(ReadOnlySpan<byte> span, Encoding encoding)
         {
@@ -521,16 +515,6 @@ namespace Fp
     // ReSharper disable InconsistentNaming
     public partial class Scripting
     {
-        #region Strings
-
-        /// <summary>
-        /// Get byte array from string assuming 8-bit characters.
-        /// </summary>
-        /// <param name="text">String to process.</param>
-        /// <returns>Byte array containing lower byte of each code unit in the string.</returns>
-        public static byte[] ascii(this string text) => Processor.Ascii(text);
-
-        #endregion
     }
     // ReSharper restore InconsistentNaming
 }

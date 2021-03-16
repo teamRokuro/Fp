@@ -167,7 +167,10 @@ namespace Fp
         /// <returns>Data object.</returns>
         public static Rgba32Data Image(string name, int width, int height, ReadOnlyMemory<uint> buffer) =>
             new(name, width, height, buffer);
+    }
 
+    public partial class FpUtil
+    {
         /// <summary>
         /// Convert 24bpp RGB data to 32bpp RGBA.
         /// </summary>
@@ -175,7 +178,7 @@ namespace Fp
         /// <param name="target">Target.</param>
         /// <param name="a">Alpha value.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromRgb(ReadOnlySpan<byte> data, Span<byte> target, byte a = 255)
+        public static void FromRgb(this ReadOnlySpan<byte> data, Span<byte> target, byte a = 255)
         {
             data.Slice(0, 3).CopyTo(target);
             target[3] = a;
@@ -188,7 +191,7 @@ namespace Fp
         /// <param name="a">Alpha value.</param>
         /// <returns>32-bit value with color.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe uint FromRgb(ReadOnlySpan<byte> data, byte a = 255)
+        public static unsafe uint FromRgb(this ReadOnlySpan<byte> data, byte a = 255)
         {
             uint result;
             byte* target = (byte*)&result;
@@ -205,7 +208,7 @@ namespace Fp
         /// <param name="data">Source.</param>
         /// <param name="target">Target.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FromBgra(ReadOnlySpan<byte> data, Span<byte> target)
+        public static void FromBgra(this ReadOnlySpan<byte> data, Span<byte> target)
         {
             target[2] = data[0];
             target[1] = data[1];
@@ -219,7 +222,7 @@ namespace Fp
         /// <param name="data">Source.</param>
         /// <returns>32-bit value with color.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe uint FromBgra(ReadOnlySpan<byte> data)
+        public static unsafe uint FromBgra(this ReadOnlySpan<byte> data)
         {
             uint result;
             byte* target = (byte*)&result;

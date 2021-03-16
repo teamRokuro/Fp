@@ -21,9 +21,9 @@ namespace Fp
         public sbyte ReadS8(Stream? stream = null)
         {
             stream ??= _inputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> b))
             {
-                return (sbyte)buf.AsSpan((int)ms.Position)[0];
+                return (sbyte)b.AsSpan((int)ms.Position)[0];
             }
 
             Read(stream, TempBuffer, 0, 1, false);
@@ -39,9 +39,9 @@ namespace Fp
         public sbyte ReadS8(long offset, Stream? stream = null)
         {
             stream ??= _inputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> b))
             {
-                return (sbyte)buf.AsSpan((int)offset)[0];
+                return (sbyte)b.AsSpan((int)offset)[0];
             }
 
             Read(stream, offset, TempBuffer, 0, 1, false);
@@ -89,9 +89,9 @@ namespace Fp
         public byte ReadU8(Stream? stream = null)
         {
             stream ??= _inputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> b))
             {
-                return buf.AsSpan((int)ms.Position)[0];
+                return b.AsSpan((int)ms.Position)[0];
             }
 
             Read(stream, TempBuffer, 0, 1, false);
@@ -107,9 +107,9 @@ namespace Fp
         public byte ReadU8(long offset, Stream? stream = null)
         {
             stream ??= _inputStream ?? throw new InvalidOperationException();
-            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> buf))
+            if (stream is MemoryStream ms && ms.TryGetBuffer(out ArraySegment<byte> b))
             {
-                return buf.AsSpan((int)offset)[0];
+                return b.AsSpan((int)offset)[0];
             }
 
             Read(stream, offset, TempBuffer, 0, 1, false);
@@ -1977,9 +1977,9 @@ namespace Fp
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void ConvertHalfArrayToFloat(Span<byte> source, Span<float> target)
+        public static void ConvertHalfArrayToFloat(ReadOnlySpan<byte> source, Span<float> target)
         {
-            Span<ushort> span = MemoryMarshal.Cast<byte, ushort>(source);
+            ReadOnlySpan<ushort> span = MemoryMarshal.Cast<byte, ushort>(source);
             for (int i = 0; i < span.Length; i++)
             {
                 target[i] = HalfHelper.HalfToSingle(span[i]);
@@ -1991,7 +1991,7 @@ namespace Fp
         /// </summary>
         /// <param name="source">Source span</param>
         /// <param name="target">Target span</param>
-        public static void ConvertFloatArrayToHalf(Span<float> source, Span<byte> target)
+        public static void ConvertFloatArrayToHalf(ReadOnlySpan<float> source, Span<byte> target)
         {
             Span<ushort> span = MemoryMarshal.Cast<byte, ushort>(target);
             for (int i = 0; i < source.Length; i++)

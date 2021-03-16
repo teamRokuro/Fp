@@ -76,10 +76,10 @@ namespace Fp.Tests
         [Test]
         public void TestScriptingDetection()
         {
-            byte[] data = "RIFF\0\0\0\0WAVE".ascii();
+            byte[] data = "RIFF\0\0\0\0WAVE".Ascii();
             string extension = data._WAV().___(".N");
             Assert.AreEqual(".wav", extension);
-            byte[] data2 = "RIFZ\0\0\0\0WAVE".ascii();
+            byte[] data2 = "RIFZ\0\0\0\0WAVE".Ascii();
             string extension2 = data2._WAV().___(".N");
             Assert.AreEqual(".N", extension2);
         }
