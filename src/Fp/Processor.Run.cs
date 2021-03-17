@@ -50,7 +50,7 @@ namespace Fp
         /// <param name="description">Processor description</param>
         /// <param name="extensions">Processor extensions</param>
         public static void Run(Action func, IList<string>? args, string name, string description,
-            params string[] extensions) =>
+            params string?[] extensions) =>
             Run(func, args, new ProcessorInfo(name, description, description, extensions));
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Fp
         /// <param name="description">Processor description</param>
         /// <param name="extensions">Processor extensions</param>
         public static void Run(Func<IEnumerable<Data>> func, IList<string>? args, string name, string description,
-            params string[] extensions) =>
+            params string?[] extensions) =>
             Run(func, args, new ProcessorInfo(name, description, description, extensions));
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace Fp
         /// <param name="extensions">Processor extensions</param>
         /// <typeparam name="T">Processor type</typeparam>
         public static void Run<T>(IList<string>? args, string name, string description,
-            params string[] extensions) where T : Processor, new() =>
+            params string?[] extensions) where T : Processor, new() =>
             Run(null, args,
                 new GenericNewProcessorFactory<T>(new ProcessorInfo(name, description, description, extensions)));
     }
@@ -109,7 +109,7 @@ namespace Fp
         /// <param name="description">Processor description</param>
         /// <param name="extensions">Processor extensions</param>
         public static void fp(Action func, IList<string>? args, string name, string description,
-            params string[] extensions) =>
+            params string?[] extensions) =>
             Processor.Run(func, args, name, description, extensions);
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Fp
         /// <param name="description">Processor description</param>
         /// <param name="extensions">Processor extensions</param>
         public static void fp(Func<IEnumerable<Data>> func, IList<string>? args, string name, string description,
-            params string[] extensions) =>
+            params string?[] extensions) =>
             Processor.Run(func, args, name, description, extensions);
     }
     // ReSharper restore InconsistentNaming

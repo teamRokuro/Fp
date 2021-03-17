@@ -160,45 +160,48 @@ namespace Dereliction.ViewModels
                         Log("Processing tree...");
                         HashSet<Data> results = new();
                         float idx = 0, count = inputModel.Inputs.Count * processors.Length;
-                        foreach ((string fakeRoot, string fake) in inputModel.Inputs)
-                        foreach (var processor in processors)
+                        foreach ((string fakeRoot, string fake) input in inputModel.Inputs)
                         {
-                            if (!processor.processor.CheckExtension(fake)) continue;
-                            Log($"{fake} <{processor.name}>");
-                            foreach (var data in Coordinator.OperateFileSegmented(processor.processor, fake,
-                                fakeRoot,
-                                configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
+                            var src = new Coordinator.ExecutionSource(
+                                configuration with {OutputRootDirectory = input.fakeRoot},
+                                inputFilesystem);
+                            foreach (var processor in processors)
                             {
-                                Log($" > {data}");
-                                if (DirectOutput)
+                                if (!processor.processor.AcceptFile(input.fake)) continue;
+                                Log($"{input.fake} <{processor.name}>");
+                                foreach (var data in Coordinator.RunSegmented(processor.processor, input, src, 0))
                                 {
-                                    if (!data.Dry && data.DefaultFormat != CommonFormat.ExportUnsupported)
+                                    Log($" > {data}");
+                                    if (DirectOutput)
                                     {
-                                        try
+                                        if (!data.Dry && data.DefaultFormat != CommonFormat.ExportUnsupported)
                                         {
-                                            using var d = data;
-                                            string bp = processor.processor.GenPath(d.DefaultFormat.GetExtension(),
-                                                d.BasePath, mkDirs: false);
-                                            string fp = Path.Join(OutputDirectory, bp);
-                                            string? dir = Path.GetDirectoryName(fp);
-                                            if (dir != null) Directory.CreateDirectory(dir);
-                                            await using var stream = File.OpenWrite(fp);
-                                            d.WriteConvertedData(stream, d.DefaultFormat);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Log(e.ToString());
+                                            try
+                                            {
+                                                using var d = data;
+                                                string bp = processor.processor.GenPath(d.DefaultFormat.GetExtension(),
+                                                    d.BasePath, mkDirs: false);
+                                                string fp = Path.Join(OutputDirectory, bp);
+                                                string? dir = Path.GetDirectoryName(fp);
+                                                if (dir != null) Directory.CreateDirectory(dir);
+                                                await using var stream = File.OpenWrite(fp);
+                                                d.WriteConvertedData(stream, d.DefaultFormat);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Log(e.ToString());
+                                            }
                                         }
                                     }
+                                    else
+                                    {
+                                        results.Add(data);
+                                        Outputs.Add(new DataFsElement(Path.Combine(input.fakeRoot, data.BasePath), data));
+                                    }
                                 }
-                                else
-                                {
-                                    results.Add(data);
-                                    Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
-                                }
-                            }
 
-                            p.Report(0.3f + 0.7f * ++idx / count);
+                                p.Report(0.3f + 0.7f * ++idx / count);
+                            }
                         }
 
 

@@ -46,8 +46,9 @@ namespace Fp
         /// <param name="file">File to check</param>
         /// <returns>True if any extension matches</returns>
         public static bool PathHasExtension(string file, params string?[] extensions) =>
-            extensions.Any(extension =>
-                extension == null || file.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase));
+            extensions.Any(extension => extension == null
+                ? !file.Contains('.')
+                : file.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase));
 
         /// <summary>
         /// Check if a span has a specific value at a certain offset

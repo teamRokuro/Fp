@@ -112,6 +112,11 @@ namespace Fp
         public string InputFile = null!;
 
         /// <summary>
+        /// Selected file extension from input file, if available
+        /// </summary>
+        public string? SelectedExtension;
+
+        /// <summary>
         /// Output stream for current file if opened
         /// </summary>
         public Stream? OutputStream { get; set; }
@@ -231,6 +236,7 @@ namespace Fp
             OutputRootDirectory = fileSystem.NormalizePath(outputRoot);
             OutputDirectory = fileSystem.NormalizePath(Join(false,
                 OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)));
+            ValidateExtension(InputFile, out SelectedExtension);
             LittleEndian = true;
             OutputCounter = 0;
             FileSystem = fileSystem;
@@ -245,14 +251,36 @@ namespace Fp
         }
 
         /// <summary>
-        /// Checks if processor will accept filepath based on extension and <see cref="Source"/>.<see cref="ProcessorFactory.Info"/>.<see cref="ProcessorInfo.Extensions"/>.
+        /// Checks if processor will accept, by default uses <see cref="ValidateExtension"/>.
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public bool CheckExtension(string path) =>
-            Source?.Info.Extensions is not { } exts
-            || exts.Length == 0
-            || PathHasExtension(path, exts);
+        /// <param name="path">Path to check</param>
+        /// <returns>True if accepted</returns>
+        public virtual bool AcceptFile(string path) => ValidateExtension(path, out _);
+
+        /// <summary>
+        /// Validates extension based on <see cref="Source"/>.<see cref="ProcessorFactory.Info"/>.<see cref="ProcessorInfo.Extensions"/>
+        /// </summary>
+        /// <param name="path">Path to check</param>
+        /// <param name="extension">Null or selected extension (may also be null if successful)</param>
+        /// <returns>true if succeeded</returns>
+        public bool ValidateExtension(string path, out string? extension)
+        {
+            extension = null;
+            if (Source?.Info.Extensions is not { } exts) return true;
+            if (exts.Length == 0) return true;
+            foreach (string? ext in exts)
+                if (ext == null)
+                {
+                    if (!path.Contains('.')) return true;
+                }
+                else if (path.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    extension = ext;
+                    return true;
+                }
+
+            return false;
+        }
 
         /// <summary>
         /// Process layered content using additional processor.
@@ -267,33 +295,26 @@ namespace Fp
         {
             IEnumerable<BufferData<byte>> seq = new[] {main};
             if (additionalFiles != null) seq = seq.Concat(additionalFiles);
-            var child = new T();
+            using var child = new T();
             var layer1 = new FileSystemSource.SegmentedFileSystemSource(FileSystem, true, seq);
             child.Prepare(layer1, InputRootDirectory, OutputRootDirectory, main.BasePath);
             child.Debug = Debug;
             child.Nop = Nop;
             child.Preload = Preload;
             child.Logger = Logger;
-            child.Args = args ?? new string[0];
-            try
+            child.Args = args ?? Array.Empty<string>();
+            if (Debug)
+                child.Process();
+            else
             {
-                if (Debug)
-                    child.Process();
-                else
+                try
                 {
-                    try
-                    {
-                        child.Process();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError(e, "Exception occurred during processing:{Exception}", e);
-                    }
+                    child.Process();
                 }
-            }
-            finally
-            {
-                child.Cleanup();
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "Exception occurred during processing:{Exception}", e);
+                }
             }
         }
 

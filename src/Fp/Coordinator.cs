@@ -153,8 +153,6 @@ namespace Fp
 
             if (inputs.Count == 0)
             {
-                if (exeName[0].EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
-                    exeName = exeName.Prepend("dotnet").ToList();
                 var sb = new StringBuilder(exeName[0]);
                 foreach (string str in exeName.Skip(1))
                     sb.Append(' ').Append(str);
@@ -166,8 +164,8 @@ namespace Fp
                     sb2.Append(i.Name).AppendLine()
                         .Append("    Extensions:");
                     if (i.Extensions.Length == 0) sb2.Append(" all");
-                    foreach (string ext in i.Extensions)
-                        sb2.Append(' ').Append(ext);
+                    foreach (string? ext in i.Extensions)
+                        sb2.Append(", ").Append(ext ?? "<empty>");
                     sb2.AppendLine()
                         .Append("    ").Append(i.ExtendedDescription.Replace("\n", "\n    ")).AppendLine();
                 }
@@ -242,10 +240,10 @@ Flags:
             switch (conf!.Parallel)
             {
                 case 0:
-                    Operate(inputs, conf, fileSystem, processorFactories);
+                    Recurse(inputs, new ExecutionSource(conf, fileSystem), processorFactories);
                     break;
                 default:
-                    OperateAsync(inputs, conf, fileSystem, processorFactories).Wait();
+                    RecurseAsync(inputs, new ExecutionSource(conf, fileSystem), processorFactories).Wait();
                     break;
             }
         }
@@ -285,32 +283,47 @@ Flags:
             switch (conf!.Parallel)
             {
                 case 0:
-                    Operate(inputs, conf, fileSystem, processorFactories);
+                    // ReSharper disable once MethodHasAsyncOverload
+                    Recurse(inputs, new ExecutionSource(conf, fileSystem), processorFactories);
                     break;
                 default:
-                    await OperateAsync(inputs, conf, fileSystem, processorFactories);
+                    await RecurseAsync(inputs, new ExecutionSource(conf, fileSystem), processorFactories);
                     break;
             }
         }
 
-        private static IList<string> GuessExe(IList<string>? args)
+        /// <summary>
+        /// Guess executable string (might be multiple components) based on args
+        /// </summary>
+        /// <param name="args">Arguments to check</param>
+        /// <param name="prependDotNetIfDll">If the first element ends in .dll, prepend dotnet as an element</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Just matches up the tail and sends the rest, fallback on argv[0]
+        /// </remarks>
+        public static IList<string> GuessExe(IList<string>? args, bool prependDotNetIfDll = true)
         {
-            // Guess executable string (might be multiple) based on args
-            // Just match up the tail and send the rest
-            // Fallback on argv[0]
-            if (args == null) return new[] {DefaultCurrentExecutableName};
+            var list = GuessExeCore(args);
+            if (list[0].EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
+                list.Insert(0, "dotnet");
+            return list;
+        }
+
+        private static List<string> GuessExeCore(IList<string>? args)
+        {
+            if (args == null) return new List<string> {DefaultCurrentExecutableName};
             string[] oargs = Environment.GetCommandLineArgs();
             int i = 0;
             while (i < args.Count && i < oargs.Length)
             {
                 if (args[args.Count - i - 1] != oargs[oargs.Length - i - 1])
-                    return new[] {DefaultCurrentExecutableName};
+                    return new List<string> {DefaultCurrentExecutableName};
                 i++;
             }
 
             i = oargs.Length - i;
-            if (i > 0) return new ArraySegment<string>(oargs, 0, i);
-            return new[] {DefaultCurrentExecutableName};
+            if (i > 0) return new List<string>(new ArraySegment<string>(oargs, 0, i));
+            return new List<string> {DefaultCurrentExecutableName};
         }
 
         private static string? GetArgValue(IReadOnlyList<string> args, int cPos) =>
@@ -372,110 +385,82 @@ Flags:
         /// Process filesystem tree asynchronously
         /// </summary>
         /// <param name="inputs">Input sources</param>
-        /// <param name="configuration">Processor configuration</param>
-        /// <param name="fileSystem">Filesystem to read from</param>
+        /// <param name="src">Execution source</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
         /// <returns>Task that will execute recursively</returns>
-        /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
-        public static async Task OperateAsync(IReadOnlyList<(bool, string, string)> inputs,
-            ProcessorConfiguration configuration, FileSystemSource fileSystem,
-            params ProcessorFactory[] processorFactories)
+        /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or passed a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
+        public static async Task RecurseAsync(IReadOnlyList<(bool, string, string)> inputs,
+            ExecutionSource src, params ProcessorFactory[] processorFactories)
         {
-            var (processors, baseCount, parallelCount) = InitializeProcessors(configuration, processorFactories);
+            var (processors, baseCount, parallelCount) = InitializeProcessors(src.Config, processorFactories);
             var (dQueue, fQueue) = SeedInputs(inputs);
-            bool[] actives = new bool[processors.Length];
-            List<Task> tasks = new();
-            List<int> taskIdxes = new();
-            List<int> taskIds = new();
-            fileSystem.ParallelAccess = true;
+            Dictionary<Task, int> tasks = new();
+            src.FileSystem.ParallelAccess = true;
             while (fQueue.Count != 0 || dQueue.Count != 0)
-            {
                 if (fQueue._TryDequeue(out var deq))
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
-                        // Wait for available task
-                        while (tasks.Count >= parallelCount)
-                        {
-                            Task completed = await Task.WhenAny(tasks);
-                            int ofs = tasks.IndexOf(completed);
-                            actives[taskIdxes[ofs]] = false;
-                            tasks.RemoveAt(ofs);
-                            taskIdxes.RemoveAt(ofs);
-                            taskIds.RemoveAt(ofs);
-                        }
-
-                        int rIdx = -1;
-                        Processor processor = processors.Where((_, i) =>
-                        {
-                            if (i % baseCount != iBase || actives[i]) return false;
-                            rIdx = i;
-                            return true;
-                        }).First();
-                        actives[rIdx] = true;
-                        int workerId = Enumerable.Range(0, parallelCount).Except(taskIds).First();
-                        Task task = Task.Run(() =>
-                            OperateFile(processor, deq.file, deq.inputRoot, configuration, fileSystem, workerId));
-                        tasks.Add(task);
-                        taskIdxes.Add(rIdx);
-                        taskIds.Add(workerId);
+                        while (tasks.Count >= parallelCount) tasks.Remove(await Task.WhenAny(tasks.Keys));
+                        int workerId = Enumerable.Range(0, parallelCount).Except(tasks.Values).First();
+                        Processor processor = processors[workerId * parallelCount + iBase];
+                        if (!processor.AcceptFile(deq.file)) continue;
+                        tasks.Add(Task.Run(() => Run(processor, deq, src, workerId)), workerId);
                     }
                 else
-                    GetMoreInputs(fileSystem, dQueue, fQueue);
-            }
+                    GetMoreInputs(src.FileSystem, dQueue, fQueue);
 
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks.Keys);
         }
+
+        /// <summary>
+        /// Represents execution config
+        /// </summary>
+        public record ExecutionSource(ProcessorConfiguration Config, FileSystemSource FileSystem);
 
         /// <summary>
         /// Process filesystem tree
         /// </summary>
         /// <param name="inputs">Input sources</param>
-        /// <param name="configuration">Processor configuration</param>
-        /// <param name="fileSystem">Filesystem to read from</param>
+        /// <param name="src">Execution source</param>
         /// <param name="processorFactories">Functions that create new processor instances</param>
-        /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or <paramref name="configuration"/> has a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
-        public static void Operate(IReadOnlyList<(bool, string, string)> inputs, ProcessorConfiguration configuration,
-            FileSystemSource fileSystem,
+        /// <exception cref="ArgumentException">If <paramref name="processorFactories"/> is empty or passed a <see cref="ProcessorConfiguration.Parallel"/> value less than 1</exception>
+        public static void Recurse(IReadOnlyList<(bool, string, string)> inputs, ExecutionSource src,
             params ProcessorFactory[] processorFactories)
         {
-            if (configuration.Parallel != 1)
+            if (src.Config.Parallel != 1)
                 throw new ArgumentException(
-                    $"Cannot start synchronous operation with {nameof(configuration.Parallel)} value of {configuration.Parallel}, use {nameof(Coordinator)}.{nameof(OperateAsync)} instead");
-            var (processors, baseCount, _) = InitializeProcessors(configuration, processorFactories);
+                    $"Cannot start synchronous operation with {nameof(src.Config.Parallel)} value of {src.Config.Parallel}, use {nameof(Coordinator)}.{nameof(RecurseAsync)} instead");
+            var (processors, baseCount, _) = InitializeProcessors(src.Config, processorFactories);
             var (dQueue, fQueue) = SeedInputs(inputs);
             while (fQueue.Count != 0 || dQueue.Count != 0)
-            {
                 if (fQueue._TryDequeue(out var deq))
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
-                        if (!processors[iBase].CheckExtension(deq.file)) continue;
-                        var res = OperateFile(processors[iBase], deq.file, deq.inputRoot, configuration, fileSystem,
-                            iBase);
+                        var processor = processors[iBase];
+                        if (!processor.AcceptFile(deq.file)) continue;
+                        var res = Run(processor, deq, src, iBase);
                         if (res.Locked) break;
                     }
                 else
-                    GetMoreInputs(fileSystem, dQueue, fQueue);
-            }
+                    GetMoreInputs(src.FileSystem, dQueue, fQueue);
         }
 
         /// <summary>
         /// Operate on a file
         /// </summary>
         /// <param name="processor">Processor to operate with</param>
-        /// <param name="file">File path</param>
-        /// <param name="inputRoot">Input root</param>
-        /// <param name="configuration">Processor configuration</param>
-        /// <param name="fileSystem">Base filesystem</param>
+        /// <param name="source">Source info</param>
+        /// <param name="src">Execution source</param>
         /// <param name="workerId">Worker ID</param>
         /// <returns>Processing result</returns>
-        public static ProcessResult OperateFile(Processor processor, string file, string inputRoot,
-            ProcessorConfiguration configuration, FileSystemSource fileSystem, int workerId)
+        public static ProcessResult Run(Processor processor, (string inputRoot, string file) source,
+            ExecutionSource src, int workerId)
         {
             try
             {
                 processor.Cleanup();
-                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration,
-                    workerId);
+                processor.Prepare(src.FileSystem, source.inputRoot, src.Config.OutputRootDirectory, source.file,
+                    src.Config, workerId);
                 bool success;
                 if (processor.Debug)
                 {
@@ -491,7 +476,7 @@ Flags:
                     }
                     catch (Exception e)
                     {
-                        configuration.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
+                        src.Config.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
                         success = false;
                     }
                 }
@@ -508,20 +493,18 @@ Flags:
         /// Operate on a file using segmented operation
         /// </summary>
         /// <param name="processor">Processor to operate with</param>
-        /// <param name="file">File path</param>
-        /// <param name="inputRoot">Input root</param>
-        /// <param name="configuration">Processor configuration</param>
-        /// <param name="fileSystem">Base filesystem</param>
+        /// <param name="input">Source info</param>
+        /// <param name="src">Execution source</param>
         /// <param name="workerId">Worker ID</param>
         /// <returns>Processing results</returns>
-        public static IEnumerable<Data> OperateFileSegmented(Processor processor, string file, string inputRoot,
-            ProcessorConfiguration configuration, FileSystemSource fileSystem, int workerId)
+        public static IEnumerable<Data> RunSegmented(Processor processor, (string inputRoot, string file) input,
+            ExecutionSource src, int workerId)
         {
             try
             {
                 processor.Cleanup();
-                processor.Prepare(fileSystem, inputRoot, configuration.OutputRootDirectory, file, configuration,
-                    workerId);
+                processor.Prepare(src.FileSystem, input.inputRoot, src.Config.OutputRootDirectory, input.file,
+                    src.Config, workerId);
                 if (processor.Debug)
                 {
                     return processor.ProcessSegmented();
@@ -534,7 +517,7 @@ Flags:
                     }
                     catch (Exception e)
                     {
-                        configuration.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
+                        src.Config.Logger.LogError(e, "Exception occurred during processing:\n{Exception}", e);
                         return Enumerable.Empty<Data>();
                     }
                 }

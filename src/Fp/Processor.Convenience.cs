@@ -17,24 +17,35 @@ namespace Fp
         public static readonly IEnumerable<Data> Nothing = Enumerable.Empty<Data>();
 
         /// <summary>
-        /// Warns value as unsupported.
+        /// Warns version value as unsupported.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Version value.</param>
         /// <returns>Empty enumerable.</returns>
-        public IEnumerable<Data> unsupported(long value)
+        public IEnumerable<Data> UnsupportedVersion(long value)
         {
             LogWarn($"Version {value:X2} unsupported");
             return Nothing;
         }
 
         /// <summary>
-        /// Warns value as unsupported.
+        /// Warns version value as unsupported.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Version value.</param>
         /// <returns>Empty enumerable.</returns>
-        public IEnumerable<Data> unsupported(ulong value)
+        public IEnumerable<Data> UnsupportedVersion(ulong value)
         {
             LogWarn($"Version {value:X2} unsupported");
+            return Nothing;
+        }
+
+        /// <summary>
+        /// Warns extension value as unsupported.
+        /// </summary>
+        /// <param name="extension">Extension value.</param>
+        /// <returns>Empty enumerable.</returns>
+        public IEnumerable<Data> UnsupportedExtension(string? extension)
+        {
+            LogWarn(extension != null ? $"Extension {extension} unsupported" : "Empty extension unsupported");
             return Nothing;
         }
     }
@@ -47,18 +58,26 @@ namespace Fp
         public static readonly IEnumerable<Data> _nothing = Nothing;
 
         /// <summary>
-        /// Warns value as unsupported.
+        /// Warns version value as unsupported.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Version value.</param>
         /// <returns>Empty enumerable.</returns>
-        public static IEnumerable<Data> unsupported(long value) => Current.unsupported(value);
+        public static IEnumerable<Data> unsupported(long value) => Current.UnsupportedVersion(value);
 
         /// <summary>
-        /// Warns value as unsupported.
+        /// Warns version value as unsupported.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">Version value.</param>
         /// <returns>Empty enumerable.</returns>
-        public static IEnumerable<Data> unsupported(ulong value) => Current.unsupported(value);
+        public static IEnumerable<Data> unsupportedVersion(ulong value) => Current.UnsupportedVersion(value);
+
+        /// <summary>
+        /// Warns extension value as unsupported.
+        /// </summary>
+        /// <param name="extension">Extension value.</param>
+        /// <returns>Empty enumerable.</returns>
+        public static IEnumerable<Data> unsupportedExtension(string? extension) =>
+            Current.UnsupportedExtension(extension);
     }
 
     #endregion
