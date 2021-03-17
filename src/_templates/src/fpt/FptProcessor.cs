@@ -2,28 +2,36 @@ using System;
 using System.Collections.Generic;
 using Fp;
 
-namespace Fpt
+Processor.Run<FptProcessor>(args,
+    "Fpt",
+    "yourDescription",
+    ".yourExtension1");
+public class FptProcessor : Processor
 {
-    [ProcessorInfo("Fpt", "yourDescription", "yourExtendedDescription", "yourExtension1")]
-    public class FptProcessor : Processor
+    protected override void ProcessImpl()
     {
-        // Main function
-        public static async System.Threading.Tasks.Task Main(string[] args) =>
-            await Coordinator.CliRunFilesystemAsync<FptProcessor>(args);
+        // Implement your logic here
 
-        protected override void ProcessImpl()
-        {
-            // Implement your logic here
+    }
 
-        }
+    // Alternate segmented processing
+    /*
+    protected override IEnumerable<Data> ProcessSegmentedImpl()
+    {
+        // Implement your logic here
+        
+    }
+    */
+}
 
-        // Alternate segmented processing
-        /*
-        protected override IEnumerable<Data> ProcessSegmentedImpl()
-        {
-            // Implement your logic here
-            
-        }
-        */
+// Segmented, automatic OpenFile()
+/*
+public class FptProcessor : Processor
+{
+    protected override IEnumerable<Data> ProcessData()
+    {
+        // Implement your logic here
+        
     }
 }
+*/
