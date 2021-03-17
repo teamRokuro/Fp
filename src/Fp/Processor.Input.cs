@@ -490,6 +490,12 @@ namespace Fp
                     }
             }
         }
+        /// <summary>
+        /// Loads newly allocated byte array from input stream
+        /// </summary>
+        /// <returns>Array with file contents</returns>
+        public byte[] Load()
+            => GetArray(_inputStream ?? throw new InvalidOperationException(), true);
 
         /// <summary>
         /// Get byte array from input stream
@@ -556,7 +562,7 @@ namespace Fp
         /// <param name="stream">Stream to read from</param>
         /// <param name="maxLength">Maximum length.</param>
         /// <returns>Array with file contents</returns>
-        public static byte[] DumpArray(Stream stream, int maxLength = int.MaxValue)
+        public static byte[] Dump(Stream stream, int maxLength = int.MaxValue)
         {
             MemoryStream ms2 = new();
             new SStream(stream, maxLength, false).CopyTo(ms2);
@@ -568,8 +574,8 @@ namespace Fp
         /// </summary>
         /// <param name="maxLength">Maximum length.</param>
         /// <returns>Array with file contents</returns>
-        public byte[] DumpArray(int maxLength = int.MaxValue)
-            => DumpArray(_inputStream ?? throw new InvalidOperationException(), maxLength);
+        public byte[] Dump(int maxLength = int.MaxValue)
+            => Dump(_inputStream ?? throw new InvalidOperationException(), maxLength);
 
         /// <summary>
         /// Get read-only memory from stream
@@ -666,20 +672,14 @@ namespace Fp
         #endregion
     }
 
-    public partial class Scripting
+    public partial class FpUtil
     {
-        /// <summary>
-        /// Loads byte array from input.
-        /// </summary>
-        /// <returns>Byte array.</returns>
-        public static byte[] load() => Processor.Current.GetArray(true);
-
         /// <summary>
         /// Dumps byte array from a stream.
         /// </summary>
         /// <param name="stream">Stream to dump.</param>
         /// <returns>Byte array.</returns>
-        public static byte[] dump(this Stream stream) => Processor.DumpArray(stream);
+        public static byte[] Dump(this Stream stream) => Processor.Dump(stream);
 
         /// <summary>
         /// Dumps byte array from a stream.
@@ -687,27 +687,37 @@ namespace Fp
         /// <param name="stream">Stream to dump.</param>
         /// <param name="maxLength">Maximum input length.</param>
         /// <returns>Byte array.</returns>
-        public static byte[] dump(this Stream stream, int maxLength) => Processor.DumpArray(stream, maxLength);
+        public static byte[] Dump(this Stream stream, int maxLength) => Processor.Dump(stream, maxLength);
 
         /// <summary>
         /// Creates stream from array.
         /// </summary>
         /// <param name="source">Source array.</param>
         /// <returns>Stream.</returns>
-        public static Stream stream(this byte[] source) => new MStream(source);
+        public static Stream Stream(this byte[] source) => new MStream(source);
 
         /// <summary>
         /// Creates stream from memory.
         /// </summary>
         /// <param name="source">Source memory.</param>
         /// <returns>Stream.</returns>
-        public static Stream stream(this Memory<byte> source) => new MStream(source);
+        public static Stream Stream(this Memory<byte> source) => new MStream(source);
 
         /// <summary>
         /// Creates stream from memory.
         /// </summary>
         /// <param name="source">Source memory.</param>
         /// <returns>Stream.</returns>
-        public static Stream stream(this ReadOnlyMemory<byte> source) => new MStream(source);
+        public static Stream Stream(this ReadOnlyMemory<byte> source) => new MStream(source);
+    }
+
+
+    public partial class Scripting
+    {
+        /// <summary>
+        /// Loads byte array from input.
+        /// </summary>
+        /// <returns>Byte array.</returns>
+        public static byte[] load() => Processor.Current.Load();
     }
 }

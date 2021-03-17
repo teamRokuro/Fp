@@ -115,10 +115,764 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.Collections.Generic.IReadOnlyCollection%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Ascii_System_String_System_Byte___.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Ascii(System.String%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L24">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L225">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Ascii_" data-uid="Fp.FpUtil.Ascii*"></a>
+  <h4 id="Fp_FpUtil_Ascii_System_String_System_Byte___" data-uid="Fp.FpUtil.Ascii(System.String,System.Byte[])">Ascii(String, Byte[])</h4>
+  <div class="markdown level1 summary"><p>Get byte array from string assuming 8-bit characters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] Ascii(this string text, byte[] result = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">text</span></td>
+        <td><p>String to process.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">result</span></td>
+        <td><p>Result buffer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Byte array containing lower byte of each code unit in the string.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeDeflate_Memory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeDeflate(Memory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L23">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeDeflate_" data-uid="Fp.FpUtil.DeDeflate*"></a>
+  <h4 id="Fp_FpUtil_DeDeflate_Memory_System_Byte__" data-uid="Fp.FpUtil.DeDeflate(Memory{System.Byte})">DeDeflate(Memory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decompress deflate data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeDeflate(this Memory&lt;byte&gt; buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeDeflate_ReadOnlyMemory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeDeflate(ReadOnlyMemory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L14">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeDeflate_" data-uid="Fp.FpUtil.DeDeflate*"></a>
+  <h4 id="Fp_FpUtil_DeDeflate_ReadOnlyMemory_System_Byte__" data-uid="Fp.FpUtil.DeDeflate(ReadOnlyMemory{System.Byte})">DeDeflate(ReadOnlyMemory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decompress deflate data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeDeflate(this ReadOnlyMemory&lt;byte&gt; buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeDeflate_System_Byte___.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeDeflate(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L32">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeDeflate_" data-uid="Fp.FpUtil.DeDeflate*"></a>
+  <h4 id="Fp_FpUtil_DeDeflate_System_Byte___" data-uid="Fp.FpUtil.DeDeflate(System.Byte[])">DeDeflate(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Decompress deflate data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeDeflate(this byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeDeflate_System_IO_Stream_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeDeflate(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L41">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeDeflate_" data-uid="Fp.FpUtil.DeDeflate*"></a>
+  <h4 id="Fp_FpUtil_DeDeflate_System_IO_Stream_" data-uid="Fp.FpUtil.DeDeflate(System.IO.Stream)">DeDeflate(Stream)</h4>
+  <div class="markdown level1 summary"><p>Decompress deflate data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeDeflate(this Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeGzip_Memory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeGzip(Memory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L58">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeGzip_" data-uid="Fp.FpUtil.DeGzip*"></a>
+  <h4 id="Fp_FpUtil_DeGzip_Memory_System_Byte__" data-uid="Fp.FpUtil.DeGzip(Memory{System.Byte})">DeGzip(Memory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decompress gzipped data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeGzip(this Memory&lt;byte&gt; buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeGzip_ReadOnlyMemory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeGzip(ReadOnlyMemory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L49">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeGzip_" data-uid="Fp.FpUtil.DeGzip*"></a>
+  <h4 id="Fp_FpUtil_DeGzip_ReadOnlyMemory_System_Byte__" data-uid="Fp.FpUtil.DeGzip(ReadOnlyMemory{System.Byte})">DeGzip(ReadOnlyMemory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Decompress gzipped data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeGzip(this ReadOnlyMemory&lt;byte&gt; buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeGzip_System_Byte___.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeGzip(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L67">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeGzip_" data-uid="Fp.FpUtil.DeGzip*"></a>
+  <h4 id="Fp_FpUtil_DeGzip_System_Byte___" data-uid="Fp.FpUtil.DeGzip(System.Byte[])">DeGzip(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Decompress gzipped data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeGzip(this byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Buffer to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_DeGzip_System_IO_Stream_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.DeGzip(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Compression/BclCompression.cs/#L76">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_DeGzip_" data-uid="Fp.FpUtil.DeGzip*"></a>
+  <h4 id="Fp_FpUtil_DeGzip_System_IO_Stream_" data-uid="Fp.FpUtil.DeGzip(System.IO.Stream)">DeGzip(Stream)</h4>
+  <div class="markdown level1 summary"><p>Decompress gzipped data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] DeGzip(this Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Decompressed data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Dump_System_IO_Stream_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Dump(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Processor.Input.cs/#L682">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Dump_" data-uid="Fp.FpUtil.Dump*"></a>
+  <h4 id="Fp_FpUtil_Dump_System_IO_Stream_" data-uid="Fp.FpUtil.Dump(System.IO.Stream)">Dump(Stream)</h4>
+  <div class="markdown level1 summary"><p>Dumps byte array from a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] Dump(this Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream to dump.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Byte array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Dump_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Dump(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Processor.Input.cs/#L690">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Dump_" data-uid="Fp.FpUtil.Dump*"></a>
+  <h4 id="Fp_FpUtil_Dump_System_IO_Stream_System_Int32_" data-uid="Fp.FpUtil.Dump(System.IO.Stream,System.Int32)">Dump(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Dumps byte array from a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static byte[] Dump(this Stream stream, int maxLength)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>Stream to dump.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxLength</span></td>
+        <td><p>Maximum input length.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Byte array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.FromBgra(ReadOnlySpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Rgba32Data.cs/#L224">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_FromBgra_" data-uid="Fp.FpUtil.FromBgra*"></a>
+  <h4 id="Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__" data-uid="Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte})">FromBgra(ReadOnlySpan&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Convert 32bpp BGRA data to 32bpp RGBA.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static uint FromBgra(this ReadOnlySpan&lt;byte&gt; data)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Source.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><p>32-bit value with color.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__Span_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.FromBgra(ReadOnlySpan%7BSystem.Byte%7D%2CSpan%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Rgba32Data.cs/#L210">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_FromBgra_" data-uid="Fp.FpUtil.FromBgra*"></a>
+  <h4 id="Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__Span_System_Byte__" data-uid="Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte},Span{System.Byte})">FromBgra(ReadOnlySpan&lt;Byte&gt;, Span&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Convert 32bpp BGRA data to 32bpp RGBA.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FromBgra(this ReadOnlySpan&lt;byte&gt; data, Span&lt;byte&gt; target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">target</span></td>
+        <td><p>Target.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__Span_System_Byte__System_Byte_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.FromRgb(ReadOnlySpan%7BSystem.Byte%7D%2CSpan%7BSystem.Byte%7D%2CSystem.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Rgba32Data.cs/#L180">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_FromRgb_" data-uid="Fp.FpUtil.FromRgb*"></a>
+  <h4 id="Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__Span_System_Byte__System_Byte_" data-uid="Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},Span{System.Byte},System.Byte)">FromRgb(ReadOnlySpan&lt;Byte&gt;, Span&lt;Byte&gt;, Byte)</h4>
+  <div class="markdown level1 summary"><p>Convert 24bpp RGB data to 32bpp RGBA.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void FromRgb(this ReadOnlySpan&lt;byte&gt; data, Span&lt;byte&gt; target, byte a = 255)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Span</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">target</span></td>
+        <td><p>Target.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>Alpha value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__System_Byte_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.FromRgb(ReadOnlySpan%7BSystem.Byte%7D%2CSystem.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Rgba32Data.cs/#L193">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_FromRgb_" data-uid="Fp.FpUtil.FromRgb*"></a>
+  <h4 id="Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__System_Byte_" data-uid="Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},System.Byte)">FromRgb(ReadOnlySpan&lt;Byte&gt;, Byte)</h4>
+  <div class="markdown level1 summary"><p>Convert 24bpp RGB data to 32bpp RGBA.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static uint FromRgb(this ReadOnlySpan&lt;byte&gt; data, byte a = 255)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Source.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span></td>
+        <td><span class="parametername">a</span></td>
+        <td><p>Alpha value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><p>32-bit value with color.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList%7BSystem.String%7D%2CSystem.Collections.Generic.IReadOnlyCollection%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L24">View Source</a>
   </span>
   <a id="Fp_FpUtil_IsolateFlags_" data-uid="Fp.FpUtil.IsolateFlags*"></a>
   <h4 id="Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__" data-uid="Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyCollection{System.String})">IsolateFlags(IReadOnlyList&lt;String&gt;, IReadOnlyCollection&lt;String&gt;)</h4>
@@ -174,10 +928,10 @@
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_NormalizeAndStripWindowsDrive_System_String_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_NormalizeAndStripWindowsDrive_System_String_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L224">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L245">View Source</a>
   </span>
   <a id="Fp_FpUtil_NormalizeAndStripWindowsDrive_" data-uid="Fp.FpUtil.NormalizeAndStripWindowsDrive*"></a>
   <h4 id="Fp_FpUtil_NormalizeAndStripWindowsDrive_System_String_" data-uid="Fp.FpUtil.NormalizeAndStripWindowsDrive(System.String)">NormalizeAndStripWindowsDrive(String)</h4>
@@ -224,10 +978,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_PostDispose__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.PostDispose%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_PostDispose__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.PostDispose%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L148">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L148">View Source</a>
   </span>
   <a id="Fp_FpUtil_PostDispose_" data-uid="Fp.FpUtil.PostDispose*"></a>
   <h4 id="Fp_FpUtil_PostDispose__1_System_Collections_Generic_IEnumerable___0__" data-uid="Fp.FpUtil.PostDispose``1(System.Collections.Generic.IEnumerable{``0})">PostDispose&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
@@ -291,10 +1045,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_SkipBits_System_Collections_BitArray_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SkipBits(System.Collections.BitArray%2CSystem.Int32%40%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_SkipBits_System_Collections_BitArray_System_Int32__System_Boolean_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SkipBits(System.Collections.BitArray%2CSystem.Int32%40%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L137">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L137">View Source</a>
   </span>
   <a id="Fp_FpUtil_SkipBits_" data-uid="Fp.FpUtil.SkipBits*"></a>
   <h4 id="Fp_FpUtil_SkipBits_System_Collections_BitArray_System_Int32__System_Boolean_" data-uid="Fp.FpUtil.SkipBits(System.Collections.BitArray,System.Int32@,System.Boolean)">SkipBits(BitArray, ref Int32, Boolean)</h4>
@@ -337,10 +1091,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1___0___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(%60%600%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1___0___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(%60%600%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L100">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L100">View Source</a>
   </span>
   <a id="Fp_FpUtil_SliceAlloc_" data-uid="Fp.FpUtil.SliceAlloc*"></a>
   <h4 id="Fp_FpUtil_SliceAlloc__1___0___System_Int32_System_Int32_" data-uid="Fp.FpUtil.SliceAlloc``1(``0[],System.Int32,System.Int32)">SliceAlloc&lt;T&gt;(T[], Int32, Int32)</h4>
@@ -415,10 +1169,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1_ReadOnlySpan___0__System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(ReadOnlySpan%7B%60%600%7D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1_ReadOnlySpan___0__System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(ReadOnlySpan%7B%60%600%7D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L126">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L126">View Source</a>
   </span>
   <a id="Fp_FpUtil_SliceAlloc_" data-uid="Fp.FpUtil.SliceAlloc*"></a>
   <h4 id="Fp_FpUtil_SliceAlloc__1_ReadOnlySpan___0__System_Int32_System_Int32_" data-uid="Fp.FpUtil.SliceAlloc``1(ReadOnlySpan{``0},System.Int32,System.Int32)">SliceAlloc&lt;T&gt;(ReadOnlySpan&lt;T&gt;, Int32, Int32)</h4>
@@ -493,10 +1247,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1_Span___0__System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(Span%7B%60%600%7D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_SliceAlloc__1_Span___0__System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20Fp.FpUtil.SliceAlloc%60%601(Span%7B%60%600%7D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L113">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L113">View Source</a>
   </span>
   <a id="Fp_FpUtil_SliceAlloc_" data-uid="Fp.FpUtil.SliceAlloc*"></a>
   <h4 id="Fp_FpUtil_SliceAlloc__1_Span___0__System_Int32_System_Int32_" data-uid="Fp.FpUtil.SliceAlloc``1(Span{``0},System.Int32,System.Int32)">SliceAlloc&lt;T&gt;(Span&lt;T&gt;, Int32, Int32)</h4>
@@ -571,10 +1325,160 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_Tuplify2__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify2%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Stream_Memory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Stream(Memory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L163">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Processor.Input.cs/#L704">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Stream_" data-uid="Fp.FpUtil.Stream*"></a>
+  <h4 id="Fp_FpUtil_Stream_Memory_System_Byte__" data-uid="Fp.FpUtil.Stream(Memory{System.Byte})">Stream(Memory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates stream from memory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Stream Stream(this Memory&lt;byte&gt; source)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Memory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>Source memory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Stream_ReadOnlyMemory_System_Byte__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Stream(ReadOnlyMemory%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Processor.Input.cs/#L711">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Stream_" data-uid="Fp.FpUtil.Stream*"></a>
+  <h4 id="Fp_FpUtil_Stream_ReadOnlyMemory_System_Byte__" data-uid="Fp.FpUtil.Stream(ReadOnlyMemory{System.Byte})">Stream(ReadOnlyMemory&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Creates stream from memory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Stream Stream(this ReadOnlyMemory&lt;byte&gt; source)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ReadOnlyMemory</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>Source memory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Stream_System_Byte___.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Stream(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Processor.Input.cs/#L697">View Source</a>
+  </span>
+  <a id="Fp_FpUtil_Stream_" data-uid="Fp.FpUtil.Stream*"></a>
+  <h4 id="Fp_FpUtil_Stream_System_Byte___" data-uid="Fp.FpUtil.Stream(System.Byte[])">Stream(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates stream from array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Stream Stream(this byte[] source)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>Source array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Tuplify2__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify2%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L163">View Source</a>
   </span>
   <a id="Fp_FpUtil_Tuplify2_" data-uid="Fp.FpUtil.Tuplify2*"></a>
   <h4 id="Fp_FpUtil_Tuplify2__1_System_Collections_Generic_IEnumerable___0__" data-uid="Fp.FpUtil.Tuplify2``1(System.Collections.Generic.IEnumerable{``0})">Tuplify2&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
@@ -637,10 +1541,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_Tuplify3__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify3%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Tuplify3__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify3%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L181">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L181">View Source</a>
   </span>
   <a id="Fp_FpUtil_Tuplify3_" data-uid="Fp.FpUtil.Tuplify3*"></a>
   <h4 id="Fp_FpUtil_Tuplify3__1_System_Collections_Generic_IEnumerable___0__" data-uid="Fp.FpUtil.Tuplify3``1(System.Collections.Generic.IEnumerable{``0})">Tuplify3&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
@@ -703,10 +1607,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil_Tuplify4__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify4%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil_Tuplify4__1_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Fp.FpUtil.Tuplify4%60%601(System.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L201">View Source</a>
+    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/FpUtil.cs/#L201">View Source</a>
   </span>
   <a id="Fp_FpUtil_Tuplify4_" data-uid="Fp.FpUtil.Tuplify4*"></a>
   <h4 id="Fp_FpUtil_Tuplify4__1_System_Collections_Generic_IEnumerable___0__" data-uid="Fp.FpUtil.Tuplify4``1(System.Collections.Generic.IEnumerable{``0})">Tuplify4&lt;T&gt;(IEnumerable&lt;T&gt;)</h4>
@@ -775,10 +1679,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/new/waifu/apiSpec/new?filename=Fp_FpUtil.md&amp;value=---%0Auid%3A%20Fp.FpUtil%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/teamRokuro/Fp/new/dev-0.15.0/apiSpec/new?filename=Fp_FpUtil.md&amp;value=---%0Auid%3A%20Fp.FpUtil%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/teamRokuro/Fp/blob/waifu/src/Fp/FpUtil.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/teamRokuro/Fp/blob/dev-0.15.0/src/Fp/Rgba32Data.cs/#L172" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

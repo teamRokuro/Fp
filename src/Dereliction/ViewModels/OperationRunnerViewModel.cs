@@ -129,24 +129,24 @@ namespace Dereliction.ViewModels
 
                         ClearLog();
                         Outputs.Clear();
-                        Scripting.processors.Factories.Clear();
+                        Processor.Registered.Factories.Clear();
 
                         await fpx.Program.LoadAsync(text, directory, Log);
 
                         p.Report(0.2f);
 
                         Log("Registered processors:");
-                        foreach (var x in Scripting.processors.Factories)
+                        foreach (var x in Processor.Registered.Factories)
                         {
                             var i = x.Info;
                             string exts = i.Extensions.Length == 0
                                 ? "all"
                                 : new StringBuilder().AppendJoin(", ", i.Extensions).ToString();
-                            Log($"{i.Name}: {i.Description}\nExtensions: {exts}\n{i.ExtendedDescription}\n");
+                            Log($"{i.Name}\nExtensions: {exts}\n{i.ExtendedDescription}\n");
                         }
 
                         Log("Creating processors...");
-                        var processors = Scripting.processors.Factories
+                        var processors = Processor.Registered.Factories
                             .Select(f => (name: f.Info.Name, processor: f.CreateProcessor())).ToArray();
                         var configuration =
                             new ProcessorConfiguration("", 1, false, true, false, _msLogger, Array.Empty<string>());
@@ -160,44 +160,48 @@ namespace Dereliction.ViewModels
                         Log("Processing tree...");
                         HashSet<Data> results = new();
                         float idx = 0, count = inputModel.Inputs.Count * processors.Length;
-                        foreach ((string fakeRoot, string fake) in inputModel.Inputs)
-                        foreach (var processor in processors)
+                        foreach ((string fakeRoot, string fake) input in inputModel.Inputs)
                         {
-                            Log($"{fake} <{processor.name}>");
-                            foreach (var data in Coordinator.OperateFileSegmented(processor.processor, fake,
-                                fakeRoot,
-                                configuration with {OutputRootDirectory = fakeRoot}, inputFilesystem, 0))
+                            var src = new Coordinator.ExecutionSource(
+                                configuration with {OutputRootDirectory = input.fakeRoot},
+                                inputFilesystem);
+                            foreach (var processor in processors)
                             {
-                                Log($" > {data}");
-                                if (DirectOutput)
+                                if (!processor.processor.AcceptFile(input.fake)) continue;
+                                Log($"{input.fake} <{processor.name}>");
+                                foreach (var data in Coordinator.RunSegmented(processor.processor, input, src, 0))
                                 {
-                                    if (!data.Dry && data.DefaultFormat != CommonFormat.ExportUnsupported)
+                                    Log($" > {data}");
+                                    if (DirectOutput)
                                     {
-                                        try
+                                        if (!data.Dry && data.DefaultFormat != CommonFormat.ExportUnsupported)
                                         {
-                                            using var d = data;
-                                            string bp = processor.processor.GenPath(d.DefaultFormat.GetExtension(),
-                                                d.BasePath, mkDirs: false);
-                                            string fp = Path.Join(OutputDirectory, bp);
-                                            string? dir = Path.GetDirectoryName(fp);
-                                            if (dir != null) Directory.CreateDirectory(dir);
-                                            await using var stream = File.OpenWrite(fp);
-                                            d.WriteConvertedData(stream, d.DefaultFormat);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Log(e.ToString());
+                                            try
+                                            {
+                                                using var d = data;
+                                                string bp = processor.processor.GenPath(d.DefaultFormat.GetExtension(),
+                                                    d.BasePath, mkDirs: false);
+                                                string fp = Path.Join(OutputDirectory, bp);
+                                                string? dir = Path.GetDirectoryName(fp);
+                                                if (dir != null) Directory.CreateDirectory(dir);
+                                                await using var stream = File.OpenWrite(fp);
+                                                d.WriteConvertedData(stream, d.DefaultFormat);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Log(e.ToString());
+                                            }
                                         }
                                     }
+                                    else
+                                    {
+                                        results.Add(data);
+                                        Outputs.Add(new DataFsElement(Path.Combine(input.fakeRoot, data.BasePath), data));
+                                    }
                                 }
-                                else
-                                {
-                                    results.Add(data);
-                                    Outputs.Add(new DataFsElement(Path.Combine(fakeRoot, data.BasePath), data));
-                                }
-                            }
 
-                            p.Report(0.3f + 0.7f * ++idx / count);
+                                p.Report(0.3f + 0.7f * ++idx / count);
+                            }
                         }
 
 
@@ -373,7 +377,7 @@ namespace Dereliction.ViewModels
             public static InputModel Create(IEnumerable<RealFsElement> elements) => new(elements);
         }
 
-        private readonly AutoResetEvent _are = new AutoResetEvent(true);
+        private readonly AutoResetEvent _are = new(true);
 
         private void ClearLog()
         {

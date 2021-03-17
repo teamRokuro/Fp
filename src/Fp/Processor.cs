@@ -112,6 +112,11 @@ namespace Fp
         public string InputFile = null!;
 
         /// <summary>
+        /// Selected file extension from input file, if available
+        /// </summary>
+        public string? SelectedExtension;
+
+        /// <summary>
         /// Output stream for current file if opened
         /// </summary>
         public Stream? OutputStream { get; set; }
@@ -137,6 +142,11 @@ namespace Fp
         public FileSystemSource FileSystem = null!;
 
         /// <summary>
+        /// Origin factory for this processor, if available
+        /// </summary>
+        public ProcessorFactory? Source;
+
+        /// <summary>
         /// Whether to read input as little-endian
         /// </summary>
         public bool LittleEndian
@@ -156,6 +166,36 @@ namespace Fp
         /// </summary>
         [SuppressMessage("ReSharper", "UnassignedField.Global")]
         public bool Lock;
+
+        /// <summary>
+        /// Current file path.
+        /// </summary>
+        public FpPath FilePath => FpPath.GetFromString(Current.InputFile) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file path without extension.
+        /// </summary>
+        public FpPath FilePathNoExt => new(Path.GetFileNameWithoutExtension(Current.InputFile), Current.InputDirectory);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public string Name => Path.GetFileName(Current.InputFile);
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public string NameNoExt => Path.GetFileNameWithoutExtension(Current.InputFile);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public FpPath NamePath => FpPath.GetFromString(Name) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public FpPath NamePathNoExt => FpPath.GetFromString(NameNoExt) ?? throw new InvalidOperationException();
 
         private bool _littleEndian;
 
@@ -226,6 +266,7 @@ namespace Fp
             OutputRootDirectory = fileSystem.NormalizePath(outputRoot);
             OutputDirectory = fileSystem.NormalizePath(Join(false,
                 OutputRootDirectory, InputDirectory.Substring(InputRootDirectory.Length)));
+            ValidateExtension(InputFile, out SelectedExtension);
             LittleEndian = true;
             OutputCounter = 0;
             FileSystem = fileSystem;
@@ -237,6 +278,38 @@ namespace Fp
             Preload = configuration.Preload;
             Logger = configuration.Logger;
             Args = configuration.Args;
+        }
+
+        /// <summary>
+        /// Checks if processor will accept, by default uses <see cref="ValidateExtension"/>.
+        /// </summary>
+        /// <param name="path">Path to check</param>
+        /// <returns>True if accepted</returns>
+        public virtual bool AcceptFile(string path) => ValidateExtension(path, out _);
+
+        /// <summary>
+        /// Validates extension based on <see cref="Source"/>.<see cref="ProcessorFactory.Info"/>.<see cref="ProcessorInfo.Extensions"/>
+        /// </summary>
+        /// <param name="path">Path to check</param>
+        /// <param name="extension">Null or selected extension (may also be null if successful)</param>
+        /// <returns>true if succeeded</returns>
+        public bool ValidateExtension(string path, out string? extension)
+        {
+            extension = null;
+            if (Source?.Info.Extensions is not { } exts) return true;
+            if (exts.Length == 0) return true;
+            foreach (string? ext in exts)
+                if (ext == null)
+                {
+                    if (!path.Contains('.')) return true;
+                }
+                else if (path.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    extension = ext;
+                    return true;
+                }
+
+            return false;
         }
 
         /// <summary>
@@ -252,33 +325,26 @@ namespace Fp
         {
             IEnumerable<BufferData<byte>> seq = new[] {main};
             if (additionalFiles != null) seq = seq.Concat(additionalFiles);
-            var child = new T();
+            using var child = new T();
             var layer1 = new FileSystemSource.SegmentedFileSystemSource(FileSystem, true, seq);
             child.Prepare(layer1, InputRootDirectory, OutputRootDirectory, main.BasePath);
             child.Debug = Debug;
             child.Nop = Nop;
             child.Preload = Preload;
             child.Logger = Logger;
-            child.Args = args ?? new string[0];
-            try
+            child.Args = args ?? Array.Empty<string>();
+            if (Debug)
+                child.Process();
+            else
             {
-                if (Debug)
-                    child.Process();
-                else
+                try
                 {
-                    try
-                    {
-                        child.Process();
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.LogError(e, "Exception occurred during processing:{Exception}", e);
-                    }
+                    child.Process();
                 }
-            }
-            finally
-            {
-                child.Cleanup();
+                catch (Exception e)
+                {
+                    Logger.LogError(e, "Exception occurred during processing:{Exception}", e);
+                }
             }
         }
 

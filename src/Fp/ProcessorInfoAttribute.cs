@@ -23,7 +23,7 @@ namespace Fp
         /// <param name="extendedDescription">Processor extended description</param>
         /// <param name="extensions">Processor extensions</param>
         public ProcessorInfoAttribute(string name, string description, string extendedDescription,
-            params string[] extensions)
+            params string?[] extensions)
         {
             Info = new ProcessorInfo(name, description, extendedDescription, extensions);
         }

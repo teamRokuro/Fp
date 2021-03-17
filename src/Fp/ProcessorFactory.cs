@@ -40,7 +40,7 @@ namespace Fp
         }
 
         /// <inheritdoc />
-        public override Processor CreateProcessor() => new T();
+        public override Processor CreateProcessor() => new T {Source = this};
     }
 
     /// <summary>
@@ -61,6 +61,11 @@ namespace Fp
         public DelegateProcessorFactory(ProcessorInfo? info, Func<Processor> del) : base(info) => Delegate = del;
 
         /// <inheritdoc />
-        public override Processor CreateProcessor() => Delegate();
+        public override Processor CreateProcessor()
+        {
+            var re = Delegate();
+            re.Source = this;
+            return re;
+        }
     }
 }

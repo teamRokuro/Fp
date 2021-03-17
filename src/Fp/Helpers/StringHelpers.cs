@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using static System.Buffers.ArrayPool<byte>;
 using static Fp.Processor;
 
 namespace Fp.Helpers
@@ -47,22 +48,6 @@ namespace Fp.Helpers
         {
             s = String;
             byteLength = ByteLength;
-        }
-
-        /// <summary>
-        /// Encoding type
-        /// </summary>
-        public enum Encoding
-        {
-            /// <summary>
-            /// UTF-8 encoding
-            /// </summary>
-            UTF8,
-
-            /// <summary>
-            /// UTF-16 encoding
-            /// </summary>
-            UTF16
         }
     }
 
@@ -169,6 +154,13 @@ namespace Fp.Helpers
         /// <summary>
         /// Read data.
         /// </summary>
+        /// <param name="offset">Offset.</param>
+        /// <param name="source">Data source.</param>
+        public virtual StringData this[ReadOnlyMemory<byte> source, int offset] => this[source.Span, offset];
+
+        /// <summary>
+        /// Read data.
+        /// </summary>
         /// <param name="source">Data source.</param>
         /// <param name="offset">Offset.</param>
         /// <param name="maxBytes">Maximum bytes to read.</param>
@@ -224,6 +216,61 @@ namespace Fp.Helpers
     }
 
     /// <summary>
+    /// ASCII string helper.
+    /// </summary>
+    public record AsciiStringHelper(Processor Parent) : BaseStringHelper
+    {
+        /// <inheritdoc />
+        public override Stream InputStream => Parent._inputStream ?? throw new InvalidOperationException();
+
+        /// <inheritdoc />
+        public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
+
+        /// <inheritdoc />
+        public override StringData this[Span<byte> source]
+        {
+            get => this[(ReadOnlySpan<byte>)source];
+            set => Ascii(value.String).CopyTo(source);
+        }
+
+        /// <inheritdoc />
+        public override StringData this[ReadOnlySpan<byte> source, int offset,
+            int maxBytes] =>
+            new(ReadUtf8String(source.Slice(offset), out _, out int numBytes, maxBytes), numBytes);
+
+        /// <inheritdoc />
+        public override StringData this[long offset, Stream stream, int maxBytes] =>
+            offset != -1
+                ? new StringData(Parent.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
+                    numBytes1)
+                : new StringData(Parent.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
+
+        /// <inheritdoc />
+        public override StringData this[long offset, Stream stream]
+        {
+            get =>
+                offset != -1
+                    ? new StringData(Parent.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1),
+                        numBytes1)
+                    : new StringData(Parent.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
+            set
+            {
+                byte[] res = Shared.Rent(value.String.Length);
+                try
+                {
+                    Ascii(value.String, res);
+                    if (offset != -1) Write(stream, offset, res);
+                    else Write(stream, res);
+                }
+                finally
+                {
+                    Shared.Return(res);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// UTF-8 string helper.
     /// </summary>
     public record Utf8StringHelper(Processor Parent) : BaseStringHelper
@@ -249,19 +296,19 @@ namespace Fp.Helpers
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream, int maxBytes] =>
             offset != -1
-                ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
+                ? new StringData(Parent.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
                     numBytes1)
-                : new StringData(Instance.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
+                : new StringData(Parent.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream]
         {
             get =>
                 offset != -1
-                    ? new StringData(Instance.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1),
+                    ? new StringData(Parent.ReadUtf8StringFromOffset(stream, offset, out _, out int numBytes1),
                         numBytes1)
-                    : new StringData(Instance.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
-            set => Instance.WriteUtf8String(value.String, false, stream, offset != -1 ? offset : null);
+                    : new StringData(Parent.ReadUtf8String(stream, out _, out int numBytes2), numBytes2);
+            set => Parent.WriteUtf8String(value.String, false, stream, offset != -1 ? offset : null);
         }
     }
 
@@ -291,19 +338,19 @@ namespace Fp.Helpers
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream, int maxBytes] =>
             offset != -1
-                ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
+                ? new StringData(Parent.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1, maxBytes),
                     numBytes1)
-                : new StringData(Instance.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
+                : new StringData(Parent.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
 
         /// <inheritdoc />
         public override StringData this[long offset, Stream stream]
         {
             get =>
                 offset != -1
-                    ? new StringData(Instance.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1),
+                    ? new StringData(Parent.ReadUtf16StringFromOffset(stream, offset, out _, out int numBytes1),
                         numBytes1)
-                    : new StringData(Instance.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
-            set => Instance.WriteUtf16String(value.String, false, false, false, stream, offset != -1 ? offset : null);
+                    : new StringData(Parent.ReadUtf16String(stream, out _, out int numBytes2), numBytes2);
+            set => Parent.WriteUtf16String(value.String, false, false, false, stream, offset != -1 ? offset : null);
         }
     }
 }

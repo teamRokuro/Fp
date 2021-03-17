@@ -24,9 +24,9 @@ namespace Fp
         /// Processor extensions
         /// </summary>
         /// <remarks>
-        /// If empty, processor should not filter by extensions
+        /// If empty, processor should not filter by extensions. Null values mean files without a period.
         /// </remarks>
-        public string[] Extensions { get; init; }
+        public string?[] Extensions { get; init; }
 
         /// <summary>
         /// Create new instance of <see cref="ProcessorInfo"/> with generic values
@@ -47,7 +47,7 @@ namespace Fp
         /// <param name="extendedDescription">Processor extended description</param>
         /// <param name="extensions">Processor extensions</param>
         public ProcessorInfo(string name, string description, string extendedDescription,
-            params string[] extensions)
+            params string?[] extensions)
         {
             Name = name;
             Description = description;

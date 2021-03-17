@@ -45,14 +45,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override sbyte[] this[Span<byte> source]
+        public override ReadOnlySpan<sbyte> this[Span<byte> source]
         {
-            get => GetS8Array(source);
+            get => MemoryMarshal.Cast<byte, sbyte>(source);
             set => SetS8Array(source, value);
         }
 
         /// <inheritdoc />
-        public override sbyte[] this[ReadOnlySpan<byte> source] => GetS8Array(source);
+        public override ReadOnlySpan<sbyte> this[ReadOnlySpan<byte> source] => MemoryMarshal.Cast<byte, sbyte>(source);
     }
 
     /// <summary>
@@ -95,14 +95,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override short[] this[Span<byte> source]
+        public override ReadOnlySpan<short> this[Span<byte> source]
         {
             get => GetS16Array(source, LittleEndian);
             set => SetS16Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override short[] this[ReadOnlySpan<byte> source] => GetS16Array(source, LittleEndian);
+        public override ReadOnlySpan<short> this[ReadOnlySpan<byte> source] => GetS16Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -145,14 +145,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override int[] this[Span<byte> source]
+        public override ReadOnlySpan<int> this[Span<byte> source]
         {
             get => GetS32Array(source, LittleEndian);
             set => SetS32Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override int[] this[ReadOnlySpan<byte> source] => GetS32Array(source, LittleEndian);
+        public override ReadOnlySpan<int> this[ReadOnlySpan<byte> source] => GetS32Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -195,14 +195,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override long[] this[Span<byte> source]
+        public override ReadOnlySpan<long> this[Span<byte> source]
         {
             get => GetS64Array(source, LittleEndian);
             set => SetS64Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override long[] this[ReadOnlySpan<byte> source] => GetS64Array(source, LittleEndian);
+        public override ReadOnlySpan<long> this[ReadOnlySpan<byte> source] => GetS64Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -245,14 +245,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override byte[] this[Span<byte> source]
+        public override ReadOnlySpan<byte> this[Span<byte> source]
         {
-            get => GetU8Array(source);
+            get => source;
             set => SetU8Array(source, value);
         }
 
         /// <inheritdoc />
-        public override byte[] this[ReadOnlySpan<byte> source] => GetU8Array(source);
+        public override ReadOnlySpan<byte> this[ReadOnlySpan<byte> source] => source;
     }
 
     /// <summary>
@@ -295,14 +295,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override ushort[] this[Span<byte> source]
+        public override ReadOnlySpan<ushort> this[Span<byte> source]
         {
             get => GetU16Array(source, LittleEndian);
             set => SetU16Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override ushort[] this[ReadOnlySpan<byte> source] => GetU16Array(source, LittleEndian);
+        public override ReadOnlySpan<ushort> this[ReadOnlySpan<byte> source] => GetU16Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -345,14 +345,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override uint[] this[Span<byte> source]
+        public override ReadOnlySpan<uint> this[Span<byte> source]
         {
             get => GetU32Array(source, LittleEndian);
             set => SetU32Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override uint[] this[ReadOnlySpan<byte> source] => GetU32Array(source, LittleEndian);
+        public override ReadOnlySpan<uint> this[ReadOnlySpan<byte> source] => GetU32Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -395,14 +395,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override ulong[] this[Span<byte> source]
+        public override ReadOnlySpan<ulong> this[Span<byte> source]
         {
             get => GetU64Array(source, LittleEndian);
             set => SetU64Array(source, value, LittleEndian);
         }
 
         /// <inheritdoc />
-        public override ulong[] this[ReadOnlySpan<byte> source] => GetU64Array(source, LittleEndian);
+        public override ReadOnlySpan<ulong> this[ReadOnlySpan<byte> source] => GetU64Array(source, LittleEndian);
     }
 
     /// <summary>
@@ -440,14 +440,14 @@ namespace Fp.Helpers
         public override Stream OutputStream => Parent._inputStream ?? throw new InvalidOperationException();
 
         /// <inheritdoc />
-        public override T[] this[Span<byte> source]
+        public override ReadOnlySpan<T> this[Span<byte> source]
         {
             get => GetTArray<T>(source);
             set => SetTArray(source, value);
         }
 
         /// <inheritdoc />
-        public override T[] this[ReadOnlySpan<byte> source] =>
+        public override ReadOnlySpan<T> this[ReadOnlySpan<byte> source] =>
             GetTArray<T>(source);
     }
 
@@ -504,9 +504,15 @@ namespace Fp.Helpers
         /// Read / write value.
         /// </summary>
         /// <param name="source">Data source.</param>
-        public override float[] this[Span<byte> source]
+        public override ReadOnlySpan<float> this[Span<byte> source]
         {
-            get => this[(ReadOnlySpan<byte>)source];
+            get
+            {
+                float[] result = new float[source.Length / 2];
+                // New array for aligning
+                ConvertHalfArrayToFloat(source.Slice(0, source.Length / 2 * 2), result);
+                return result;
+            }
             set
             {
                 byte[] src = new byte[value.Length * 2];
@@ -516,13 +522,13 @@ namespace Fp.Helpers
         }
 
         /// <inheritdoc />
-        public override float[] this[ReadOnlySpan<byte> source]
+        public override ReadOnlySpan<float> this[ReadOnlySpan<byte> source]
         {
             get
             {
                 float[] result = new float[source.Length / 2];
                 // New array for aligning
-                ConvertHalfArrayToFloat(source.Slice(0, source.Length / 2 * 2).ToArray(), result);
+                ConvertHalfArrayToFloat(source.Slice(0, source.Length / 2 * 2), result);
                 return result;
             }
         }
