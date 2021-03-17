@@ -137,6 +137,11 @@ namespace Fp
         public FileSystemSource FileSystem = null!;
 
         /// <summary>
+        /// Origin factory for this processor, if available
+        /// </summary>
+        public ProcessorFactory? Source;
+
+        /// <summary>
         /// Whether to read input as little-endian
         /// </summary>
         public bool LittleEndian
@@ -238,6 +243,16 @@ namespace Fp
             Logger = configuration.Logger;
             Args = configuration.Args;
         }
+
+        /// <summary>
+        /// Checks if processor will accept filepath based on extension and <see cref="Source"/>.<see cref="ProcessorFactory.Info"/>.<see cref="ProcessorInfo.Extensions"/>.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool CheckExtension(string path) =>
+            Source?.Info.Extensions is not { } exts
+            || exts.Length == 0
+            || PathHasExtension(path, exts);
 
         /// <summary>
         /// Process layered content using additional processor.

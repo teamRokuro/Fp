@@ -142,7 +142,7 @@ namespace Dereliction.ViewModels
                             string exts = i.Extensions.Length == 0
                                 ? "all"
                                 : new StringBuilder().AppendJoin(", ", i.Extensions).ToString();
-                            Log($"{i.Name}: {i.Description}\nExtensions: {exts}\n{i.ExtendedDescription}\n");
+                            Log($"{i.Name}\nExtensions: {exts}\n{i.ExtendedDescription}\n");
                         }
 
                         Log("Creating processors...");
@@ -163,6 +163,7 @@ namespace Dereliction.ViewModels
                         foreach ((string fakeRoot, string fake) in inputModel.Inputs)
                         foreach (var processor in processors)
                         {
+                            if (!processor.processor.CheckExtension(fake)) continue;
                             Log($"{fake} <{processor.name}>");
                             foreach (var data in Coordinator.OperateFileSegmented(processor.processor, fake,
                                 fakeRoot,

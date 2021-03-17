@@ -158,9 +158,24 @@ namespace Fp
                 var sb = new StringBuilder(exeName[0]);
                 foreach (string str in exeName.Skip(1))
                     sb.Append(' ').Append(str);
+
+                var sb2 = new StringBuilder();
+                foreach (var x in Processor.Registered.Factories)
+                {
+                    var i = x.Info;
+                    sb2.Append(i.Name).AppendLine()
+                        .Append("    Extensions:");
+                    if (i.Extensions.Length == 0) sb2.Append(" all");
+                    foreach (string ext in i.Extensions)
+                        sb2.Append(' ').Append(ext);
+                    sb2.AppendLine()
+                        .Append("    ").Append(i.ExtendedDescription.Replace("\n", "\n    ")).AppendLine();
+                }
+
                 logger.LogInformation(@"Usage:
     {ExeName} <inputs...> [options/flags] [-- [args...]]
 
+{Processors}
 Parameters:
     inputs           : Input files/directories.
     args             : Arguments for processor. (Optional)
@@ -173,7 +188,7 @@ Flags:
     -d|--debug       : Enable debug
     -n|--nop         : No outputs
     -p|--preload     : Load all streams to memory
-", sb.ToString());
+", sb.ToString(), sb2.ToString());
                 return false;
             }
 
@@ -433,6 +448,7 @@ Flags:
                 if (fQueue._TryDequeue(out var deq))
                     for (int iBase = 0; iBase < baseCount; iBase++)
                     {
+                        if (!processors[iBase].CheckExtension(deq.file)) continue;
                         var res = OperateFile(processors[iBase], deq.file, deq.inputRoot, configuration, fileSystem,
                             iBase);
                         if (res.Locked) break;
