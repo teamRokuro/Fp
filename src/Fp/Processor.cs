@@ -167,6 +167,36 @@ namespace Fp
         [SuppressMessage("ReSharper", "UnassignedField.Global")]
         public bool Lock;
 
+        /// <summary>
+        /// Current file path.
+        /// </summary>
+        public FpPath FilePath => FpPath.GetFromString(Current.InputFile) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file path without extension.
+        /// </summary>
+        public FpPath FilePathNoExt => new(Path.GetFileNameWithoutExtension(Current.InputFile), Current.InputDirectory);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public string Name => Path.GetFileName(Current.InputFile);
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public string NameNoExt => Path.GetFileNameWithoutExtension(Current.InputFile);
+
+        /// <summary>
+        /// Current file name.
+        /// </summary>
+        public FpPath NamePath => FpPath.GetFromString(Name) ?? throw new InvalidOperationException();
+
+        /// <summary>
+        /// Current file name without extension.
+        /// </summary>
+        public FpPath NamePathNoExt => FpPath.GetFromString(NameNoExt) ?? throw new InvalidOperationException();
+
         private bool _littleEndian;
 
         private bool _swap;

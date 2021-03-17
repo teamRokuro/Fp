@@ -794,6 +794,38 @@ references:
   isSpec: "True"
   fullName: Fp.Data.BasePath
   nameWithType: Data.BasePath
+- uid: Fp.DataProcessor
+  name: DataProcessor
+  href: api/Fp.DataProcessor.html
+  commentId: T:Fp.DataProcessor
+  fullName: Fp.DataProcessor
+  nameWithType: DataProcessor
+- uid: Fp.DataProcessor.ProcessData
+  name: ProcessData()
+  href: api/Fp.DataProcessor.html#Fp_DataProcessor_ProcessData
+  commentId: M:Fp.DataProcessor.ProcessData
+  fullName: Fp.DataProcessor.ProcessData()
+  nameWithType: DataProcessor.ProcessData()
+- uid: Fp.DataProcessor.ProcessData*
+  name: ProcessData
+  href: api/Fp.DataProcessor.html#Fp_DataProcessor_ProcessData_
+  commentId: Overload:Fp.DataProcessor.ProcessData
+  isSpec: "True"
+  fullName: Fp.DataProcessor.ProcessData
+  nameWithType: DataProcessor.ProcessData
+- uid: Fp.DataProcessor.ProcessSegmentedImpl
+  name: ProcessSegmentedImpl()
+  href: api/Fp.DataProcessor.html#Fp_DataProcessor_ProcessSegmentedImpl
+  commentId: M:Fp.DataProcessor.ProcessSegmentedImpl
+  fullName: Fp.DataProcessor.ProcessSegmentedImpl()
+  nameWithType: DataProcessor.ProcessSegmentedImpl()
+- uid: Fp.DataProcessor.ProcessSegmentedImpl*
+  name: ProcessSegmentedImpl
+  href: api/Fp.DataProcessor.html#Fp_DataProcessor_ProcessSegmentedImpl_
+  commentId: Overload:Fp.DataProcessor.ProcessSegmentedImpl
+  isSpec: "True"
+  fullName: Fp.DataProcessor.ProcessSegmentedImpl
+  nameWithType: DataProcessor.ProcessSegmentedImpl
 - uid: Fp.DataUtil
   name: DataUtil
   href: api/Fp.DataUtil.html
@@ -986,6 +1018,171 @@ references:
   commentId: T:Fp.FpUtil
   fullName: Fp.FpUtil
   nameWithType: FpUtil
+- uid: Fp.FpUtil.Ascii(System.String,System.Byte[])
+  name: Ascii(String, Byte[])
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Ascii_System_String_System_Byte___
+  commentId: M:Fp.FpUtil.Ascii(System.String,System.Byte[])
+  name.vb: Ascii(String, Byte())
+  fullName: Fp.FpUtil.Ascii(System.String, System.Byte[])
+  fullName.vb: Fp.FpUtil.Ascii(System.String, System.Byte())
+  nameWithType: FpUtil.Ascii(String, Byte[])
+  nameWithType.vb: FpUtil.Ascii(String, Byte())
+- uid: Fp.FpUtil.Ascii*
+  name: Ascii
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Ascii_
+  commentId: Overload:Fp.FpUtil.Ascii
+  isSpec: "True"
+  fullName: Fp.FpUtil.Ascii
+  nameWithType: FpUtil.Ascii
+- uid: Fp.FpUtil.DeDeflate(Memory{System.Byte})
+  name: DeDeflate(Memory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeDeflate_Memory_System_Byte__
+  commentId: M:Fp.FpUtil.DeDeflate(Memory{System.Byte})
+  name.vb: DeDeflate(Memory(Of Byte))
+  fullName: Fp.FpUtil.DeDeflate(Memory<System.Byte>)
+  fullName.vb: Fp.FpUtil.DeDeflate(Memory(Of System.Byte))
+  nameWithType: FpUtil.DeDeflate(Memory<Byte>)
+  nameWithType.vb: FpUtil.DeDeflate(Memory(Of Byte))
+- uid: Fp.FpUtil.DeDeflate(ReadOnlyMemory{System.Byte})
+  name: DeDeflate(ReadOnlyMemory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeDeflate_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.FpUtil.DeDeflate(ReadOnlyMemory{System.Byte})
+  name.vb: DeDeflate(ReadOnlyMemory(Of Byte))
+  fullName: Fp.FpUtil.DeDeflate(ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.FpUtil.DeDeflate(ReadOnlyMemory(Of System.Byte))
+  nameWithType: FpUtil.DeDeflate(ReadOnlyMemory<Byte>)
+  nameWithType.vb: FpUtil.DeDeflate(ReadOnlyMemory(Of Byte))
+- uid: Fp.FpUtil.DeDeflate(System.Byte[])
+  name: DeDeflate(Byte[])
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeDeflate_System_Byte___
+  commentId: M:Fp.FpUtil.DeDeflate(System.Byte[])
+  name.vb: DeDeflate(Byte())
+  fullName: Fp.FpUtil.DeDeflate(System.Byte[])
+  fullName.vb: Fp.FpUtil.DeDeflate(System.Byte())
+  nameWithType: FpUtil.DeDeflate(Byte[])
+  nameWithType.vb: FpUtil.DeDeflate(Byte())
+- uid: Fp.FpUtil.DeDeflate(System.IO.Stream)
+  name: DeDeflate(Stream)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeDeflate_System_IO_Stream_
+  commentId: M:Fp.FpUtil.DeDeflate(System.IO.Stream)
+  fullName: Fp.FpUtil.DeDeflate(System.IO.Stream)
+  nameWithType: FpUtil.DeDeflate(Stream)
+- uid: Fp.FpUtil.DeDeflate*
+  name: DeDeflate
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeDeflate_
+  commentId: Overload:Fp.FpUtil.DeDeflate
+  isSpec: "True"
+  fullName: Fp.FpUtil.DeDeflate
+  nameWithType: FpUtil.DeDeflate
+- uid: Fp.FpUtil.DeGzip(Memory{System.Byte})
+  name: DeGzip(Memory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeGzip_Memory_System_Byte__
+  commentId: M:Fp.FpUtil.DeGzip(Memory{System.Byte})
+  name.vb: DeGzip(Memory(Of Byte))
+  fullName: Fp.FpUtil.DeGzip(Memory<System.Byte>)
+  fullName.vb: Fp.FpUtil.DeGzip(Memory(Of System.Byte))
+  nameWithType: FpUtil.DeGzip(Memory<Byte>)
+  nameWithType.vb: FpUtil.DeGzip(Memory(Of Byte))
+- uid: Fp.FpUtil.DeGzip(ReadOnlyMemory{System.Byte})
+  name: DeGzip(ReadOnlyMemory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeGzip_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.FpUtil.DeGzip(ReadOnlyMemory{System.Byte})
+  name.vb: DeGzip(ReadOnlyMemory(Of Byte))
+  fullName: Fp.FpUtil.DeGzip(ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.FpUtil.DeGzip(ReadOnlyMemory(Of System.Byte))
+  nameWithType: FpUtil.DeGzip(ReadOnlyMemory<Byte>)
+  nameWithType.vb: FpUtil.DeGzip(ReadOnlyMemory(Of Byte))
+- uid: Fp.FpUtil.DeGzip(System.Byte[])
+  name: DeGzip(Byte[])
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeGzip_System_Byte___
+  commentId: M:Fp.FpUtil.DeGzip(System.Byte[])
+  name.vb: DeGzip(Byte())
+  fullName: Fp.FpUtil.DeGzip(System.Byte[])
+  fullName.vb: Fp.FpUtil.DeGzip(System.Byte())
+  nameWithType: FpUtil.DeGzip(Byte[])
+  nameWithType.vb: FpUtil.DeGzip(Byte())
+- uid: Fp.FpUtil.DeGzip(System.IO.Stream)
+  name: DeGzip(Stream)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeGzip_System_IO_Stream_
+  commentId: M:Fp.FpUtil.DeGzip(System.IO.Stream)
+  fullName: Fp.FpUtil.DeGzip(System.IO.Stream)
+  nameWithType: FpUtil.DeGzip(Stream)
+- uid: Fp.FpUtil.DeGzip*
+  name: DeGzip
+  href: api/Fp.FpUtil.html#Fp_FpUtil_DeGzip_
+  commentId: Overload:Fp.FpUtil.DeGzip
+  isSpec: "True"
+  fullName: Fp.FpUtil.DeGzip
+  nameWithType: FpUtil.DeGzip
+- uid: Fp.FpUtil.Dump(System.IO.Stream)
+  name: Dump(Stream)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Dump_System_IO_Stream_
+  commentId: M:Fp.FpUtil.Dump(System.IO.Stream)
+  fullName: Fp.FpUtil.Dump(System.IO.Stream)
+  nameWithType: FpUtil.Dump(Stream)
+- uid: Fp.FpUtil.Dump(System.IO.Stream,System.Int32)
+  name: Dump(Stream, Int32)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Dump_System_IO_Stream_System_Int32_
+  commentId: M:Fp.FpUtil.Dump(System.IO.Stream,System.Int32)
+  fullName: Fp.FpUtil.Dump(System.IO.Stream, System.Int32)
+  nameWithType: FpUtil.Dump(Stream, Int32)
+- uid: Fp.FpUtil.Dump*
+  name: Dump
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Dump_
+  commentId: Overload:Fp.FpUtil.Dump
+  isSpec: "True"
+  fullName: Fp.FpUtil.Dump
+  nameWithType: FpUtil.Dump
+- uid: Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte})
+  name: FromBgra(ReadOnlySpan<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__
+  commentId: M:Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte})
+  name.vb: FromBgra(ReadOnlySpan(Of Byte))
+  fullName: Fp.FpUtil.FromBgra(ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.FpUtil.FromBgra(ReadOnlySpan(Of System.Byte))
+  nameWithType: FpUtil.FromBgra(ReadOnlySpan<Byte>)
+  nameWithType.vb: FpUtil.FromBgra(ReadOnlySpan(Of Byte))
+- uid: Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte},Span{System.Byte})
+  name: FromBgra(ReadOnlySpan<Byte>, Span<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromBgra_ReadOnlySpan_System_Byte__Span_System_Byte__
+  commentId: M:Fp.FpUtil.FromBgra(ReadOnlySpan{System.Byte},Span{System.Byte})
+  name.vb: FromBgra(ReadOnlySpan(Of Byte), Span(Of Byte))
+  fullName: Fp.FpUtil.FromBgra(ReadOnlySpan<System.Byte>, Span<System.Byte>)
+  fullName.vb: Fp.FpUtil.FromBgra(ReadOnlySpan(Of System.Byte), Span(Of System.Byte))
+  nameWithType: FpUtil.FromBgra(ReadOnlySpan<Byte>, Span<Byte>)
+  nameWithType.vb: FpUtil.FromBgra(ReadOnlySpan(Of Byte), Span(Of Byte))
+- uid: Fp.FpUtil.FromBgra*
+  name: FromBgra
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromBgra_
+  commentId: Overload:Fp.FpUtil.FromBgra
+  isSpec: "True"
+  fullName: Fp.FpUtil.FromBgra
+  nameWithType: FpUtil.FromBgra
+- uid: Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},Span{System.Byte},System.Byte)
+  name: FromRgb(ReadOnlySpan<Byte>, Span<Byte>, Byte)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__Span_System_Byte__System_Byte_
+  commentId: M:Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},Span{System.Byte},System.Byte)
+  name.vb: FromRgb(ReadOnlySpan(Of Byte), Span(Of Byte), Byte)
+  fullName: Fp.FpUtil.FromRgb(ReadOnlySpan<System.Byte>, Span<System.Byte>, System.Byte)
+  fullName.vb: Fp.FpUtil.FromRgb(ReadOnlySpan(Of System.Byte), Span(Of System.Byte), System.Byte)
+  nameWithType: FpUtil.FromRgb(ReadOnlySpan<Byte>, Span<Byte>, Byte)
+  nameWithType.vb: FpUtil.FromRgb(ReadOnlySpan(Of Byte), Span(Of Byte), Byte)
+- uid: Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},System.Byte)
+  name: FromRgb(ReadOnlySpan<Byte>, Byte)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromRgb_ReadOnlySpan_System_Byte__System_Byte_
+  commentId: M:Fp.FpUtil.FromRgb(ReadOnlySpan{System.Byte},System.Byte)
+  name.vb: FromRgb(ReadOnlySpan(Of Byte), Byte)
+  fullName: Fp.FpUtil.FromRgb(ReadOnlySpan<System.Byte>, System.Byte)
+  fullName.vb: Fp.FpUtil.FromRgb(ReadOnlySpan(Of System.Byte), System.Byte)
+  nameWithType: FpUtil.FromRgb(ReadOnlySpan<Byte>, Byte)
+  nameWithType.vb: FpUtil.FromRgb(ReadOnlySpan(Of Byte), Byte)
+- uid: Fp.FpUtil.FromRgb*
+  name: FromRgb
+  href: api/Fp.FpUtil.html#Fp_FpUtil_FromRgb_
+  commentId: Overload:Fp.FpUtil.FromRgb
+  isSpec: "True"
+  fullName: Fp.FpUtil.FromRgb
+  nameWithType: FpUtil.FromRgb
 - uid: Fp.FpUtil.IsolateFlags(System.Collections.Generic.IReadOnlyList{System.String},System.Collections.Generic.IReadOnlyCollection{System.String})
   name: IsolateFlags(IReadOnlyList<String>, IReadOnlyCollection<String>)
   href: api/Fp.FpUtil.html#Fp_FpUtil_IsolateFlags_System_Collections_Generic_IReadOnlyList_System_String__System_Collections_Generic_IReadOnlyCollection_System_String__
@@ -1081,6 +1278,40 @@ references:
   fullName.vb: Fp.FpUtil.SliceAlloc(Of T)(Span(Of T), System.Int32, System.Int32)
   nameWithType: FpUtil.SliceAlloc<T>(Span<T>, Int32, Int32)
   nameWithType.vb: FpUtil.SliceAlloc(Of T)(Span(Of T), Int32, Int32)
+- uid: Fp.FpUtil.Stream(Memory{System.Byte})
+  name: Stream(Memory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Stream_Memory_System_Byte__
+  commentId: M:Fp.FpUtil.Stream(Memory{System.Byte})
+  name.vb: Stream(Memory(Of Byte))
+  fullName: Fp.FpUtil.Stream(Memory<System.Byte>)
+  fullName.vb: Fp.FpUtil.Stream(Memory(Of System.Byte))
+  nameWithType: FpUtil.Stream(Memory<Byte>)
+  nameWithType.vb: FpUtil.Stream(Memory(Of Byte))
+- uid: Fp.FpUtil.Stream(ReadOnlyMemory{System.Byte})
+  name: Stream(ReadOnlyMemory<Byte>)
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Stream_ReadOnlyMemory_System_Byte__
+  commentId: M:Fp.FpUtil.Stream(ReadOnlyMemory{System.Byte})
+  name.vb: Stream(ReadOnlyMemory(Of Byte))
+  fullName: Fp.FpUtil.Stream(ReadOnlyMemory<System.Byte>)
+  fullName.vb: Fp.FpUtil.Stream(ReadOnlyMemory(Of System.Byte))
+  nameWithType: FpUtil.Stream(ReadOnlyMemory<Byte>)
+  nameWithType.vb: FpUtil.Stream(ReadOnlyMemory(Of Byte))
+- uid: Fp.FpUtil.Stream(System.Byte[])
+  name: Stream(Byte[])
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Stream_System_Byte___
+  commentId: M:Fp.FpUtil.Stream(System.Byte[])
+  name.vb: Stream(Byte())
+  fullName: Fp.FpUtil.Stream(System.Byte[])
+  fullName.vb: Fp.FpUtil.Stream(System.Byte())
+  nameWithType: FpUtil.Stream(Byte[])
+  nameWithType.vb: FpUtil.Stream(Byte())
+- uid: Fp.FpUtil.Stream*
+  name: Stream
+  href: api/Fp.FpUtil.html#Fp_FpUtil_Stream_
+  commentId: Overload:Fp.FpUtil.Stream
+  isSpec: "True"
+  fullName: Fp.FpUtil.Stream
+  nameWithType: FpUtil.Stream
 - uid: Fp.FpUtil.Tuplify2*
   name: Tuplify2
   href: api/Fp.FpUtil.html#Fp_FpUtil_Tuplify2_
@@ -1208,24 +1439,6 @@ references:
   isSpec: "True"
   fullName: Fp.Helpers.StringData.Deconstruct
   nameWithType: StringData.Deconstruct
-- uid: Fp.Helpers.StringData.Encoding
-  name: StringData.Encoding
-  href: api/Fp.Helpers.StringData.Encoding.html
-  commentId: T:Fp.Helpers.StringData.Encoding
-  fullName: Fp.Helpers.StringData.Encoding
-  nameWithType: StringData.Encoding
-- uid: Fp.Helpers.StringData.Encoding.UTF16
-  name: UTF16
-  href: api/Fp.Helpers.StringData.Encoding.html#Fp_Helpers_StringData_Encoding_UTF16
-  commentId: F:Fp.Helpers.StringData.Encoding.UTF16
-  fullName: Fp.Helpers.StringData.Encoding.UTF16
-  nameWithType: StringData.Encoding.UTF16
-- uid: Fp.Helpers.StringData.Encoding.UTF8
-  name: UTF8
-  href: api/Fp.Helpers.StringData.Encoding.html#Fp_Helpers_StringData_Encoding_UTF8
-  commentId: F:Fp.Helpers.StringData.Encoding.UTF8
-  fullName: Fp.Helpers.StringData.Encoding.UTF8
-  nameWithType: StringData.Encoding.UTF8
 - uid: Fp.Helpers.StringData.op_Implicit(System.String)~Fp.Helpers.StringData
   name: Implicit(String to StringData)
   href: api/Fp.Helpers.StringData.html#Fp_Helpers_StringData_op_Implicit_System_String__Fp_Helpers_StringData
@@ -2320,6 +2533,19 @@ references:
   commentId: T:Fp.Processor
   fullName: Fp.Processor
   nameWithType: Processor
+- uid: Fp.Processor._WAV
+  name: _WAV()
+  href: api/Fp.Processor.html#Fp_Processor__WAV
+  commentId: M:Fp.Processor._WAV
+  fullName: Fp.Processor._WAV()
+  nameWithType: Processor._WAV()
+- uid: Fp.Processor._WAV*
+  name: _WAV
+  href: api/Fp.Processor.html#Fp_Processor__WAV_
+  commentId: Overload:Fp.Processor._WAV
+  isSpec: "True"
+  fullName: Fp.Processor._WAV
+  nameWithType: Processor._WAV
 - uid: Fp.Processor.ApplyAnd(Span{System.Byte},System.Byte)
   name: ApplyAnd(Span<Byte>, Byte)
   href: api/Fp.Processor.html#Fp_Processor_ApplyAnd_Span_System_Byte__System_Byte_
@@ -2495,12 +2721,21 @@ references:
   commentId: F:Fp.Processor.Args
   fullName: Fp.Processor.Args
   nameWithType: Processor.Args
-- uid: Fp.Processor.Ascii(System.String)
-  name: Ascii(String)
-  href: api/Fp.Processor.html#Fp_Processor_Ascii_System_String_
-  commentId: M:Fp.Processor.Ascii(System.String)
-  fullName: Fp.Processor.Ascii(System.String)
-  nameWithType: Processor.Ascii(String)
+- uid: Fp.Processor.ascii
+  name: ascii
+  href: api/Fp.Processor.html#Fp_Processor_ascii
+  commentId: F:Fp.Processor.ascii
+  fullName: Fp.Processor.ascii
+  nameWithType: Processor.ascii
+- uid: Fp.Processor.Ascii(System.String,System.Byte[])
+  name: Ascii(String, Byte[])
+  href: api/Fp.Processor.html#Fp_Processor_Ascii_System_String_System_Byte___
+  commentId: M:Fp.Processor.Ascii(System.String,System.Byte[])
+  name.vb: Ascii(String, Byte())
+  fullName: Fp.Processor.Ascii(System.String, System.Byte[])
+  fullName.vb: Fp.Processor.Ascii(System.String, System.Byte())
+  nameWithType: Processor.Ascii(String, Byte[])
+  nameWithType.vb: Processor.Ascii(String, Byte())
 - uid: Fp.Processor.Ascii*
   name: Ascii
   href: api/Fp.Processor.html#Fp_Processor_Ascii_
@@ -2533,6 +2768,12 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Audio
   nameWithType: Processor.Audio
+- uid: Fp.Processor.buf
+  name: buf
+  href: api/Fp.Processor.html#Fp_Processor_buf
+  commentId: F:Fp.Processor.buf
+  fullName: Fp.Processor.buf
+  nameWithType: Processor.buf
 - uid: Fp.Processor.Buffer(FpPath,ReadOnlyMemory{System.Byte})
   name: Buffer(FpPath, ReadOnlyMemory<Byte>)
   href: api/Fp.Processor.html#Fp_Processor_Buffer_FpPath_ReadOnlyMemory_System_Byte__
@@ -2596,15 +2837,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.CloseOutputFile
   nameWithType: Processor.CloseOutputFile
-- uid: Fp.Processor.ConvertFloatArrayToHalf(Span{System.Single},Span{System.Byte})
-  name: ConvertFloatArrayToHalf(Span<Single>, Span<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_ConvertFloatArrayToHalf_Span_System_Single__Span_System_Byte__
-  commentId: M:Fp.Processor.ConvertFloatArrayToHalf(Span{System.Single},Span{System.Byte})
-  name.vb: ConvertFloatArrayToHalf(Span(Of Single), Span(Of Byte))
-  fullName: Fp.Processor.ConvertFloatArrayToHalf(Span<System.Single>, Span<System.Byte>)
-  fullName.vb: Fp.Processor.ConvertFloatArrayToHalf(Span(Of System.Single), Span(Of System.Byte))
-  nameWithType: Processor.ConvertFloatArrayToHalf(Span<Single>, Span<Byte>)
-  nameWithType.vb: Processor.ConvertFloatArrayToHalf(Span(Of Single), Span(Of Byte))
+- uid: Fp.Processor.ConvertFloatArrayToHalf(ReadOnlySpan{System.Single},Span{System.Byte})
+  name: ConvertFloatArrayToHalf(ReadOnlySpan<Single>, Span<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_ConvertFloatArrayToHalf_ReadOnlySpan_System_Single__Span_System_Byte__
+  commentId: M:Fp.Processor.ConvertFloatArrayToHalf(ReadOnlySpan{System.Single},Span{System.Byte})
+  name.vb: ConvertFloatArrayToHalf(ReadOnlySpan(Of Single), Span(Of Byte))
+  fullName: Fp.Processor.ConvertFloatArrayToHalf(ReadOnlySpan<System.Single>, Span<System.Byte>)
+  fullName.vb: Fp.Processor.ConvertFloatArrayToHalf(ReadOnlySpan(Of System.Single), Span(Of System.Byte))
+  nameWithType: Processor.ConvertFloatArrayToHalf(ReadOnlySpan<Single>, Span<Byte>)
+  nameWithType.vb: Processor.ConvertFloatArrayToHalf(ReadOnlySpan(Of Single), Span(Of Byte))
 - uid: Fp.Processor.ConvertFloatArrayToHalf*
   name: ConvertFloatArrayToHalf
   href: api/Fp.Processor.html#Fp_Processor_ConvertFloatArrayToHalf_
@@ -2612,15 +2853,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ConvertFloatArrayToHalf
   nameWithType: Processor.ConvertFloatArrayToHalf
-- uid: Fp.Processor.ConvertHalfArrayToFloat(Span{System.Byte},Span{System.Single})
-  name: ConvertHalfArrayToFloat(Span<Byte>, Span<Single>)
-  href: api/Fp.Processor.html#Fp_Processor_ConvertHalfArrayToFloat_Span_System_Byte__Span_System_Single__
-  commentId: M:Fp.Processor.ConvertHalfArrayToFloat(Span{System.Byte},Span{System.Single})
-  name.vb: ConvertHalfArrayToFloat(Span(Of Byte), Span(Of Single))
-  fullName: Fp.Processor.ConvertHalfArrayToFloat(Span<System.Byte>, Span<System.Single>)
-  fullName.vb: Fp.Processor.ConvertHalfArrayToFloat(Span(Of System.Byte), Span(Of System.Single))
-  nameWithType: Processor.ConvertHalfArrayToFloat(Span<Byte>, Span<Single>)
-  nameWithType.vb: Processor.ConvertHalfArrayToFloat(Span(Of Byte), Span(Of Single))
+- uid: Fp.Processor.ConvertHalfArrayToFloat(ReadOnlySpan{System.Byte},Span{System.Single})
+  name: ConvertHalfArrayToFloat(ReadOnlySpan<Byte>, Span<Single>)
+  href: api/Fp.Processor.html#Fp_Processor_ConvertHalfArrayToFloat_ReadOnlySpan_System_Byte__Span_System_Single__
+  commentId: M:Fp.Processor.ConvertHalfArrayToFloat(ReadOnlySpan{System.Byte},Span{System.Single})
+  name.vb: ConvertHalfArrayToFloat(ReadOnlySpan(Of Byte), Span(Of Single))
+  fullName: Fp.Processor.ConvertHalfArrayToFloat(ReadOnlySpan<System.Byte>, Span<System.Single>)
+  fullName.vb: Fp.Processor.ConvertHalfArrayToFloat(ReadOnlySpan(Of System.Byte), Span(Of System.Single))
+  nameWithType: Processor.ConvertHalfArrayToFloat(ReadOnlySpan<Byte>, Span<Single>)
+  nameWithType.vb: Processor.ConvertHalfArrayToFloat(ReadOnlySpan(Of Byte), Span(Of Single))
 - uid: Fp.Processor.ConvertHalfArrayToFloat*
   name: ConvertHalfArrayToFloat
   href: api/Fp.Processor.html#Fp_Processor_ConvertHalfArrayToFloat_
@@ -3036,25 +3277,25 @@ references:
   commentId: F:Fp.Processor.Dry
   fullName: Fp.Processor.Dry
   nameWithType: Processor.Dry
-- uid: Fp.Processor.DumpArray(System.Int32)
-  name: DumpArray(Int32)
-  href: api/Fp.Processor.html#Fp_Processor_DumpArray_System_Int32_
-  commentId: M:Fp.Processor.DumpArray(System.Int32)
-  fullName: Fp.Processor.DumpArray(System.Int32)
-  nameWithType: Processor.DumpArray(Int32)
-- uid: Fp.Processor.DumpArray(System.IO.Stream,System.Int32)
-  name: DumpArray(Stream, Int32)
-  href: api/Fp.Processor.html#Fp_Processor_DumpArray_System_IO_Stream_System_Int32_
-  commentId: M:Fp.Processor.DumpArray(System.IO.Stream,System.Int32)
-  fullName: Fp.Processor.DumpArray(System.IO.Stream, System.Int32)
-  nameWithType: Processor.DumpArray(Stream, Int32)
-- uid: Fp.Processor.DumpArray*
-  name: DumpArray
-  href: api/Fp.Processor.html#Fp_Processor_DumpArray_
-  commentId: Overload:Fp.Processor.DumpArray
+- uid: Fp.Processor.Dump(System.Int32)
+  name: Dump(Int32)
+  href: api/Fp.Processor.html#Fp_Processor_Dump_System_Int32_
+  commentId: M:Fp.Processor.Dump(System.Int32)
+  fullName: Fp.Processor.Dump(System.Int32)
+  nameWithType: Processor.Dump(Int32)
+- uid: Fp.Processor.Dump(System.IO.Stream,System.Int32)
+  name: Dump(Stream, Int32)
+  href: api/Fp.Processor.html#Fp_Processor_Dump_System_IO_Stream_System_Int32_
+  commentId: M:Fp.Processor.Dump(System.IO.Stream,System.Int32)
+  fullName: Fp.Processor.Dump(System.IO.Stream, System.Int32)
+  nameWithType: Processor.Dump(Stream, Int32)
+- uid: Fp.Processor.Dump*
+  name: Dump
+  href: api/Fp.Processor.html#Fp_Processor_Dump_
+  commentId: Overload:Fp.Processor.Dump
   isSpec: "True"
-  fullName: Fp.Processor.DumpArray
-  nameWithType: Processor.DumpArray
+  fullName: Fp.Processor.Dump
+  nameWithType: Processor.Dump
 - uid: Fp.Processor.EncryptBlowfishCbc(Span{System.Byte},ReadOnlySpan{System.Byte},ReadOnlySpan{System.Byte})
   name: EncryptBlowfishCbc(Span<Byte>, ReadOnlySpan<Byte>, ReadOnlySpan<Byte>)
   href: api/Fp.Processor.html#Fp_Processor_EncryptBlowfishCbc_Span_System_Byte__ReadOnlySpan_System_Byte__ReadOnlySpan_System_Byte__
@@ -3100,92 +3341,42 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Execute
   nameWithType: Processor.Execute
-- uid: Fp.Processor.F16
-  name: F16
-  href: api/Fp.Processor.html#Fp_Processor_F16
-  commentId: F:Fp.Processor.F16
-  fullName: Fp.Processor.F16
-  nameWithType: Processor.F16
-- uid: Fp.Processor.F16A
-  name: F16A
-  href: api/Fp.Processor.html#Fp_Processor_F16A
-  commentId: F:Fp.Processor.F16A
-  fullName: Fp.Processor.F16A
-  nameWithType: Processor.F16A
-- uid: Fp.Processor.F32
-  name: F32
-  href: api/Fp.Processor.html#Fp_Processor_F32
-  commentId: F:Fp.Processor.F32
-  fullName: Fp.Processor.F32
-  nameWithType: Processor.F32
-- uid: Fp.Processor.F32A
-  name: F32A
-  href: api/Fp.Processor.html#Fp_Processor_F32A
-  commentId: F:Fp.Processor.F32A
-  fullName: Fp.Processor.F32A
-  nameWithType: Processor.F32A
-- uid: Fp.Processor.F64
-  name: F64
-  href: api/Fp.Processor.html#Fp_Processor_F64
-  commentId: F:Fp.Processor.F64
-  fullName: Fp.Processor.F64
-  nameWithType: Processor.F64
-- uid: Fp.Processor.F64A
-  name: F64A
-  href: api/Fp.Processor.html#Fp_Processor_F64A
-  commentId: F:Fp.Processor.F64A
-  fullName: Fp.Processor.F64A
-  nameWithType: Processor.F64A
-- uid: Fp.Processor.FromBgra(ReadOnlySpan{System.Byte})
-  name: FromBgra(ReadOnlySpan<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_FromBgra_ReadOnlySpan_System_Byte__
-  commentId: M:Fp.Processor.FromBgra(ReadOnlySpan{System.Byte})
-  name.vb: FromBgra(ReadOnlySpan(Of Byte))
-  fullName: Fp.Processor.FromBgra(ReadOnlySpan<System.Byte>)
-  fullName.vb: Fp.Processor.FromBgra(ReadOnlySpan(Of System.Byte))
-  nameWithType: Processor.FromBgra(ReadOnlySpan<Byte>)
-  nameWithType.vb: Processor.FromBgra(ReadOnlySpan(Of Byte))
-- uid: Fp.Processor.FromBgra(ReadOnlySpan{System.Byte},Span{System.Byte})
-  name: FromBgra(ReadOnlySpan<Byte>, Span<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_FromBgra_ReadOnlySpan_System_Byte__Span_System_Byte__
-  commentId: M:Fp.Processor.FromBgra(ReadOnlySpan{System.Byte},Span{System.Byte})
-  name.vb: FromBgra(ReadOnlySpan(Of Byte), Span(Of Byte))
-  fullName: Fp.Processor.FromBgra(ReadOnlySpan<System.Byte>, Span<System.Byte>)
-  fullName.vb: Fp.Processor.FromBgra(ReadOnlySpan(Of System.Byte), Span(Of System.Byte))
-  nameWithType: Processor.FromBgra(ReadOnlySpan<Byte>, Span<Byte>)
-  nameWithType.vb: Processor.FromBgra(ReadOnlySpan(Of Byte), Span(Of Byte))
-- uid: Fp.Processor.FromBgra*
-  name: FromBgra
-  href: api/Fp.Processor.html#Fp_Processor_FromBgra_
-  commentId: Overload:Fp.Processor.FromBgra
-  isSpec: "True"
-  fullName: Fp.Processor.FromBgra
-  nameWithType: Processor.FromBgra
-- uid: Fp.Processor.FromRgb(ReadOnlySpan{System.Byte},Span{System.Byte},System.Byte)
-  name: FromRgb(ReadOnlySpan<Byte>, Span<Byte>, Byte)
-  href: api/Fp.Processor.html#Fp_Processor_FromRgb_ReadOnlySpan_System_Byte__Span_System_Byte__System_Byte_
-  commentId: M:Fp.Processor.FromRgb(ReadOnlySpan{System.Byte},Span{System.Byte},System.Byte)
-  name.vb: FromRgb(ReadOnlySpan(Of Byte), Span(Of Byte), Byte)
-  fullName: Fp.Processor.FromRgb(ReadOnlySpan<System.Byte>, Span<System.Byte>, System.Byte)
-  fullName.vb: Fp.Processor.FromRgb(ReadOnlySpan(Of System.Byte), Span(Of System.Byte), System.Byte)
-  nameWithType: Processor.FromRgb(ReadOnlySpan<Byte>, Span<Byte>, Byte)
-  nameWithType.vb: Processor.FromRgb(ReadOnlySpan(Of Byte), Span(Of Byte), Byte)
-- uid: Fp.Processor.FromRgb(ReadOnlySpan{System.Byte},System.Byte)
-  name: FromRgb(ReadOnlySpan<Byte>, Byte)
-  href: api/Fp.Processor.html#Fp_Processor_FromRgb_ReadOnlySpan_System_Byte__System_Byte_
-  commentId: M:Fp.Processor.FromRgb(ReadOnlySpan{System.Byte},System.Byte)
-  name.vb: FromRgb(ReadOnlySpan(Of Byte), Byte)
-  fullName: Fp.Processor.FromRgb(ReadOnlySpan<System.Byte>, System.Byte)
-  fullName.vb: Fp.Processor.FromRgb(ReadOnlySpan(Of System.Byte), System.Byte)
-  nameWithType: Processor.FromRgb(ReadOnlySpan<Byte>, Byte)
-  nameWithType.vb: Processor.FromRgb(ReadOnlySpan(Of Byte), Byte)
-- uid: Fp.Processor.FromRgb*
-  name: FromRgb
-  href: api/Fp.Processor.html#Fp_Processor_FromRgb_
-  commentId: Overload:Fp.Processor.FromRgb
-  isSpec: "True"
-  fullName: Fp.Processor.FromRgb
-  nameWithType: Processor.FromRgb
+- uid: Fp.Processor.f2
+  name: f2
+  href: api/Fp.Processor.html#Fp_Processor_f2
+  commentId: F:Fp.Processor.f2
+  fullName: Fp.Processor.f2
+  nameWithType: Processor.f2
+- uid: Fp.Processor.f2a
+  name: f2a
+  href: api/Fp.Processor.html#Fp_Processor_f2a
+  commentId: F:Fp.Processor.f2a
+  fullName: Fp.Processor.f2a
+  nameWithType: Processor.f2a
+- uid: Fp.Processor.f4
+  name: f4
+  href: api/Fp.Processor.html#Fp_Processor_f4
+  commentId: F:Fp.Processor.f4
+  fullName: Fp.Processor.f4
+  nameWithType: Processor.f4
+- uid: Fp.Processor.f4a
+  name: f4a
+  href: api/Fp.Processor.html#Fp_Processor_f4a
+  commentId: F:Fp.Processor.f4a
+  fullName: Fp.Processor.f4a
+  nameWithType: Processor.f4a
+- uid: Fp.Processor.f8
+  name: f8
+  href: api/Fp.Processor.html#Fp_Processor_f8
+  commentId: F:Fp.Processor.f8
+  fullName: Fp.Processor.f8
+  nameWithType: Processor.f8
+- uid: Fp.Processor.f8a
+  name: f8a
+  href: api/Fp.Processor.html#Fp_Processor_f8a
+  commentId: F:Fp.Processor.f8a
+  fullName: Fp.Processor.f8a
+  nameWithType: Processor.f8a
 - uid: Fp.Processor.GenPath(System.String,System.String,System.String,System.String,System.Boolean)
   name: GenPath(String, String, String, String, Boolean)
   href: api/Fp.Processor.html#Fp_Processor_GenPath_System_String_System_String_System_String_System_String_System_Boolean_
@@ -4083,22 +4274,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GetS8
   nameWithType: Processor.GetS8
-- uid: Fp.Processor.GetS8Array(ReadOnlySpan{System.Byte})
-  name: GetS8Array(ReadOnlySpan<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_GetS8Array_ReadOnlySpan_System_Byte__
-  commentId: M:Fp.Processor.GetS8Array(ReadOnlySpan{System.Byte})
-  name.vb: GetS8Array(ReadOnlySpan(Of Byte))
-  fullName: Fp.Processor.GetS8Array(ReadOnlySpan<System.Byte>)
-  fullName.vb: Fp.Processor.GetS8Array(ReadOnlySpan(Of System.Byte))
-  nameWithType: Processor.GetS8Array(ReadOnlySpan<Byte>)
-  nameWithType.vb: Processor.GetS8Array(ReadOnlySpan(Of Byte))
-- uid: Fp.Processor.GetS8Array*
-  name: GetS8Array
-  href: api/Fp.Processor.html#Fp_Processor_GetS8Array_
-  commentId: Overload:Fp.Processor.GetS8Array
-  isSpec: "True"
-  fullName: Fp.Processor.GetS8Array
-  nameWithType: Processor.GetS8Array
 - uid: Fp.Processor.GetSeekableStream(System.IO.Stream)
   name: GetSeekableStream(Stream)
   href: api/Fp.Processor.html#Fp_Processor_GetSeekableStream_System_IO_Stream_
@@ -4144,6 +4319,15 @@ references:
   fullName.vb: Fp.Processor.GetTArray(Of T)(ReadOnlySpan(Of System.Byte))
   nameWithType: Processor.GetTArray<T>(ReadOnlySpan<Byte>)
   nameWithType.vb: Processor.GetTArray(Of T)(ReadOnlySpan(Of Byte))
+- uid: Fp.Processor.GetTArray``1(Span{System.Byte})
+  name: GetTArray<T>(Span<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_GetTArray__1_Span_System_Byte__
+  commentId: M:Fp.Processor.GetTArray``1(Span{System.Byte})
+  name.vb: GetTArray(Of T)(Span(Of Byte))
+  fullName: Fp.Processor.GetTArray<T>(Span<System.Byte>)
+  fullName.vb: Fp.Processor.GetTArray(Of T)(Span(Of System.Byte))
+  nameWithType: Processor.GetTArray<T>(Span<Byte>)
+  nameWithType.vb: Processor.GetTArray(Of T)(Span(Of Byte))
 - uid: Fp.Processor.GetU16(ReadOnlySpan{System.Byte},System.Boolean,System.Int32)
   name: GetU16(ReadOnlySpan<Byte>, Boolean, Int32)
   href: api/Fp.Processor.html#Fp_Processor_GetU16_ReadOnlySpan_System_Byte__System_Boolean_System_Int32_
@@ -4310,22 +4494,6 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.GetU8
   nameWithType: Processor.GetU8
-- uid: Fp.Processor.GetU8Array(ReadOnlySpan{System.Byte})
-  name: GetU8Array(ReadOnlySpan<Byte>)
-  href: api/Fp.Processor.html#Fp_Processor_GetU8Array_ReadOnlySpan_System_Byte__
-  commentId: M:Fp.Processor.GetU8Array(ReadOnlySpan{System.Byte})
-  name.vb: GetU8Array(ReadOnlySpan(Of Byte))
-  fullName: Fp.Processor.GetU8Array(ReadOnlySpan<System.Byte>)
-  fullName.vb: Fp.Processor.GetU8Array(ReadOnlySpan(Of System.Byte))
-  nameWithType: Processor.GetU8Array(ReadOnlySpan<Byte>)
-  nameWithType.vb: Processor.GetU8Array(ReadOnlySpan(Of Byte))
-- uid: Fp.Processor.GetU8Array*
-  name: GetU8Array
-  href: api/Fp.Processor.html#Fp_Processor_GetU8Array_
-  commentId: Overload:Fp.Processor.GetU8Array
-  isSpec: "True"
-  fullName: Fp.Processor.GetU8Array
-  nameWithType: Processor.GetU8Array
 - uid: Fp.Processor.GetUtf16Length(System.String,System.Boolean,System.Boolean)
   name: GetUtf16Length(String, Boolean, Boolean)
   href: api/Fp.Processor.html#Fp_Processor_GetUtf16Length_System_String_System_Boolean_System_Boolean_
@@ -4454,6 +4622,90 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.HasSibling
   nameWithType: Processor.HasSibling
+- uid: Fp.Processor.i1
+  name: i1
+  href: api/Fp.Processor.html#Fp_Processor_i1
+  commentId: F:Fp.Processor.i1
+  fullName: Fp.Processor.i1
+  nameWithType: Processor.i1
+- uid: Fp.Processor.i1a
+  name: i1a
+  href: api/Fp.Processor.html#Fp_Processor_i1a
+  commentId: F:Fp.Processor.i1a
+  fullName: Fp.Processor.i1a
+  nameWithType: Processor.i1a
+- uid: Fp.Processor.i2b
+  name: i2b
+  href: api/Fp.Processor.html#Fp_Processor_i2b
+  commentId: F:Fp.Processor.i2b
+  fullName: Fp.Processor.i2b
+  nameWithType: Processor.i2b
+- uid: Fp.Processor.i2ba
+  name: i2ba
+  href: api/Fp.Processor.html#Fp_Processor_i2ba
+  commentId: F:Fp.Processor.i2ba
+  fullName: Fp.Processor.i2ba
+  nameWithType: Processor.i2ba
+- uid: Fp.Processor.i2l
+  name: i2l
+  href: api/Fp.Processor.html#Fp_Processor_i2l
+  commentId: F:Fp.Processor.i2l
+  fullName: Fp.Processor.i2l
+  nameWithType: Processor.i2l
+- uid: Fp.Processor.i2la
+  name: i2la
+  href: api/Fp.Processor.html#Fp_Processor_i2la
+  commentId: F:Fp.Processor.i2la
+  fullName: Fp.Processor.i2la
+  nameWithType: Processor.i2la
+- uid: Fp.Processor.i4b
+  name: i4b
+  href: api/Fp.Processor.html#Fp_Processor_i4b
+  commentId: F:Fp.Processor.i4b
+  fullName: Fp.Processor.i4b
+  nameWithType: Processor.i4b
+- uid: Fp.Processor.i4ba
+  name: i4ba
+  href: api/Fp.Processor.html#Fp_Processor_i4ba
+  commentId: F:Fp.Processor.i4ba
+  fullName: Fp.Processor.i4ba
+  nameWithType: Processor.i4ba
+- uid: Fp.Processor.i4l
+  name: i4l
+  href: api/Fp.Processor.html#Fp_Processor_i4l
+  commentId: F:Fp.Processor.i4l
+  fullName: Fp.Processor.i4l
+  nameWithType: Processor.i4l
+- uid: Fp.Processor.i4la
+  name: i4la
+  href: api/Fp.Processor.html#Fp_Processor_i4la
+  commentId: F:Fp.Processor.i4la
+  fullName: Fp.Processor.i4la
+  nameWithType: Processor.i4la
+- uid: Fp.Processor.i8b
+  name: i8b
+  href: api/Fp.Processor.html#Fp_Processor_i8b
+  commentId: F:Fp.Processor.i8b
+  fullName: Fp.Processor.i8b
+  nameWithType: Processor.i8b
+- uid: Fp.Processor.i8ba
+  name: i8ba
+  href: api/Fp.Processor.html#Fp_Processor_i8ba
+  commentId: F:Fp.Processor.i8ba
+  fullName: Fp.Processor.i8ba
+  nameWithType: Processor.i8ba
+- uid: Fp.Processor.i8l
+  name: i8l
+  href: api/Fp.Processor.html#Fp_Processor_i8l
+  commentId: F:Fp.Processor.i8l
+  fullName: Fp.Processor.i8l
+  nameWithType: Processor.i8l
+- uid: Fp.Processor.i8la
+  name: i8la
+  href: api/Fp.Processor.html#Fp_Processor_i8la
+  commentId: F:Fp.Processor.i8la
+  fullName: Fp.Processor.i8la
+  nameWithType: Processor.i8la
 - uid: Fp.Processor.Image(FpPath,System.Int32,System.Int32,ReadOnlyMemory{System.UInt32})
   name: Image(FpPath, Int32, Int32, ReadOnlyMemory<UInt32>)
   href: api/Fp.Processor.html#Fp_Processor_Image_FpPath_System_Int32_System_Int32_ReadOnlyMemory_System_UInt32__
@@ -4530,6 +4782,19 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.Join
   nameWithType: Processor.Join
+- uid: Fp.Processor.Load
+  name: Load()
+  href: api/Fp.Processor.html#Fp_Processor_Load
+  commentId: M:Fp.Processor.Load
+  fullName: Fp.Processor.Load()
+  nameWithType: Processor.Load()
+- uid: Fp.Processor.Load*
+  name: Load
+  href: api/Fp.Processor.html#Fp_Processor_Load_
+  commentId: Overload:Fp.Processor.Load
+  isSpec: "True"
+  fullName: Fp.Processor.Load
+  nameWithType: Processor.Load
 - uid: Fp.Processor.Logger
   name: Logger
   href: api/Fp.Processor.html#Fp_Processor_Logger
@@ -5359,12 +5624,24 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.MkParents
   nameWithType: Processor.MkParents
+- uid: Fp.Processor.NO_EXECUTE_CLI
+  name: NO_EXECUTE_CLI
+  href: api/Fp.Processor.html#Fp_Processor_NO_EXECUTE_CLI
+  commentId: F:Fp.Processor.NO_EXECUTE_CLI
+  fullName: Fp.Processor.NO_EXECUTE_CLI
+  nameWithType: Processor.NO_EXECUTE_CLI
 - uid: Fp.Processor.Nop
   name: Nop
   href: api/Fp.Processor.html#Fp_Processor_Nop
   commentId: F:Fp.Processor.Nop
   fullName: Fp.Processor.Nop
   nameWithType: Processor.Nop
+- uid: Fp.Processor.Nothing
+  name: Nothing
+  href: api/Fp.Processor.html#Fp_Processor_Nothing
+  commentId: F:Fp.Processor.Nothing
+  fullName: Fp.Processor.Nothing
+  nameWithType: Processor.Nothing
 - uid: Fp.Processor.OpenFile(System.Boolean,System.String)
   name: OpenFile(Boolean, String)
   href: api/Fp.Processor.html#Fp_Processor_OpenFile_System_Boolean_System_String_
@@ -6855,90 +7132,73 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.ReadUtf8StringFromOffset
   nameWithType: Processor.ReadUtf8StringFromOffset
-- uid: Fp.Processor.S16B
-  name: S16B
-  href: api/Fp.Processor.html#Fp_Processor_S16B
-  commentId: F:Fp.Processor.S16B
-  fullName: Fp.Processor.S16B
-  nameWithType: Processor.S16B
-- uid: Fp.Processor.S16BA
-  name: S16BA
-  href: api/Fp.Processor.html#Fp_Processor_S16BA
-  commentId: F:Fp.Processor.S16BA
-  fullName: Fp.Processor.S16BA
-  nameWithType: Processor.S16BA
-- uid: Fp.Processor.S16L
-  name: S16L
-  href: api/Fp.Processor.html#Fp_Processor_S16L
-  commentId: F:Fp.Processor.S16L
-  fullName: Fp.Processor.S16L
-  nameWithType: Processor.S16L
-- uid: Fp.Processor.S16LA
-  name: S16LA
-  href: api/Fp.Processor.html#Fp_Processor_S16LA
-  commentId: F:Fp.Processor.S16LA
-  fullName: Fp.Processor.S16LA
-  nameWithType: Processor.S16LA
-- uid: Fp.Processor.S32B
-  name: S32B
-  href: api/Fp.Processor.html#Fp_Processor_S32B
-  commentId: F:Fp.Processor.S32B
-  fullName: Fp.Processor.S32B
-  nameWithType: Processor.S32B
-- uid: Fp.Processor.S32BA
-  name: S32BA
-  href: api/Fp.Processor.html#Fp_Processor_S32BA
-  commentId: F:Fp.Processor.S32BA
-  fullName: Fp.Processor.S32BA
-  nameWithType: Processor.S32BA
-- uid: Fp.Processor.S32L
-  name: S32L
-  href: api/Fp.Processor.html#Fp_Processor_S32L
-  commentId: F:Fp.Processor.S32L
-  fullName: Fp.Processor.S32L
-  nameWithType: Processor.S32L
-- uid: Fp.Processor.S32LA
-  name: S32LA
-  href: api/Fp.Processor.html#Fp_Processor_S32LA
-  commentId: F:Fp.Processor.S32LA
-  fullName: Fp.Processor.S32LA
-  nameWithType: Processor.S32LA
-- uid: Fp.Processor.S64B
-  name: S64B
-  href: api/Fp.Processor.html#Fp_Processor_S64B
-  commentId: F:Fp.Processor.S64B
-  fullName: Fp.Processor.S64B
-  nameWithType: Processor.S64B
-- uid: Fp.Processor.S64BA
-  name: S64BA
-  href: api/Fp.Processor.html#Fp_Processor_S64BA
-  commentId: F:Fp.Processor.S64BA
-  fullName: Fp.Processor.S64BA
-  nameWithType: Processor.S64BA
-- uid: Fp.Processor.S64L
-  name: S64L
-  href: api/Fp.Processor.html#Fp_Processor_S64L
-  commentId: F:Fp.Processor.S64L
-  fullName: Fp.Processor.S64L
-  nameWithType: Processor.S64L
-- uid: Fp.Processor.S64LA
-  name: S64LA
-  href: api/Fp.Processor.html#Fp_Processor_S64LA
-  commentId: F:Fp.Processor.S64LA
-  fullName: Fp.Processor.S64LA
-  nameWithType: Processor.S64LA
-- uid: Fp.Processor.S8
-  name: S8
-  href: api/Fp.Processor.html#Fp_Processor_S8
-  commentId: F:Fp.Processor.S8
-  fullName: Fp.Processor.S8
-  nameWithType: Processor.S8
-- uid: Fp.Processor.S8A
-  name: S8A
-  href: api/Fp.Processor.html#Fp_Processor_S8A
-  commentId: F:Fp.Processor.S8A
-  fullName: Fp.Processor.S8A
-  nameWithType: Processor.S8A
+- uid: Fp.Processor.Registered
+  name: Registered
+  href: api/Fp.Processor.html#Fp_Processor_Registered
+  commentId: F:Fp.Processor.Registered
+  fullName: Fp.Processor.Registered
+  nameWithType: Processor.Registered
+- uid: Fp.Processor.Run(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
+  name: Run(FileSystemSource, IList<String>, ProcessorFactory[])
+  href: api/Fp.Processor.html#Fp_Processor_Run_Fp_FileSystemSource_System_Collections_Generic_IList_System_String__ProcessorFactory___
+  commentId: M:Fp.Processor.Run(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
+  name.vb: Run(FileSystemSource, IList(Of String), ProcessorFactory())
+  fullName: Fp.Processor.Run(Fp.FileSystemSource, System.Collections.Generic.IList<System.String>, ProcessorFactory[])
+  fullName.vb: Fp.Processor.Run(Fp.FileSystemSource, System.Collections.Generic.IList(Of System.String), ProcessorFactory())
+  nameWithType: Processor.Run(FileSystemSource, IList<String>, ProcessorFactory[])
+  nameWithType.vb: Processor.Run(FileSystemSource, IList(Of String), ProcessorFactory())
+- uid: Fp.Processor.Run(System.Action,System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name: Run(Action, IList<String>, Nullable<ProcessorInfo>)
+  href: api/Fp.Processor.html#Fp_Processor_Run_System_Action_System_Collections_Generic_IList_System_String__System_Nullable_ProcessorInfo__
+  commentId: M:Fp.Processor.Run(System.Action,System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name.vb: Run(Action, IList(Of String), Nullable(Of ProcessorInfo))
+  fullName: Fp.Processor.Run(System.Action, System.Collections.Generic.IList<System.String>, System.Nullable<ProcessorInfo>)
+  fullName.vb: Fp.Processor.Run(System.Action, System.Collections.Generic.IList(Of System.String), System.Nullable(Of ProcessorInfo))
+  nameWithType: Processor.Run(Action, IList<String>, Nullable<ProcessorInfo>)
+  nameWithType.vb: Processor.Run(Action, IList(Of String), Nullable(Of ProcessorInfo))
+- uid: Fp.Processor.Run(System.Action,System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name: Run(Action, IList<String>, String, String, String[])
+  href: api/Fp.Processor.html#Fp_Processor_Run_System_Action_System_Collections_Generic_IList_System_String__System_String_System_String_System_String___
+  commentId: M:Fp.Processor.Run(System.Action,System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name.vb: Run(Action, IList(Of String), String, String, String())
+  fullName: Fp.Processor.Run(System.Action, System.Collections.Generic.IList<System.String>, System.String, System.String, System.String[])
+  fullName.vb: Fp.Processor.Run(System.Action, System.Collections.Generic.IList(Of System.String), System.String, System.String, System.String())
+  nameWithType: Processor.Run(Action, IList<String>, String, String, String[])
+  nameWithType.vb: Processor.Run(Action, IList(Of String), String, String, String())
+- uid: Fp.Processor.Run(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name: Run(Func<IEnumerable<Data>>, IList<String>, Nullable<ProcessorInfo>)
+  href: api/Fp.Processor.html#Fp_Processor_Run_System_Func_System_Collections_Generic_IEnumerable_Fp_Data___System_Collections_Generic_IList_System_String__System_Nullable_ProcessorInfo__
+  commentId: M:Fp.Processor.Run(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.Nullable{ProcessorInfo})
+  name.vb: Run(Func(Of IEnumerable(Of Data)), IList(Of String), Nullable(Of ProcessorInfo))
+  fullName: Fp.Processor.Run(System.Func<System.Collections.Generic.IEnumerable<Fp.Data>>, System.Collections.Generic.IList<System.String>, System.Nullable<ProcessorInfo>)
+  fullName.vb: Fp.Processor.Run(System.Func(Of System.Collections.Generic.IEnumerable(Of Fp.Data)), System.Collections.Generic.IList(Of System.String), System.Nullable(Of ProcessorInfo))
+  nameWithType: Processor.Run(Func<IEnumerable<Data>>, IList<String>, Nullable<ProcessorInfo>)
+  nameWithType.vb: Processor.Run(Func(Of IEnumerable(Of Data)), IList(Of String), Nullable(Of ProcessorInfo))
+- uid: Fp.Processor.Run(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name: Run(Func<IEnumerable<Data>>, IList<String>, String, String, String[])
+  href: api/Fp.Processor.html#Fp_Processor_Run_System_Func_System_Collections_Generic_IEnumerable_Fp_Data___System_Collections_Generic_IList_System_String__System_String_System_String_System_String___
+  commentId: M:Fp.Processor.Run(System.Func{System.Collections.Generic.IEnumerable{Fp.Data}},System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name.vb: Run(Func(Of IEnumerable(Of Data)), IList(Of String), String, String, String())
+  fullName: Fp.Processor.Run(System.Func<System.Collections.Generic.IEnumerable<Fp.Data>>, System.Collections.Generic.IList<System.String>, System.String, System.String, System.String[])
+  fullName.vb: Fp.Processor.Run(System.Func(Of System.Collections.Generic.IEnumerable(Of Fp.Data)), System.Collections.Generic.IList(Of System.String), System.String, System.String, System.String())
+  nameWithType: Processor.Run(Func<IEnumerable<Data>>, IList<String>, String, String, String[])
+  nameWithType.vb: Processor.Run(Func(Of IEnumerable(Of Data)), IList(Of String), String, String, String())
+- uid: Fp.Processor.Run*
+  name: Run
+  href: api/Fp.Processor.html#Fp_Processor_Run_
+  commentId: Overload:Fp.Processor.Run
+  isSpec: "True"
+  fullName: Fp.Processor.Run
+  nameWithType: Processor.Run
+- uid: Fp.Processor.Run``1(System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name: Run<T>(IList<String>, String, String, String[])
+  href: api/Fp.Processor.html#Fp_Processor_Run__1_System_Collections_Generic_IList_System_String__System_String_System_String_System_String___
+  commentId: M:Fp.Processor.Run``1(System.Collections.Generic.IList{System.String},System.String,System.String,System.String[])
+  name.vb: Run(Of T)(IList(Of String), String, String, String())
+  fullName: Fp.Processor.Run<T>(System.Collections.Generic.IList<System.String>, System.String, System.String, System.String[])
+  fullName.vb: Fp.Processor.Run(Of T)(System.Collections.Generic.IList(Of System.String), System.String, System.String, System.String())
+  nameWithType: Processor.Run<T>(IList<String>, String, String, String[])
+  nameWithType.vb: Processor.Run(Of T)(IList(Of String), String, String, String())
 - uid: Fp.Processor.SetDouble(Span{System.Byte},System.Double,System.Int32)
   name: SetDouble(Span<Byte>, Double, Int32)
   href: api/Fp.Processor.html#Fp_Processor_SetDouble_Span_System_Byte__System_Double_System_Int32_
@@ -7226,6 +7486,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetS16
   nameWithType: Processor.SetS16
+- uid: Fp.Processor.SetS16Array(Span{System.Byte},ReadOnlySpan{System.Int16},System.Boolean)
+  name: SetS16Array(Span<Byte>, ReadOnlySpan<Int16>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetS16Array_Span_System_Byte__ReadOnlySpan_System_Int16__System_Boolean_
+  commentId: M:Fp.Processor.SetS16Array(Span{System.Byte},ReadOnlySpan{System.Int16},System.Boolean)
+  name.vb: SetS16Array(Span(Of Byte), ReadOnlySpan(Of Int16), Boolean)
+  fullName: Fp.Processor.SetS16Array(Span<System.Byte>, ReadOnlySpan<System.Int16>, System.Boolean)
+  fullName.vb: Fp.Processor.SetS16Array(Span(Of System.Byte), ReadOnlySpan(Of System.Int16), System.Boolean)
+  nameWithType: Processor.SetS16Array(Span<Byte>, ReadOnlySpan<Int16>, Boolean)
+  nameWithType.vb: Processor.SetS16Array(Span(Of Byte), ReadOnlySpan(Of Int16), Boolean)
 - uid: Fp.Processor.SetS16Array(Span{System.Byte},System.Int16[])
   name: SetS16Array(Span<Byte>, Int16[])
   href: api/Fp.Processor.html#Fp_Processor_SetS16Array_Span_System_Byte__System_Int16___
@@ -7235,15 +7504,6 @@ references:
   fullName.vb: Fp.Processor.SetS16Array(Span(Of System.Byte), System.Int16())
   nameWithType: Processor.SetS16Array(Span<Byte>, Int16[])
   nameWithType.vb: Processor.SetS16Array(Span(Of Byte), Int16())
-- uid: Fp.Processor.SetS16Array(Span{System.Byte},System.Int16[],System.Boolean)
-  name: SetS16Array(Span<Byte>, Int16[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetS16Array_Span_System_Byte__System_Int16___System_Boolean_
-  commentId: M:Fp.Processor.SetS16Array(Span{System.Byte},System.Int16[],System.Boolean)
-  name.vb: SetS16Array(Span(Of Byte), Int16(), Boolean)
-  fullName: Fp.Processor.SetS16Array(Span<System.Byte>, System.Int16[], System.Boolean)
-  fullName.vb: Fp.Processor.SetS16Array(Span(Of System.Byte), System.Int16(), System.Boolean)
-  nameWithType: Processor.SetS16Array(Span<Byte>, Int16[], Boolean)
-  nameWithType.vb: Processor.SetS16Array(Span(Of Byte), Int16(), Boolean)
 - uid: Fp.Processor.SetS16Array*
   name: SetS16Array
   href: api/Fp.Processor.html#Fp_Processor_SetS16Array_
@@ -7276,6 +7536,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetS32
   nameWithType: Processor.SetS32
+- uid: Fp.Processor.SetS32Array(Span{System.Byte},ReadOnlySpan{System.Int32},System.Boolean)
+  name: SetS32Array(Span<Byte>, ReadOnlySpan<Int32>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetS32Array_Span_System_Byte__ReadOnlySpan_System_Int32__System_Boolean_
+  commentId: M:Fp.Processor.SetS32Array(Span{System.Byte},ReadOnlySpan{System.Int32},System.Boolean)
+  name.vb: SetS32Array(Span(Of Byte), ReadOnlySpan(Of Int32), Boolean)
+  fullName: Fp.Processor.SetS32Array(Span<System.Byte>, ReadOnlySpan<System.Int32>, System.Boolean)
+  fullName.vb: Fp.Processor.SetS32Array(Span(Of System.Byte), ReadOnlySpan(Of System.Int32), System.Boolean)
+  nameWithType: Processor.SetS32Array(Span<Byte>, ReadOnlySpan<Int32>, Boolean)
+  nameWithType.vb: Processor.SetS32Array(Span(Of Byte), ReadOnlySpan(Of Int32), Boolean)
 - uid: Fp.Processor.SetS32Array(Span{System.Byte},System.Int32[])
   name: SetS32Array(Span<Byte>, Int32[])
   href: api/Fp.Processor.html#Fp_Processor_SetS32Array_Span_System_Byte__System_Int32___
@@ -7285,15 +7554,6 @@ references:
   fullName.vb: Fp.Processor.SetS32Array(Span(Of System.Byte), System.Int32())
   nameWithType: Processor.SetS32Array(Span<Byte>, Int32[])
   nameWithType.vb: Processor.SetS32Array(Span(Of Byte), Int32())
-- uid: Fp.Processor.SetS32Array(Span{System.Byte},System.Int32[],System.Boolean)
-  name: SetS32Array(Span<Byte>, Int32[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetS32Array_Span_System_Byte__System_Int32___System_Boolean_
-  commentId: M:Fp.Processor.SetS32Array(Span{System.Byte},System.Int32[],System.Boolean)
-  name.vb: SetS32Array(Span(Of Byte), Int32(), Boolean)
-  fullName: Fp.Processor.SetS32Array(Span<System.Byte>, System.Int32[], System.Boolean)
-  fullName.vb: Fp.Processor.SetS32Array(Span(Of System.Byte), System.Int32(), System.Boolean)
-  nameWithType: Processor.SetS32Array(Span<Byte>, Int32[], Boolean)
-  nameWithType.vb: Processor.SetS32Array(Span(Of Byte), Int32(), Boolean)
 - uid: Fp.Processor.SetS32Array*
   name: SetS32Array
   href: api/Fp.Processor.html#Fp_Processor_SetS32Array_
@@ -7326,6 +7586,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetS64
   nameWithType: Processor.SetS64
+- uid: Fp.Processor.SetS64Array(Span{System.Byte},ReadOnlySpan{System.Int64},System.Boolean)
+  name: SetS64Array(Span<Byte>, ReadOnlySpan<Int64>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetS64Array_Span_System_Byte__ReadOnlySpan_System_Int64__System_Boolean_
+  commentId: M:Fp.Processor.SetS64Array(Span{System.Byte},ReadOnlySpan{System.Int64},System.Boolean)
+  name.vb: SetS64Array(Span(Of Byte), ReadOnlySpan(Of Int64), Boolean)
+  fullName: Fp.Processor.SetS64Array(Span<System.Byte>, ReadOnlySpan<System.Int64>, System.Boolean)
+  fullName.vb: Fp.Processor.SetS64Array(Span(Of System.Byte), ReadOnlySpan(Of System.Int64), System.Boolean)
+  nameWithType: Processor.SetS64Array(Span<Byte>, ReadOnlySpan<Int64>, Boolean)
+  nameWithType.vb: Processor.SetS64Array(Span(Of Byte), ReadOnlySpan(Of Int64), Boolean)
 - uid: Fp.Processor.SetS64Array(Span{System.Byte},System.Int64[])
   name: SetS64Array(Span<Byte>, Int64[])
   href: api/Fp.Processor.html#Fp_Processor_SetS64Array_Span_System_Byte__System_Int64___
@@ -7335,15 +7604,6 @@ references:
   fullName.vb: Fp.Processor.SetS64Array(Span(Of System.Byte), System.Int64())
   nameWithType: Processor.SetS64Array(Span<Byte>, Int64[])
   nameWithType.vb: Processor.SetS64Array(Span(Of Byte), Int64())
-- uid: Fp.Processor.SetS64Array(Span{System.Byte},System.Int64[],System.Boolean)
-  name: SetS64Array(Span<Byte>, Int64[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetS64Array_Span_System_Byte__System_Int64___System_Boolean_
-  commentId: M:Fp.Processor.SetS64Array(Span{System.Byte},System.Int64[],System.Boolean)
-  name.vb: SetS64Array(Span(Of Byte), Int64(), Boolean)
-  fullName: Fp.Processor.SetS64Array(Span<System.Byte>, System.Int64[], System.Boolean)
-  fullName.vb: Fp.Processor.SetS64Array(Span(Of System.Byte), System.Int64(), System.Boolean)
-  nameWithType: Processor.SetS64Array(Span<Byte>, Int64[], Boolean)
-  nameWithType.vb: Processor.SetS64Array(Span(Of Byte), Int64(), Boolean)
 - uid: Fp.Processor.SetS64Array*
   name: SetS64Array
   href: api/Fp.Processor.html#Fp_Processor_SetS64Array_
@@ -7367,15 +7627,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetS8
   nameWithType: Processor.SetS8
-- uid: Fp.Processor.SetS8Array(Span{System.Byte},System.SByte[])
-  name: SetS8Array(Span<Byte>, SByte[])
-  href: api/Fp.Processor.html#Fp_Processor_SetS8Array_Span_System_Byte__System_SByte___
-  commentId: M:Fp.Processor.SetS8Array(Span{System.Byte},System.SByte[])
-  name.vb: SetS8Array(Span(Of Byte), SByte())
-  fullName: Fp.Processor.SetS8Array(Span<System.Byte>, System.SByte[])
-  fullName.vb: Fp.Processor.SetS8Array(Span(Of System.Byte), System.SByte())
-  nameWithType: Processor.SetS8Array(Span<Byte>, SByte[])
-  nameWithType.vb: Processor.SetS8Array(Span(Of Byte), SByte())
+- uid: Fp.Processor.SetS8Array(Span{System.Byte},ReadOnlySpan{System.SByte})
+  name: SetS8Array(Span<Byte>, ReadOnlySpan<SByte>)
+  href: api/Fp.Processor.html#Fp_Processor_SetS8Array_Span_System_Byte__ReadOnlySpan_System_SByte__
+  commentId: M:Fp.Processor.SetS8Array(Span{System.Byte},ReadOnlySpan{System.SByte})
+  name.vb: SetS8Array(Span(Of Byte), ReadOnlySpan(Of SByte))
+  fullName: Fp.Processor.SetS8Array(Span<System.Byte>, ReadOnlySpan<System.SByte>)
+  fullName.vb: Fp.Processor.SetS8Array(Span(Of System.Byte), ReadOnlySpan(Of System.SByte))
+  nameWithType: Processor.SetS8Array(Span<Byte>, ReadOnlySpan<SByte>)
+  nameWithType.vb: Processor.SetS8Array(Span(Of Byte), ReadOnlySpan(Of SByte))
 - uid: Fp.Processor.SetS8Array*
   name: SetS8Array
   href: api/Fp.Processor.html#Fp_Processor_SetS8Array_
@@ -7406,15 +7666,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetTArray
   nameWithType: Processor.SetTArray
-- uid: Fp.Processor.SetTArray``1(Span{System.Byte},``0[])
-  name: SetTArray<T>(Span<Byte>, T[])
-  href: api/Fp.Processor.html#Fp_Processor_SetTArray__1_Span_System_Byte____0___
-  commentId: M:Fp.Processor.SetTArray``1(Span{System.Byte},``0[])
-  name.vb: SetTArray(Of T)(Span(Of Byte), T())
-  fullName: Fp.Processor.SetTArray<T>(Span<System.Byte>, T[])
-  fullName.vb: Fp.Processor.SetTArray(Of T)(Span(Of System.Byte), T())
-  nameWithType: Processor.SetTArray<T>(Span<Byte>, T[])
-  nameWithType.vb: Processor.SetTArray(Of T)(Span(Of Byte), T())
+- uid: Fp.Processor.SetTArray``1(Span{System.Byte},ReadOnlySpan{``0})
+  name: SetTArray<T>(Span<Byte>, ReadOnlySpan<T>)
+  href: api/Fp.Processor.html#Fp_Processor_SetTArray__1_Span_System_Byte__ReadOnlySpan___0__
+  commentId: M:Fp.Processor.SetTArray``1(Span{System.Byte},ReadOnlySpan{``0})
+  name.vb: SetTArray(Of T)(Span(Of Byte), ReadOnlySpan(Of T))
+  fullName: Fp.Processor.SetTArray<T>(Span<System.Byte>, ReadOnlySpan<T>)
+  fullName.vb: Fp.Processor.SetTArray(Of T)(Span(Of System.Byte), ReadOnlySpan(Of T))
+  nameWithType: Processor.SetTArray<T>(Span<Byte>, ReadOnlySpan<T>)
+  nameWithType.vb: Processor.SetTArray(Of T)(Span(Of Byte), ReadOnlySpan(Of T))
 - uid: Fp.Processor.SetU16(Span{System.Byte},System.UInt16,System.Boolean,System.Int32)
   name: SetU16(Span<Byte>, UInt16, Boolean, Int32)
   href: api/Fp.Processor.html#Fp_Processor_SetU16_Span_System_Byte__System_UInt16_System_Boolean_System_Int32_
@@ -7440,6 +7700,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetU16
   nameWithType: Processor.SetU16
+- uid: Fp.Processor.SetU16Array(Span{System.Byte},ReadOnlySpan{System.UInt16},System.Boolean)
+  name: SetU16Array(Span<Byte>, ReadOnlySpan<UInt16>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetU16Array_Span_System_Byte__ReadOnlySpan_System_UInt16__System_Boolean_
+  commentId: M:Fp.Processor.SetU16Array(Span{System.Byte},ReadOnlySpan{System.UInt16},System.Boolean)
+  name.vb: SetU16Array(Span(Of Byte), ReadOnlySpan(Of UInt16), Boolean)
+  fullName: Fp.Processor.SetU16Array(Span<System.Byte>, ReadOnlySpan<System.UInt16>, System.Boolean)
+  fullName.vb: Fp.Processor.SetU16Array(Span(Of System.Byte), ReadOnlySpan(Of System.UInt16), System.Boolean)
+  nameWithType: Processor.SetU16Array(Span<Byte>, ReadOnlySpan<UInt16>, Boolean)
+  nameWithType.vb: Processor.SetU16Array(Span(Of Byte), ReadOnlySpan(Of UInt16), Boolean)
 - uid: Fp.Processor.SetU16Array(Span{System.Byte},System.UInt16[])
   name: SetU16Array(Span<Byte>, UInt16[])
   href: api/Fp.Processor.html#Fp_Processor_SetU16Array_Span_System_Byte__System_UInt16___
@@ -7449,15 +7718,6 @@ references:
   fullName.vb: Fp.Processor.SetU16Array(Span(Of System.Byte), System.UInt16())
   nameWithType: Processor.SetU16Array(Span<Byte>, UInt16[])
   nameWithType.vb: Processor.SetU16Array(Span(Of Byte), UInt16())
-- uid: Fp.Processor.SetU16Array(Span{System.Byte},System.UInt16[],System.Boolean)
-  name: SetU16Array(Span<Byte>, UInt16[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetU16Array_Span_System_Byte__System_UInt16___System_Boolean_
-  commentId: M:Fp.Processor.SetU16Array(Span{System.Byte},System.UInt16[],System.Boolean)
-  name.vb: SetU16Array(Span(Of Byte), UInt16(), Boolean)
-  fullName: Fp.Processor.SetU16Array(Span<System.Byte>, System.UInt16[], System.Boolean)
-  fullName.vb: Fp.Processor.SetU16Array(Span(Of System.Byte), System.UInt16(), System.Boolean)
-  nameWithType: Processor.SetU16Array(Span<Byte>, UInt16[], Boolean)
-  nameWithType.vb: Processor.SetU16Array(Span(Of Byte), UInt16(), Boolean)
 - uid: Fp.Processor.SetU16Array*
   name: SetU16Array
   href: api/Fp.Processor.html#Fp_Processor_SetU16Array_
@@ -7490,6 +7750,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetU32
   nameWithType: Processor.SetU32
+- uid: Fp.Processor.SetU32Array(Span{System.Byte},ReadOnlySpan{System.UInt32},System.Boolean)
+  name: SetU32Array(Span<Byte>, ReadOnlySpan<UInt32>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetU32Array_Span_System_Byte__ReadOnlySpan_System_UInt32__System_Boolean_
+  commentId: M:Fp.Processor.SetU32Array(Span{System.Byte},ReadOnlySpan{System.UInt32},System.Boolean)
+  name.vb: SetU32Array(Span(Of Byte), ReadOnlySpan(Of UInt32), Boolean)
+  fullName: Fp.Processor.SetU32Array(Span<System.Byte>, ReadOnlySpan<System.UInt32>, System.Boolean)
+  fullName.vb: Fp.Processor.SetU32Array(Span(Of System.Byte), ReadOnlySpan(Of System.UInt32), System.Boolean)
+  nameWithType: Processor.SetU32Array(Span<Byte>, ReadOnlySpan<UInt32>, Boolean)
+  nameWithType.vb: Processor.SetU32Array(Span(Of Byte), ReadOnlySpan(Of UInt32), Boolean)
 - uid: Fp.Processor.SetU32Array(Span{System.Byte},System.UInt32[])
   name: SetU32Array(Span<Byte>, UInt32[])
   href: api/Fp.Processor.html#Fp_Processor_SetU32Array_Span_System_Byte__System_UInt32___
@@ -7499,15 +7768,6 @@ references:
   fullName.vb: Fp.Processor.SetU32Array(Span(Of System.Byte), System.UInt32())
   nameWithType: Processor.SetU32Array(Span<Byte>, UInt32[])
   nameWithType.vb: Processor.SetU32Array(Span(Of Byte), UInt32())
-- uid: Fp.Processor.SetU32Array(Span{System.Byte},System.UInt32[],System.Boolean)
-  name: SetU32Array(Span<Byte>, UInt32[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetU32Array_Span_System_Byte__System_UInt32___System_Boolean_
-  commentId: M:Fp.Processor.SetU32Array(Span{System.Byte},System.UInt32[],System.Boolean)
-  name.vb: SetU32Array(Span(Of Byte), UInt32(), Boolean)
-  fullName: Fp.Processor.SetU32Array(Span<System.Byte>, System.UInt32[], System.Boolean)
-  fullName.vb: Fp.Processor.SetU32Array(Span(Of System.Byte), System.UInt32(), System.Boolean)
-  nameWithType: Processor.SetU32Array(Span<Byte>, UInt32[], Boolean)
-  nameWithType.vb: Processor.SetU32Array(Span(Of Byte), UInt32(), Boolean)
 - uid: Fp.Processor.SetU32Array*
   name: SetU32Array
   href: api/Fp.Processor.html#Fp_Processor_SetU32Array_
@@ -7540,6 +7800,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetU64
   nameWithType: Processor.SetU64
+- uid: Fp.Processor.SetU64Array(Span{System.Byte},ReadOnlySpan{System.UInt64},System.Boolean)
+  name: SetU64Array(Span<Byte>, ReadOnlySpan<UInt64>, Boolean)
+  href: api/Fp.Processor.html#Fp_Processor_SetU64Array_Span_System_Byte__ReadOnlySpan_System_UInt64__System_Boolean_
+  commentId: M:Fp.Processor.SetU64Array(Span{System.Byte},ReadOnlySpan{System.UInt64},System.Boolean)
+  name.vb: SetU64Array(Span(Of Byte), ReadOnlySpan(Of UInt64), Boolean)
+  fullName: Fp.Processor.SetU64Array(Span<System.Byte>, ReadOnlySpan<System.UInt64>, System.Boolean)
+  fullName.vb: Fp.Processor.SetU64Array(Span(Of System.Byte), ReadOnlySpan(Of System.UInt64), System.Boolean)
+  nameWithType: Processor.SetU64Array(Span<Byte>, ReadOnlySpan<UInt64>, Boolean)
+  nameWithType.vb: Processor.SetU64Array(Span(Of Byte), ReadOnlySpan(Of UInt64), Boolean)
 - uid: Fp.Processor.SetU64Array(Span{System.Byte},System.UInt64[])
   name: SetU64Array(Span<Byte>, UInt64[])
   href: api/Fp.Processor.html#Fp_Processor_SetU64Array_Span_System_Byte__System_UInt64___
@@ -7549,15 +7818,6 @@ references:
   fullName.vb: Fp.Processor.SetU64Array(Span(Of System.Byte), System.UInt64())
   nameWithType: Processor.SetU64Array(Span<Byte>, UInt64[])
   nameWithType.vb: Processor.SetU64Array(Span(Of Byte), UInt64())
-- uid: Fp.Processor.SetU64Array(Span{System.Byte},System.UInt64[],System.Boolean)
-  name: SetU64Array(Span<Byte>, UInt64[], Boolean)
-  href: api/Fp.Processor.html#Fp_Processor_SetU64Array_Span_System_Byte__System_UInt64___System_Boolean_
-  commentId: M:Fp.Processor.SetU64Array(Span{System.Byte},System.UInt64[],System.Boolean)
-  name.vb: SetU64Array(Span(Of Byte), UInt64(), Boolean)
-  fullName: Fp.Processor.SetU64Array(Span<System.Byte>, System.UInt64[], System.Boolean)
-  fullName.vb: Fp.Processor.SetU64Array(Span(Of System.Byte), System.UInt64(), System.Boolean)
-  nameWithType: Processor.SetU64Array(Span<Byte>, UInt64[], Boolean)
-  nameWithType.vb: Processor.SetU64Array(Span(Of Byte), UInt64(), Boolean)
 - uid: Fp.Processor.SetU64Array*
   name: SetU64Array
   href: api/Fp.Processor.html#Fp_Processor_SetU64Array_
@@ -7581,15 +7841,15 @@ references:
   isSpec: "True"
   fullName: Fp.Processor.SetU8
   nameWithType: Processor.SetU8
-- uid: Fp.Processor.SetU8Array(Span{System.Byte},System.Byte[])
-  name: SetU8Array(Span<Byte>, Byte[])
-  href: api/Fp.Processor.html#Fp_Processor_SetU8Array_Span_System_Byte__System_Byte___
-  commentId: M:Fp.Processor.SetU8Array(Span{System.Byte},System.Byte[])
-  name.vb: SetU8Array(Span(Of Byte), Byte())
-  fullName: Fp.Processor.SetU8Array(Span<System.Byte>, System.Byte[])
-  fullName.vb: Fp.Processor.SetU8Array(Span(Of System.Byte), System.Byte())
-  nameWithType: Processor.SetU8Array(Span<Byte>, Byte[])
-  nameWithType.vb: Processor.SetU8Array(Span(Of Byte), Byte())
+- uid: Fp.Processor.SetU8Array(Span{System.Byte},ReadOnlySpan{System.Byte})
+  name: SetU8Array(Span<Byte>, ReadOnlySpan<Byte>)
+  href: api/Fp.Processor.html#Fp_Processor_SetU8Array_Span_System_Byte__ReadOnlySpan_System_Byte__
+  commentId: M:Fp.Processor.SetU8Array(Span{System.Byte},ReadOnlySpan{System.Byte})
+  name.vb: SetU8Array(Span(Of Byte), ReadOnlySpan(Of Byte))
+  fullName: Fp.Processor.SetU8Array(Span<System.Byte>, ReadOnlySpan<System.Byte>)
+  fullName.vb: Fp.Processor.SetU8Array(Span(Of System.Byte), ReadOnlySpan(Of System.Byte))
+  nameWithType: Processor.SetU8Array(Span<Byte>, ReadOnlySpan<Byte>)
+  nameWithType.vb: Processor.SetU8Array(Span(Of Byte), ReadOnlySpan(Of Byte))
 - uid: Fp.Processor.SetU8Array*
   name: SetU8Array
   href: api/Fp.Processor.html#Fp_Processor_SetU8Array_
@@ -7628,102 +7888,134 @@ references:
   commentId: T:Fp.Processor.TransformDelegate
   fullName: Fp.Processor.TransformDelegate
   nameWithType: Processor.TransformDelegate
-- uid: Fp.Processor.U16B
-  name: U16B
-  href: api/Fp.Processor.html#Fp_Processor_U16B
-  commentId: F:Fp.Processor.U16B
-  fullName: Fp.Processor.U16B
-  nameWithType: Processor.U16B
-- uid: Fp.Processor.U16BA
-  name: U16BA
-  href: api/Fp.Processor.html#Fp_Processor_U16BA
-  commentId: F:Fp.Processor.U16BA
-  fullName: Fp.Processor.U16BA
-  nameWithType: Processor.U16BA
-- uid: Fp.Processor.U16L
-  name: U16L
-  href: api/Fp.Processor.html#Fp_Processor_U16L
-  commentId: F:Fp.Processor.U16L
-  fullName: Fp.Processor.U16L
-  nameWithType: Processor.U16L
-- uid: Fp.Processor.U16LA
-  name: U16LA
-  href: api/Fp.Processor.html#Fp_Processor_U16LA
-  commentId: F:Fp.Processor.U16LA
-  fullName: Fp.Processor.U16LA
-  nameWithType: Processor.U16LA
-- uid: Fp.Processor.U32B
-  name: U32B
-  href: api/Fp.Processor.html#Fp_Processor_U32B
-  commentId: F:Fp.Processor.U32B
-  fullName: Fp.Processor.U32B
-  nameWithType: Processor.U32B
-- uid: Fp.Processor.U32BA
-  name: U32BA
-  href: api/Fp.Processor.html#Fp_Processor_U32BA
-  commentId: F:Fp.Processor.U32BA
-  fullName: Fp.Processor.U32BA
-  nameWithType: Processor.U32BA
-- uid: Fp.Processor.U32L
-  name: U32L
-  href: api/Fp.Processor.html#Fp_Processor_U32L
-  commentId: F:Fp.Processor.U32L
-  fullName: Fp.Processor.U32L
-  nameWithType: Processor.U32L
-- uid: Fp.Processor.U32LA
-  name: U32LA
-  href: api/Fp.Processor.html#Fp_Processor_U32LA
-  commentId: F:Fp.Processor.U32LA
-  fullName: Fp.Processor.U32LA
-  nameWithType: Processor.U32LA
-- uid: Fp.Processor.U64B
-  name: U64B
-  href: api/Fp.Processor.html#Fp_Processor_U64B
-  commentId: F:Fp.Processor.U64B
-  fullName: Fp.Processor.U64B
-  nameWithType: Processor.U64B
-- uid: Fp.Processor.U64BA
-  name: U64BA
-  href: api/Fp.Processor.html#Fp_Processor_U64BA
-  commentId: F:Fp.Processor.U64BA
-  fullName: Fp.Processor.U64BA
-  nameWithType: Processor.U64BA
-- uid: Fp.Processor.U64L
-  name: U64L
-  href: api/Fp.Processor.html#Fp_Processor_U64L
-  commentId: F:Fp.Processor.U64L
-  fullName: Fp.Processor.U64L
-  nameWithType: Processor.U64L
-- uid: Fp.Processor.U64LA
-  name: U64LA
-  href: api/Fp.Processor.html#Fp_Processor_U64LA
-  commentId: F:Fp.Processor.U64LA
-  fullName: Fp.Processor.U64LA
-  nameWithType: Processor.U64LA
-- uid: Fp.Processor.U8
-  name: U8
-  href: api/Fp.Processor.html#Fp_Processor_U8
-  commentId: F:Fp.Processor.U8
-  fullName: Fp.Processor.U8
-  nameWithType: Processor.U8
-- uid: Fp.Processor.U8A
-  name: U8A
-  href: api/Fp.Processor.html#Fp_Processor_U8A
-  commentId: F:Fp.Processor.U8A
-  fullName: Fp.Processor.U8A
-  nameWithType: Processor.U8A
-- uid: Fp.Processor.Utf16
-  name: Utf16
-  href: api/Fp.Processor.html#Fp_Processor_Utf16
-  commentId: F:Fp.Processor.Utf16
-  fullName: Fp.Processor.Utf16
-  nameWithType: Processor.Utf16
-- uid: Fp.Processor.Utf8
-  name: Utf8
-  href: api/Fp.Processor.html#Fp_Processor_Utf8
-  commentId: F:Fp.Processor.Utf8
-  fullName: Fp.Processor.Utf8
-  nameWithType: Processor.Utf8
+- uid: Fp.Processor.u1
+  name: u1
+  href: api/Fp.Processor.html#Fp_Processor_u1
+  commentId: F:Fp.Processor.u1
+  fullName: Fp.Processor.u1
+  nameWithType: Processor.u1
+- uid: Fp.Processor.u1a
+  name: u1a
+  href: api/Fp.Processor.html#Fp_Processor_u1a
+  commentId: F:Fp.Processor.u1a
+  fullName: Fp.Processor.u1a
+  nameWithType: Processor.u1a
+- uid: Fp.Processor.u2b
+  name: u2b
+  href: api/Fp.Processor.html#Fp_Processor_u2b
+  commentId: F:Fp.Processor.u2b
+  fullName: Fp.Processor.u2b
+  nameWithType: Processor.u2b
+- uid: Fp.Processor.u2ba
+  name: u2ba
+  href: api/Fp.Processor.html#Fp_Processor_u2ba
+  commentId: F:Fp.Processor.u2ba
+  fullName: Fp.Processor.u2ba
+  nameWithType: Processor.u2ba
+- uid: Fp.Processor.u2l
+  name: u2l
+  href: api/Fp.Processor.html#Fp_Processor_u2l
+  commentId: F:Fp.Processor.u2l
+  fullName: Fp.Processor.u2l
+  nameWithType: Processor.u2l
+- uid: Fp.Processor.u2la
+  name: u2la
+  href: api/Fp.Processor.html#Fp_Processor_u2la
+  commentId: F:Fp.Processor.u2la
+  fullName: Fp.Processor.u2la
+  nameWithType: Processor.u2la
+- uid: Fp.Processor.u4b
+  name: u4b
+  href: api/Fp.Processor.html#Fp_Processor_u4b
+  commentId: F:Fp.Processor.u4b
+  fullName: Fp.Processor.u4b
+  nameWithType: Processor.u4b
+- uid: Fp.Processor.u4ba
+  name: u4ba
+  href: api/Fp.Processor.html#Fp_Processor_u4ba
+  commentId: F:Fp.Processor.u4ba
+  fullName: Fp.Processor.u4ba
+  nameWithType: Processor.u4ba
+- uid: Fp.Processor.u4l
+  name: u4l
+  href: api/Fp.Processor.html#Fp_Processor_u4l
+  commentId: F:Fp.Processor.u4l
+  fullName: Fp.Processor.u4l
+  nameWithType: Processor.u4l
+- uid: Fp.Processor.u4la
+  name: u4la
+  href: api/Fp.Processor.html#Fp_Processor_u4la
+  commentId: F:Fp.Processor.u4la
+  fullName: Fp.Processor.u4la
+  nameWithType: Processor.u4la
+- uid: Fp.Processor.u8b
+  name: u8b
+  href: api/Fp.Processor.html#Fp_Processor_u8b
+  commentId: F:Fp.Processor.u8b
+  fullName: Fp.Processor.u8b
+  nameWithType: Processor.u8b
+- uid: Fp.Processor.u8ba
+  name: u8ba
+  href: api/Fp.Processor.html#Fp_Processor_u8ba
+  commentId: F:Fp.Processor.u8ba
+  fullName: Fp.Processor.u8ba
+  nameWithType: Processor.u8ba
+- uid: Fp.Processor.u8l
+  name: u8l
+  href: api/Fp.Processor.html#Fp_Processor_u8l
+  commentId: F:Fp.Processor.u8l
+  fullName: Fp.Processor.u8l
+  nameWithType: Processor.u8l
+- uid: Fp.Processor.u8la
+  name: u8la
+  href: api/Fp.Processor.html#Fp_Processor_u8la
+  commentId: F:Fp.Processor.u8la
+  fullName: Fp.Processor.u8la
+  nameWithType: Processor.u8la
+- uid: Fp.Processor.UnsupportedExtension(System.String)
+  name: UnsupportedExtension(String)
+  href: api/Fp.Processor.html#Fp_Processor_UnsupportedExtension_System_String_
+  commentId: M:Fp.Processor.UnsupportedExtension(System.String)
+  fullName: Fp.Processor.UnsupportedExtension(System.String)
+  nameWithType: Processor.UnsupportedExtension(String)
+- uid: Fp.Processor.UnsupportedExtension*
+  name: UnsupportedExtension
+  href: api/Fp.Processor.html#Fp_Processor_UnsupportedExtension_
+  commentId: Overload:Fp.Processor.UnsupportedExtension
+  isSpec: "True"
+  fullName: Fp.Processor.UnsupportedExtension
+  nameWithType: Processor.UnsupportedExtension
+- uid: Fp.Processor.UnsupportedVersion(System.Int64)
+  name: UnsupportedVersion(Int64)
+  href: api/Fp.Processor.html#Fp_Processor_UnsupportedVersion_System_Int64_
+  commentId: M:Fp.Processor.UnsupportedVersion(System.Int64)
+  fullName: Fp.Processor.UnsupportedVersion(System.Int64)
+  nameWithType: Processor.UnsupportedVersion(Int64)
+- uid: Fp.Processor.UnsupportedVersion(System.UInt64)
+  name: UnsupportedVersion(UInt64)
+  href: api/Fp.Processor.html#Fp_Processor_UnsupportedVersion_System_UInt64_
+  commentId: M:Fp.Processor.UnsupportedVersion(System.UInt64)
+  fullName: Fp.Processor.UnsupportedVersion(System.UInt64)
+  nameWithType: Processor.UnsupportedVersion(UInt64)
+- uid: Fp.Processor.UnsupportedVersion*
+  name: UnsupportedVersion
+  href: api/Fp.Processor.html#Fp_Processor_UnsupportedVersion_
+  commentId: Overload:Fp.Processor.UnsupportedVersion
+  isSpec: "True"
+  fullName: Fp.Processor.UnsupportedVersion
+  nameWithType: Processor.UnsupportedVersion
+- uid: Fp.Processor.utf16
+  name: utf16
+  href: api/Fp.Processor.html#Fp_Processor_utf16
+  commentId: F:Fp.Processor.utf16
+  fullName: Fp.Processor.utf16
+  nameWithType: Processor.utf16
+- uid: Fp.Processor.utf8
+  name: utf8
+  href: api/Fp.Processor.html#Fp_Processor_utf8
+  commentId: F:Fp.Processor.utf8
+  fullName: Fp.Processor.utf8
+  nameWithType: Processor.utf8
 - uid: Fp.Processor.WorkerId
   name: WorkerId
   href: api/Fp.Processor.html#Fp_Processor_WorkerId
@@ -8707,34 +8999,6 @@ references:
   commentId: F:Fp.Scripting._nothing
   fullName: Fp.Scripting._nothing
   nameWithType: Scripting._nothing
-- uid: Fp.Scripting._WAV
-  name: _WAV()
-  href: api/Fp.Scripting.html#Fp_Scripting__WAV
-  commentId: M:Fp.Scripting._WAV
-  fullName: Fp.Scripting._WAV()
-  nameWithType: Scripting._WAV()
-- uid: Fp.Scripting._WAV(System.Nullable{Detector},System.Object)
-  name: _WAV(Nullable<Detector>, Object)
-  href: api/Fp.Scripting.html#Fp_Scripting__WAV_System_Nullable_Detector__System_Object_
-  commentId: M:Fp.Scripting._WAV(System.Nullable{Detector},System.Object)
-  name.vb: _WAV(Nullable(Of Detector), Object)
-  fullName: Fp.Scripting._WAV(System.Nullable<Detector>, System.Object)
-  fullName.vb: Fp.Scripting._WAV(System.Nullable(Of Detector), System.Object)
-  nameWithType: Scripting._WAV(Nullable<Detector>, Object)
-  nameWithType.vb: Scripting._WAV(Nullable(Of Detector), Object)
-- uid: Fp.Scripting._WAV(System.Object)
-  name: _WAV(Object)
-  href: api/Fp.Scripting.html#Fp_Scripting__WAV_System_Object_
-  commentId: M:Fp.Scripting._WAV(System.Object)
-  fullName: Fp.Scripting._WAV(System.Object)
-  nameWithType: Scripting._WAV(Object)
-- uid: Fp.Scripting._WAV*
-  name: _WAV
-  href: api/Fp.Scripting.html#Fp_Scripting__WAV_
-  commentId: Overload:Fp.Scripting._WAV
-  isSpec: "True"
-  fullName: Fp.Scripting._WAV
-  nameWithType: Scripting._WAV
 - uid: Fp.Scripting.and(Memory{System.Byte},System.Byte)
   name: and(Memory<Byte>, Byte)
   href: api/Fp.Scripting.html#Fp_Scripting_and_Memory_System_Byte__System_Byte_
@@ -8769,12 +9033,12 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.and
   nameWithType: Scripting.and
-- uid: Fp.Scripting.ascii(System.String)
-  name: ascii(String)
-  href: api/Fp.Scripting.html#Fp_Scripting_ascii_System_String_
-  commentId: M:Fp.Scripting.ascii(System.String)
-  fullName: Fp.Scripting.ascii(System.String)
-  nameWithType: Scripting.ascii(String)
+- uid: Fp.Scripting.ascii
+  name: ascii
+  href: api/Fp.Scripting.html#Fp_Scripting_ascii
+  commentId: P:Fp.Scripting.ascii
+  fullName: Fp.Scripting.ascii
+  nameWithType: Scripting.ascii
 - uid: Fp.Scripting.ascii*
   name: ascii
   href: api/Fp.Scripting.html#Fp_Scripting_ascii_
@@ -8970,105 +9234,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.decryptBlowfishEcb
   nameWithType: Scripting.decryptBlowfishEcb
-- uid: Fp.Scripting.deDeflate(Memory{System.Byte})
-  name: deDeflate(Memory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_deDeflate_Memory_System_Byte__
-  commentId: M:Fp.Scripting.deDeflate(Memory{System.Byte})
-  name.vb: deDeflate(Memory(Of Byte))
-  fullName: Fp.Scripting.deDeflate(Memory<System.Byte>)
-  fullName.vb: Fp.Scripting.deDeflate(Memory(Of System.Byte))
-  nameWithType: Scripting.deDeflate(Memory<Byte>)
-  nameWithType.vb: Scripting.deDeflate(Memory(Of Byte))
-- uid: Fp.Scripting.deDeflate(ReadOnlyMemory{System.Byte})
-  name: deDeflate(ReadOnlyMemory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_deDeflate_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Scripting.deDeflate(ReadOnlyMemory{System.Byte})
-  name.vb: deDeflate(ReadOnlyMemory(Of Byte))
-  fullName: Fp.Scripting.deDeflate(ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Scripting.deDeflate(ReadOnlyMemory(Of System.Byte))
-  nameWithType: Scripting.deDeflate(ReadOnlyMemory<Byte>)
-  nameWithType.vb: Scripting.deDeflate(ReadOnlyMemory(Of Byte))
-- uid: Fp.Scripting.deDeflate(System.Byte[])
-  name: deDeflate(Byte[])
-  href: api/Fp.Scripting.html#Fp_Scripting_deDeflate_System_Byte___
-  commentId: M:Fp.Scripting.deDeflate(System.Byte[])
-  name.vb: deDeflate(Byte())
-  fullName: Fp.Scripting.deDeflate(System.Byte[])
-  fullName.vb: Fp.Scripting.deDeflate(System.Byte())
-  nameWithType: Scripting.deDeflate(Byte[])
-  nameWithType.vb: Scripting.deDeflate(Byte())
-- uid: Fp.Scripting.deDeflate(System.IO.Stream)
-  name: deDeflate(Stream)
-  href: api/Fp.Scripting.html#Fp_Scripting_deDeflate_System_IO_Stream_
-  commentId: M:Fp.Scripting.deDeflate(System.IO.Stream)
-  fullName: Fp.Scripting.deDeflate(System.IO.Stream)
-  nameWithType: Scripting.deDeflate(Stream)
-- uid: Fp.Scripting.deDeflate*
-  name: deDeflate
-  href: api/Fp.Scripting.html#Fp_Scripting_deDeflate_
-  commentId: Overload:Fp.Scripting.deDeflate
-  isSpec: "True"
-  fullName: Fp.Scripting.deDeflate
-  nameWithType: Scripting.deDeflate
-- uid: Fp.Scripting.deGzip(Memory{System.Byte})
-  name: deGzip(Memory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_deGzip_Memory_System_Byte__
-  commentId: M:Fp.Scripting.deGzip(Memory{System.Byte})
-  name.vb: deGzip(Memory(Of Byte))
-  fullName: Fp.Scripting.deGzip(Memory<System.Byte>)
-  fullName.vb: Fp.Scripting.deGzip(Memory(Of System.Byte))
-  nameWithType: Scripting.deGzip(Memory<Byte>)
-  nameWithType.vb: Scripting.deGzip(Memory(Of Byte))
-- uid: Fp.Scripting.deGzip(ReadOnlyMemory{System.Byte})
-  name: deGzip(ReadOnlyMemory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_deGzip_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Scripting.deGzip(ReadOnlyMemory{System.Byte})
-  name.vb: deGzip(ReadOnlyMemory(Of Byte))
-  fullName: Fp.Scripting.deGzip(ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Scripting.deGzip(ReadOnlyMemory(Of System.Byte))
-  nameWithType: Scripting.deGzip(ReadOnlyMemory<Byte>)
-  nameWithType.vb: Scripting.deGzip(ReadOnlyMemory(Of Byte))
-- uid: Fp.Scripting.deGzip(System.Byte[])
-  name: deGzip(Byte[])
-  href: api/Fp.Scripting.html#Fp_Scripting_deGzip_System_Byte___
-  commentId: M:Fp.Scripting.deGzip(System.Byte[])
-  name.vb: deGzip(Byte())
-  fullName: Fp.Scripting.deGzip(System.Byte[])
-  fullName.vb: Fp.Scripting.deGzip(System.Byte())
-  nameWithType: Scripting.deGzip(Byte[])
-  nameWithType.vb: Scripting.deGzip(Byte())
-- uid: Fp.Scripting.deGzip(System.IO.Stream)
-  name: deGzip(Stream)
-  href: api/Fp.Scripting.html#Fp_Scripting_deGzip_System_IO_Stream_
-  commentId: M:Fp.Scripting.deGzip(System.IO.Stream)
-  fullName: Fp.Scripting.deGzip(System.IO.Stream)
-  nameWithType: Scripting.deGzip(Stream)
-- uid: Fp.Scripting.deGzip*
-  name: deGzip
-  href: api/Fp.Scripting.html#Fp_Scripting_deGzip_
-  commentId: Overload:Fp.Scripting.deGzip
-  isSpec: "True"
-  fullName: Fp.Scripting.deGzip
-  nameWithType: Scripting.deGzip
-- uid: Fp.Scripting.dump(System.IO.Stream)
-  name: dump(Stream)
-  href: api/Fp.Scripting.html#Fp_Scripting_dump_System_IO_Stream_
-  commentId: M:Fp.Scripting.dump(System.IO.Stream)
-  fullName: Fp.Scripting.dump(System.IO.Stream)
-  nameWithType: Scripting.dump(Stream)
-- uid: Fp.Scripting.dump(System.IO.Stream,System.Int32)
-  name: dump(Stream, Int32)
-  href: api/Fp.Scripting.html#Fp_Scripting_dump_System_IO_Stream_System_Int32_
-  commentId: M:Fp.Scripting.dump(System.IO.Stream,System.Int32)
-  fullName: Fp.Scripting.dump(System.IO.Stream, System.Int32)
-  nameWithType: Scripting.dump(Stream, Int32)
-- uid: Fp.Scripting.dump*
-  name: dump
-  href: api/Fp.Scripting.html#Fp_Scripting_dump_
-  commentId: Overload:Fp.Scripting.dump
-  isSpec: "True"
-  fullName: Fp.Scripting.dump
-  nameWithType: Scripting.dump
 - uid: Fp.Scripting.encryptBlowfishCbc(Memory{System.Byte},ReadOnlyMemory{System.Byte},ReadOnlyMemory{System.Byte})
   name: encryptBlowfishCbc(Memory<Byte>, ReadOnlyMemory<Byte>, ReadOnlyMemory<Byte>)
   href: api/Fp.Scripting.html#Fp_Scripting_encryptBlowfishCbc_Memory_System_Byte__ReadOnlyMemory_System_Byte__ReadOnlyMemory_System_Byte__
@@ -9222,22 +9387,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.fp
   nameWithType: Scripting.fp
-- uid: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
-  name: fpCliFilesystem(FileSystemSource, IList<String>, ProcessorFactory[])
-  href: api/Fp.Scripting.html#Fp_Scripting_fpCliFilesystem_Fp_FileSystemSource_System_Collections_Generic_IList_System_String__ProcessorFactory___
-  commentId: M:Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource,System.Collections.Generic.IList{System.String},ProcessorFactory[])
-  name.vb: fpCliFilesystem(FileSystemSource, IList(Of String), ProcessorFactory())
-  fullName: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IList<System.String>, ProcessorFactory[])
-  fullName.vb: Fp.Scripting.fpCliFilesystem(Fp.FileSystemSource, System.Collections.Generic.IList(Of System.String), ProcessorFactory())
-  nameWithType: Scripting.fpCliFilesystem(FileSystemSource, IList<String>, ProcessorFactory[])
-  nameWithType.vb: Scripting.fpCliFilesystem(FileSystemSource, IList(Of String), ProcessorFactory())
-- uid: Fp.Scripting.fpCliFilesystem*
-  name: fpCliFilesystem
-  href: api/Fp.Scripting.html#Fp_Scripting_fpCliFilesystem_
-  commentId: Overload:Fp.Scripting.fpCliFilesystem
-  isSpec: "True"
-  fullName: Fp.Scripting.fpCliFilesystem
-  nameWithType: Scripting.fpCliFilesystem
 - uid: Fp.Scripting.i1
   name: i1
   href: api/Fp.Scripting.html#Fp_Scripting_i1
@@ -10303,12 +10452,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.meta
   nameWithType: Scripting.meta
-- uid: Fp.Scripting.NO_EXECUTE_CLI
-  name: NO_EXECUTE_CLI
-  href: api/Fp.Scripting.html#Fp_Scripting_NO_EXECUTE_CLI
-  commentId: F:Fp.Scripting.NO_EXECUTE_CLI
-  fullName: Fp.Scripting.NO_EXECUTE_CLI
-  nameWithType: Scripting.NO_EXECUTE_CLI
 - uid: Fp.Scripting.or(Memory{System.Byte},System.Byte)
   name: or(Memory<Byte>, Byte)
   href: api/Fp.Scripting.html#Fp_Scripting_or_Memory_System_Byte__System_Byte_
@@ -10343,46 +10486,6 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.or
   nameWithType: Scripting.or
-- uid: Fp.Scripting.processors
-  name: processors
-  href: api/Fp.Scripting.html#Fp_Scripting_processors
-  commentId: F:Fp.Scripting.processors
-  fullName: Fp.Scripting.processors
-  nameWithType: Scripting.processors
-- uid: Fp.Scripting.stream(Memory{System.Byte})
-  name: stream(Memory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_stream_Memory_System_Byte__
-  commentId: M:Fp.Scripting.stream(Memory{System.Byte})
-  name.vb: stream(Memory(Of Byte))
-  fullName: Fp.Scripting.stream(Memory<System.Byte>)
-  fullName.vb: Fp.Scripting.stream(Memory(Of System.Byte))
-  nameWithType: Scripting.stream(Memory<Byte>)
-  nameWithType.vb: Scripting.stream(Memory(Of Byte))
-- uid: Fp.Scripting.stream(ReadOnlyMemory{System.Byte})
-  name: stream(ReadOnlyMemory<Byte>)
-  href: api/Fp.Scripting.html#Fp_Scripting_stream_ReadOnlyMemory_System_Byte__
-  commentId: M:Fp.Scripting.stream(ReadOnlyMemory{System.Byte})
-  name.vb: stream(ReadOnlyMemory(Of Byte))
-  fullName: Fp.Scripting.stream(ReadOnlyMemory<System.Byte>)
-  fullName.vb: Fp.Scripting.stream(ReadOnlyMemory(Of System.Byte))
-  nameWithType: Scripting.stream(ReadOnlyMemory<Byte>)
-  nameWithType.vb: Scripting.stream(ReadOnlyMemory(Of Byte))
-- uid: Fp.Scripting.stream(System.Byte[])
-  name: stream(Byte[])
-  href: api/Fp.Scripting.html#Fp_Scripting_stream_System_Byte___
-  commentId: M:Fp.Scripting.stream(System.Byte[])
-  name.vb: stream(Byte())
-  fullName: Fp.Scripting.stream(System.Byte[])
-  fullName.vb: Fp.Scripting.stream(System.Byte())
-  nameWithType: Scripting.stream(Byte[])
-  nameWithType.vb: Scripting.stream(Byte())
-- uid: Fp.Scripting.stream*
-  name: stream
-  href: api/Fp.Scripting.html#Fp_Scripting_stream_
-  commentId: Overload:Fp.Scripting.stream
-  isSpec: "True"
-  fullName: Fp.Scripting.stream
-  nameWithType: Scripting.stream
 - uid: Fp.Scripting.u1
   name: u1
   href: api/Fp.Scripting.html#Fp_Scripting_u1
@@ -10571,12 +10674,6 @@ references:
   commentId: M:Fp.Scripting.unsupported(System.Int64)
   fullName: Fp.Scripting.unsupported(System.Int64)
   nameWithType: Scripting.unsupported(Int64)
-- uid: Fp.Scripting.unsupported(System.UInt64)
-  name: unsupported(UInt64)
-  href: api/Fp.Scripting.html#Fp_Scripting_unsupported_System_UInt64_
-  commentId: M:Fp.Scripting.unsupported(System.UInt64)
-  fullName: Fp.Scripting.unsupported(System.UInt64)
-  nameWithType: Scripting.unsupported(UInt64)
 - uid: Fp.Scripting.unsupported*
   name: unsupported
   href: api/Fp.Scripting.html#Fp_Scripting_unsupported_
@@ -10584,6 +10681,32 @@ references:
   isSpec: "True"
   fullName: Fp.Scripting.unsupported
   nameWithType: Scripting.unsupported
+- uid: Fp.Scripting.unsupportedExtension(System.String)
+  name: unsupportedExtension(String)
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupportedExtension_System_String_
+  commentId: M:Fp.Scripting.unsupportedExtension(System.String)
+  fullName: Fp.Scripting.unsupportedExtension(System.String)
+  nameWithType: Scripting.unsupportedExtension(String)
+- uid: Fp.Scripting.unsupportedExtension*
+  name: unsupportedExtension
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupportedExtension_
+  commentId: Overload:Fp.Scripting.unsupportedExtension
+  isSpec: "True"
+  fullName: Fp.Scripting.unsupportedExtension
+  nameWithType: Scripting.unsupportedExtension
+- uid: Fp.Scripting.unsupportedVersion(System.UInt64)
+  name: unsupportedVersion(UInt64)
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupportedVersion_System_UInt64_
+  commentId: M:Fp.Scripting.unsupportedVersion(System.UInt64)
+  fullName: Fp.Scripting.unsupportedVersion(System.UInt64)
+  nameWithType: Scripting.unsupportedVersion(UInt64)
+- uid: Fp.Scripting.unsupportedVersion*
+  name: unsupportedVersion
+  href: api/Fp.Scripting.html#Fp_Scripting_unsupportedVersion_
+  commentId: Overload:Fp.Scripting.unsupportedVersion
+  isSpec: "True"
+  fullName: Fp.Scripting.unsupportedVersion
+  nameWithType: Scripting.unsupportedVersion
 - uid: Fp.Scripting.utf16
   name: utf16
   href: api/Fp.Scripting.html#Fp_Scripting_utf16
